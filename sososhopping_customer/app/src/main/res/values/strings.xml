@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">sososhopping_customer</string>
+
+    <!-- 회원가입 -->
+    <string name="signup_email">사용하실 이메일을 입력해주세요</string>
+    <string name="signup_password">사용하실 비밀번호를 입력해주세요</string>
+    <string name="signup_passwordDup">사용하실 비밀번호를 다시 입력해주세요</string>
+    <string name="signup_name">성함을 입력해주세요</string>
+    <string name="signup_phone">휴대전화번호을 입력해주세요 (-제외)</string>
+    <string name="signup_nickName">앱 내에서 사용하실 별명을 입력해주세요</string>
+    <string name="signup_roadAddress">도로명주소</string>
+    <string name="signup_detailAddress">상세주소</string>
+
+    <string name="signup_error_email">이메일을 정확하게 입력해주세요</string>
+    <string name="signup_error_password">비밀번호는 8자 이상이어야 합니다</string>
+    <string name="signup_error_passwordDup">비밀번호가 일치하지 않습니다</string>
+    <string name="signup_error_name">이름은 한글만 가능합니다</string>
+    <string name="signup_error_phone">전화번호를 정확하게 입력해주세요</string>
+    <string name="signup_error_nickname">별명은 8자 이내의 한글,영어,숫자만 가능합니다</string>
+    <string name="signup_error_roadAddress">도로명 주소를 입력해주세요</string>
+    <string name="signup_error_detailAddress">상세 주소를 입력해주세요</string>
+    <string name="signup_error_process">모든 절차를 통과하셔야 합니다</string>
+
+    <!-- Strings related to login -->
+    <string name="login_email">이메일을 입력해주세요</string>
+    <string name="login_password">비밀번호를 입력해주세요</string>
+
+    <string name="find_email">가입하신 이메일은 다음과 같습니다</string>
+
+
+    <string name="title_activity_main">MainActivity</string>
+
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+</resources>
