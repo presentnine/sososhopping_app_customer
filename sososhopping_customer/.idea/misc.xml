@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/programs/AndroidPrograming/soso_shopping/sososhopping_customer/app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.26979166666666665" />
+        <entry key="..\:/programs/AndroidPrograming/soso_shopping/sososhopping_customer/app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.26979166666666665" />
+        <entry key="..\:/programs/AndroidPrograming/soso_shopping/sososhopping_customer/app/src/main/res/layout/item_home_category.xml" value="0.25364583333333335" />
+        <entry key="..\:/programs/AndroidPrograming/soso_shopping/sososhopping_customer/app/src/main/res/layout/item_shop_info.xml" value="0.1" />
+        <entry key="..\:/programs/AndroidPrograming/soso_shopping/sososhopping_customer/app/src/main/res/layout/search_shop_list.xml" value="0.1" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
