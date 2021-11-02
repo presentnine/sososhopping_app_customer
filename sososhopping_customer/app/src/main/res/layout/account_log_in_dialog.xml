@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="@dimen/popup_width"
-        android:layout_height="@dimen/popup_height"
-        android:background="@drawable/round_background">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/drawable_round_background">
 
         <!--icon으로 수정해야함-->
 
         <TextView
+            android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="로그인하기"
@@ -23,47 +24,49 @@
             app:layout_constraintVertical_bias="0.05" />
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textField_LogInEmail"
-            android:layout_width="@dimen/long_button"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:hint="@string/login_email"
-            android:singleLine="true"
-            app:boxBackgroundColor="@color/white"
-            app:endIconMode="clear_text"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/buttonLogIn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.2">
+            app:layout_constraintTop_toBottomOf="@+id/textView5">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editText_LogInEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textField_LogInEmail"
+                android:layout_width="@dimen/long_button"
+                android:layout_height="wrap_content"
+                android:hint="@string/login_email"
+                android:padding="5dp"
+                app:boxBackgroundColor="@color/white"
+                app:endIconMode="clear_text">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textField_LogInPassword"
-            android:layout_width="@dimen/long_button"
-            android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:hint="@string/login_password"
-            android:singleLine="true"
-            app:boxBackgroundColor="@color/white"
-            app:endIconMode="password_toggle"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.4">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editText_LogInEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editText_LogInPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textField_LogInPassword"
+                android:layout_width="@dimen/long_button"
+                android:layout_height="wrap_content"
+                android:hint="@string/login_password"
+                android:padding="5dp"
+                app:boxBackgroundColor="@color/white"
+                app:endIconMode="password_toggle">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editText_LogInPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:singleLine="true"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/buttonLogIn"
@@ -76,7 +79,7 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.6" />
+            app:layout_constraintVertical_bias="0.65" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -103,7 +106,7 @@
             app:layout_constraintHorizontal_bias="0.2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.85" />
+            app:layout_constraintVertical_bias="0.9" />
 
         <Button
             android:id="@+id/buttonFindPassword"
@@ -118,7 +121,7 @@
             app:layout_constraintHorizontal_bias="0.8"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.85" />
+            app:layout_constraintVertical_bias="0.9" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/home2"
-        android:name="com.sososhopping.customer.Home"
+        android:name="com.sososhopping.customer.home.HomeFragment"
         android:label="home_fragment"
-        tools:layout="@layout/home_fragment" >
+        tools:layout="@layout/home" >
         <action
             android:id="@+id/action_home2_to_signUpStartFragment"
             app:destination="@id/signUpStartFragment" />
@@ -39,12 +39,20 @@
         android:id="@+id/findEmailFragment"
         android:name="com.sososhopping.customer.account.FindEmailFragment"
         android:label="account_find_email"
-        tools:layout="@layout/account_find_email" />
+        tools:layout="@layout/account_find_email" >
+        <action
+            android:id="@+id/action_findEmailFragment_to_signUpStartFragment"
+            app:destination="@id/signUpStartFragment" />
+    </fragment>
     <fragment
         android:id="@+id/findPasswordFragment"
         android:name="com.sososhopping.customer.account.FindPasswordFragment"
         android:label="account_find_password"
-        tools:layout="@layout/account_find_password" />
+        tools:layout="@layout/account_find_password" >
+        <action
+            android:id="@+id/action_findPasswordFragment_to_signUpStartFragment"
+            app:destination="@id/signUpStartFragment" />
+    </fragment>
     <fragment
         android:id="@+id/signUpIdFragment"
         android:name="com.sososhopping.customer.account.SignUpEmailFragment"

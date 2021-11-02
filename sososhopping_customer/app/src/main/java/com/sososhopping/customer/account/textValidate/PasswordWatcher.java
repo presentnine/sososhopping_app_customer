@@ -1,6 +1,7 @@
 package com.sososhopping.customer.account.textValidate;
 
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -29,8 +30,10 @@ public class PasswordWatcher implements TextWatcher {
     public void afterTextChanged(Editable s) {
         if(s.toString().length() < 8){
             passwordTextLayout.setError(errorMsg);
+            passwordTextLayout.setErrorEnabled(true);
         }else{
             passwordTextLayout.setError(null);
+            passwordTextLayout.setErrorEnabled(false);
         }
     }
 }

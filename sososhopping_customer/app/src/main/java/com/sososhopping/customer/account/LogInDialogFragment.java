@@ -1,8 +1,12 @@
 package com.sososhopping.customer.account;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,9 +36,46 @@ public class LogInDialogFragment extends DialogFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        int width = getResources().getDimensionPixelSize(R.dimen.popup_width);
+        int height = getResources().getDimensionPixelSize(R.dimen.popup_height);
+        getDialog().getWindow().setLayout(width, height);
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,R.layout.account_log_in_dialog, container, false);
+        binding.editTextLogInEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                binding.textFieldLogInEmail.setError(null);
+                binding.textFieldLogInEmail.setErrorEnabled(false);
+            }
+        });
+
+        binding.editTextLogInPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                binding.textFieldLogInPassword.setError(null);
+                binding.textFieldLogInPassword.setErrorEnabled(false);
+            }
+        });
+
         return binding.getRoot();
     }
 
@@ -42,7 +83,7 @@ public class LogInDialogFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view,savedInstanceState);
 
-        navController = Navigation.findNavController()
+        navController = Navigation.findNavController(getParentFragment().getView());
 
         //아이디찾기
         binding.buttonFindEmail.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +125,7 @@ public class LogInDialogFragment extends DialogFragment {
             binding.textFieldLogInEmail.setError(getResources().getString(R.string.login_email));
         }
         if(TextUtils.isEmpty(binding.editTextLogInPassword.getText().toString())){
-            binding.textFieldLogInEmail.setError(getResources().getString(R.string.login_password));
+            binding.textFieldLogInPassword.setError(getResources().getString(R.string.login_password));
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.sososhopping.customer;
+package com.sososhopping.customer.home;
 
 import androidx.lifecycle.ViewModel;
 

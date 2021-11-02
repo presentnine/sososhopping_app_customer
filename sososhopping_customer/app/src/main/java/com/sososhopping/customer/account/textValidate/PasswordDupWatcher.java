@@ -35,9 +35,11 @@ public class PasswordDupWatcher implements TextWatcher {
 
         if(!s.toString().equals(password)){
             passwordDupTextLayout.setError(errorMsg);
+            passwordDupTextLayout.setErrorEnabled(true);
         }
         else{
             passwordDupTextLayout.setError(null);
+            passwordDupTextLayout.setErrorEnabled(false);
         }
     }
 }

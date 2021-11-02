@@ -20,6 +20,11 @@ public class EmailWatcher implements TextWatcher {
         this.errorMsg = errorMsg;
     }
 
+    public EmailWatcher(TextInputLayout textInputLayout, String errorMsg){
+        this.emailTextLayout = textInputLayout;
+        this.errorMsg = errorMsg;
+    }
+
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -34,11 +39,15 @@ public class EmailWatcher implements TextWatcher {
     public void afterTextChanged(Editable s) {
         if(!validateEmail(s.toString())){
             emailTextLayout.setError(errorMsg);
+            emailTextLayout.setErrorEnabled(true);
         }
         else{
             emailTextLayout.setError(null);
+            emailTextLayout.setErrorEnabled(false);
         }
-        dupCheckTextView.setVisibility(View.INVISIBLE);
+        if(dupCheckTextView != null){
+            dupCheckTextView.setVisibility(View.INVISIBLE);
+        }
     }
 
     public boolean validateEmail(String s){

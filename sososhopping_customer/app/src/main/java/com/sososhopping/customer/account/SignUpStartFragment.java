@@ -29,6 +29,7 @@ public class SignUpStartFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.account_sign_up_start, container, false);
+
         return binding.getRoot();
     }
 

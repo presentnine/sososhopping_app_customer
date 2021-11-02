@@ -29,9 +29,11 @@ public class NameWatcher implements TextWatcher {
     public void afterTextChanged(Editable s) {
         if(validateEmail(s.toString())){
             nameTextLayout.setError(null);
+            nameTextLayout.setErrorEnabled(false);
         }
         else{
             nameTextLayout.setError(errorMsg);
+            nameTextLayout.setErrorEnabled(true);
         }
     }
 

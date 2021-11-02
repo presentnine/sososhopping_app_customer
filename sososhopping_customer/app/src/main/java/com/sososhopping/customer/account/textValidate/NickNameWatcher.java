@@ -33,9 +33,11 @@ public class NickNameWatcher implements TextWatcher {
     public void afterTextChanged(Editable s) {
         if(validateEmail(s.toString())){
             nickNameTextLayout.setError(null);
+            nickNameTextLayout.setErrorEnabled(false);
         }
         else{
             nickNameTextLayout.setError(errorMsg);
+            nickNameTextLayout.setErrorEnabled(true);
         }
         dupCheckTextView.setVisibility(View.INVISIBLE);
     }

@@ -29,9 +29,11 @@ public class PhoneWatcher implements TextWatcher {
     public void afterTextChanged(Editable s) {
         if(validatePhone(s.toString())){
             phoneTextLayout.setError(null);
+            phoneTextLayout.setErrorEnabled(false);
         }
         else{
             phoneTextLayout.setError(errorMsg);
+            phoneTextLayout.setErrorEnabled(true);
         }
     }
 
