@@ -13,10 +13,13 @@
         <action
             android:id="@+id/action_home2_to_signUpStartFragment"
             app:destination="@id/signUpStartFragment" />
+        <action
+            android:id="@+id/action_home2_to_shopListFragment"
+            app:destination="@id/shopListFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpStartFragment"
-        android:name="com.sososhopping.customer.account.SignUpStartFragment"
+        android:name="com.sososhopping.customer.account.view.SignUpStartFragment"
         android:label="account_sign_up_start"
         tools:layout="@layout/account_sign_up_start" >
         <action
@@ -28,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpInfoFragment"
-        android:name="com.sososhopping.customer.account.SignUpInfoFragment"
+        android:name="com.sososhopping.customer.account.view.SignUpInfoFragment"
         android:label="account_sign_up_info"
         tools:layout="@layout/account_sign_up_info" >
         <action
@@ -37,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/findEmailFragment"
-        android:name="com.sososhopping.customer.account.FindEmailFragment"
+        android:name="com.sososhopping.customer.account.view.FindEmailFragment"
         android:label="account_find_email"
         tools:layout="@layout/account_find_email" >
         <action
@@ -46,7 +49,7 @@
     </fragment>
     <fragment
         android:id="@+id/findPasswordFragment"
-        android:name="com.sososhopping.customer.account.FindPasswordFragment"
+        android:name="com.sososhopping.customer.account.view.FindPasswordFragment"
         android:label="account_find_password"
         tools:layout="@layout/account_find_password" >
         <action
@@ -55,7 +58,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpIdFragment"
-        android:name="com.sososhopping.customer.account.SignUpEmailFragment"
+        android:name="com.sososhopping.customer.account.view.SignUpEmailFragment"
         android:label="account_sign_up_email_id"
         tools:layout="@layout/account_sign_up_email" >
         <action
@@ -65,14 +68,56 @@
 
     <dialog
         android:id="@+id/logInDialogFragment"
-        android:name="com.sososhopping.customer.account.LogInDialogFragment"
-        android:label="LogInDialogFragment" >
+        android:name="com.sososhopping.customer.account.view.LogInDialogFragment"
+        android:label="LogInDialogFragment"
+        tools:layout="@layout/account_log_in_dialog">
         <action
             android:id="@+id/action_logInDialogFragment_to_findEmailFragment"
             app:destination="@id/findEmailFragment" />
         <action
             android:id="@+id/action_logInDialogFragment_to_findPasswordFragment"
             app:destination="@id/findPasswordFragment" />
+        <action
+            android:id="@+id/action_logInDialogFragment_to_home2"
+            app:destination="@id/home2" />
     </dialog>
+    <fragment
+        android:id="@+id/shopListFragment"
+        android:name="com.sososhopping.customer.search.view.ShopListFragment"
+        android:label="search_shop_list"
+        tools:layout="@layout/search_shop_list" >
+        <action
+            android:id="@+id/action_shopListFragment_to_searchDialogFragment"
+            app:destination="@id/searchDialogFragment" />
+        <action
+            android:id="@+id/action_shopListFragment_to_shopMainFragment"
+            app:destination="@id/shopMainFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/searchDialogFragment"
+        android:name="com.sososhopping.customer.search.view.SearchDialogFragment"
+        android:label="SearchDialogFragment"
+        tools:layout="@layout/search_shop_dialog">
+        <action
+            android:id="@+id/action_searchDialogFragment_to_shopListFragment"
+            app:destination="@id/shopListFragment" />
+    </dialog>
+
+    <fragment
+        android:id="@+id/shopMainFragment"
+        android:name="com.sososhopping.customer.shop.view.ShopMainFragment"
+        android:label="ShopMainFragment"
+        tools:layout="@layout/shop_main">
+        <action
+            android:id="@+id/action_shopMainFragment_to_shopEventDetailFragment"
+            app:destination="@id/shopEventDetailFragment"
+            app:launchSingleTop="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/shopEventDetailFragment"
+        android:name="com.sososhopping.customer.shop.view.ShopEventDetailFragment"
+        android:label="ShopEventDetailFragment"
+        tools:layout="@layout/shop_event_detail"/>
 
 </navigation>

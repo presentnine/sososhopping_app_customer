@@ -4,12 +4,22 @@
     <dimen name="long_button">350dp</dimen>
     <dimen name="popup_width">400dp</dimen>
     <dimen name="popup_height">400dp</dimen>
+    <dimen name="popup_search_height">100dp</dimen>
 
     <dimen name="padding_Left">20dp</dimen>
     <dimen name="padding_Top">10dp</dimen>
 
     <dimen name="default_toolbar">51dp</dimen>
+    <dimen name="default_toolbar_textSize">18dp</dimen>
 
     <dimen name="search_shop_name">16sp</dimen>
     <dimen name="search_shop_description">12sp</dimen>
+
+    <!--for carousel-->
+    <dimen name="viewpager_pageMargin">20dp</dimen>
+    <dimen name="viewpager_offset">20dp</dimen>
+    <dimen name="viewpager_pageMarginAndOffset">40dp</dimen>
+    <dimen name="viewpager_frameSize">320dp</dimen>
+
+    <dimen name="card_radius">3dp</dimen>
 </resources>

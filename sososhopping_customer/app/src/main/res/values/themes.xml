@@ -41,5 +41,10 @@
         <item name="background">@drawable/drawable_round_background</item>
     </style>
 
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlActivated">@color/orange_rating</item>
+        <item name="colorControlNormal">@color/text_400</item>
+    </style>
+
 
 </resources>

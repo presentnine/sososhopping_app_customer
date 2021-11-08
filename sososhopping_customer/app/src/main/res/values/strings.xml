@@ -34,6 +34,16 @@
     <string name="home_item">상품</string>
 
     <string name="title_activity_main">MainActivity</string>
+    <string name="textSample">내용을 입력해주세요</string>
+
+    <!--가게소개-->
+    <string name="introduce_point">정책이 아직 준비되지 않았습니다.</string>
+
+    <!--이벤트 페이지-->
+    <string name="event_couponList">오늘의 쿠폰</string>
+    <string name="event_boardList">소식</string>
+    <string name="news">소식</string>
+    <string name="event">이벤트</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

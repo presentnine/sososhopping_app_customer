@@ -8,7 +8,7 @@
         android:title="@string/nav_search"
         app:showAsAction="ifRoom"/>
 
-    <item android:id="@+id/menu_chat"
+    <item android:id="@+id/menu_map"
         android:icon="@drawable/ic_baseline_location_on_24"
         android:enabled="true"
         android:title="@string/icon_map_explain"

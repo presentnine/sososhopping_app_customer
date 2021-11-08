@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -25,7 +26,11 @@ public class HomeFragment extends Fragment {
 
     private NavController navController;
     private CategoryAdapter categoryAdapter = new CategoryAdapter();
+    private HomeViewModel homeViewModel;
+
     HomeBinding binding;
+
+    //swtich State
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -34,7 +39,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.home, container, false);
+        binding = HomeBinding.inflate(inflater, container, false);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),5);
         binding.recyclerViewCategory.setLayoutManager(gridLayoutManager);
@@ -48,11 +53,13 @@ public class HomeFragment extends Fragment {
                     //검색조건 : 상품
                     binding.textViewShop.setTextColor(getResources().getColor(R.color.text_0));
                     binding.textViewItem.setTextColor(getResources().getColor(R.color.text_400));
+                    homeViewModel.setSearchType(isChecked);
                 }
                 else{
                     //검색조건 : 상점
                     binding.textViewItem.setTextColor(getResources().getColor(R.color.text_0));
                     binding.textViewShop.setTextColor(getResources().getColor(R.color.text_400));
+                    homeViewModel.setSearchType(!isChecked);
                 }
             }
         });
@@ -64,6 +71,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view,savedInstanceState);
 
+        homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
         navController = Navigation.findNavController(view);
 
         categoryAdapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
@@ -73,8 +81,31 @@ public class HomeFragment extends Fragment {
 
                 //해당 카테고리를 담아서 검색 navigate하기
                 Log.d("카테고리 검색", category);
+
+                //ViewModel 설정
+                homeViewModel.setCategory(category);
+                homeViewModel.setSearchContent(null);
+                navController.navigate(R.id.action_home2_to_shopListFragment);
             }
         });
+
+        binding.textFieldSearch.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                homeViewModel.setSearchContent(binding.editTextSearch.getText().toString());
+                navController.navigate(R.id.action_home2_to_shopListFragment);
+            }
+        });
+
+
+
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     public ArrayList<Integer> getCategoryIconId(){

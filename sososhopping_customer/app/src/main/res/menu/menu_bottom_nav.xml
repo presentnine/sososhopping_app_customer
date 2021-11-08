@@ -3,26 +3,24 @@
 
     <item android:id="@+id/menu_interest"
         android:icon="@drawable/ic_baseline_favorite_24"
-        android:enabled="true"
+        android:visible="false"
         android:title="@string/nav_interest"/>
+
+    <item android:id="@+id/home2"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="@string/nav_home"/>
 
     <item android:id="@+id/menu_chat"
         android:icon="@drawable/ic_baseline_chat_24"
-        android:enabled="true"
         android:title="@string/nav_chat"/>
-
-    <item android:id="@+id/menu_home"
-        android:icon="@drawable/ic_baseline_home_24"
-        android:enabled="true"
-        android:title="@string/nav_home"/>
 
     <item android:id="@+id/menu_cart"
         android:icon="@drawable/ic_baseline_shopping_cart_24"
-        android:enabled="true"
         android:title="@string/nav_cart"/>
 
     <item android:id="@+id/menu_myInfo"
         android:icon="@drawable/ic_baseline_person_24"
-        android:enabled="true"
         android:title="@string/nav_my"/>
+
+
 </menu>
