@@ -18,7 +18,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.sososhopping.customer.R;
-import com.sososhopping.customer.account.SignUpViewModel;
+import com.sososhopping.customer.account.viewmodel.SignUpViewModel;
 import com.sososhopping.customer.account.view.textValidate.NameWatcher;
 import com.sososhopping.customer.account.view.textValidate.NickNameWatcher;
 import com.sososhopping.customer.account.view.textValidate.PhoneWatcher;
@@ -28,7 +28,7 @@ import com.sososhopping.customer.databinding.AccountSignUpInfoBinding;
 public class SignUpInfoFragment extends Fragment {
 
     private NavController navController;
-    private SignUpViewModel mViewModel;
+    private SignUpViewModel signUpViewModel;
     private AccountSignUpInfoBinding binding;
 
     private Boolean dupChecked = false;
@@ -47,7 +47,6 @@ public class SignUpInfoFragment extends Fragment {
         binding.textViewPhoneCheck.setVisibility(View.INVISIBLE);
 
         //도로명 검색 API와 연결해야 함
-
         binding.textFieldSignUpName.getEditText().addTextChangedListener(new NameWatcher(binding.textFieldSignUpName, getResources().getString(R.string.signup_error_name)));
 
         binding.textFieldSignUpPhone.setCounterMaxLength(11);
@@ -65,34 +64,15 @@ public class SignUpInfoFragment extends Fragment {
         binding.textViewDupChecked.setVisibility(View.INVISIBLE);
         binding.textViewPhoneCheck.setVisibility(View.INVISIBLE);
 
-        binding.buttonDupCheck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(binding.editTextSignUpNickname.getError() != null){
-                    Toast.makeText(getContext(),"별명을 정확히 입력하여야 합니다",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                //중복확인 API 구현해야함
-                dupChecked = true;
-
-                if(!dupChecked){
-                    binding.textViewDupChecked.setText("사용이 불가능합니다.");
-                }
-                else{
-                    binding.textViewDupChecked.setText("사용 가능");
-                }
-                binding.textViewDupChecked.setVisibility(View.VISIBLE);
-            }
-        });
-
         binding.buttonPhoneCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (binding.textFieldSignUpPhone.getError() != null) {
-                    Toast.makeText(getContext(),"전화번호를 정확히 입력하여야 합니다", Toast.LENGTH_SHORT).show();
-                    return;
+
+                if(TextUtils.isEmpty(binding.editTextSignUpPhone.getText().toString())){
+                    binding.textFieldSignUpPhone.setError(getResources().getString(R.string.signup_error_phone));
                 }
+
+                if(binding.editTextSignUpPhone.getError() != null) return;
 
                 //형식상 번호인증 + 중복여부 확인
                 phoneChecked = true;
@@ -109,6 +89,31 @@ public class SignUpInfoFragment extends Fragment {
                 binding.textViewPhoneCheck.setVisibility(View.VISIBLE);
             }
         });
+
+        binding.buttonDupCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(TextUtils.isEmpty(binding.editTextSignUpNickname.getText().toString())){
+                    binding.textFieldSignUpNickname.setError(getResources().getString(R.string.signup_error_nickname));
+                }
+
+                if(binding.editTextSignUpNickname.getError() != null) return;
+
+
+                //중복확인 요청 API
+                signUpViewModel.requestEmailDupCheck(
+                        binding.editTextSignUpNickname.getText().toString(),
+                        SignUpInfoFragment.this::onNicknameDuplicated,
+                        SignUpInfoFragment.this::onNicknameNotDuplicated,
+                        SignUpInfoFragment.this::onNetworkError);
+
+                //for test
+                onNicknameNotDuplicated();
+            }
+        });
+
+
         return binding.getRoot();
     }
 
@@ -117,7 +122,7 @@ public class SignUpInfoFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         navController = Navigation.findNavController(view);
-        mViewModel = new ViewModelProvider(requireParentFragment()).get(SignUpViewModel.class);
+        signUpViewModel = new ViewModelProvider(requireParentFragment()).get(SignUpViewModel.class);
         // TODO: Use the ViewModel
 
         //다음화면으로
@@ -142,19 +147,26 @@ public class SignUpInfoFragment extends Fragment {
                     return;
                 }
 
-                mViewModel.setName(binding.editTextSignUpName.getText().toString());
-                mViewModel.setPhone(binding.editTextSignUpPhone.getText().toString());
-                mViewModel.setNickName(binding.editTextSignUpNickname.getText().toString());
-                mViewModel.setRoadAddress(binding.editTextSignUpRoadAddress.getText().toString());
-                mViewModel.setDetailAddress(binding.editTextSignUpDetailAddress.getText().toString());
+                signUpViewModel.setName(binding.editTextSignUpName.getText().toString());
+                signUpViewModel.setPhone(binding.editTextSignUpPhone.getText().toString());
+                signUpViewModel.setNickName(binding.editTextSignUpNickname.getText().toString());
+                signUpViewModel.setRoadAddress(binding.editTextSignUpRoadAddress.getText().toString());
+                signUpViewModel.setDetailAddress(binding.editTextSignUpDetailAddress.getText().toString());
 
                 //회원가입 절차 진행
-                Log.d("회원가입 요청 : ", mViewModel.printVal());
-
-                //다음 fragment로 이동
-                navController.navigate(R.id.action_signUpInfoFragment_to_signUpStartFragment);
+                Log.d("회원가입 요청 : ", signUpViewModel.printVal());
+                signUpViewModel.requestSignup(
+                        SignUpInfoFragment.this::onSignupSuccess,
+                        SignUpInfoFragment.this::onNetworkError
+                );
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     public void checkLayoutEmpty(){
@@ -173,6 +185,30 @@ public class SignUpInfoFragment extends Fragment {
         if(TextUtils.isEmpty(binding.editTextSignUpDetailAddress.getText().toString())){
             binding.textFieldSignUpDetailAddress.setError(getResources().getString(R.string.signup_error_detailAddress));
         }
+    }
+
+    private void onNicknameDuplicated() {
+        dupChecked = false;
+        signUpViewModel.getNicknameDupChecked().setValue(dupChecked);
+        binding.textViewDupChecked.setText("사용이 불가능합니다.");
+        binding.textViewDupChecked.setVisibility(View.VISIBLE);
+    }
+
+    private void onNicknameNotDuplicated(){
+        dupChecked = true;
+        signUpViewModel.getNicknameDupChecked().setValue(dupChecked);
+        binding.textViewDupChecked.setText("사용 가능");
+        binding.textViewDupChecked.setVisibility(View.VISIBLE);
+    }
+
+    private void onSignupSuccess() {
+        Toast.makeText(getContext(),getResources().getString(R.string.signup_success),Toast.LENGTH_LONG).show();
+        navController.navigate(R.id.action_signUpInfoFragment_to_signUpStartFragment);
+
+    }
+
+    private void onNetworkError() {
+        navController.navigate(R.id.action_global_networkErrorDialog);
     }
 
 }

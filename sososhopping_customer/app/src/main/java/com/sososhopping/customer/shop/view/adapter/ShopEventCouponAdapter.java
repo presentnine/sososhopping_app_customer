@@ -1,6 +1,5 @@
 package com.sososhopping.customer.shop.view.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sososhopping.customer.StaticMethod;
+import com.sososhopping.customer.common.DateFormatMethod;
 import com.sososhopping.customer.databinding.ItemShopCouponBinding;
 import com.sososhopping.customer.shop.model.CouponModel;
 
@@ -102,10 +101,10 @@ public class ShopEventCouponAdapter extends RecyclerView.Adapter<ShopEventCoupon
             }
             else{
                 if(couponModel.getStartDate() != null){
-                    binding.textViewStartDate.setText(StaticMethod.dateFormatDay(couponModel.getStartDate()));
+                    binding.textViewStartDate.setText(DateFormatMethod.dateFormatDay(couponModel.getStartDate()));
                 }
                 if(couponModel.getEndDate() != null){
-                    binding.textViewEndDate.setText(StaticMethod.dateFormatDay(couponModel.getEndDate()));
+                    binding.textViewEndDate.setText(DateFormatMethod.dateFormatDay(couponModel.getEndDate()));
                 }
             }
         }

@@ -16,14 +16,24 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
+import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.R;
+import com.sososhopping.customer.account.dto.LogInRequestDto;
+import com.sososhopping.customer.account.dto.LogInResponseDto;
+import com.sososhopping.customer.account.viewmodel.LogInViewModel;
+import com.sososhopping.customer.common.Constant;
+import com.sososhopping.customer.common.sharedpreferences.SharedPreferenceManager;
 import com.sososhopping.customer.databinding.AccountLogInDialogBinding;
+
+import java.util.function.BiConsumer;
 
 public class LogInDialogFragment extends DialogFragment {
 
     private NavController navController;
     private AccountLogInDialogBinding binding;
+    private LogInViewModel logInViewModel;
     private String email;
     private String password;
 
@@ -35,7 +45,7 @@ public class LogInDialogFragment extends DialogFragment {
     public void onResume() {
         super.onResume();
         int width = getResources().getDimensionPixelSize(R.dimen.popup_width);
-        int height = getResources().getDimensionPixelSize(R.dimen.popup_search_height);
+        int height = getResources().getDimensionPixelSize(R.dimen.popup_height);
         getDialog().getWindow().setLayout(width, height);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
@@ -44,6 +54,8 @@ public class LogInDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = AccountLogInDialogBinding.inflate(inflater, container, false);
+        logInViewModel = new LogInViewModel();
+
         binding.editTextLogInEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -112,7 +124,14 @@ public class LogInDialogFragment extends DialogFragment {
                 //로그인 프로세스
                 email = binding.editTextLogInEmail.getText().toString().trim();
                 password = binding.editTextLogInPassword.getText().toString().trim();
-                navController.navigate(R.id.action_logInDialogFragment_to_home2);
+
+                logInViewModel.requestLogin(email, password,
+                        LogInDialogFragment.this::onLoggedIn,
+                        LogInDialogFragment.this::onLoginFailed,
+                        LogInDialogFragment.this::onNetworkError);
+
+                //for test
+                onLoggedIn(new LogInRequestDto(email, password), new LogInResponseDto(email));
             }
         });
     }
@@ -124,5 +143,27 @@ public class LogInDialogFragment extends DialogFragment {
         if(TextUtils.isEmpty(binding.editTextLogInPassword.getText().toString())){
             binding.textFieldLogInPassword.setError(getResources().getString(R.string.login_password));
         }
+    }
+
+    private void onLoginFailed() {
+        Toast.makeText(getContext(),getResources().getString(R.string.login_failed),Toast.LENGTH_LONG).show();
+    }
+
+    private void onLoggedIn(LogInRequestDto requestDto, LogInResponseDto responseDto) {
+        String id = requestDto.getEmail();
+        String password = requestDto.getPassword();
+        String token = responseDto.getToken();
+        SharedPreferenceManager.setString(getContext(), Constant.SHARED_PREFERENCE_KEY_ID, id);
+        SharedPreferenceManager.setString(getContext(), Constant.SHARED_PREFERENCE_KEY_PASSWORD, password);
+        ((MainActivity) getActivity()).setLoginToken(token);
+
+        //로그인 처리 후 홈화면 이동
+        ((MainActivity) getActivity()).initLoginButton(true);
+        Toast.makeText(getContext(),getResources().getString(R.string.login_success),Toast.LENGTH_SHORT).show();
+        navController.navigate(R.id.action_logInDialogFragment_to_shop_graph);
+    }
+
+    private void onNetworkError() {
+        navController.navigate(R.id.action_global_networkErrorDialog);
     }
 }

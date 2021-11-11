@@ -24,6 +24,9 @@ public class SearchDialogFragment extends DialogFragment {
     private SearchShopDialogBinding binding;
     private HomeViewModel homeViewModel;
 
+    private boolean searchType =false;
+    private int navigateTo;
+
     public static SearchDialogFragment newInstance(){return newInstance();}
 
     @Override
@@ -39,6 +42,7 @@ public class SearchDialogFragment extends DialogFragment {
                              Bundle savedInstanceState){
 
         binding = SearchShopDialogBinding.inflate(inflater,container,false);
+        navigateTo = SearchDialogFragmentArgs.fromBundle(getArguments()).getNavigateFrom();
         return binding.getRoot();
     }
 
@@ -56,22 +60,31 @@ public class SearchDialogFragment extends DialogFragment {
                     //검색조건 : 상품
                     binding.textViewShop.setTextColor(getResources().getColor(R.color.text_0));
                     binding.textViewItem.setTextColor(getResources().getColor(R.color.text_400));
-                    homeViewModel.setSearchType(isChecked);
                 }
                 else{
                     //검색조건 : 상점
                     binding.textViewItem.setTextColor(getResources().getColor(R.color.text_0));
                     binding.textViewShop.setTextColor(getResources().getColor(R.color.text_400));
-                    homeViewModel.setSearchType(!isChecked);
                 }
+                searchType = isChecked;
             }
         });
 
         binding.textFieldSearch.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                homeViewModel.setSearchType(searchType);
                 homeViewModel.setSearchContent(binding.editTextSearch.getText().toString());
-                navController.navigate(R.id.action_searchDialogFragment_to_shopListFragment);
+
+                //리스트로 복귀
+                if(navigateTo == R.id.shopListFragment){
+                    navController.navigate(R.id.action_searchDialogFragment_to_shopListFragment);
+                    dismiss();
+                }
+                else if(navigateTo == R.id.shopMapFragment){
+                    navController.navigate(SearchDialogFragmentDirections.actionSearchDialogFragmentToShopMapFragment(R.id.searchDialogFragment));
+                    dismiss();
+                }
             }
         });
     }

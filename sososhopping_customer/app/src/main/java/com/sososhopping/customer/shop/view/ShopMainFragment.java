@@ -1,5 +1,7 @@
 package com.sososhopping.customer.shop.view;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,16 +60,14 @@ public class ShopMainFragment extends Fragment {
                              @Nullable Bundle savedInstanceState){
         binding = DataBindingUtil.inflate(inflater, R.layout.shop_main,container,false);
 
+        //상단 정보 설정
         shopInfoShort = getArguments().getParcelable("shopInfo");
+        setShopInfo(shopInfoShort);
 
         //ViewModel Setting -> Main에서 유지되게
         shopInfoViewModel = new ViewModelProvider(this).get(ShopInfoViewModel.class);
         shopInfoViewModel.setShopId(shopInfoShort.getShopId());
         shopInfoViewModel.setShopName(shopInfoShort.getShopName());
-
-        //상단 정보 설정
-        setShopInfo(shopInfoShort);
-        setAppBar(shopInfoShort.getShopName());
 
 
         return binding.getRoot();
@@ -74,10 +75,8 @@ public class ShopMainFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
         //navigation setting
-        navController = Navigation.findNavController(view);
-
+        navController = Navigation.findNavController(binding.getRoot());
         binding.taplayoutShopMain.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -100,7 +99,6 @@ public class ShopMainFragment extends Fragment {
                     }
                 }
             }
-
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
             }
@@ -112,6 +110,19 @@ public class ShopMainFragment extends Fragment {
 
         super.onViewCreated(view, savedInstanceState);
     }
+
+    @Override
+    public void onResume() {
+        MainActivity activity = (MainActivity) getActivity();
+
+        //상단바 설정
+        setAppBar(activity, shopInfoShort.getShopName());
+
+        //하단바 숨기기
+        activity.hideBottomNavigation();
+        super.onResume();
+    }
+
 
     public void setShopInfo(ShopInfoShort shopInfoShort){
         binding.textViewShopName.setText(shopInfoShort.getShopName());
@@ -140,8 +151,7 @@ public class ShopMainFragment extends Fragment {
                 .into(binding.imageViewStore);
     }
 
-    public void setAppBar(String shopName){
-        MainActivity activity = (MainActivity) getActivity();
+    public void setAppBar(MainActivity activity, String shopName){
         activity.getBinding().topAppBar.setTitle("매장 정보");
         activity.getBinding().topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -150,6 +160,12 @@ public class ShopMainFragment extends Fragment {
                 switch (item.getItemId()){
 
                     case R.id.menu_call:{
+                        if(shopInfoShort.getPhone() == null){
+                            Toast.makeText(getContext(),"등록된 전화번호가 없습니다",Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+shopInfoShort.getPhone())));
+                        }
                         break;
                     }
                     case R.id.menu_chat:{
@@ -166,6 +182,14 @@ public class ShopMainFragment extends Fragment {
             }
         });
         activity.invalidateOptionsMenu();
+    }
+
+    public void changeFavoriteState(boolean isFavorite){
+        if(isFavorite){
+            binding.layoutFavorite.setVisibility(View.VISIBLE);
+        }else{
+            binding.layoutFavorite.setVisibility(View.GONE);
+        }
     }
 
     @Override

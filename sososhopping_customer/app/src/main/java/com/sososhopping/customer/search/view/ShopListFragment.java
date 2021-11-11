@@ -1,5 +1,6 @@
 package com.sososhopping.customer.search.view;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,8 @@ import com.sososhopping.customer.search.ShopInfoShort;
 import com.sososhopping.customer.search.ShopViewModel;
 import com.sososhopping.customer.search.view.adapter.ShopListAdapter;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 public class ShopListFragment extends Fragment {
@@ -45,6 +48,7 @@ public class ShopListFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         super.onCreateOptionsMenu(menu,inflater);
@@ -55,8 +59,15 @@ public class ShopListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState){
+
+
         binding = SearchShopListBinding.inflate(inflater, container, false);
 
+        //데이터 받아오기
+        shopViewModel = new ViewModelProvider(this).get(ShopViewModel.class);
+        homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
+
+        //뷰 선언
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         binding.recyclerViewShopList.setLayoutManager(layoutManager);
 
@@ -64,54 +75,21 @@ public class ShopListFragment extends Fragment {
         ArrayList<ShopInfoShort> dummyShops = new ArrayList<>();
         dummyShops.add(new ShopInfoShort(1, "가상의 상점",
                 "가상의 상점 입니다 \n 이 상점은 가상의 상점입니다. 줄바꿈이 잘 되나 확인해보겠습니다.",
-                4.5, true, true, 500, null, true));
+                "01012345678",4.5, true, true, 500, null, true));
         dummyShops.add(new ShopInfoShort(2, "가상의 상점2",
                 "가상의 상점 입니다 \n 이 상점은 가상의 상점2입니다. 줄바꿈이 잘 되나 확인해보겠습니다.",
-                1.0, false, true, 1000, null, false));
+                null,1.0, false, true, 1000, null, false));
         shopListAdapter.setShopLists(dummyShops);
         binding.recyclerViewShopList.setAdapter(shopListAdapter);
 
         return binding.getRoot();
     }
 
-    public void setAppBar(HomeViewModel homeViewModel){
-        MainActivity activity = (MainActivity) getActivity();
-        activity.getBinding().topAppBar.setTitle(homeViewModel.getSearchContent().getValue());
-        activity.getBinding().topAppBar.setTitleCentered(false);
-        activity.getBinding().topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-
-                switch (item.getItemId()){
-                    case R.id.menu_search :{
-                        //검색 dialog 띄우기
-                        navController.navigate(R.id.action_shopListFragment_to_searchDialogFragment);
-                        break;
-                    }
-                    case R.id.menu_map:{
-                        //지도로 navigate
-                        break;
-                    }
-                }
-
-                return false;
-            }
-        });
-        activity.invalidateOptionsMenu();
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        //데이터 받아오기
-        shopViewModel = new ViewModelProvider(this).get(ShopViewModel.class);
-        homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
+        //컨트롤러
         navController = Navigation.findNavController(view);
-
-        //앱바 설정
-        setAppBar(homeViewModel);
-
         shopListAdapter.setOnItemClickListener(new ShopListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
@@ -130,9 +108,46 @@ public class ShopListFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        ((MainActivity)getActivity()).showTopAppBar();
+        setAppBar(homeViewModel);
+
+        ((MainActivity)getActivity()).showBottomNavigation();
+        super.onResume();
+    }
+
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    public void setAppBar(HomeViewModel homeViewModel){
+        MainActivity activity = (MainActivity) getActivity();
+        activity.getBinding().topAppBar.setTitle(homeViewModel.getSearchContent().getValue());
+        activity.getBinding().topAppBar.setTitleCentered(false);
+        activity.getBinding().topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                switch (item.getItemId()){
+                    case R.id.menu_search :{
+                        //검색 dialog 띄우기
+                        navController.navigate(ShopListFragmentDirections.actionShopListFragmentToSearchDialogFragment(R.id.shopListFragment));
+                        break;
+                    }
+
+                    case R.id.menu_map:{
+                        //지도로 navigate
+                        navController.navigate(ShopListFragmentDirections.actionShopListFragmentToShopMapFragment(R.id.shopListFragment));
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
+        activity.invalidateOptionsMenu();
     }
 
 }

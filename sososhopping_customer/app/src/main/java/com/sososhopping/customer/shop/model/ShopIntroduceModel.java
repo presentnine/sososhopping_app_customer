@@ -1,8 +1,8 @@
 package com.sososhopping.customer.shop.model;
 
 
-import com.sososhopping.customer.shop.model.common.BusinessDays;
-import com.sososhopping.customer.shop.model.common.Location;
+import com.sososhopping.customer.shop.model.typeclass.BusinessDays;
+import com.sososhopping.customer.shop.model.typeclass.Location;
 
 import java.util.ArrayList;
 
@@ -23,6 +23,7 @@ public class ShopIntroduceModel {
     boolean localCurrencyStatus;
     boolean pickupStatus;
     boolean deliveryStatus;
+    boolean favoriteStatus;
     Integer minimumOrderPrice;
     Double saveRate;
     String streetAddress;

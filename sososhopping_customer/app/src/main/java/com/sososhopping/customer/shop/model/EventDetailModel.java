@@ -2,6 +2,8 @@ package com.sososhopping.customer.shop.model;
 
 import com.sososhopping.customer.shop.model.enumType.WritingType;
 
+import java.util.ArrayList;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,5 +20,5 @@ public class EventDetailModel {
     WritingType writingType;
     String date;
     //추후 여러장 가능하게
-    String imgUrl;
+    ArrayList<String> imgUrl = new ArrayList<>();
 }

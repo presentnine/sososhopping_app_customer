@@ -14,9 +14,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
+import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.R;
-import com.sososhopping.customer.account.SignUpViewModel;
+import com.sososhopping.customer.account.viewmodel.SignUpViewModel;
 import com.sososhopping.customer.account.view.textValidate.EmailWatcher;
 import com.sososhopping.customer.account.view.textValidate.PasswordDupWatcher;
 import com.sososhopping.customer.account.view.textValidate.PasswordWatcher;
@@ -25,7 +27,7 @@ import com.sososhopping.customer.databinding.AccountSignUpEmailBinding;
 public class SignUpEmailFragment extends Fragment {
 
     private NavController navController;
-    private SignUpViewModel mViewModel;
+    private SignUpViewModel signUpViewModel;
 
     private AccountSignUpEmailBinding binding;
     private Boolean dupChecked = false;
@@ -51,18 +53,23 @@ public class SignUpEmailFragment extends Fragment {
         binding.buttonDupCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(binding.textFieldSignUpEmail.getError() != null){
-                    Toast.makeText(getContext(),"이메일을 정확히 입력하셔야 합니다",Toast.LENGTH_SHORT).show();
-                    return;
+
+                if(TextUtils.isEmpty(binding.textFieldSignUpEmail.getEditText().getText().toString())){
+                    binding.textFieldSignUpEmail.setError(getResources().getString(R.string.signup_error_email));
                 }
 
-                //중복확인 코드 구현해야함
-                dupChecked = true;
+                //에러시 종료
+                if(binding.textFieldSignUpEmail.getError() != null) return;
 
-                if(!dupChecked){
-                    binding.textViewDupChecked.setText("사용이 불가능합니다.");
-                }
-                binding.textViewDupChecked.setVisibility(View.VISIBLE);
+                //중복확인 요청
+                signUpViewModel.requestEmailDupCheck(
+                        binding.textFieldSignUpEmail.getEditText().getText().toString(),
+                        SignUpEmailFragment.this::onEmailDuplicated,
+                        SignUpEmailFragment.this::onEmailNotDuplicated,
+                        SignUpEmailFragment.this::onNetworkError);
+
+                //for test
+                onEmailNotDuplicated();
             }
         });
 
@@ -73,9 +80,8 @@ public class SignUpEmailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mViewModel = new ViewModelProvider(requireParentFragment()).get(SignUpViewModel.class);
+        signUpViewModel = new ViewModelProvider(requireParentFragment()).get(SignUpViewModel.class);
         navController = Navigation.findNavController(view);
-        // TODO: Use the ViewModel
 
         //다음 화면으로
         binding.buttonNextSignUp.setOnClickListener(new View.OnClickListener() {
@@ -96,13 +102,19 @@ public class SignUpEmailFragment extends Fragment {
                     return;
                 }
 
-                mViewModel.setEmail(binding.textFieldSignUpEmail.getEditText().getText().toString());
-                mViewModel.setPassword(binding.textFieldSignUpPassword.getEditText().getText().toString());
+                signUpViewModel.setEmail(binding.textFieldSignUpEmail.getEditText().getText().toString());
+                signUpViewModel.setPassword(binding.textFieldSignUpPassword.getEditText().getText().toString());
 
                 //다음 fragment로 이동
                 navController.navigate(R.id.action_signUpIdFragment_to_signUpInfoFragment);
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     public void checkLayoutEmpty(){
@@ -115,5 +127,23 @@ public class SignUpEmailFragment extends Fragment {
         if(TextUtils.isEmpty(binding.textFieldSignUpPasswordDup.getEditText().getText().toString())){
             binding.textFieldSignUpPasswordDup.setError(getResources().getString(R.string.signup_error_nickname));
         }
+    }
+
+    private void onEmailDuplicated() {
+        dupChecked = false;
+        signUpViewModel.getEmailDupChecked().setValue(dupChecked);
+        binding.textViewDupChecked.setText("사용이 불가능합니다.");
+        binding.textViewDupChecked.setVisibility(View.VISIBLE);
+    }
+
+    private void onEmailNotDuplicated(){
+        dupChecked = true;
+        signUpViewModel.getEmailDupChecked().setValue(dupChecked);
+        binding.textViewDupChecked.setText("사용 가능");
+        binding.textViewDupChecked.setVisibility(View.VISIBLE);
+    }
+
+    private void onNetworkError() {
+        navController.navigate(R.id.action_global_networkErrorDialog);
     }
 }

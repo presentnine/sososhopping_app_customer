@@ -1,10 +1,10 @@
-package com.sososhopping.customer;
+package com.sososhopping.customer.common;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class StaticMethod {
+public class DateFormatMethod {
     public static String dateFormatMin(String exdate){
         try {
             Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS").parse(exdate);

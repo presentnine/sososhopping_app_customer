@@ -1,4 +1,4 @@
-package com.sososhopping.customer.shop.model.common;
+package com.sososhopping.customer.shop.model.typeclass;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

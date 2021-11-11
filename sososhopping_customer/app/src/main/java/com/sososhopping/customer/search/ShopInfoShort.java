@@ -16,6 +16,7 @@ public class ShopInfoShort implements Parcelable {
     private int shopId;
     private String shopName;
     private String shopDescription;
+    private String phone;
     private double rating;
     private boolean localPay;
     private boolean delivery;
@@ -27,13 +28,13 @@ public class ShopInfoShort implements Parcelable {
         shopId = in.readInt();
         shopName = in.readString();
         shopDescription = in.readString();
+        phone = in.readString();
         rating = in.readDouble();
         localPay = in.readByte() != 0;
         delivery = in.readByte() != 0;
         distance = in.readInt();
         shopImageURL = in.readString();
-        byte tmpIsFavorite = in.readByte();
-        favorite = tmpIsFavorite == 0 ? null : tmpIsFavorite == 1;
+        favorite = in.readByte() != 0;
     }
 
     public static final Creator<ShopInfoShort> CREATOR = new Creator<ShopInfoShort>() {
@@ -41,6 +42,7 @@ public class ShopInfoShort implements Parcelable {
         public ShopInfoShort createFromParcel(Parcel in) {
             return new ShopInfoShort(in);
         }
+
         @Override
         public ShopInfoShort[] newArray(int size) {
             return new ShopInfoShort[size];
@@ -57,6 +59,7 @@ public class ShopInfoShort implements Parcelable {
         dest.writeInt(shopId);
         dest.writeString(shopName);
         dest.writeString(shopDescription);
+        dest.writeString(phone);
         dest.writeDouble(rating);
         dest.writeByte((byte) (localPay ? 1 : 0));
         dest.writeByte((byte) (delivery ? 1 : 0));

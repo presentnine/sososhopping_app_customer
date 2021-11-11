@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 public class CustomDestinationChangedListener implements NavController.OnDestinationChangedListener {
 
     static final int[] noNavigationList = {R.id.signUpStartFragment, R.id.signUpIdFragment, R.id.signUpInfoFragment,
-            R.id.logInDialogFragment, R.id.findEmailFragment, R.id.findPasswordFragment, R.id.shopMainFragment, R.id.shopEventDetailFragment};
+            R.id.logInDialogFragment, R.id.findEmailFragment, R.id.findPasswordFragment, R.id.shopMainFragment, R.id.shopEventDetailFragment, R.id.shopMapFragment};
 
     static final int[] noAppBarList = {R.id.signUpStartFragment, R.id.signUpIdFragment, R.id.signUpInfoFragment,
             R.id.logInDialogFragment, R.id.findEmailFragment, R.id.findPasswordFragment, R.id.home2};
@@ -49,7 +49,7 @@ public class CustomDestinationChangedListener implements NavController.OnDestina
             binding.appBarLayout.setVisibility(View.VISIBLE);
         }
 
-        if(destination.getId() == R.id.home2){
+        if(destination.getId() != R.id.home2){
             activity.getViewModelStore().clear();
         }else{
             binding.bottomNavigation.getMenu().getItem(0).setChecked(true);

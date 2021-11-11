@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.sososhopping.customer.R;
-import com.sososhopping.customer.StaticMethod;
+import com.sososhopping.customer.common.DateFormatMethod;
 import com.sososhopping.customer.databinding.ItemShopBoardBinding;
 import com.sososhopping.customer.shop.model.EventItemModel;
 
@@ -86,8 +86,14 @@ public class ShopEventBoardAdapter extends RecyclerView.Adapter<ShopEventBoardAd
         public void bindItem(EventItemModel eventItemModel) throws ParseException {
             binding.textViewEventTitle.setText(eventItemModel.getTitle());
             binding.textViewEventOrNews.setText(eventItemModel.getWritingType().getValue());
-            binding.textViewEventWriteDate.setText(StaticMethod.dateFormatMin(eventItemModel.getDate()));
-            binding.textViewEventDescription.setText(eventItemModel.getDescription());
+            binding.textViewEventWriteDate.setText(DateFormatMethod.dateFormatMin(eventItemModel.getDate()));
+            if(eventItemModel.getDescription().length() >= 50){
+                binding.textViewEventDescription.setText(eventItemModel.getDescription().substring(0,49) + "...");
+            }
+            else{
+                binding.textViewEventDescription.setText(eventItemModel.getDescription());
+            }
+
 
             //이미지
             Glide.with(itemView)

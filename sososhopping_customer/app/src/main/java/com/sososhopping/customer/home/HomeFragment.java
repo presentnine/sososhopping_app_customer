@@ -9,20 +9,20 @@ import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.HomeBinding;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment{
 
     private NavController navController;
     private CategoryAdapter categoryAdapter = new CategoryAdapter();
@@ -30,10 +30,20 @@ public class HomeFragment extends Fragment {
 
     HomeBinding binding;
 
-    //swtich State
-
     public static HomeFragment newInstance() {
         return new HomeFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        ((MainActivity)getActivity()).hideTopAppBar();
+        ((MainActivity)getActivity()).showBottomNavigation();
+        super.onResume();
     }
 
     @Override
@@ -79,13 +89,18 @@ public class HomeFragment extends Fragment {
             public void onItemClick(View v, int pos) {
                 String category = categoryAdapter.getCategoryName(pos);
 
-                //해당 카테고리를 담아서 검색 navigate하기
-                Log.d("카테고리 검색", category);
+                if(category.equals("지도")){
+                    navController.navigate(HomeFragmentDirections.actionHome2ToShopMapFragment(R.id.home2));
+                }
+                else{
+                    //해당 카테고리를 담아서 검색 navigate하기
+                    Log.d("카테고리 검색", category);
+                    //ViewModel 설정
+                    homeViewModel.setCategory(category);
+                    homeViewModel.setSearchContent(null);
+                    navController.navigate(R.id.action_home2_to_shopListFragment);
+                }
 
-                //ViewModel 설정
-                homeViewModel.setCategory(category);
-                homeViewModel.setSearchContent(null);
-                navController.navigate(R.id.action_home2_to_shopListFragment);
             }
         });
 
@@ -96,10 +111,6 @@ public class HomeFragment extends Fragment {
                 navController.navigate(R.id.action_home2_to_shopListFragment);
             }
         });
-
-
-
-
     }
 
     @Override
@@ -127,5 +138,4 @@ public class HomeFragment extends Fragment {
         iconDetail.add(getResources().getString(R.string.icon_map_explain));
         return iconDetail;
     }
-
 }

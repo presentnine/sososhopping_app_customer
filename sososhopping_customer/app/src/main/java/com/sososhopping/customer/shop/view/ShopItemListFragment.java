@@ -48,8 +48,9 @@ public class ShopItemListFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        navController = Navigation.findNavController(view);
+        super.onViewCreated(view, savedInstanceState);
 
+        navController = Navigation.findNavController(view);
         shopItemAdapter.setOnItemClickListener(new ShopItemAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
@@ -62,7 +63,7 @@ public class ShopItemListFragment extends Fragment {
                 //장바구니 담기 API
             }
         });
-        super.onViewCreated(view, savedInstanceState);
+
     }
 
     @Override

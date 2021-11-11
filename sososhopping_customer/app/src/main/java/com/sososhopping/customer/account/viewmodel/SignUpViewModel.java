@@ -1,8 +1,17 @@
-package com.sososhopping.customer.account;
+package com.sososhopping.customer.account.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.sososhopping.customer.account.dto.EmailDupCheckRequestDto;
+import com.sososhopping.customer.account.dto.NicknameDupCheckRequestDto;
+import com.sososhopping.customer.account.dto.SignUpRequestDto;
+import com.sososhopping.customer.account.repository.SignUpRepository;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter @Getter
 public class SignUpViewModel extends ViewModel {
     private MutableLiveData<String> email = new MutableLiveData<>();
     private MutableLiveData<String> password = new MutableLiveData<>();
@@ -11,6 +20,13 @@ public class SignUpViewModel extends ViewModel {
     private MutableLiveData<String> nickName = new MutableLiveData<>();
     private MutableLiveData<String> roadAddress = new MutableLiveData<>();
     private MutableLiveData<String> detailAddress = new MutableLiveData<>();
+
+    //이메일 중복 확인
+    private final MutableLiveData<Boolean> emailDupChecked = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> nicknameDupChecked = new MutableLiveData<>(false);
+
+    //Repository
+    private final SignUpRepository signUpRepository = SignUpRepository.getInstance();
 
     public MutableLiveData<String> getEmail() {
         return email;
@@ -75,5 +91,41 @@ public class SignUpViewModel extends ViewModel {
                 nickName.getValue() + " " +
                 roadAddress.getValue() + " " +
                 detailAddress.getValue();
+    }
+
+    public void requestEmailDupCheck(String email,
+                                     Runnable onChecked,
+                                     Runnable onDuplicated,
+                                     Runnable onError) {
+        Runnable onNotDuplicated = () -> {
+            onChecked.run();
+            emailDupChecked.setValue(true);
+        };
+        signUpRepository.requestEmailDuplicationCheck(this.toEmailDupCheckRequestDto(email), onNotDuplicated, onDuplicated, onError);
+    }
+
+    public void requestSignup(Runnable onSuccess,
+                              Runnable onError) {
+        signUpRepository.requestSignup(this.toSignupRequestDto(), onSuccess, onError);
+    }
+
+    public EmailDupCheckRequestDto toEmailDupCheckRequestDto(String email) {
+        return new EmailDupCheckRequestDto(email);
+    }
+
+    public NicknameDupCheckRequestDto toNicknameDupCheckRequestDto(String nickname){
+        return new NicknameDupCheckRequestDto(nickname);
+    }
+
+    public SignUpRequestDto toSignupRequestDto() {
+        return new SignUpRequestDto(
+                this.email.getValue(),
+                this.password.getValue(),
+                this.name.getValue(),
+                this.phone.getValue(),
+                this.nickName.getValue(),
+                this.roadAddress.getValue(),
+                this.detailAddress.getValue()
+        );
     }
 }

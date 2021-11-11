@@ -10,6 +10,5 @@ import lombok.Setter;
 
 @Getter @Setter
 public class ShopViewModel extends ViewModel {
-    private int shopId;
-    private MutableLiveData<ArrayList<ShopInfoShort>> recyclerViewList = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<ShopInfoShort>> shopList = new MutableLiveData<>();
 }

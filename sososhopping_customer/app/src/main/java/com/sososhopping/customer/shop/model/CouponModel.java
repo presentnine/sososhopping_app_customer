@@ -1,6 +1,5 @@
 package com.sososhopping.customer.shop.model;
 
-import com.sososhopping.customer.StaticMethod;
 import com.sososhopping.customer.shop.model.enumType.CouponType;
 
 import lombok.AllArgsConstructor;

@@ -3,8 +3,12 @@ plugins {
     id 'androidx.navigation.safeargs'
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def kakao_api_key = properties.getProperty('kakao_api_key')
+
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     defaultConfig {
@@ -14,7 +18,14 @@ android {
         versionCode 1
         versionName "1.0"
 
+        multiDexEnabled true
+        
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // 키 - 값
+        manifestPlaceholders = [KAKAO_API_KEY: kakao_api_key]
+
+
     }
 
     buildTypes {
@@ -23,6 +34,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -48,7 +60,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'androidx.annotation:annotation:1.1.0'
 
-    def nav_version = "2.3.5"
+    def nav_version = "2.4.0-beta01"
     // Java language implementation
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
@@ -57,6 +69,7 @@ dependencies {
     // Testing Navigation
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
+
     //Glide for Image
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
@@ -64,4 +77,15 @@ dependencies {
     //Lombok
     compileOnly 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    // Retrofit2 dependencies
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    //DaumMap
+    implementation files('libs/libDaumMapAndroid.jar')
+
+
+
+
 }

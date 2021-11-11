@@ -1,29 +1,27 @@
 package com.sososhopping.customer.shop.view;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.ShopEventBinding;
+import com.sososhopping.customer.shop.model.CouponModel;
+import com.sososhopping.customer.shop.model.EventItemModel;
+import com.sososhopping.customer.shop.model.enumType.CouponType;
+import com.sososhopping.customer.shop.model.enumType.WritingType;
 import com.sososhopping.customer.shop.view.adapter.ShopEventBoardAdapter;
 import com.sososhopping.customer.shop.view.adapter.ShopEventCouponAdapter;
-import com.sososhopping.customer.shop.model.enumType.CouponType;
-import com.sososhopping.customer.shop.model.EventItemModel;
-import com.sososhopping.customer.shop.model.CouponModel;
-import com.sososhopping.customer.shop.model.enumType.WritingType;
 import com.sososhopping.customer.shop.viewmodel.ShopInfoViewModel;
 
 import java.util.ArrayList;
@@ -57,11 +55,11 @@ public class ShopEventFragment extends Fragment {
 
         //Adapter 연결
         ArrayList<EventItemModel> dummyboardItems = new ArrayList<>();
-        dummyboardItems.add(new EventItemModel(1,"샘플 제목1입니다","샘플 작성글 설명입니다. \n 오늘의 이벤트에 대한 소식입니다. \n 최대 50글자 까지 보여줍니다.", "2021-11-03T23:44:51.316992", WritingType.EVENT, null));
+        dummyboardItems.add(new EventItemModel(1,"샘플 제목1입니다","샘플 작성글 설명입니다. \n 오늘의 이벤트에 대한 소식입니다. \n 최대 50글자 까지 보여줍니다. \n 최대 50글자 까지 보여줍니다.", "2021-11-03T23:44:51.316992", WritingType.EVENT, null));
         dummyboardItems.add(new EventItemModel(1,"샘플 제목2입니다","샘플 작성글 설명입니다. \n 오늘의 이벤트에 대한 소식입니다. \n 최대 50글자 까지 보여줍니다.", "2021-11-04T12:44:51.316992", WritingType.PROMOTION, null));
         dummyboardItems.add(new EventItemModel(1,"샘플 제목3입니다","샘플 작성글 설명입니다. \n 오늘의 이벤트에 대한 소식입니다. \n 최대 50글자 까지 보여줍니다.", "2021-11-05T13:14:51.316992", WritingType.PROMOTION, null));
-        dummyboardItems.add(new EventItemModel(1,"샘플 제목4입니다","샘플 작성글 설명입니다. \n 오늘의 이벤트에 대한 소식입니다. \n 최대 50글자 까지 보여줍니다.", "2021-11-06T11:11:51.316992", WritingType.EVENT, null));
-        dummyboardItems.add(new EventItemModel(1,"샘플 제목5입니다","샘플 작성글 설명입니다. \n 오늘의 이벤트에 대한 소식입니다. \n 최대 50글자 까지 보여줍니다.", "2021-11-07T07:12:51.316992", WritingType.PROMOTION, null));
+        dummyboardItems.add(new EventItemModel(1,"샘플 제목4입니다","샘플 작성글 설명입니다. \n 오늘의 이벤트에 대한 소식입니다. \n 최대 50글자 까지 보여줍니다. \n 최대 50글자 까지 보여줍니다.", "2021-11-06T11:11:51.316992", WritingType.EVENT, null));
+        dummyboardItems.add(new EventItemModel(1,"샘플 제목5입니다","샘플 작성글 설명입니다. \n 오늘의 이벤트에 대한 소식입니다. \n 최대 50글자 까지 보여줍니다. \n 최대 50글자 까지 보여줍니다.", "2021-11-07T07:12:51.316992", WritingType.PROMOTION, null));
         shopEventBoardAdapter.setShopBoardItemModels(dummyboardItems);
 
         binding.recyclerViewCoupon.setAdapter(shopEventCouponAdapter);
@@ -119,12 +117,12 @@ public class ShopEventFragment extends Fragment {
         shopEventBoardAdapter.setOnItemClickListener(new ShopEventBoardAdapter.OnItemClickListenerBoard() {
             @Override
             public void onItemClick(View v, int pos) {
+
                 //게시판 상세정보로 이동
-                Bundle bundle = new Bundle();
-                bundle.putInt("shopId",shopInfoViewModel.getShopId().getValue());
-                bundle.putInt("writeId", pos);
-                bundle.putString("storeName", shopInfoViewModel.getShopName().getValue());
-                NavHostFragment.findNavController(getParentFragment().getParentFragment()).navigate(R.id.action_shopMainFragment_to_shopEventDetailFragment,bundle);
+                NavHostFragment.findNavController(getParentFragment().getParentFragment())
+                        .navigate(ShopMainFragmentDirections.actionShopMainFragmentToShopEventDetailFragment(
+                                shopInfoViewModel.getShopId().getValue()
+                                , pos, shopInfoViewModel.getShopName().getValue()));
             }
         });
     }

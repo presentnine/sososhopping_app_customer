@@ -1,5 +1,7 @@
 package com.sososhopping.customer.shop.view;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +12,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
+import com.sososhopping.customer.R;
+import com.sososhopping.customer.common.CarouselMethod;
 import com.sososhopping.customer.databinding.ShopIntroduceBinding;
 import com.sososhopping.customer.shop.model.ShopIntroduceModel;
-import com.sososhopping.customer.shop.model.common.BusinessDays;
-import com.sososhopping.customer.shop.model.common.Location;
+import com.sososhopping.customer.shop.model.typeclass.BusinessDays;
+import com.sososhopping.customer.shop.model.typeclass.Location;
 import com.sososhopping.customer.shop.viewmodel.ShopIntroduceViewModel;
 
 import java.util.ArrayList;
@@ -31,32 +36,79 @@ public class ShopIntroduceFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = ShopIntroduceBinding.inflate(inflater, container, false);
-        shopIntroduceViewModel = new ShopIntroduceViewModel();
 
         //더미
+        shopIntroduceViewModel = new ShopIntroduceViewModel();
         dummyItem();
         binding.textViewShopLocation.setText(shopIntroduceViewModel.getAddress(shopIntroduceModel));
         binding.textViewShopOpen.setText(shopIntroduceViewModel.getBusinessDay(shopIntroduceModel));
         binding.textViewShopOpenDetail.setText(shopIntroduceModel.getExtraBusinessDay());
 
+        //제한
         if(shopIntroduceModel.getMinimumOrderPrice() != null){
             binding.textViewShopRestrict.setText(shopIntroduceViewModel.getMinimum(shopIntroduceModel));
         }else{
             binding.textViewShopRestrict.setVisibility(View.GONE);
         }
+
+        //설명
         binding.textViewShopIntroduce.setText(shopIntroduceModel.getDescription());
 
+        //포인트
         if(shopIntroduceModel.getSaveRate() != null){
             binding.textViewShopPoint.setText(shopIntroduceViewModel.getSaveRate(shopIntroduceModel));
         }
+
+        //번호
+        if(shopIntroduceModel.getPhone() != null){
+            binding.textViewShopPhone.setText(shopIntroduceModel.getPhone());
+        }
+
+        //이미지
+        CarouselMethod carouselMethod = new CarouselMethod(binding.layoutIndicators, binding.viewpagerIntroduce, getContext());
+        carouselMethod.setCarousel(shopIntroduceModel.getStoreImages());
 
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        navController = Navigation.findNavController(view);
+
         super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
+
+        binding.buttonShopMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(getParentFragment().getParentFragment())
+                        .navigate(ShopMainFragmentDirections.actionShopMainFragmentToShopMapFragment(R.id.shopMainFragment));
+            }
+        });
+
+        binding.buttonShopCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(shopIntroduceModel.getPhone() != null){
+                    startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+shopIntroduceModel.getPhone())));
+                }
+            }
+        });
+
+        binding.buttonShopChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        binding.buttonShopFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //관심가게 여부 변경 api
+                shopIntroduceModel.setFavoriteStatus(!shopIntroduceModel.isFavoriteStatus());
+                ((ShopMainFragment) getParentFragment().getParentFragment()).changeFavoriteState(shopIntroduceModel.isFavoriteStatus());
+            }
+        });
     }
 
     public void dummyItem(){
@@ -72,6 +124,7 @@ public class ShopIntroduceFragment extends Fragment {
         shopIntroduceModel.setLocalCurrencyStatus(true);
         shopIntroduceModel.setPickupStatus(true);
         shopIntroduceModel.setDeliveryStatus(true);
+        shopIntroduceModel.setFavoriteStatus(true);
         shopIntroduceModel.setMinimumOrderPrice(20000);
         shopIntroduceModel.setSaveRate(0.1);
         shopIntroduceModel.setStreetAddress("서울시 용산구 녹사평대로 40다길 19");
@@ -91,10 +144,8 @@ public class ShopIntroduceFragment extends Fragment {
 
         ArrayList<String> storeImages = new ArrayList<>();
         shopIntroduceModel.setStoreImages(storeImages);
-
         shopIntroduceModel.setLocation(new Location(34.12345,45.12345));
 
         shopIntroduceModel.setScore(4.5f);
-
     }
 }

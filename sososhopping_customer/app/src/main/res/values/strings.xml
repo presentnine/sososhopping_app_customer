@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">sososhopping_customer</string>
+    <string name="app_name_kor">소 소 한 장 보 기</string>
+    <string name="app_description">간편하게 살펴보는 내 주변 상점</string>
 
     <!-- 회원가입 -->
     <string name="signup_email">사용하실 이메일을 입력해주세요</string>
@@ -20,10 +22,13 @@
     <string name="signup_error_roadAddress">도로명 주소를 입력해주세요</string>
     <string name="signup_error_detailAddress">상세 주소를 입력해주세요</string>
     <string name="signup_error_process">모든 절차를 통과하셔야 합니다</string>
+    <string name="signup_success">회원가입이 완료되었습니다!\n로그인을 시도해주세요</string>
 
     <!-- Strings related to login -->
     <string name="login_email">이메일을 입력해주세요</string>
     <string name="login_password">비밀번호를 입력해주세요</string>
+    <string name="login_success">비밀번호를 입력해주세요</string>
+    <string name="login_failed">비밀번호를 입력해주세요</string>
 
     <string name="find_email">가입하신 이메일은 다음과 같습니다</string>
     <string name="find_infoOk">가입 인증 완료! 비밀번호를 변경해주세요</string>
@@ -44,6 +49,11 @@
     <string name="event_boardList">소식</string>
     <string name="news">소식</string>
     <string name="event">이벤트</string>
+
+    <!--네트워크 에러-->
+    <string name="network_error_title">서버 연결 오류</string>
+    <string name="network_error_description">서버와 연결이 원활하지 않습니다.\n인터넷 연결 상태를 확인하고 잠시 후 다시 시도해주세요.</string>
+    <string name="network_error_ok">확인</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

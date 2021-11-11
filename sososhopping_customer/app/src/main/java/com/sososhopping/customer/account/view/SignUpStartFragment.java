@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.AccountSignUpStartBinding;
 
@@ -21,6 +22,7 @@ public class SignUpStartFragment extends Fragment {
     public static SignUpStartFragment newInstance() {
         return new SignUpStartFragment();
     }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -49,5 +51,18 @@ public class SignUpStartFragment extends Fragment {
                 navController.navigate(R.id.action_signUpStartFragment_to_logInDialogFragment);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        ((MainActivity)getActivity()).hideTopAppBar();
+        ((MainActivity)getActivity()).hideBottomNavigation();
+        super.onResume();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }
