@@ -78,7 +78,7 @@ public class ShopListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //컨트롤러
-        navController = Navigation.findNavController(view);
+        navController = Navigation.findNavController(binding.getRoot());
         shopListAdapter.setOnItemClickListener(new ShopListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
@@ -86,7 +86,12 @@ public class ShopListFragment extends Fragment {
                 //해당 매장을 검색조건으로 이동
                 Bundle bundle =  new Bundle();
                 bundle.putParcelable("shopInfo", shopListAdapter.getShopLists().get(pos));
-                navController.navigate(R.id.action_shopListFragment_to_shopMainFragment, bundle);
+                navController.navigate(R.id.action_shopListFragment_to_shop_graph, bundle);
+            }
+
+            @Override
+            public void onFavoriteClick(View v, int pos) {
+                //여기선 아무일 x
             }
         });
     }

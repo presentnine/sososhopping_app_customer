@@ -22,6 +22,9 @@ public interface ShopService {
     @GET("stores/{storeId}")
     Call<ShopIntroduceModel> requestShopIntroduce(@Path("storeId") int storeId);
 
+    @GET("stores/{storeId}")
+    Call<ShopIntroduceModel> requestShopIntroduce(@Header("token") String token, @Path("storeId") int storeId);
+
     @GET("stores/{storeId}/items")
     Call<ItemListDto> requestShopItem(@Path("storeId") int storeId);
 

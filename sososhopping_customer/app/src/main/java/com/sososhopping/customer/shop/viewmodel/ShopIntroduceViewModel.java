@@ -84,14 +84,14 @@ public class ShopIntroduceViewModel {
     }
 
     public String getSaveRate(ShopIntroduceModel shopIntroduceModel){
-        return "구매 금액의 " + Math.round(shopIntroduceModel.getSaveRate()*100)+"% 적립";
+        return "구매 금액의 " + shopIntroduceModel.getSaveRate()+"% 적립";
     }
 
-    public void requestShopIntroduce(
+    public void requestShopIntroduce(String token,
                                      Consumer<ShopIntroduceModel> onSuccess,
                                      Runnable onFailed,
                                      Runnable onError){
-        shopRepository.requestShopIntroduce(storeId, onSuccess, onFailed, onError );
+        shopRepository.requestShopIntroduce(token, storeId, onSuccess, onFailed, onError );
     }
 
     public void requestShopFavoriteChange(String token,

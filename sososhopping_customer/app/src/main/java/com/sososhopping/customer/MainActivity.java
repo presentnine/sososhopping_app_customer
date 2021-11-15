@@ -26,6 +26,11 @@ import androidx.navigation.ui.NavigationUI;
 
 
 import com.google.android.material.navigation.NavigationBarView;
+import com.sososhopping.customer.account.dto.LogInRequestDto;
+import com.sososhopping.customer.account.dto.LogInResponseDto;
+import com.sososhopping.customer.account.viewmodel.LogInViewModel;
+import com.sososhopping.customer.common.Constant;
+import com.sososhopping.customer.common.sharedpreferences.SharedPreferenceManager;
 import com.sososhopping.customer.databinding.ActivityMainBinding;
 
 import org.jetbrains.annotations.NotNull;
@@ -43,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
     //로그인용
     Boolean isLogIn = false;
     String loginToken;
+
+    public ActivityMainBinding getBinding(){
+        return binding;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
                        navController.navigate(R.id.action_global_navigation_shop, null, new NavOptions.Builder().setPopUpTo(R.id.nav_shop_graph,true).build());
                        break;
                    }
-
                    case R.id.signUpStartFragment:{
                        break;
                    }
@@ -92,41 +100,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        getAppKeyHash();
+        //getAppKeyHash();
         //권한 요청
         getPermission();
+
+        //자동로그인 시도
+        autoLogIn();
     }
 
-
-    public ActivityMainBinding getBinding(){
-        return binding;
-    }
-
-    public void getPermission(){
-        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-        if(permissionCheck == PackageManager.PERMISSION_DENIED){ //포그라운드 위치 권한 확인
-            //위치 권한 요청
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-        }
-    }
-
-    //해시 키 값 구하기
-    private void getAppKeyHash() {
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md;
-                md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                String something = new String(Base64.encode(md.digest(), 0));
-                Log.e("Hash key", something);
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.e("name not found", e.toString());
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -158,6 +139,38 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             super.onBackPressed();
+        }
+    }
+
+
+    private void autoLogIn(){
+        String id = SharedPreferenceManager.getString(getApplicationContext(), Constant.SHARED_PREFERENCE_KEY_ID);
+        String password = SharedPreferenceManager.getString(getApplicationContext(), Constant.SHARED_PREFERENCE_KEY_PASSWORD);
+
+        if(id != null && password != null){
+            LogInViewModel logInViewModel = new LogInViewModel();
+            logInViewModel.autoLogin(id, password, this::onLoggedIn,this::onLoginFailed);
+        }
+    }
+
+    private void onLoginFailed() {
+    }
+
+    private void onLoggedIn(LogInResponseDto responseDto) {
+        //토큰
+        setLoginToken(responseDto.getToken());
+        this.setIsLogIn(true);
+        initLoginButton();
+        Toast.makeText(getApplicationContext(),getResources().getString(R.string.login_success),Toast.LENGTH_SHORT).show();
+        navController.navigate(R.id.action_global_navigation_shop);
+    }
+
+    //권한
+    public void getPermission(){
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        if(permissionCheck == PackageManager.PERMISSION_DENIED){ //포그라운드 위치 권한 확인
+            //위치 권한 요청
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
         }
     }
 
@@ -195,4 +208,22 @@ public class MainActivity extends AppCompatActivity {
         this.isLogIn = is;
     }
     public boolean getIsLogIn(){return this.isLogIn;}
+
+    //해시 키 값 구하기
+    private void getAppKeyHash() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md;
+                md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String something = new String(Base64.encode(md.digest(), 0));
+                Log.e("Hash key", something);
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e("name not found", e.toString());
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
 }

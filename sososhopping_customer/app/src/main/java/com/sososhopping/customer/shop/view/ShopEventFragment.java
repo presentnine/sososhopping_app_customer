@@ -47,7 +47,7 @@ public class ShopEventFragment extends Fragment {
         binding = ShopEventBinding.inflate(inflater,container,false);
 
         shopEventViewModel = new ShopEventViewModel();
-        shopInfoViewModel = new ViewModelProvider(requireParentFragment().requireParentFragment()).get(ShopInfoViewModel.class);
+        shopInfoViewModel = new ViewModelProvider(getActivity()).get(ShopInfoViewModel.class);
 
         LinearLayoutManager layoutManager_coupon = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         LinearLayoutManager layoutManager_event = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
@@ -138,7 +138,7 @@ public class ShopEventFragment extends Fragment {
 
     @Override
     public void onResume(){
-        int storeId = new ViewModelProvider(getParentFragment().getParentFragment()).get(ShopInfoViewModel.class).getShopId().getValue();
+        int storeId = new ViewModelProvider(getActivity()).get(ShopInfoViewModel.class).getShopId().getValue();
 
         shopEventViewModel.requestShopCoupon(storeId,
                 ShopEventFragment.this::onSuccessCoupon,

@@ -1,113 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/shop_graph"
-    app:startDestination="@id/home2">
+    android:id="@+id/nav_shop_graph"
+    app:startDestination="@id/shopMainFragment">
 
-    <fragment
-        android:id="@+id/home2"
-        android:name="com.sososhopping.customer.search.view.HomeFragment"
-        android:label="home_fragment"
-        tools:layout="@layout/home" >
-        <action
-            android:id="@+id/action_home2_to_shopListFragment"
-            app:destination="@id/shopListFragment"
-            app:popUpToInclusive="false" />
-        <action
-            android:id="@+id/action_home2_to_shopMapFragment"
-            app:destination="@id/shopMapFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/shopListFragment"
-        android:name="com.sososhopping.customer.search.view.ShopListFragment"
-        android:label="search_shop_list"
-        tools:layout="@layout/search_shop_list">
-        <action
-            android:id="@+id/action_shopListFragment_to_searchDialogFragment"
-            app:destination="@id/searchDialogFragment" />
-        <action
-            android:id="@+id/action_shopListFragment_to_shopMainFragment"
-            app:destination="@id/shopMainFragment"
-            app:popUpTo="@id/shopListFragment"
-            app:popUpToInclusive="false" />
-        <action
-            android:id="@+id/action_shopListFragment_to_shopMapFragment"
-            app:destination="@id/shopMapFragment"
-            app:popUpTo="@id/shopListFragment"
-            app:popUpToInclusive="false" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/shopMapFragment"
-        android:name="com.sososhopping.customer.search.view.ShopMapFragment"
-        android:label="ShopMapFragment"
-        tools:layout="@layout/search_shop_map">
-        <action
-            android:id="@+id/action_shopMapFragment_to_searchDialogFragment"
-            app:destination="@id/searchDialogFragment" />
-        <action
-            android:id="@+id/action_shopMapFragment_to_shopMainFragment"
-            app:destination="@id/shopMainFragment"
-            app:popUpTo="@id/shopMapFragment"
-            app:popUpToInclusive="false" />
-        <argument
-            android:name="navigateFrom"
-            app:argType="integer" />
-        <argument
-            android:name="lat"
-            app:argType="float"
-            android:defaultValue="37.583912" />
-        <argument
-            android:name="lng"
-            app:argType="float"
-            android:defaultValue="127.058981" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/shopMainFragment"
-        android:name="com.sososhopping.customer.shop.view.ShopMainFragment"
-        android:label="ShopMainFragment"
-        tools:layout="@layout/shop_main">
-        <action
-            android:id="@+id/action_shopMainFragment_to_shopEventDetailFragment"
-            app:destination="@id/shopEventDetailFragment"
-            app:launchSingleTop="false" />
-        <action
-            android:id="@+id/action_shopMainFragment_to_shopMapFragment"
-            app:destination="@id/shopMapFragment"
-            app:popUpTo="@id/shopMainFragment"
-            app:popUpToInclusive="false" />
-        <action
-            android:id="@+id/action_shopMainFragment_to_shopReportFragment"
-            app:destination="@id/shopReportFragment" />
-    </fragment>
-    <dialog
-        android:id="@+id/searchDialogFragment"
-        android:name="com.sososhopping.customer.search.view.SearchDialogFragment"
-        android:label="SearchDialogFragment"
-        tools:layout="@layout/search_shop_dialog">
-        <action
-            android:id="@+id/action_searchDialogFragment_to_shopListFragment"
-            app:destination="@id/shopListFragment"
-            app:popUpTo="@id/shopListFragment"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_searchDialogFragment_to_shopMapFragment"
-            app:destination="@id/shopMapFragment"
-            app:launchSingleTop="false"
-            app:popUpTo="@id/shopMapFragment"
-            app:popUpToInclusive="true" />
-        <argument
-            android:name="navigateFrom"
-            app:argType="integer" />
-    </dialog>
     <fragment
         android:id="@+id/shopEventDetailFragment"
         android:name="com.sososhopping.customer.shop.view.ShopEventDetailFragment"
         android:label="ShopEventDetailFragment"
-        tools:layout="@layout/shop_event_detail" >
+        tools:layout="@layout/shop_event_detail">
         <argument
             android:name="shopId"
             app:argType="integer" />
@@ -119,14 +22,23 @@
             app:argType="string" />
     </fragment>
     <fragment
+        android:id="@+id/shopMainFragment"
+        android:name="com.sososhopping.customer.shop.view.ShopMainFragment"
+        android:label="ShopMainFragment"
+        tools:layout="@layout/shop_main">
+        <action
+            android:id="@+id/action_shopMainFragment_to_shopEventDetailFragment"
+            app:destination="@id/shopEventDetailFragment"
+            app:launchSingleTop="false" />
+        <action
+            android:id="@+id/action_shopMainFragment_to_shopReportFragment"
+            app:destination="@id/shopReportFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/shopReportFragment"
         android:name="com.sososhopping.customer.shop.view.ShopReportFragment"
         android:label="ShopReportFragment"
         tools:layout="@layout/shop_report">
-        <action
-            android:id="@+id/action_shopReportFragment_to_shopMapFragment"
-            app:destination="@id/shopMapFragment"
-            app:popUpTo="@id/shopReportFragment"
-            app:popUpToInclusive="true" />
     </fragment>
+
 </navigation>

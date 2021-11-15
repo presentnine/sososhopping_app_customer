@@ -71,7 +71,7 @@
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:padding="0dp"
-            android:text="관심설정"
+            android:text="@string/introduce_button_favorite"
             android:textColor="@color/text_400"
             android:textStyle="bold" />
 

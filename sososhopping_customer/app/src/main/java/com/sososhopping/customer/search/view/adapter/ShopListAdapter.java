@@ -60,6 +60,7 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ViewHo
     //클릭 이벤트
     public interface OnItemClickListener{
         void onItemClick(View v, int pos);
+        void onFavoriteClick(View v, int pos);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
@@ -88,23 +89,19 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ViewHo
                 }
             });
 
-            /*binding.imageViewFavorite.setOnClickListener(new View.OnClickListener() {
+            binding.imageViewFavorite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int pos = getAdapterPosition();
                     if(pos != RecyclerView.NO_POSITION){
 
-                        boolean isFavorite = !shopLists.get(pos).isInterestStore();
-                        shopLists.get(pos).setInterestStore(isFavorite);
-                        bindFavorite(isFavorite);
-
                         //리스너 호출
                         if(itemClickListener != null){
-                            itemClickListener.onFavoriteClick(v, pos, shopLists.get(pos).isInterestStore());
+                            itemClickListener.onFavoriteClick(v, pos);
                         }
                     }
                 }
-            });*/
+            });
         }
 
         public void bindItem(ShopInfoShortModel shopInfoShortModel){

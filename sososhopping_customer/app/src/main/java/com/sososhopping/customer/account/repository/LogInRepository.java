@@ -11,6 +11,7 @@ import com.sososhopping.customer.account.service.LogInService;
 import com.sososhopping.customer.common.retrofit.ApiServiceFactory;
 
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import lombok.SneakyThrows;
 import retrofit2.Call;
@@ -51,6 +52,27 @@ public class LogInRepository {
             @Override
             public void onFailure(Call<LogInResponseDto> call, Throwable t) {
                 onError.run();
+            }
+        });
+    }
+
+    public void autoLogin(LogInRequestDto dto,
+                          Consumer<LogInResponseDto> onSuccess,
+                          Runnable onFailed){
+        loginService.requestLogin(dto).enqueue(new Callback<LogInResponseDto>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<LogInResponseDto> call, Response<LogInResponseDto> response) {
+                if (response.code() == 200) {
+                    onSuccess.accept(response.body());
+                } else {
+                    onFailed.run();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LogInResponseDto> call, Throwable t) {
+                onFailed.run();
             }
         });
     }

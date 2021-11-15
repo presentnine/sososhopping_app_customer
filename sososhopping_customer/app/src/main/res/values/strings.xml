@@ -58,6 +58,8 @@
     <string name="introduce_businessTime">매장의 영업시간입니다</string>
     <string name="introduce_description">매장의 상세 설명입니다</string>
     <string name="introduce_point">정책이 아직 준비되지 않았습니다.</string>
+    <string name="introduce_button_favorite">관심설정</string>
+    <string name="introduce_button_favorite_not">관심해제</string>
 
     <!--범용 에러-->
     <string name="shop_error">정보를 불러오는데 실패했습니다</string>

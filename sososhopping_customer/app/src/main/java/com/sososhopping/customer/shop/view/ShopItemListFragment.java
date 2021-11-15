@@ -56,7 +56,7 @@ public class ShopItemListFragment extends Fragment {
 
 
         //상품은 Create에서 로딩
-        int storeId = new ViewModelProvider(getParentFragment().getParentFragment()).get(ShopInfoViewModel.class).getShopId().getValue();
+        int storeId = new ViewModelProvider(getActivity()).get(ShopInfoViewModel.class).getShopId().getValue();
         shopItemViewModel.requestShopItem(storeId,
                 this::onSuccess,
                 this::onFailed,

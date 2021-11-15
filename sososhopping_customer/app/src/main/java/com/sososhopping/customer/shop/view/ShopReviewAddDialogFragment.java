@@ -73,7 +73,6 @@ public class ShopReviewAddDialogFragment extends DialogFragment {
 
     public void onSuccess(){
         Toast.makeText(getContext(),getResources().getString(R.string.review_input), Toast.LENGTH_SHORT).show();
-        ((ShopReviewFragment) getParentFragment()).onResume();
         //종료
         dismiss();
     }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_favorite_graph"
+    app:startDestination="@id/favoriteShopListFragment">
+
+    <fragment
+        android:id="@+id/favoriteShopListFragment"
+        android:name="com.sososhopping.customer.favorite.view.FavoriteShopListFragment"
+        android:label="FavoriteShopListFragment"
+        tools:layout="@layout/favorite_shop_list"/>
+
+</navigation>

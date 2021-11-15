@@ -33,9 +33,7 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<String> category = new MutableLiveData<>();
     private MutableLiveData<ArrayList<ShopInfoShortModel>> shopList= new MutableLiveData<>();
 
-
     private final SearchRepository searchRepository = SearchRepository.getInstance();
-    private GPSTracker gpsTracker;
 
     public void setCategory(String s){
         category.setValue(s);
@@ -71,7 +69,7 @@ public class HomeViewModel extends ViewModel {
 
     public void calDistance(Context context){
 
-        gpsTracker = GPSTracker.getInstance(context);
+        GPSTracker gpsTracker = GPSTracker.getInstance(context);
 
         if(gpsTracker.canGetLocation()){
             double latitude = gpsTracker.getLatitude();

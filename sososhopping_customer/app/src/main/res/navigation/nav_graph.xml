@@ -5,11 +5,15 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/navigation_shop">
 
+    <navigation android:id="@+id/navigation_favorite"
+        app:startDestination="@id/nav_favorite_graph">
+        <include app:graph="@navigation/nav_favroite_graph" />
+    </navigation>
 
 
     <navigation android:id="@+id/navigation_shop"
-        app:startDestination="@id/shop_graph">
-        <include app:graph="@navigation/nav_shop_graph" />
+        app:startDestination="@id/nav_search_graph">
+        <include app:graph="@navigation/nav_search_graph" />
     </navigation>
 
     <navigation android:id="@+id/navigation_login"
@@ -47,5 +51,10 @@
         app:destination="@id/navigation_shop"
         app:popUpTo="@id/nav_graph"
         app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_global_navigation_favorite"
+        app:destination="@id/navigation_favorite"
+        app:launchSingleTop="true" />
 
 </navigation>

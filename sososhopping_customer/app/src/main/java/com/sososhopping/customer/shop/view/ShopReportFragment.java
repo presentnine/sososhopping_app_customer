@@ -20,6 +20,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
+import com.sososhopping.customer.ShopGraphDirections;
 import com.sososhopping.customer.databinding.ShopReportBinding;
 import com.sososhopping.customer.shop.viewmodel.ShopInfoViewModel;
 
@@ -65,14 +66,14 @@ public class ShopReportFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //Controller 설정
-        navController = Navigation.findNavController(view);
+        navController = NavHostFragment.findNavController(getParentFragment());
 
         //위치
         binding.buttonShopMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(shopInfoViewModel.getLocation().getValue() != null){
-                    navController.navigate(ShopReportFragmentDirections.actionShopReportFragmentToShopMapFragment(R.id.shopMainFragment)
+                    navController.navigate(ShopGraphDirections.actionGlobalShopMapFragment(R.id.shopMainFragment)
                             .setLat((float)shopInfoViewModel.getLocation().getValue().getLat())
                             .setLng((float)shopInfoViewModel.getLocation().getValue().getLng()));
                 }

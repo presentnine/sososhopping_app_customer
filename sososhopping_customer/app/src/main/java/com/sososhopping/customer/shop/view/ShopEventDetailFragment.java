@@ -19,7 +19,6 @@ import com.sososhopping.customer.common.CarouselMethod;
 import com.sososhopping.customer.common.DateFormatMethod;
 import com.sososhopping.customer.databinding.ShopEventDetailBinding;
 import com.sososhopping.customer.shop.model.EventDetailModel;
-import com.sososhopping.customer.common.types.enumType.WritingType;
 import com.sososhopping.customer.shop.viewmodel.ShopEventDetailViewModel;
 
 public class ShopEventDetailFragment extends Fragment {
@@ -55,11 +54,6 @@ public class ShopEventDetailFragment extends Fragment {
         writingId = ShopEventDetailFragmentArgs.fromBundle(getArguments()).getWriteId();
         storeId = ShopEventDetailFragmentArgs.fromBundle(getArguments()).getShopId();
         storeName = ShopEventDetailFragmentArgs.fromBundle(getArguments()).getStoreName();
-
-        //받아오는 API 동작
-        /*eventDetailModel = new EventDetailModel(writingId,"가상의 이벤트 글입니다",
-                "가상의 이벤트 글입니다. \n여러 줄을 자유롭게 작성할 수 있습니다. \n 저장 역시 여러 줄에 대해 이루어질 수 있습니다",
-                WritingType.PROMOTION, "2021-11-04 16:33:17",null);*/
 
         shopEventDetailViewModel.requestShopEventDetail(storeId, writingId,
                 this::onSuccess, this::onFailed, this::onNetworkError);
