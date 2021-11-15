@@ -36,7 +36,7 @@ public class CustomDestinationChangedListener implements NavController.OnDestina
                                      @NonNull @NotNull NavDestination destination,
                                      @Nullable @org.jetbrains.annotations.Nullable Bundle arguments) {
 
-        if(checkList(destination.getId(), noNavigationList)){
+        /*if(checkList(destination.getId(), noNavigationList)){
             binding.bottomNavigation.setVisibility(View.GONE);
         }else{
             binding.bottomNavigation.setVisibility(View.VISIBLE);
@@ -47,12 +47,10 @@ public class CustomDestinationChangedListener implements NavController.OnDestina
         }
         else {
             binding.appBarLayout.setVisibility(View.VISIBLE);
-        }
+        }*/
 
         if(destination.getId() != R.id.home2){
             activity.getViewModelStore().clear();
-        }else{
-            binding.bottomNavigation.getMenu().getItem(0).setChecked(true);
         }
     }
 

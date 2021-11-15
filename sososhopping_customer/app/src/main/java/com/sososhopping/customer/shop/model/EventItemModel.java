@@ -1,10 +1,7 @@
 package com.sososhopping.customer.shop.model;
 
-import com.sososhopping.customer.shop.model.enumType.WritingType;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.google.gson.annotations.SerializedName;
+import com.sososhopping.customer.common.types.enumType.WritingType;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,11 +13,22 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EventItemModel {
+    @SerializedName("writingId")
     int writingId;
+
+    @SerializedName("title")
     String title;
+
+    @SerializedName("content")
     String description;
-    String date;
+
+    @SerializedName("createdAt")
+    String createdAt;
+
+    @SerializedName("writingType")
     WritingType writingType;
+
+    @SerializedName("imgUrl")
     String imgUrl;
 
 }

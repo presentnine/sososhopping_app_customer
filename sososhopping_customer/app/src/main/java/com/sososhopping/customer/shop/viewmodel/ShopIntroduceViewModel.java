@@ -1,11 +1,20 @@
 package com.sososhopping.customer.shop.viewmodel;
 
 import com.sososhopping.customer.shop.model.ShopIntroduceModel;
+import com.sososhopping.customer.shop.repository.ShopRepository;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.function.Consumer;
 
+import lombok.Getter;
+
+@Getter
 public class ShopIntroduceViewModel {
+
+    private final ShopRepository shopRepository = ShopRepository.getInstance();
+
+    private int storeId;
 
     public String getBusinessDay(ShopIntroduceModel shopIntroduceModel){
         //월~x 로 계산
@@ -50,13 +59,24 @@ public class ShopIntroduceViewModel {
             businessDay.append(shopIntroduceModel.getBusinessDays().get(key).getCloseTime().substring(2,4));
             businessDay.append("\n");
         }
-        businessDay.delete(businessDay.lastIndexOf("\n"), businessDay.length());
+        if(businessDay.length() > 0){
+            businessDay.delete(businessDay.lastIndexOf("\n"), businessDay.length());
+        }
 
         return businessDay.toString();
     }
 
     public String getAddress(ShopIntroduceModel shopIntroduceModel){
-        return shopIntroduceModel.getStreetAddress() + " " + shopIntroduceModel.getDetailedAddress();
+        String addressText = new String();
+
+        if(shopIntroduceModel.getStreetAddress() != null){
+            addressText = addressText.concat(shopIntroduceModel.getStreetAddress());
+        }
+
+        if(shopIntroduceModel.getDetailedAddress() != null){
+            addressText = addressText.concat(" "+shopIntroduceModel.getDetailedAddress());
+        }
+        return addressText;
     }
 
     public String getMinimum(ShopIntroduceModel shopIntroduceModel){
@@ -65,5 +85,28 @@ public class ShopIntroduceViewModel {
 
     public String getSaveRate(ShopIntroduceModel shopIntroduceModel){
         return "구매 금액의 " + Math.round(shopIntroduceModel.getSaveRate()*100)+"% 적립";
+    }
+
+    public void requestShopIntroduce(
+                                     Consumer<ShopIntroduceModel> onSuccess,
+                                     Runnable onFailed,
+                                     Runnable onError){
+        shopRepository.requestShopIntroduce(storeId, onSuccess, onFailed, onError );
+    }
+
+    public void requestShopFavoriteChange(String token,
+                                          Runnable onSuccess,
+                                          Runnable onFailedLogIn,
+                                          Runnable onFailed,
+                                          Runnable onError){
+        shopRepository.changeInterest(token,storeId, onSuccess, onFailedLogIn, onFailed, onError);
+    }
+
+    public void setStoreId(int storeId) {
+        this.storeId = storeId;
+    }
+
+    public int getStoreId() {
+        return storeId;
     }
 }

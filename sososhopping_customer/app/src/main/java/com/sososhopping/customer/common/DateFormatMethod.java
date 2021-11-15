@@ -7,7 +7,7 @@ import java.util.Date;
 public class DateFormatMethod {
     public static String dateFormatMin(String exdate){
         try {
-            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS").parse(exdate);
+            Date date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(exdate);
             return new SimpleDateFormat("yyyy/MM/dd HH:mm").format(date);
         }
         catch (ParseException e){
@@ -18,7 +18,7 @@ public class DateFormatMethod {
 
     public static String dateFormatDay(String exdate){
         try {
-            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS").parse(exdate);
+            Date date = new SimpleDateFormat("yyyy/MM/dd").parse(exdate);
             return new SimpleDateFormat("yyyy/MM/dd").format(date);
         }
         catch (ParseException e){

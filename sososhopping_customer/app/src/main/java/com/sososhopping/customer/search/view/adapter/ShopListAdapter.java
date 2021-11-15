@@ -4,25 +4,31 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.ItemShopInfoBinding;
-import com.sososhopping.customer.search.ShopInfoShort;
+import com.sososhopping.customer.search.model.ShopInfoShortModel;
 
 import java.util.ArrayList;
 
 public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ViewHolder> {
 
-    ArrayList<ShopInfoShort> shopLists = new ArrayList<>();
+    ArrayList<ShopInfoShortModel> shopLists = new ArrayList<>();
     private OnItemClickListener itemClickListener;
     ItemShopInfoBinding binding;
 
@@ -44,17 +50,16 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ViewHo
         return shopLists.size();
     }
 
-    public void setShopLists(ArrayList<ShopInfoShort> shopLists) {
+    public void setShopLists(ArrayList<ShopInfoShortModel> shopLists) {
         this.shopLists = shopLists;
     }
-    public ArrayList<ShopInfoShort> getShopLists(){
+    public ArrayList<ShopInfoShortModel> getShopLists(){
         return shopLists;
     }
 
     //클릭 이벤트
     public interface OnItemClickListener{
         void onItemClick(View v, int pos);
-        void onFavoriteClick(View v, int pos, boolean isFavorite);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
@@ -83,52 +88,74 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ViewHo
                 }
             });
 
-            binding.imageViewFavorite.setOnClickListener(new View.OnClickListener() {
+            /*binding.imageViewFavorite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int pos = getAdapterPosition();
                     if(pos != RecyclerView.NO_POSITION){
 
-                        boolean isFavorite = !shopLists.get(pos).isFavorite();
-                        shopLists.get(pos).setFavorite(isFavorite);
+                        boolean isFavorite = !shopLists.get(pos).isInterestStore();
+                        shopLists.get(pos).setInterestStore(isFavorite);
                         bindFavorite(isFavorite);
 
                         //리스너 호출
                         if(itemClickListener != null){
-                            itemClickListener.onFavoriteClick(v, pos, shopLists.get(pos).isFavorite());
+                            itemClickListener.onFavoriteClick(v, pos, shopLists.get(pos).isInterestStore());
                         }
                     }
                 }
-            });
+            });*/
         }
 
-        public void bindItem(ShopInfoShort shopInfoShort){
-            binding.textViewShopName.setText(shopInfoShort.getShopName());
-            binding.textViewShopDescription.setText(shopInfoShort.getShopDescription());
-            binding.textViewRating.setText(Double.toString(shopInfoShort.getRating()));
-            binding.textViewDistance.setText(Integer.toString(shopInfoShort.getDistance())+"m");
+        public void bindItem(ShopInfoShortModel shopInfoShortModel){
+            binding.textViewShopName.setText(shopInfoShortModel.getName());
+            binding.textViewShopDescription.setText(shopInfoShortModel.getDescription());
+            binding.textViewRating.setText(Double.toString(shopInfoShortModel.getScore()));
+
+            //km로 변환
+            if(shopInfoShortModel.getDistance() >= 1000){
+                binding.textViewDistance.setText((float)(shopInfoShortModel.getDistance()*0.001)+"km");
+            }else{
+                binding.textViewDistance.setText(shopInfoShortModel.getDistance()+"m");
+            }
+
 
             //지역화폐, 배달여부
-            if(!shopInfoShort.isLocalPay()){
+            if(!shopInfoShortModel.isLocalCurrencyStatus()){
                 binding.layoutLocalPay.setVisibility(View.GONE);
             }
-            if(!shopInfoShort.isDelivery()){
+            if(!shopInfoShortModel.isDeliveryStatus()){
                 binding.layoutDelivery.setVisibility(View.GONE);
             }
 
-            //이미지
             Glide.with(itemView)
-                    .load(shopInfoShort.getShopImageURL())
+                    .load(shopInfoShortModel.getImgUrl())
                     .transform(new CenterCrop(),new RoundedCorners(10))
                     .thumbnail(0.2f)
                     .placeholder(R.drawable.icon_app_groceries)
                     .error(R.drawable.icon_app_groceries)
                     .fallback(R.drawable.icon_app_groceries)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable @org.jetbrains.annotations.Nullable GlideException e,
+                                                    Object model, Target<Drawable> target, boolean isFirstResource) {
+                            //사용불가능한 사진이면 ImgUrl null로 -> 추후에 에러 안뜨게
+                            shopInfoShortModel.setImgUrl(null);
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model,
+                                                       Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            return false;
+                        }
+                    })
                     .into(binding.imageViewStore);
 
-            bindFavorite(shopInfoShort.isFavorite());
+            bindFavorite(shopInfoShortModel.isInterestStore());
         }
 
+        //favorite 색상 변경 함수
         public void bindFavorite(boolean isFavorite){
             int drawableImage = 0;
             if(isFavorite){

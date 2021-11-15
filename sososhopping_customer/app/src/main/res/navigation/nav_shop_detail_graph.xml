@@ -87,6 +87,10 @@
         android:id="@+id/shopReviewAddDialogFragment"
         android:name="com.sososhopping.customer.shop.view.ShopReviewAddDialogFragment"
         android:label="ShopReviewAddDialogFragment"
-        tools:layout="@layout/shop_review_add_dialog"/>
+        tools:layout="@layout/shop_review_add_dialog">
+        <argument
+            android:name="storeId"
+            app:argType="integer" />
+    </dialog>
 
 </navigation>

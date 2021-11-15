@@ -54,7 +54,7 @@ public class ShopEventBoardAdapter extends RecyclerView.Adapter<ShopEventBoardAd
 
     //클릭 이벤트
     public interface OnItemClickListenerBoard{
-        void onItemClick(View v, int pos);
+        void onItemClick(int writingId);
     }
 
     public void setOnItemClickListener(OnItemClickListenerBoard listener){
@@ -76,7 +76,7 @@ public class ShopEventBoardAdapter extends RecyclerView.Adapter<ShopEventBoardAd
 
                         //리스너 호출
                         if(itemClickListener != null){
-                            itemClickListener.onItemClick(v, pos);
+                            itemClickListener.onItemClick(eventItemModels.get(pos).getWritingId());
                         }
                     }
                 }
@@ -86,7 +86,7 @@ public class ShopEventBoardAdapter extends RecyclerView.Adapter<ShopEventBoardAd
         public void bindItem(EventItemModel eventItemModel) throws ParseException {
             binding.textViewEventTitle.setText(eventItemModel.getTitle());
             binding.textViewEventOrNews.setText(eventItemModel.getWritingType().getValue());
-            binding.textViewEventWriteDate.setText(DateFormatMethod.dateFormatMin(eventItemModel.getDate()));
+            binding.textViewEventWriteDate.setText(DateFormatMethod.dateFormatMin(eventItemModel.getCreatedAt()));
             if(eventItemModel.getDescription().length() >= 50){
                 binding.textViewEventDescription.setText(eventItemModel.getDescription().substring(0,49) + "...");
             }

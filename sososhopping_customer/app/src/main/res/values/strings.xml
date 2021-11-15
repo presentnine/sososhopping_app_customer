@@ -1,4 +1,6 @@
 <resources>
+    <string name="title_activity_main">MainActivity</string>
+
     <string name="app_name">sososhopping_customer</string>
     <string name="app_name_kor">소 소 한 장 보 기</string>
     <string name="app_description">간편하게 살펴보는 내 주변 상점</string>
@@ -27,8 +29,8 @@
     <!-- Strings related to login -->
     <string name="login_email">이메일을 입력해주세요</string>
     <string name="login_password">비밀번호를 입력해주세요</string>
-    <string name="login_success">비밀번호를 입력해주세요</string>
-    <string name="login_failed">비밀번호를 입력해주세요</string>
+    <string name="login_success">환영합니다</string>
+    <string name="login_failed">로그인에 실패하였습니다</string>
 
     <string name="find_email">가입하신 이메일은 다음과 같습니다</string>
     <string name="find_infoOk">가입 인증 완료! 비밀번호를 변경해주세요</string>
@@ -37,12 +39,28 @@
     <!--홈 관련-->
     <string name="home_shop">상점</string>
     <string name="home_item">상품</string>
-
-    <string name="title_activity_main">MainActivity</string>
     <string name="textSample">내용을 입력해주세요</string>
 
-    <!--가게소개-->
+
+    <!--네트워크 에러-->
+    <string name="network_error_title">서버 연결 오류</string>
+    <string name="network_error_description">서버와 연결이 원활하지 않습니다.\n인터넷 연결 상태를 확인하고 잠시 후 다시 시도해주세요.</string>
+    <string name="network_error_ok">확인</string>
+
+    <!--네트워크 에러-->
+    <string name="login_error_description">로그인이 필요한 작업입니다. \n로그인 화면으로 이동하시겠습니까?</string>
+    <string name="login_error_token">로그인 상태 오류입니다. \n다시 로그인해 주세요</string>
+    <string name="login_error_ok">로그인하기</string>
+
+    <!--매장 관련-->
+    <!--매장 소개-->
+    <string name="introduce_location">매장의 영업위치입니다</string>
+    <string name="introduce_businessTime">매장의 영업시간입니다</string>
+    <string name="introduce_description">매장의 상세 설명입니다</string>
     <string name="introduce_point">정책이 아직 준비되지 않았습니다.</string>
+
+    <!--범용 에러-->
+    <string name="shop_error">정보를 불러오는데 실패했습니다</string>
 
     <!--이벤트 페이지-->
     <string name="event_couponList">오늘의 쿠폰</string>
@@ -50,19 +68,15 @@
     <string name="news">소식</string>
     <string name="event">이벤트</string>
 
-    <!--네트워크 에러-->
-    <string name="network_error_title">서버 연결 오류</string>
-    <string name="network_error_description">서버와 연결이 원활하지 않습니다.\n인터넷 연결 상태를 확인하고 잠시 후 다시 시도해주세요.</string>
-    <string name="network_error_ok">확인</string>
+    <!--리뷰-->
+    <string name="review_input">리뷰를 작성했습니다</string>
 
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
+    <!--신고-->
+    <string name="report_title">신고하기</string>
+    <string name="report_warning">신고 내용은 30글자 이상이어야 합니다.</string>
+    <string name="report_input">신고를 작성했습니다.</string>
+    <string name="report_description">불법, 부정, 허위 및 불량 업소 등에 관하여 신고받은 내용은 고객센터에서 면밀히 검토 후 조치합니다.\n금전적인 피해 및 기타 추가적인 증빙사항은 위 고객센터 이메일 (abcdefg@gmail.com)로 연락주세요</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>

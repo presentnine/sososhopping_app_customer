@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                switch (item.getItemId()){
                    case R.id.navigation_shop:{
                        getViewModelStore().clear();
-                       navController.navigate(R.id.navigation_shop, null, new NavOptions.Builder().setPopUpTo(R.id.nav_shop_graph,true).build());
+                       navController.navigate(R.id.action_global_navigation_shop, null, new NavOptions.Builder().setPopUpTo(R.id.nav_shop_graph,true).build());
                        break;
                    }
 
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
        });
 
         //약 로그인 안되어있으면 맨 밑을 플로팅 버튼으로 막고 시작
-        initLoginButton(isLogIn);
+        initLoginButton();
         binding.buttonAccountLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,20 +153,26 @@ public class MainActivity extends AppCompatActivity {
                 }
             }, 2000);
         }
+        else if(start == R.id.signUpStartFragment){
+            navController.navigate(R.id.action_global_navigation_shop, null,new NavOptions.Builder().setPopUpTo(R.id.nav_graph,true).build());
+        }
         else {
             super.onBackPressed();
         }
     }
 
-    public void initLoginButton(Boolean state){
-        if (state) {
+    public void initLoginButton(){
+        if (isLogIn) {
             binding.buttonAccountLogIn.setVisibility(View.GONE);
+            binding.bottomNavigation.setClickable(true);
         } else {
             binding.buttonAccountLogIn.setVisibility(View.VISIBLE);
+            binding.bottomNavigation.setClickable(false);
         }
-        this.isLogIn = state;
     }
-
+    public void hideLoginButton(){
+        binding.buttonAccountLogIn.setVisibility(View.GONE);
+    }
     public void showBottomNavigation(){
         binding.bottomNavigation.setVisibility(View.VISIBLE);
     }
@@ -179,16 +185,14 @@ public class MainActivity extends AppCompatActivity {
     public void hideTopAppBar(){
         binding.topAppBar.setVisibility(View.GONE);
     }
-
     public String getLoginToken() {
         return loginToken;
     }
-
     public void setLoginToken(String loginToken) {
         this.loginToken = loginToken;
     }
-
     public void setIsLogIn(boolean is){
         this.isLogIn = is;
     }
+    public boolean getIsLogIn(){return this.isLogIn;}
 }

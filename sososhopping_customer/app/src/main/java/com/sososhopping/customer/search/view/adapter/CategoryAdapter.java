@@ -1,4 +1,4 @@
-package com.sososhopping.customer.home;
+package com.sososhopping.customer.search.view.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sososhopping.customer.R;
+import com.sososhopping.customer.common.types.enumType.CategoryType;
 import com.sososhopping.customer.databinding.ItemHomeCategoryBinding;
 
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
 
-    ArrayList<String> categoryName = new ArrayList<>();
+    ArrayList<CategoryType> categoryName = new ArrayList<>();
     ArrayList<Integer> categoryIcon = new ArrayList<>();
     private OnItemClickListener itemClickListener;
     ItemHomeCategoryBinding binding;
@@ -33,10 +34,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-        holder.bindItem(categoryName.get(position), categoryIcon.get(position));
+        holder.bindItem(categoryName.get(position).getValue(), categoryIcon.get(position));
     }
 
-    public void setCategory(ArrayList<String> name, ArrayList<Integer> iconId){
+    public void setCategory(ArrayList<CategoryType> name, ArrayList<Integer> iconId){
         this.categoryName = name;
         this.categoryIcon = iconId;
     }
@@ -47,7 +48,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     }
 
     public String getCategoryName(int position){
-        return categoryName.get(position);
+        return categoryName.get(position).toString();
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){

@@ -79,6 +79,14 @@
                     android:textColor="@color/text_800"
                     android:textSize="18dp" />
 
+                <TextView
+                    android:id="@+id/textView_couponExpire"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="2000/00/00"
+                    android:gravity="center"
+                    android:textSize="16dp" />
+
             </LinearLayout>
 
             <LinearLayout

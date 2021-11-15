@@ -17,4 +17,5 @@ public class ReviewModel {
     //이미지는 일단 생략
     //String imgUrl;
     float score;
+    String createdAt;
 }

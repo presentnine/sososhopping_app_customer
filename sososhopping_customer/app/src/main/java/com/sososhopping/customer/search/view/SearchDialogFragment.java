@@ -17,7 +17,7 @@ import androidx.navigation.Navigation;
 
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.SearchShopDialogBinding;
-import com.sososhopping.customer.home.HomeViewModel;
+import com.sososhopping.customer.search.HomeViewModel;
 
 public class SearchDialogFragment extends DialogFragment {
     private NavController navController;
@@ -73,6 +73,8 @@ public class SearchDialogFragment extends DialogFragment {
         binding.textFieldSearch.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //검색모드
+                homeViewModel.getAskType().setValue(0);
                 homeViewModel.setSearchType(searchType);
                 homeViewModel.setSearchContent(binding.editTextSearch.getText().toString());
 

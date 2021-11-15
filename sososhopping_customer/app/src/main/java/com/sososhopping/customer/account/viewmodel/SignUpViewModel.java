@@ -104,6 +104,17 @@ public class SignUpViewModel extends ViewModel {
         signUpRepository.requestEmailDuplicationCheck(this.toEmailDupCheckRequestDto(email), onNotDuplicated, onDuplicated, onError);
     }
 
+    public void requestNicknameDupCheck(String nickname,
+                                        Runnable onChecked,
+                                        Runnable onDuplicated,
+                                        Runnable onError) {
+        Runnable onNotDuplicated = () -> {
+            onChecked.run();
+            nicknameDupChecked.setValue(true);
+        };
+        signUpRepository.requestNicknameDuplicationCheck(this.toNicknameDupCheckRequestDto(nickname), onNotDuplicated, onDuplicated, onError);
+    }
+
     public void requestSignup(Runnable onSuccess,
                               Runnable onError) {
         signUpRepository.requestSignup(this.toSignupRequestDto(), onSuccess, onError);

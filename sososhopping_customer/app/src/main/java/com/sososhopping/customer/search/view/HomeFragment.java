@@ -1,4 +1,4 @@
-package com.sososhopping.customer.home;
+package com.sososhopping.customer.search.view;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +17,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.R;
+import com.sososhopping.customer.common.types.enumType.CategoryType;
 import com.sososhopping.customer.databinding.HomeBinding;
+import com.sososhopping.customer.search.dto.ShopListDto;
+import com.sososhopping.customer.search.model.ShopInfoShortModel;
+import com.sososhopping.customer.search.view.adapter.CategoryAdapter;
+import com.sososhopping.customer.search.HomeViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,6 +48,7 @@ public class HomeFragment extends Fragment{
     public void onResume() {
         ((MainActivity)getActivity()).hideTopAppBar();
         ((MainActivity)getActivity()).showBottomNavigation();
+        ((MainActivity)getActivity()).initLoginButton();
         super.onResume();
     }
 
@@ -89,13 +95,17 @@ public class HomeFragment extends Fragment{
             public void onItemClick(View v, int pos) {
                 String category = categoryAdapter.getCategoryName(pos);
 
-                if(category.equals("지도")){
+                if(category.equals(CategoryType.MAP.toString())){
+                    //전체검색으로 넘어가게
+                    homeViewModel.getAskType().setValue(0);
                     navController.navigate(HomeFragmentDirections.actionHome2ToShopMapFragment(R.id.home2));
                 }
                 else{
                     //해당 카테고리를 담아서 검색 navigate하기
                     Log.d("카테고리 검색", category);
-                    //ViewModel 설정
+
+                    //ViewModel 설정 후 이동
+                    homeViewModel.getAskType().setValue(1);
                     homeViewModel.setCategory(category);
                     homeViewModel.setSearchContent(null);
                     navController.navigate(R.id.action_home2_to_shopListFragment);
@@ -107,6 +117,7 @@ public class HomeFragment extends Fragment{
         binding.textFieldSearch.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                homeViewModel.getAskType().setValue(0);
                 homeViewModel.setSearchContent(binding.editTextSearch.getText().toString());
                 navController.navigate(R.id.action_home2_to_shopListFragment);
             }
@@ -129,13 +140,11 @@ public class HomeFragment extends Fragment{
         for(String s : iconResName){
             iconId.add(getResources().getIdentifier(s,"drawable",packName));
         }
-
         return iconId;
     }
 
-    public ArrayList<String> getCategoryDetail(){
-        ArrayList<String> iconDetail = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.category_icon_explain)));
-        iconDetail.add(getResources().getString(R.string.icon_map_explain));
+    public ArrayList<CategoryType> getCategoryDetail(){
+        ArrayList<CategoryType> iconDetail = new ArrayList<>(Arrays.asList(CategoryType.values()));
         return iconDetail;
     }
 }

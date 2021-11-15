@@ -1,7 +1,13 @@
 package com.sososhopping.customer.search.view;
 
-import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,22 +19,12 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.SearchShopListBinding;
-import com.sososhopping.customer.home.HomeViewModel;
-import com.sososhopping.customer.search.ShopInfoShort;
-import com.sososhopping.customer.search.ShopViewModel;
+import com.sososhopping.customer.search.HomeViewModel;
+import com.sososhopping.customer.search.dto.ShopListDto;
 import com.sososhopping.customer.search.view.adapter.ShopListAdapter;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -36,7 +32,6 @@ public class ShopListFragment extends Fragment {
 
     private NavController navController;
     private ShopListAdapter shopListAdapter = new ShopListAdapter();
-    private ShopViewModel shopViewModel;
     private HomeViewModel homeViewModel;
     public SearchShopListBinding binding;
 
@@ -64,22 +59,16 @@ public class ShopListFragment extends Fragment {
         binding = SearchShopListBinding.inflate(inflater, container, false);
 
         //데이터 받아오기
-        shopViewModel = new ViewModelProvider(this).get(ShopViewModel.class);
         homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
 
         //뷰 선언
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         binding.recyclerViewShopList.setLayoutManager(layoutManager);
 
-        //Adapter 연결
-        ArrayList<ShopInfoShort> dummyShops = new ArrayList<>();
-        dummyShops.add(new ShopInfoShort(1, "가상의 상점",
-                "가상의 상점 입니다 \n 이 상점은 가상의 상점입니다. 줄바꿈이 잘 되나 확인해보겠습니다.",
-                "01012345678",4.5, true, true, 500, null, true));
-        dummyShops.add(new ShopInfoShort(2, "가상의 상점2",
-                "가상의 상점 입니다 \n 이 상점은 가상의 상점2입니다. 줄바꿈이 잘 되나 확인해보겠습니다.",
-                null,1.0, false, true, 1000, null, false));
-        shopListAdapter.setShopLists(dummyShops);
+        if(homeViewModel.getShopList().getValue() == null){
+            homeViewModel.setShopList(new ArrayList<>());
+        }
+        shopListAdapter.setShopLists(homeViewModel.getShopList().getValue());
         binding.recyclerViewShopList.setAdapter(shopListAdapter);
 
         return binding.getRoot();
@@ -99,11 +88,6 @@ public class ShopListFragment extends Fragment {
                 bundle.putParcelable("shopInfo", shopListAdapter.getShopLists().get(pos));
                 navController.navigate(R.id.action_shopListFragment_to_shopMainFragment, bundle);
             }
-
-            @Override
-            public void onFavoriteClick(View v, int pos, boolean isFavorite){
-                //관심가게 변경 api
-            }
         });
     }
 
@@ -111,8 +95,19 @@ public class ShopListFragment extends Fragment {
     public void onResume() {
         ((MainActivity)getActivity()).showTopAppBar();
         setAppBar(homeViewModel);
-
         ((MainActivity)getActivity()).showBottomNavigation();
+
+        if(homeViewModel.getAskType().getValue() == 1){
+            homeViewModel.searchCategory(
+                    ((MainActivity)getActivity()).getLoginToken(),
+                    homeViewModel.getCategory().getValue(),
+                    this::onSearchSuccessed,
+                    this::onNetworkError);
+        }
+        else if(homeViewModel.getAskType().getValue() == 0){
+            //상품으로검색
+        }
+
         super.onResume();
     }
 
@@ -148,6 +143,17 @@ public class ShopListFragment extends Fragment {
             }
         });
         activity.invalidateOptionsMenu();
+    }
+
+    private void onSearchSuccessed(ShopListDto success){
+        homeViewModel.setShopList(success.getShopInfoShortModels());
+        homeViewModel.calDistance(getContext());
+        shopListAdapter.setShopLists(homeViewModel.getShopList().getValue());
+        shopListAdapter.notifyDataSetChanged();
+    }
+
+    private void onNetworkError() {
+        navController.navigate(R.id.action_global_networkErrorDialog);
     }
 
 }

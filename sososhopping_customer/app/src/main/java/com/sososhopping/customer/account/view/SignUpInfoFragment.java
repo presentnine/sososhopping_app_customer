@@ -102,14 +102,14 @@ public class SignUpInfoFragment extends Fragment {
 
 
                 //중복확인 요청 API
-                signUpViewModel.requestEmailDupCheck(
+                signUpViewModel.requestNicknameDupCheck(
                         binding.editTextSignUpNickname.getText().toString(),
-                        SignUpInfoFragment.this::onNicknameDuplicated,
                         SignUpInfoFragment.this::onNicknameNotDuplicated,
+                        SignUpInfoFragment.this::onNicknameDuplicated,
                         SignUpInfoFragment.this::onNetworkError);
 
                 //for test
-                onNicknameNotDuplicated();
+                //onNicknameNotDuplicated();
             }
         });
 

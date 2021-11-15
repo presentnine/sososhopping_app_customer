@@ -1,6 +1,6 @@
 package com.sososhopping.customer.shop.model;
 
-import com.sososhopping.customer.shop.model.enumType.CouponType;
+import com.sososhopping.customer.common.types.enumType.CouponType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +21,7 @@ public class CouponModel {
     Integer minimumOrderPrice;
     String startDate;
     String endDate;
+    String expiryDate;
     CouponType couponType;
     Integer fixAmount;
     Double rateAmount;

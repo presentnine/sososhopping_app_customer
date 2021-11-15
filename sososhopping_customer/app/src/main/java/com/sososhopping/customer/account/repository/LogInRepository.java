@@ -1,6 +1,7 @@
 package com.sososhopping.customer.account.repository;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -11,6 +12,7 @@ import com.sososhopping.customer.common.retrofit.ApiServiceFactory;
 
 import java.util.function.BiConsumer;
 
+import lombok.SneakyThrows;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

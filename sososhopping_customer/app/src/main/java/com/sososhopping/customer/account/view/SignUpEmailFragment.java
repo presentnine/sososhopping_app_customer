@@ -64,12 +64,12 @@ public class SignUpEmailFragment extends Fragment {
                 //중복확인 요청
                 signUpViewModel.requestEmailDupCheck(
                         binding.textFieldSignUpEmail.getEditText().getText().toString(),
-                        SignUpEmailFragment.this::onEmailDuplicated,
                         SignUpEmailFragment.this::onEmailNotDuplicated,
+                        SignUpEmailFragment.this::onEmailDuplicated,
                         SignUpEmailFragment.this::onNetworkError);
 
                 //for test
-                onEmailNotDuplicated();
+                //onEmailNotDuplicated();
             }
         });
 

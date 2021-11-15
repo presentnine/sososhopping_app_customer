@@ -1,6 +1,6 @@
 package com.sososhopping.customer.shop.model;
 
-import com.sososhopping.customer.shop.model.enumType.WritingType;
+import com.sososhopping.customer.common.types.enumType.WritingType;
 
 import java.util.ArrayList;
 
@@ -18,7 +18,8 @@ public class EventDetailModel {
     String title;
     String content;
     WritingType writingType;
-    String date;
+    String createdAt;
     //추후 여러장 가능하게
     ArrayList<String> imgUrl = new ArrayList<>();
+
 }

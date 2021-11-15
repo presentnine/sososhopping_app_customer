@@ -19,18 +19,19 @@ import androidx.navigation.Navigation;
 import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.SearchShopMapBinding;
-import com.sososhopping.customer.home.HomeViewModel;
-import com.sososhopping.customer.search.ShopViewModel;
+import com.sososhopping.customer.search.HomeViewModel;
+import com.sososhopping.customer.search.model.ShopInfoShortModel;
 import com.sososhopping.customer.shop.view.ShopMainFragment;
 
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
+import java.util.ArrayList;
+
 public class ShopMapFragment extends Fragment {
     private NavController navController;
     private SearchShopMapBinding binding;
     private HomeViewModel homeViewModel;
-    private ShopViewModel shopViewModel;
     private int navigateFrom;
 
     private MapView mapView;
@@ -55,9 +56,7 @@ public class ShopMapFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState){
         binding = SearchShopMapBinding.inflate(inflater,container,false);
-
         homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
-        shopViewModel = new ViewModelProvider(getActivity()).get(ShopViewModel.class);
 
         return binding.getRoot();
     }
@@ -77,8 +76,13 @@ public class ShopMapFragment extends Fragment {
         ((MainActivity) getActivity()).showTopAppBar();
         setAppBar(homeViewModel);
 
+        if(homeViewModel.getShopList().getValue() == null){
+            homeViewModel.setShopList(new ArrayList<>());
+        }
+
+
         //지도 연결
-        setMap(shopViewModel);
+        setMap(homeViewModel.getShopList().getValue());
         super.onResume();
     }
 
@@ -89,7 +93,7 @@ public class ShopMapFragment extends Fragment {
     }
 
 
-    public void setMap(ShopViewModel shopViewModel){
+    public void setMap(ArrayList<ShopInfoShortModel> shopList){
         mapView = new MapView(getActivity());
         navigateFrom = ShopMapFragmentArgs.fromBundle(getArguments()).getNavigateFrom();
 
@@ -103,12 +107,18 @@ public class ShopMapFragment extends Fragment {
                 //shopViewModel을 토대로 좌표 재구성
                 break;
             }
+
+            //상점에서 옴
             case R.id.shopMainFragment:{
+                double shopLat = ShopMapFragmentArgs.fromBundle(getArguments()).getLat();
+                double shopLng = ShopMapFragmentArgs.fromBundle(getArguments()).getLng();
 
                 //좌표 표시, 패널 띄우기
-                mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(37.583912, 127.058981), 1, true);
+                mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(shopLat, shopLng), 1, true);
+
+                //전체 리스트 받아와서 띄우기기
                 break;
-            }
+           }
             //검색결과로 구성
             case R.id.searchDialogFragment:{
                 break;

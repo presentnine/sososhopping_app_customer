@@ -1,6 +1,7 @@
 package com.sososhopping.customer.account.service;
 
 import com.sososhopping.customer.account.dto.EmailDupCheckRequestDto;
+import com.sososhopping.customer.account.dto.NicknameDupCheckRequestDto;
 import com.sososhopping.customer.account.dto.SignUpRequestDto;
 
 import retrofit2.Call;
@@ -15,4 +16,6 @@ public interface SignUpService {
     Call<Void> requestEmailDuplicationCheck(@Body EmailDupCheckRequestDto dto);
 
     //닉네임 중복 api 필요
+    @POST("auth/signup/nickname")
+    Call<Void> requestNicknameDuplicationCheck(@Body NicknameDupCheckRequestDto dto);
 }

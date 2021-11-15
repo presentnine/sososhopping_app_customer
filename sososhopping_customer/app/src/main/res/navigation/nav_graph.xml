@@ -10,9 +10,6 @@
     <navigation android:id="@+id/navigation_shop"
         app:startDestination="@id/shop_graph">
         <include app:graph="@navigation/nav_shop_graph" />
-        <action
-            android:id="@+id/action_global_navigation_login"
-            app:destination="@id/navigation_login" />
     </navigation>
 
     <navigation android:id="@+id/navigation_login"
@@ -28,5 +25,27 @@
 
     <action android:id="@+id/action_global_networkErrorDialog"
         app:destination="@id/networkErrorDialog"/>
+    <dialog
+        android:id="@+id/logInRequiredDialog"
+        android:name="com.sososhopping.customer.error.view.LogInRequiredDialog"
+        android:label="LogInRequiredDialog"
+        tools:layout="@layout/error_ask_log_in_dialog">
+        <argument
+            android:name="ErrorMsgId"
+            app:argType="integer"
+            android:defaultValue="-1"/>
+    </dialog>
+    <action android:id="@+id/action_global_logInRequiredDialog"
+        app:destination="@id/logInRequiredDialog"/>
+    <action
+        android:id="@+id/action_global_navigation_login"
+        app:destination="@id/navigation_login"
+        app:popUpTo="@id/navigation_shop"
+        app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_global_navigation_shop"
+        app:destination="@id/navigation_shop"
+        app:popUpTo="@id/nav_graph"
+        app:popUpToInclusive="true" />
 
 </navigation>

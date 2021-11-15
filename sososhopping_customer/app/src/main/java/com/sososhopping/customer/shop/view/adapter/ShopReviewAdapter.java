@@ -6,11 +6,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sososhopping.customer.common.DateFormatMethod;
 import com.sososhopping.customer.databinding.ItemShopReviewBinding;
 import com.sososhopping.customer.shop.model.ReviewModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class ShopReviewAdapter extends RecyclerView.Adapter<ShopReviewAdapter.ViewHolder>{
@@ -57,6 +59,7 @@ public class ShopReviewAdapter extends RecyclerView.Adapter<ShopReviewAdapter.Vi
             binding.textViewNickname.setText(reviewModel.getNickname());
             binding.textViewReviewContents.setText(reviewModel.getContent());
             binding.textViewRating.setText(Float.toString(reviewModel.getScore()));
+            binding.textViewReviewDate.setText(DateFormatMethod.dateFormatMin(reviewModel.getCreatedAt()));
         }
     }
 }

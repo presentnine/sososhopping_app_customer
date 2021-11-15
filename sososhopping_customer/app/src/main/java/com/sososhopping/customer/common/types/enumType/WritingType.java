@@ -1,8 +1,4 @@
-package com.sososhopping.customer.shop.model.enumType;
-
-import androidx.annotation.NonNull;
-
-import org.jetbrains.annotations.NotNull;
+package com.sososhopping.customer.common.types.enumType;
 
 public enum WritingType {
     EVENT("이벤트"), PROMOTION("소식");

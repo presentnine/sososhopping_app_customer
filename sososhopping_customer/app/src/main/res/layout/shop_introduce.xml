@@ -90,6 +90,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="5dp"
             android:orientation="vertical">
 
             <TextView
@@ -98,6 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
+                android:visibility="gone"
                 android:text="TextView"
                 android:textColor="@color/text_800" />
 
@@ -112,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="5dp"
                     android:paddingRight="10dp"
-                    android:text="위치 "
+                    android:text="위치"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -120,7 +122,8 @@
                     android:id="@+id/textView_shop_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:gravity="center"
+                    android:text="@string/introduce_location" />
             </LinearLayout>
 
             <LinearLayout
@@ -132,7 +135,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="영업시간 "
+                    android:text="영업시간"
                     android:gravity="center_vertical"
                     android:paddingBottom="5dp"
                     android:paddingRight="10dp"
@@ -148,14 +151,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="TextView" />
+                        android:text="@string/introduce_businessTime" />
 
                     <TextView
                         android:id="@+id/textView_shop_open_detail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="TextView" />
+                        android:gravity="center" />
                 </LinearLayout>
 
 
@@ -172,14 +174,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="10dp"
-                    android:text="연락처 "
+                    android:text="연락처"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/textView_shop_phone"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:gravity="center"/>
             </LinearLayout>
 
             <LinearLayout
@@ -192,7 +195,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="10dp"
-                    android:text="포인트 "
+                    android:text="포인트"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
 
@@ -200,7 +203,8 @@
                     android:id="@+id/textView_shop_point"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/introduce_point" />
+                    android:text="@string/introduce_point"
+                    android:gravity="center"/>
             </LinearLayout>
 
             <LinearLayout
@@ -223,7 +227,7 @@
                     android:layout_height="wrap_content"
                     android:paddingRight="5dp"
                     android:paddingLeft="5dp"
-                    android:text="TextView" />
+                    android:text="@string/introduce_description" />
             </LinearLayout>
 
             <LinearLayout

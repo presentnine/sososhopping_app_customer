@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/home2"
-        android:name="com.sososhopping.customer.home.HomeFragment"
+        android:name="com.sososhopping.customer.search.view.HomeFragment"
         android:label="home_fragment"
         tools:layout="@layout/home" >
         <action
@@ -55,6 +55,14 @@
         <argument
             android:name="navigateFrom"
             app:argType="integer" />
+        <argument
+            android:name="lat"
+            app:argType="float"
+            android:defaultValue="37.583912" />
+        <argument
+            android:name="lng"
+            app:argType="float"
+            android:defaultValue="127.058981" />
     </fragment>
 
     <fragment
@@ -71,6 +79,9 @@
             app:destination="@id/shopMapFragment"
             app:popUpTo="@id/shopMainFragment"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_shopMainFragment_to_shopReportFragment"
+            app:destination="@id/shopReportFragment" />
     </fragment>
     <dialog
         android:id="@+id/searchDialogFragment"
@@ -106,5 +117,16 @@
         <argument
             android:name="storeName"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/shopReportFragment"
+        android:name="com.sososhopping.customer.shop.view.ShopReportFragment"
+        android:label="ShopReportFragment"
+        tools:layout="@layout/shop_report">
+        <action
+            android:id="@+id/action_shopReportFragment_to_shopMapFragment"
+            app:destination="@id/shopMapFragment"
+            app:popUpTo="@id/shopReportFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

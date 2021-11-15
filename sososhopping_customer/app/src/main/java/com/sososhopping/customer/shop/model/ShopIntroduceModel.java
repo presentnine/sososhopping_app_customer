@@ -1,18 +1,21 @@
 package com.sososhopping.customer.shop.model;
 
 
-import com.sososhopping.customer.shop.model.typeclass.BusinessDays;
-import com.sososhopping.customer.shop.model.typeclass.Location;
+import com.sososhopping.customer.common.types.BusinessDays;
+import com.sososhopping.customer.common.types.Location;
 
 import java.util.ArrayList;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class ShopIntroduceModel {
     int storeId;
+    String storeType;
     String name;
     //대표이미지
     String imgUrl;

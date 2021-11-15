@@ -50,7 +50,7 @@
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+            app:layout_constraintBottom_toTopOf="@+id/constlayout_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
@@ -66,9 +66,24 @@
         </FrameLayout>
 
 
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/button_accountLogIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:text="로그인하기"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:backgroundTint="@color/main_400"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout2"
+            android:id="@+id/constlayout_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -76,7 +91,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0">
-
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_navigation"
@@ -88,18 +102,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:labelVisibilityMode="labeled"
                 app:menu="@menu/menu_bottom_nav">
-
-                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                    android:id="@+id/button_accountLogIn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="로그인하기"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:visibility="invisible"
-                    app:backgroundTint="@color/main_400" />
             </com.google.android.material.bottomnavigation.BottomNavigationView>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

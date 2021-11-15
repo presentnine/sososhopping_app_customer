@@ -81,8 +81,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:ellipsize="end"
             android:text="A"
+            android:textSize="@dimen/search_shop_description" />
+        <TextView
+            android:id="@+id/textView_reviewDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:gravity="right"
+            android:text="2000/00/00 HH:MM"
             android:textSize="@dimen/search_shop_description" />
     </LinearLayout>
 

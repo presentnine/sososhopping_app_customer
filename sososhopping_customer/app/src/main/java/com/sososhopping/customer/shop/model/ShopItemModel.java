@@ -10,11 +10,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShopItemModel {
-    int storeId;
+    int itemId;
     String name;
     String description;
     String purchaseUnit;
-    int price;
     String imgUrl;
+    int price;
     Boolean saleStatus;
 }

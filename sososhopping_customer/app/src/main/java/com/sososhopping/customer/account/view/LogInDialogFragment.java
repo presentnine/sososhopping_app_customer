@@ -1,11 +1,13 @@
 package com.sososhopping.customer.account.view;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,12 +36,14 @@ public class LogInDialogFragment extends DialogFragment {
     private NavController navController;
     private AccountLogInDialogBinding binding;
     private LogInViewModel logInViewModel;
+
     private String email;
     private String password;
 
     public static LogInDialogFragment newInstance() {
         return new LogInDialogFragment();
     }
+
 
     @Override
     public void onResume() {
@@ -131,7 +135,7 @@ public class LogInDialogFragment extends DialogFragment {
                         LogInDialogFragment.this::onNetworkError);
 
                 //for test
-                onLoggedIn(new LogInRequestDto(email, password), new LogInResponseDto(email));
+                //onLoggedIn(new LogInRequestDto(email, password), new LogInResponseDto(email));
             }
         });
     }
@@ -153,14 +157,16 @@ public class LogInDialogFragment extends DialogFragment {
         String id = requestDto.getEmail();
         String password = requestDto.getPassword();
         String token = responseDto.getToken();
+
         SharedPreferenceManager.setString(getContext(), Constant.SHARED_PREFERENCE_KEY_ID, id);
         SharedPreferenceManager.setString(getContext(), Constant.SHARED_PREFERENCE_KEY_PASSWORD, password);
         ((MainActivity) getActivity()).setLoginToken(token);
 
         //로그인 처리 후 홈화면 이동
-        ((MainActivity) getActivity()).initLoginButton(true);
+        ((MainActivity) getActivity()).setIsLogIn(true);
+        ((MainActivity) getActivity()).initLoginButton();
         Toast.makeText(getContext(),getResources().getString(R.string.login_success),Toast.LENGTH_SHORT).show();
-        navController.navigate(R.id.action_logInDialogFragment_to_shop_graph);
+        navController.navigate(R.id.action_global_navigation_shop);
     }
 
     private void onNetworkError() {

@@ -3,7 +3,6 @@ package com.sososhopping.customer.shop.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,7 +27,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.ShopMainBinding;
-import com.sososhopping.customer.search.ShopInfoShort;
+import com.sososhopping.customer.search.model.ShopInfoShortModel;
 import com.sososhopping.customer.search.view.ShopListFragment;
 import com.sososhopping.customer.shop.viewmodel.ShopInfoViewModel;
 
@@ -36,7 +35,7 @@ public class ShopMainFragment extends Fragment {
 
     private NavController navController;
     private ShopMainBinding binding;
-    private ShopInfoShort shopInfoShort;
+    private ShopInfoShortModel shopInfoShortModel;
     private ShopInfoViewModel shopInfoViewModel;
 
 
@@ -61,13 +60,16 @@ public class ShopMainFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.shop_main,container,false);
 
         //상단 정보 설정
-        shopInfoShort = getArguments().getParcelable("shopInfo");
-        setShopInfo(shopInfoShort);
+        shopInfoShortModel = getArguments().getParcelable("shopInfo");
+        setShopInfo(shopInfoShortModel);
 
         //ViewModel Setting -> Main에서 유지되게
-        shopInfoViewModel = new ViewModelProvider(this).get(ShopInfoViewModel.class);
-        shopInfoViewModel.setShopId(shopInfoShort.getShopId());
-        shopInfoViewModel.setShopName(shopInfoShort.getShopName());
+        shopInfoViewModel = new ViewModelProvider(getActivity()).get(ShopInfoViewModel.class);
+        shopInfoViewModel.setShopId(shopInfoShortModel.getStoreId());
+        shopInfoViewModel.setShopName(shopInfoShortModel.getName());
+        shopInfoViewModel.setPhone(shopInfoShortModel.getPhone());
+        shopInfoViewModel.setLocation(shopInfoShortModel.getLocation());
+
 
 
         return binding.getRoot();
@@ -116,7 +118,7 @@ public class ShopMainFragment extends Fragment {
         MainActivity activity = (MainActivity) getActivity();
 
         //상단바 설정
-        setAppBar(activity, shopInfoShort.getShopName());
+        setAppBar(activity, shopInfoShortModel.getName());
 
         //하단바 숨기기
         activity.hideBottomNavigation();
@@ -124,30 +126,30 @@ public class ShopMainFragment extends Fragment {
     }
 
 
-    public void setShopInfo(ShopInfoShort shopInfoShort){
-        binding.textViewShopName.setText(shopInfoShort.getShopName());
-        binding.textViewRating.setText(Double.toString(shopInfoShort.getRating()));
-        binding.textViewDistance.setText(Integer.toString(shopInfoShort.getDistance())+"m");
+    public void setShopInfo(ShopInfoShortModel shopInfoShortModel){
+        binding.textViewShopName.setText(shopInfoShortModel.getName());
+        binding.textViewRating.setText(Double.toString(shopInfoShortModel.getScore()));
+        binding.textViewDistance.setText(Integer.toString(shopInfoShortModel.getDistance())+"m");
 
         //지역화폐, 배달여부
-        if(!shopInfoShort.isLocalPay()){
+        if(!shopInfoShortModel.isLocalCurrencyStatus()){
             binding.layoutLocalPay.setVisibility(View.GONE);
         }
-        if(!shopInfoShort.isDelivery()){
+        if(!shopInfoShortModel.isDeliveryStatus()){
             binding.layoutDelivery.setVisibility(View.GONE);
         }
-        if(!shopInfoShort.isFavorite()){
+        if(!shopInfoShortModel.isInterestStore()){
             binding.layoutFavorite.setVisibility(View.GONE);
         }
 
         //이미지
         Glide.with(binding.getRoot())
-                .load(shopInfoShort.getShopImageURL())
+                .load(shopInfoShortModel.getImgUrl())
                 .transform(new CenterCrop(),new RoundedCorners(10))
                 .thumbnail(0.2f)
-                .placeholder(R.drawable.icon_category_cafe)
-                .error(R.drawable.icon_category_cafe)
-                .fallback(R.drawable.icon_category_cafe)
+                .placeholder(R.drawable.icon_app_groceries)
+                .error(R.drawable.icon_app_groceries)
+                .fallback(R.drawable.icon_app_groceries)
                 .into(binding.imageViewStore);
     }
 
@@ -160,11 +162,11 @@ public class ShopMainFragment extends Fragment {
                 switch (item.getItemId()){
 
                     case R.id.menu_call:{
-                        if(shopInfoShort.getPhone() == null){
+                        if(shopInfoShortModel.getPhone() == null){
                             Toast.makeText(getContext(),"등록된 전화번호가 없습니다",Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+shopInfoShort.getPhone())));
+                            startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+ shopInfoShortModel.getPhone())));
                         }
                         break;
                     }
@@ -173,8 +175,8 @@ public class ShopMainFragment extends Fragment {
 
                     }
                     case R.id.menu_report:{
+                        navController.navigate(R.id.action_shopMainFragment_to_shopReportFragment);
                         break;
-
                     }
                 }
 

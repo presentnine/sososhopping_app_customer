@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 public class ShopEventCouponAdapter extends RecyclerView.Adapter<ShopEventCouponAdapter.ViewHolder>{
     ArrayList<CouponModel> couponModels = new ArrayList<>();
+    public String storeName;
     ItemShopCouponBinding binding;
 
     @NonNull
@@ -81,7 +82,7 @@ public class ShopEventCouponAdapter extends RecyclerView.Adapter<ShopEventCoupon
 
             //코드, 이름
             binding.textViewCouponName.setText(couponModel.getCouponName());
-            binding.textViewStoreName.setText(couponModel.getStoreName());
+            binding.textViewStoreName.setText(storeName);
 
             //제한조건
             if(couponModel.getMinimumOrderPrice() != null){
@@ -107,6 +108,11 @@ public class ShopEventCouponAdapter extends RecyclerView.Adapter<ShopEventCoupon
                     binding.textViewEndDate.setText(DateFormatMethod.dateFormatDay(couponModel.getEndDate()));
                 }
             }
+
+            if(couponModel.getExpiryDate() != null){
+                binding.textViewCouponExpire.setText(DateFormatMethod.dateFormatDay(couponModel.getExpiryDate()));
+            }
+
         }
     }
 }

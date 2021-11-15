@@ -63,11 +63,6 @@
             app:destination="@id/findPasswordFragment"
             app:popUpTo="@id/logInDialogFragment"
             app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_logInDialogFragment_to_shop_graph"
-            app:destination="@id/shop_graph"
-            app:popUpTo="@id/signUpStartFragment"
-            app:popUpToInclusive="true" />
     </dialog>
     <fragment
         android:id="@+id/signUpInfoFragment"
@@ -81,5 +76,4 @@
             app:popUpTo="@id/signUpStartFragment"
             app:popUpToInclusive="false" />
     </fragment>
-    <include app:graph="@navigation/nav_shop_graph" />
 </navigation>

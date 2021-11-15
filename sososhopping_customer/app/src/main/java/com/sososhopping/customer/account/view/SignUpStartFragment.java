@@ -57,6 +57,7 @@ public class SignUpStartFragment extends Fragment {
     public void onResume() {
         ((MainActivity)getActivity()).hideTopAppBar();
         ((MainActivity)getActivity()).hideBottomNavigation();
+        ((MainActivity)getActivity()).hideLoginButton();
         super.onResume();
     }
 
