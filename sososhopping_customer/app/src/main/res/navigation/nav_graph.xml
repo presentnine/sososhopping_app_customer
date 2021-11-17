@@ -147,5 +147,10 @@
         app:destination="@id/home2"
         app:popUpTo="@id/nav_graph"
         app:popUpToInclusive="true" />
+    <fragment
+        android:id="@+id/mysosoMainFragment"
+        android:name="com.sososhopping.customer.mysoso.view.MysosoMainFragment"
+        android:label="MysosoMainFragment"
+        tools:layout="@layout/mysoso_main" />
 
 </navigation>

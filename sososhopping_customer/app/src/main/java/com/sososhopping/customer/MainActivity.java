@@ -21,12 +21,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
 
 import com.google.android.material.navigation.NavigationBarView;
-import com.sososhopping.customer.account.dto.LogInRequestDto;
 import com.sososhopping.customer.account.dto.LogInResponseDto;
 import com.sososhopping.customer.account.viewmodel.LogInViewModel;
 import com.sososhopping.customer.common.Constant;
@@ -37,7 +33,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,29 +61,36 @@ public class MainActivity extends AppCompatActivity {
 
         //하단바 -> 그냥 커스텀으로 사용하기
         //NavigationUI.setupWithNavController(binding.bottomNavigation,navController);
-        binding.bottomNavigation.getMenu().findItem(R.id.home2).setChecked(true);
+        binding.bottomNavigation.getMenu().findItem(R.id.menu_home).setChecked(true);
         binding.bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
 
                 switch (item.getItemId()) {
-                    case R.id.home2: {
+                    case R.id.menu_home: {
                         getViewModelStore().clear();
-                        binding.bottomNavigation.getMenu().findItem(R.id.home2).setChecked(true);
+                        binding.bottomNavigation.getMenu().findItem(R.id.menu_home).setChecked(true);
                         navController.navigate(R.id.home2, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
                         break;
                     }
                     case R.id.navigation_login: {
                         getViewModelStore().clear();
-                        binding.bottomNavigation.getMenu().findItem(R.id.home2).setChecked(true);
+                        binding.bottomNavigation.getMenu().findItem(R.id.menu_home).setChecked(true);
                         navController.navigate(R.id.action_global_navigation_login);
                         break;
                     }
 
-                    case R.id.interestShopListFragment: {
+                    case R.id.menu_interest: {
                         getViewModelStore().clear();
-                        binding.bottomNavigation.getMenu().findItem(R.id.interestShopListFragment).setChecked(true);
+                        binding.bottomNavigation.getMenu().findItem(R.id.menu_interest).setChecked(true);
                         navController.navigate(R.id.interestShopListFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                        break;
+                    }
+
+                    case R.id.menu_mysoso: {
+                        getViewModelStore().clear();
+                        binding.bottomNavigation.getMenu().findItem(R.id.menu_mysoso).setChecked(true);
+                        navController.navigate(R.id.mysosoMainFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
                         break;
                     }
                 }
@@ -102,21 +104,30 @@ public class MainActivity extends AppCompatActivity {
             public void onNavigationItemReselected(@NonNull @NotNull MenuItem item) {
 
                 switch (item.getItemId()) {
-                    case R.id.home2: {
+                    case R.id.menu_home: {
                         getViewModelStore().clear();
+                        binding.bottomNavigation.getMenu().findItem(R.id.menu_home).setChecked(true);
                         navController.navigate(R.id.home2, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
                         break;
                     }
                     case R.id.navigation_login: {
                         getViewModelStore().clear();
-                        binding.bottomNavigation.getMenu().findItem(R.id.home2).setChecked(true);
+                        binding.bottomNavigation.getMenu().findItem(R.id.menu_home).setChecked(true);
                         navController.navigate(R.id.action_global_navigation_login);
                         break;
                     }
 
-                    case R.id.interestShopListFragment: {
+                    case R.id.menu_interest: {
                         getViewModelStore().clear();
+                        binding.bottomNavigation.getMenu().findItem(R.id.menu_interest).setChecked(true);
                         navController.navigate(R.id.interestShopListFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                        break;
+                    }
+
+                    case R.id.menu_mysoso: {
+                        getViewModelStore().clear();
+                        binding.bottomNavigation.getMenu().findItem(R.id.menu_mysoso).setChecked(true);
+                        navController.navigate(R.id.mysosoMainFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
                         break;
                     }
                 }
@@ -174,13 +185,10 @@ public class MainActivity extends AppCompatActivity {
                     doubleBackToExitPressedOnce = false;
                 }
             }, 2000);
-        }
-        else if (start == R.id.signUpStartFragment || start == R.id.interestShopListFragment) {
+        } else if (start == R.id.signUpStartFragment || start == R.id.interestShopListFragment || start == R.id.mysosoMainFragment) {
             navController.navigate(R.id.action_global_home2, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
-            binding.bottomNavigation.getMenu().findItem(R.id.home2).setChecked(true);
-        }
-
-        else {
+            binding.bottomNavigation.getMenu().findItem(R.id.menu_home).setChecked(true);
+        } else {
             super.onBackPressed();
         }
     }

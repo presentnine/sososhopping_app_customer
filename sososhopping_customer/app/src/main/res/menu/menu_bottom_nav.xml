@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/interestShopListFragment"
+    <item android:id="@+id/menu_interest"
         android:icon="@drawable/ic_baseline_favorite_24"
         android:title="@string/nav_interest"/>
 
@@ -10,7 +10,7 @@
         android:icon="@drawable/ic_baseline_chat_24"
         android:title="@string/nav_chat"/>
 
-    <item android:id="@+id/home2"
+    <item android:id="@+id/menu_home"
         android:icon="@drawable/ic_baseline_home_24"
         android:title="@string/nav_home"/>
 
@@ -18,7 +18,7 @@
         android:icon="@drawable/ic_baseline_shopping_cart_24"
         android:title="@string/nav_cart"/>
 
-    <item android:id="@+id/menu_myInfo"
+    <item android:id="@+id/menu_mysoso"
         android:icon="@drawable/ic_baseline_person_24"
         android:title="@string/nav_my"/>
 

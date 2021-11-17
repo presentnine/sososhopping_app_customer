@@ -79,6 +79,20 @@
     <string name="report_input">신고를 작성했습니다.</string>
     <string name="report_description">불법, 부정, 허위 및 불량 업소 등에 관하여 신고받은 내용은 고객센터에서 면밀히 검토 후 조치합니다.\n금전적인 피해 및 기타 추가적인 증빙사항은 위 고객센터 이메일 (abcdefg@gmail.com)로 연락주세요</string>
 
+    <!--My소소-->
+    <string name="mysoso">My소소</string>
+    <string name="mysoso_myInfo">`닉네임`님의 정보 보기</string>
+    <string name="mysoso_interest">나의 관심가게</string>
+    <string name="mysoso_chat">채팅목록</string>
+    <string name="mysoso_serviceInfo">고객센터</string>
+    <string name="mysoso_setting">설정</string>
+    <string name="mysoso_shoppingBag">장바구니</string>
+    <string name="mysoso_payHistory">결제내역</string>
+    <string name="mysoso_myRating">내 후기</string>
+    <string name="mysoso_point">포인트</string>
+    <string name="mysoso_coupon">쿠폰</string>
+    <string name="mysoso_map">지도</string>
+
 
 
 </resources>
