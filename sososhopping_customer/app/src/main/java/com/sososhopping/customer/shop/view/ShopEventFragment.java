@@ -56,25 +56,7 @@ public class ShopEventFragment extends Fragment {
 
         binding.recyclerViewCoupon.setAdapter(shopEventCouponAdapter);
         binding.recyclerViewBoard.setAdapter(shopEventBoardAdapter);
-
-        //Adapter 연결
-        /*ArrayList<CouponModel> dummyCouponItems = new ArrayList<>();
-        dummyCouponItems.add(new CouponModel(1, "상점", "가입기념 쿠폰","QBAC12ABCDDIIGPH",10000,"2021-11-03T23:44:51.316992","2021-11-30T00:00:00.113", CouponType.FIX,10000,null));
-        dummyCouponItems.add(new CouponModel(1, "상점", "단골손님 쿠폰","QBAC12ABCDDIIGPH",10000,"2021-11-03T23:44:51.316992","2021-12-30T00:00:00.123",CouponType.RATE,null,30.0));
-        dummyCouponItems.add(new CouponModel(1, "상점", "100번째 가입손님 쿠폰","1234567812345678",10000,null,null,CouponType.FIX,20000,null));
-        dummyCouponItems.add(new CouponModel(1, "상점", "가입기념쿠폰","999999999999",null,null,null,CouponType.RATE,null,10.0));
-        shopEventCouponAdapter.setCouponModels(dummyCouponItems);
-
-        //Adapter 연결
-        ArrayList<EventItemModel> dummyboardItems = new ArrayList<>();
-        dummyboardItems.add(new EventItemModel(1,"샘플 제목1입니다","샘플 작성글 설명입니다. \n 오늘의 이벤트에 대한 소식입니다. \n 최대 50글자 까지 보여줍니다. \n 최대 50글자 까지 보여줍니다.", "2021-11-03T23:44:51.316992", WritingType.EVENT, null));
-        dummyboardItems.add(new EventItemModel(1,"샘플 제목2입니다","샘플 작성글 설명입니다. \n 오늘의 이벤트에 대한 소식입니다. \n 최대 50글자 까지 보여줍니다.", "2021-11-04T12:44:51.316992", WritingType.PROMOTION, null));
-        dummyboardItems.add(new EventItemModel(1,"샘플 제목3입니다","샘플 작성글 설명입니다. \n 오늘의 이벤트에 대한 소식입니다. \n 최대 50글자 까지 보여줍니다.", "2021-11-05T13:14:51.316992", WritingType.PROMOTION, null));
-        dummyboardItems.add(new EventItemModel(1,"샘플 제목4입니다","샘플 작성글 설명입니다. \n 오늘의 이벤트에 대한 소식입니다. \n 최대 50글자 까지 보여줍니다. \n 최대 50글자 까지 보여줍니다.", "2021-11-06T11:11:51.316992", WritingType.EVENT, null));
-        dummyboardItems.add(new EventItemModel(1,"샘플 제목5입니다","샘플 작성글 설명입니다. \n 오늘의 이벤트에 대한 소식입니다. \n 최대 50글자 까지 보여줍니다. \n 최대 50글자 까지 보여줍니다.", "2021-11-07T07:12:51.316992", WritingType.PROMOTION, null));
-        shopEventBoardAdapter.setShopBoardItemModels(dummyboardItems);*/
-
-
+        
         binding.imageButtonBoardArrowDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

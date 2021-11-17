@@ -107,10 +107,7 @@ public class ShopIntroduceFragment extends Fragment {
             //영업일 계산
             try {
                 binding.textViewShopOpen.setText(shopIntroduceViewModel.getBusinessDay(shopIntroduceModel));
-            }catch (Exception e){
-                //혹시 에러 터져도 진행되게
-                e.printStackTrace();
-            }
+
 
             binding.textViewShopOpenDetail.setText(shopIntroduceModel.getExtraBusinessDay());
 
@@ -139,6 +136,11 @@ public class ShopIntroduceFragment extends Fragment {
             //이미지
             CarouselMethod carouselMethod = new CarouselMethod(binding.layoutIndicators, binding.viewpagerIntroduce, getContext());
             carouselMethod.setCarousel(shopIntroduceModel.getStoreImages());
+
+            }catch (Exception e){
+                //View에서는 혹시 에러 터져도 진행되게
+                e.printStackTrace();
+            }
         }
     }
 

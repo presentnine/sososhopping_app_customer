@@ -166,7 +166,7 @@ public class LogInDialogFragment extends DialogFragment {
         ((MainActivity) getActivity()).setIsLogIn(true);
         ((MainActivity) getActivity()).initLoginButton();
         Toast.makeText(getContext(),getResources().getString(R.string.login_success),Toast.LENGTH_SHORT).show();
-        navController.navigate(R.id.action_global_navigation_shop);
+        navController.navigate(R.id.action_global_home2);
     }
 
     private void onNetworkError() {

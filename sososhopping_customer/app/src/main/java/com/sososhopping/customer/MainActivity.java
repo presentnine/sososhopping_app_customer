@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     Boolean isLogIn = false;
     String loginToken;
 
-    public ActivityMainBinding getBinding(){
+    public ActivityMainBinding getBinding() {
         return binding;
     }
 
@@ -64,30 +64,64 @@ public class MainActivity extends AppCompatActivity {
         //navController.addOnDestinationChangedListener(new CustomDestinationChangedListener(binding,this));
 
 
-        //하단바
-       NavigationUI.setupWithNavController(binding.bottomNavigation,navController);
-       binding.bottomNavigation.setOnItemReselectedListener(new NavigationBarView.OnItemReselectedListener() {
-           @Override
-           public void onNavigationItemReselected(@NonNull @NotNull MenuItem item) {
+        //하단바 -> 그냥 커스텀으로 사용하기
+        //NavigationUI.setupWithNavController(binding.bottomNavigation,navController);
+        binding.bottomNavigation.getMenu().findItem(R.id.home2).setChecked(true);
+        binding.bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
 
-               switch (item.getItemId()){
-                   case R.id.navigation_shop:{
-                       getViewModelStore().clear();
-                       navController.navigate(R.id.action_global_navigation_shop, null, new NavOptions.Builder().setPopUpTo(R.id.nav_shop_graph,true).build());
-                       break;
-                   }
-                   case R.id.signUpStartFragment:{
-                       break;
-                   }
+                switch (item.getItemId()) {
+                    case R.id.home2: {
+                        getViewModelStore().clear();
+                        binding.bottomNavigation.getMenu().findItem(R.id.home2).setChecked(true);
+                        navController.navigate(R.id.home2, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                        break;
+                    }
+                    case R.id.navigation_login: {
+                        getViewModelStore().clear();
+                        binding.bottomNavigation.getMenu().findItem(R.id.home2).setChecked(true);
+                        navController.navigate(R.id.action_global_navigation_login);
+                        break;
+                    }
 
-                   case R.id.interestShopListFragment:{
-                       getViewModelStore().clear();
-                       navController.navigate(R.id.action_global_navigation_favorite, null, new NavOptions.Builder().setPopUpTo(R.id.nav_interest_graph, true).build());
-                       break;
-                   }
-               }
-           }
-       });
+                    case R.id.interestShopListFragment: {
+                        getViewModelStore().clear();
+                        binding.bottomNavigation.getMenu().findItem(R.id.interestShopListFragment).setChecked(true);
+                        navController.navigate(R.id.interestShopListFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                        break;
+                    }
+                }
+
+                return false;
+            }
+        });
+
+        binding.bottomNavigation.setOnItemReselectedListener(new NavigationBarView.OnItemReselectedListener() {
+            @Override
+            public void onNavigationItemReselected(@NonNull @NotNull MenuItem item) {
+
+                switch (item.getItemId()) {
+                    case R.id.home2: {
+                        getViewModelStore().clear();
+                        navController.navigate(R.id.home2, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                        break;
+                    }
+                    case R.id.navigation_login: {
+                        getViewModelStore().clear();
+                        binding.bottomNavigation.getMenu().findItem(R.id.home2).setChecked(true);
+                        navController.navigate(R.id.action_global_navigation_login);
+                        break;
+                    }
+
+                    case R.id.interestShopListFragment: {
+                        getViewModelStore().clear();
+                        navController.navigate(R.id.interestShopListFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                        break;
+                    }
+                }
+            }
+        });
 
         //약 로그인 안되어있으면 맨 밑을 플로팅 버튼으로 막고 시작
         initLoginButton();
@@ -122,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
     //뒤로가기
     private boolean doubleBackToExitPressedOnce = false;
+
     @Override
     public void onBackPressed() {
         int start = Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId();
@@ -140,22 +175,24 @@ public class MainActivity extends AppCompatActivity {
                 }
             }, 2000);
         }
-        else if(start == R.id.signUpStartFragment){
-            navController.navigate(R.id.action_global_navigation_shop, null,new NavOptions.Builder().setPopUpTo(R.id.nav_graph,true).build());
+        else if (start == R.id.signUpStartFragment || start == R.id.interestShopListFragment) {
+            navController.navigate(R.id.action_global_home2, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+            binding.bottomNavigation.getMenu().findItem(R.id.home2).setChecked(true);
         }
+
         else {
             super.onBackPressed();
         }
     }
 
 
-    private void autoLogIn(){
+    private void autoLogIn() {
         String id = SharedPreferenceManager.getString(getApplicationContext(), Constant.SHARED_PREFERENCE_KEY_ID);
         String password = SharedPreferenceManager.getString(getApplicationContext(), Constant.SHARED_PREFERENCE_KEY_PASSWORD);
 
-        if(id != null && password != null){
+        if (id != null && password != null) {
             LogInViewModel logInViewModel = new LogInViewModel();
-            logInViewModel.autoLogin(id, password, this::onLoggedIn,this::onLoginFailed);
+            logInViewModel.autoLogin(id, password, this::onLoggedIn, this::onLoginFailed);
         }
     }
 
@@ -167,20 +204,19 @@ public class MainActivity extends AppCompatActivity {
         setLoginToken(responseDto.getToken());
         this.setIsLogIn(true);
         initLoginButton();
-        Toast.makeText(getApplicationContext(),getResources().getString(R.string.login_success),Toast.LENGTH_SHORT).show();
-        navController.navigate(R.id.action_global_navigation_shop);
+        Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_success), Toast.LENGTH_SHORT).show();
     }
 
     //권한
-    public void getPermission(){
+    public void getPermission() {
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-        if(permissionCheck == PackageManager.PERMISSION_DENIED){ //포그라운드 위치 권한 확인
+        if (permissionCheck == PackageManager.PERMISSION_DENIED) { //포그라운드 위치 권한 확인
             //위치 권한 요청
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
         }
     }
 
-    public void initLoginButton(){
+    public void initLoginButton() {
         if (isLogIn) {
             binding.buttonAccountLogIn.setVisibility(View.GONE);
             binding.bottomNavigation.setClickable(true);
@@ -189,31 +225,42 @@ public class MainActivity extends AppCompatActivity {
             binding.bottomNavigation.setClickable(false);
         }
     }
-    public void hideLoginButton(){
+
+    public void hideLoginButton() {
         binding.buttonAccountLogIn.setVisibility(View.GONE);
     }
-    public void showBottomNavigation(){
+
+    public void showBottomNavigation() {
         binding.bottomNavigation.setVisibility(View.VISIBLE);
     }
-    public void hideBottomNavigation(){
+
+    public void hideBottomNavigation() {
         binding.bottomNavigation.setVisibility(View.GONE);
     }
-    public void showTopAppBar(){
+
+    public void showTopAppBar() {
         binding.topAppBar.setVisibility(View.VISIBLE);
     }
-    public void hideTopAppBar(){
+
+    public void hideTopAppBar() {
         binding.topAppBar.setVisibility(View.GONE);
     }
+
     public String getLoginToken() {
         return loginToken;
     }
+
     public void setLoginToken(String loginToken) {
         this.loginToken = loginToken;
     }
-    public void setIsLogIn(boolean is){
+
+    public void setIsLogIn(boolean is) {
         this.isLogIn = is;
     }
-    public boolean getIsLogIn(){return this.isLogIn;}
+
+    public boolean getIsLogIn() {
+        return this.isLogIn;
+    }
 
     //해시 키 값 구하기
     private void getAppKeyHash() {

@@ -106,8 +106,7 @@ public class InterestShopListFragment extends Fragment {
                 //검색조건으로 이동
                 Bundle bundle =  new Bundle();
                 bundle.putParcelable("shopInfo", shopListAdapter.getShopLists().get(pos));
-                navController.navigate(R.id.action_global_navigation_shop, bundle);
-                //navController.navigate(R.id.action_interestShopListFragment_to_nav_shop_graph, bundle);
+                navController.navigate(R.id.action_interestShopListFragment_to_shop_graph, bundle);
             }
 
             @Override

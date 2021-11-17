@@ -94,11 +94,11 @@ public class HomeFragment extends Fragment{
         navController = Navigation.findNavController(view);
 
         //다른데서 왔으면 바로 토스해주기
-        if(getArguments() != null){
+        /*if(getArguments() != null){
             if(getArguments().getParcelable("shopInfo") != null){
                 NavHostFragment.findNavController(getParentFragment()).navigate(R.id.shop_graph, getArguments());
             }
-        }
+        }*/
 
 
 
