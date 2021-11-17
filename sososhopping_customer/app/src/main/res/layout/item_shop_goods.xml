@@ -17,9 +17,9 @@
 
                 <ImageView
                     android:id="@+id/imageView_goods"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
-                    android:layout_margin="5dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="5dp"
                     android:scaleType="centerCrop"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -32,6 +32,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:paddingLeft="5dp"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -49,7 +50,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Goods Name"
-                            android:textSize="18dp" />
+                            android:textSize="14dp" />
                     </LinearLayout>
 
                     <TextView
@@ -58,6 +59,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:ellipsize="end"
+                        android:maxLines="2"
                         android:text="A"
                         android:textSize="@dimen/search_shop_description" />
 
@@ -83,14 +85,14 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="xx개"
-                                android:textSize="18dp" />
+                                android:textSize="14dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text=" / "
-                                android:textSize="18dp" />
+                                android:textSize="14dp" />
 
                             <TextView
                                 android:id="@+id/textView_item_price"
@@ -98,7 +100,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="4000원"
-                                android:textSize="18dp" />
+                                android:textSize="14dp" />
                         </LinearLayout>
 
 
@@ -124,7 +126,7 @@
                                 android:padding="0dp"
                                 android:text=" - "
                                 android:textColor="@color/text_400"
-                                android:textSize="18dp"
+                                android:textSize="14dp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -133,7 +135,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="1"
-                                android:textSize="18dp" />
+                                android:textSize="14dp" />
 
                             <Button
                                 android:id="@+id/button_count_plus"
@@ -147,7 +149,7 @@
                                 android:padding="0dp"
                                 android:text=" + "
                                 android:textColor="@color/text_400"
-                                android:textSize="18dp"
+                                android:textSize="14dp"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
@@ -155,13 +157,15 @@
                             android:id="@+id/button_item_add"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:drawableLeft="@drawable/ic_baseline_add_shopping_cart_24"
-                            android:drawableTint="@color/white"
+                            app:icon="@drawable/ic_baseline_add_shopping_cart_24"
+                            app:iconTint="@color/white"
+                            app:iconGravity="textStart"
                             android:insetTop="0dp"
                             android:insetBottom="0dp"
                             android:minWidth="0dp"
                             android:minHeight="0dp"
                             android:text="담기"
+                            android:textSize="@dimen/search_shop_description"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="1.0"

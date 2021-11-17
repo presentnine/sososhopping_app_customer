@@ -119,6 +119,7 @@ public class ShopMainFragment extends Fragment {
 
         //상단바 설정
         setAppBar(activity, shopInfoShortModel.getName());
+        activity.showTopAppBar();
 
         //하단바 숨기기
         activity.hideBottomNavigation();

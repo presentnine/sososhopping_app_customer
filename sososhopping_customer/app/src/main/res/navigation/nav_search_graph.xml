@@ -17,6 +17,11 @@
         <action
             android:id="@+id/action_home2_to_shopMapFragment"
             app:destination="@id/shopMapFragment" />
+        <action
+            android:id="@+id/action_home2_to_shop_graph"
+            app:destination="@id/shop_graph"
+            app:popUpTo="@id/home2"
+            app:popUpToInclusive="false"/>
     </fragment>
 
     <fragment

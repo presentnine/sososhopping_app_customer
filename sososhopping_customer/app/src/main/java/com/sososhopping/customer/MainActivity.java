@@ -79,6 +79,12 @@ public class MainActivity extends AppCompatActivity {
                    case R.id.signUpStartFragment:{
                        break;
                    }
+
+                   case R.id.interestShopListFragment:{
+                       getViewModelStore().clear();
+                       navController.navigate(R.id.action_global_navigation_favorite, null, new NavOptions.Builder().setPopUpTo(R.id.nav_interest_graph, true).build());
+                       break;
+                   }
                }
            }
        });

@@ -1,8 +1,12 @@
 package com.sososhopping.customer.common.gps;
 
+import android.util.Log;
+
 public class CalculateDistance {
     public static int distance(double lat1, double lat2, double lon1,
                                   double lon2) {
+
+        Log.d("위경도", lat1 + " " + lat2 + " " + lon1 + " " + lon2);
 
         final int R = 6371; // Radius of the earth
 

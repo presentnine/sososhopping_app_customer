@@ -38,8 +38,8 @@
 
                 <ImageView
                     android:id="@+id/imageView_board"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:adjustViewBounds="true" />
             </LinearLayout>
 
@@ -67,7 +67,7 @@
                     android:text="제목"
                     android:padding="5dp"
                     android:textColor="@color/text_400"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -76,8 +76,9 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
+                    android:maxLines="2"
                     android:padding="5dp"
-                    android:maxLines="3"
+                    android:textSize="12sp"
                     android:text="내용" />
 
             </LinearLayout>

@@ -77,7 +77,7 @@ public class HomeViewModel extends ViewModel {
 
             if(shopList.getValue() != null){
                 for(ShopInfoShortModel s : shopList.getValue()){
-                    s.setDistance(  CalculateDistance.distance(latitude, s.getLocation().getLat(),
+                    s.setDistance(CalculateDistance.distance(latitude, s.getLocation().getLat(),
                             longitude, s.getLocation().getLng()) );
                 }
             }

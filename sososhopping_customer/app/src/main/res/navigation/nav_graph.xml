@@ -6,8 +6,8 @@
     app:startDestination="@id/navigation_shop">
 
     <navigation android:id="@+id/navigation_favorite"
-        app:startDestination="@id/nav_favorite_graph">
-        <include app:graph="@navigation/nav_favroite_graph" />
+        app:startDestination="@id/nav_interest_graph">
+        <include app:graph="@navigation/nav_interest_graph" />
     </navigation>
 
 

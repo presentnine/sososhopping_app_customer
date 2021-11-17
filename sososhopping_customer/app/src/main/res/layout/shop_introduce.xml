@@ -67,7 +67,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:drawableLeft="@drawable/ic_baseline_favorite_24"
-            android:drawableTint="@color/text_800"
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:padding="0dp"

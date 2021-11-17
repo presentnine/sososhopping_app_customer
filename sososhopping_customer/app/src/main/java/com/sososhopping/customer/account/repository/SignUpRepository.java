@@ -90,11 +90,15 @@ public class SignUpRepository {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.code() == 201) onSuccess.run();
-                else onFailed.run();
+                else {
+                    response.raw();
+                    onFailed.run();
+                }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                t.printStackTrace();
                 onFailed.run();
             }
         });

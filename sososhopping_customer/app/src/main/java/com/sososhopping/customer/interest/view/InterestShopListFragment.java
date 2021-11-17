@@ -1,42 +1,53 @@
-package com.sososhopping.customer.favorite.view;
+package com.sososhopping.customer.interest.view;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDeepLinkBuilder;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
-import com.sososhopping.customer.databinding.FavoriteShopListBinding;
-import com.sososhopping.customer.favorite.viewmodel.FavoriteViewModel;
+import com.sososhopping.customer.databinding.InterestShopListBinding;
+import com.sososhopping.customer.interest.viewmodel.InterestViewModel;
 import com.sososhopping.customer.search.dto.ShopListDto;
 import com.sososhopping.customer.search.view.adapter.ShopListAdapter;
+import com.sososhopping.customer.shop.view.ShopMainFragment;
 
 import org.jetbrains.annotations.Nullable;
 
-public class FavoriteShopListFragment extends Fragment {
+import lombok.SneakyThrows;
 
-    private FavoriteShopListBinding binding;
-    private FavoriteViewModel favoriteViewModel;
+public class InterestShopListFragment extends Fragment {
+
+    private InterestShopListBinding binding;
+    private InterestViewModel interestViewModel;
     private NavController navController;
+
+    int clickedPos = -1;
 
 
     //shoplist와 동일 사용
     private ShopListAdapter shopListAdapter = new ShopListAdapter();
 
-    public static FavoriteShopListFragment newInstance() {return new FavoriteShopListFragment();}
+    public static InterestShopListFragment newInstance() {return new InterestShopListFragment();}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,21 +68,21 @@ public class FavoriteShopListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState){
         //binding 설정
-        binding = FavoriteShopListBinding.inflate(inflater,container,false);
+        binding = InterestShopListBinding.inflate(inflater,container,false);
 
         //Viewmodel 설정
-        favoriteViewModel = new ViewModelProvider(getActivity()).get(FavoriteViewModel.class);
+        interestViewModel = new ViewModelProvider(getActivity()).get(InterestViewModel.class);
 
         //뷰 선언
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         binding.recyclerViewShopList.setLayoutManager(layoutManager);
-        if(favoriteViewModel.getFavoriteList().getValue() != null){
-            shopListAdapter.setShopLists(favoriteViewModel.getFavoriteList().getValue());
+        if(interestViewModel.getFavoriteList().getValue() != null){
+            shopListAdapter.setShopLists(interestViewModel.getFavoriteList().getValue());
         }
         binding.recyclerViewShopList.setAdapter(shopListAdapter);
 
         //검색
-        favoriteViewModel.requestFavorite(
+        interestViewModel.requestInterest(
                 ((MainActivity)getActivity()).getLoginToken(),
                 this::onSearchSuccessed,
                 this::onFailedLogIn,
@@ -89,17 +100,28 @@ public class FavoriteShopListFragment extends Fragment {
         //Controller 설정
         navController = Navigation.findNavController(view);
         shopListAdapter.setOnItemClickListener(new ShopListAdapter.OnItemClickListener() {
+            @SneakyThrows
             @Override
             public void onItemClick(View v, int pos) {
                 //검색조건으로 이동
                 Bundle bundle =  new Bundle();
                 bundle.putParcelable("shopInfo", shopListAdapter.getShopLists().get(pos));
-
+                navController.navigate(R.id.action_global_navigation_shop, bundle);
+                //navController.navigate(R.id.action_interestShopListFragment_to_nav_shop_graph, bundle);
             }
 
             @Override
             public void onFavoriteClick(View v, int pos) {
+                clickedPos = pos;
+
                 //즐겨찾기 해제
+                interestViewModel.changeInterest(
+                        ((MainActivity) getActivity()).getLoginToken(),
+                        shopListAdapter.getShopLists().get(pos).getStoreId(),
+                        InterestShopListFragment.this::onSuccessFavoriteChange,
+                        InterestShopListFragment.this::onFailedLogIn,
+                        InterestShopListFragment.this::onFailed,
+                        InterestShopListFragment.this::onNetworkError);
             }
         });
     }
@@ -122,8 +144,7 @@ public class FavoriteShopListFragment extends Fragment {
     }
 
     private void onSearchSuccessed(ShopListDto success){
-        favoriteViewModel.getFavoriteList().setValue(success.getShopInfoShortModels());
-        favoriteViewModel.calDistance(getContext(), favoriteViewModel.getFavoriteList().getValue());
+        interestViewModel.getFavoriteList().setValue(success.getShopInfoShortModels());
         shopListAdapter.setShopLists(success.getShopInfoShortModels());
         shopListAdapter.notifyDataSetChanged();
     }
@@ -134,6 +155,20 @@ public class FavoriteShopListFragment extends Fragment {
 
     private void onNetworkError() {
         navController.navigate(R.id.action_global_networkErrorDialog);
+    }
+
+
+    private void onSuccessFavoriteChange(){
+        if(clickedPos != -1){
+            //화면상의 표시 변경
+            shopListAdapter.getShopLists().remove(clickedPos);
+            shopListAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void onFailed() {
+        clickedPos = -1;
+        Toast.makeText(getContext(),getResources().getString(R.string.shop_error), Toast.LENGTH_LONG).show();
     }
 
 }

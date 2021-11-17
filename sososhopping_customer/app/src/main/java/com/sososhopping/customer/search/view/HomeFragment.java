@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.sososhopping.customer.MainActivity;
@@ -41,6 +42,7 @@ public class HomeFragment extends Fragment{
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
     }
 
@@ -56,6 +58,7 @@ public class HomeFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = HomeBinding.inflate(inflater, container, false);
+
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),5);
         binding.recyclerViewCategory.setLayoutManager(gridLayoutManager);
@@ -89,6 +92,15 @@ public class HomeFragment extends Fragment{
 
         homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
         navController = Navigation.findNavController(view);
+
+        //다른데서 왔으면 바로 토스해주기
+        if(getArguments() != null){
+            if(getArguments().getParcelable("shopInfo") != null){
+                NavHostFragment.findNavController(getParentFragment()).navigate(R.id.shop_graph, getArguments());
+            }
+        }
+
+
 
         categoryAdapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
