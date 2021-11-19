@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.R;
@@ -16,9 +18,13 @@ import com.sososhopping.customer.databinding.MysosoMainBinding;
 
 import org.jetbrains.annotations.Nullable;
 
-public class MysosoMainFragment extends Fragment {
+import java.math.BigInteger;
+
+public class
+MysosoMainFragment extends Fragment {
 
     MysosoMainBinding binding;
+    NavController navConroller;
     public static MysosoMainFragment newInstance() {return new MysosoMainFragment();}
 
     @Override
@@ -44,7 +50,7 @@ public class MysosoMainFragment extends Fragment {
 
         //viewmodel 설정
 
-        //Controller 설정
+
 
         return binding.getRoot();
     }
@@ -52,6 +58,28 @@ public class MysosoMainFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        //Controller 설정
+        navConroller = Navigation.findNavController(view);
+
+        //관심가게
+        binding.imageViewInterest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //하단바에 관심가게 클릭한 효과
+                ((MainActivity) getActivity()).getBinding().bottomNavigation.setSelectedItemId(R.id.menu_interest);
+            }
+        });
+
+        /*6개 메뉴*/
+        binding.imageViewMyPoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navConroller.navigate(R.id.action_mysosoMainFragment_to_mysosoPointFragment);
+            }
+        });
+
+
+
         super.onViewCreated(view, savedInstanceState);
     }
 

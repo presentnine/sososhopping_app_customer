@@ -109,6 +109,8 @@ public class ShopMapFragment extends Fragment {
             }
 
             //상점에서 옴
+            case R.id.mysosoPointDetailFragment:
+            case R.id.shopReportFragment:
             case R.id.shopMainFragment:{
                 double shopLat = ShopMapFragmentArgs.fromBundle(getArguments()).getLat();
                 double shopLng = ShopMapFragmentArgs.fromBundle(getArguments()).getLng();

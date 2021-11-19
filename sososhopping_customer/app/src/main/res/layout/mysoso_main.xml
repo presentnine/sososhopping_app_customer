@@ -37,9 +37,9 @@
 
                 <ImageView
                     android:id="@+id/imageView_myInfoIcon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:padding="5dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="7dp"
                     android:src="@drawable/icon_app_user"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +52,7 @@
                     android:layout_gravity="center"
                     android:paddingLeft="20dp"
                     android:text="@string/mysoso_myInfo"
-                    android:textSize="@dimen/default_toolbar_textSize"
+                    android:textSize="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageView_myInfo"
                     app:layout_constraintStart_toEndOf="@+id/imageView_myInfoIcon"
@@ -72,7 +72,9 @@
                 android:id="@+id/constraintLayout2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
                 android:background="@drawable/drawable_background_understroke"
                 android:orientation="horizontal"
                 android:padding="10dp"
@@ -84,9 +86,9 @@
 
                 <ImageView
                     android:id="@+id/imageView_interestIcon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:padding="5dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="7dp"
                     android:src="@drawable/icon_app_lover"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -99,7 +101,7 @@
                     android:layout_gravity="center"
                     android:paddingLeft="20dp"
                     android:text="@string/mysoso_interest"
-                    android:textSize="@dimen/default_toolbar_textSize"
+                    android:textSize="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageView_interest"
                     app:layout_constraintStart_toEndOf="@+id/imageView_interestIcon"
@@ -120,7 +122,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="5dp"
                 android:background="@drawable/drawable_background_understroke"
                 android:orientation="horizontal"
@@ -131,10 +133,9 @@
 
                 <ImageView
                     android:id="@+id/imageView_chatIcon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-
-                    android:padding="5dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="7dp"
                     android:src="@drawable/icon_app_comments"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -147,7 +148,7 @@
                     android:layout_gravity="center"
                     android:paddingLeft="20dp"
                     android:text="@string/mysoso_chat"
-                    android:textSize="@dimen/default_toolbar_textSize"
+                    android:textSize="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageView_chat"
                     app:layout_constraintStart_toEndOf="@+id/imageView_chatIcon"
@@ -168,7 +169,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="5dp"
                 android:background="@drawable/drawable_background_understroke"
                 android:orientation="horizontal"
@@ -179,10 +180,9 @@
 
                 <ImageView
                     android:id="@+id/imageView_serviceInfoIcon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-
-                    android:padding="5dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="7dp"
                     android:src="@drawable/icon_app_info"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -195,7 +195,7 @@
                     android:layout_gravity="center"
                     android:paddingLeft="20dp"
                     android:text="@string/mysoso_serviceInfo"
-                    android:textSize="@dimen/default_toolbar_textSize"
+                    android:textSize="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageView_serviceInfo"
                     app:layout_constraintStart_toEndOf="@+id/imageView_serviceInfoIcon"
@@ -215,7 +215,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="5dp"
                 android:background="@drawable/drawable_background_understroke"
                 android:orientation="horizontal"
@@ -226,9 +226,9 @@
 
                 <ImageView
                     android:id="@+id/imageView_settingIcon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:padding="5dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="7dp"
                     android:src="@drawable/icon_app_gear"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -241,7 +241,7 @@
                     android:layout_gravity="center"
                     android:paddingLeft="20dp"
                     android:text="@string/mysoso_setting"
-                    android:textSize="@dimen/default_toolbar_textSize"
+                    android:textSize="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageView_setting"
                     app:layout_constraintStart_toEndOf="@+id/imageView_settingIcon"
@@ -262,6 +262,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
@@ -282,8 +284,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:adjustViewBounds="true"
-                            android:paddingLeft="25dp"
-                            android:paddingRight="25dp"
+                            android:paddingLeft="30dp"
+                            android:paddingRight="30dp"
                             android:src="@drawable/icon_app_food_basket" />
 
                         <TextView
@@ -305,8 +307,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:adjustViewBounds="true"
-                            android:paddingLeft="25dp"
-                            android:paddingRight="25dp"
+                            android:paddingLeft="30dp"
+                            android:paddingRight="30dp"
                             android:src="@drawable/icon_app_point_of_sale" />
 
                         <TextView
@@ -328,8 +330,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:adjustViewBounds="true"
-                            android:paddingLeft="25dp"
-                            android:paddingRight="25dp"
+                            android:paddingLeft="30dp"
+                            android:paddingRight="30dp"
                             android:src="@drawable/icon_app_rating" />
 
                         <TextView
@@ -356,8 +358,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:adjustViewBounds="true"
-                            android:paddingLeft="25dp"
-                            android:paddingRight="25dp"
+                            android:paddingLeft="30dp"
+                            android:paddingRight="30dp"
                             android:src="@drawable/icon_app_points" />
 
                         <TextView
@@ -379,8 +381,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:adjustViewBounds="true"
-                            android:paddingLeft="25dp"
-                            android:paddingRight="25dp"
+                            android:paddingLeft="30dp"
+                            android:paddingRight="30dp"
                             android:src="@drawable/icon_app_coupon" />
 
                         <TextView
@@ -402,8 +404,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:adjustViewBounds="true"
-                            android:paddingLeft="25dp"
-                            android:paddingRight="25dp"
+                            android:paddingLeft="30dp"
+                            android:paddingRight="30dp"
                             android:src="@drawable/icon_app_map" />
 
                         <TextView

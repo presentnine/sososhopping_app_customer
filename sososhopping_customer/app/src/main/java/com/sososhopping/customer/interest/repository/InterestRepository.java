@@ -47,7 +47,7 @@ public class InterestRepository {
                         break;
                     }
                         //토큰 검증 실패
-                    case 401:{
+                    case 403:{
                         onFailedLogIn.run();
                         break;
                     }
@@ -83,7 +83,7 @@ public class InterestRepository {
                     }
 
                     //토큰 검증 실패
-                    case 401:{
+                    case 403:{
                         onLogInFailed.run();
                         break;
                     }

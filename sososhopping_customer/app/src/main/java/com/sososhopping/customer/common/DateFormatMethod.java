@@ -26,4 +26,15 @@ public class DateFormatMethod {
         }
         return null;
     }
+
+    public static String dateFormatTimetoDay(String exdate){
+        try {
+            Date date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(exdate);
+            return new SimpleDateFormat("yyyy/MM/dd").format(date);
+        }
+        catch (ParseException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

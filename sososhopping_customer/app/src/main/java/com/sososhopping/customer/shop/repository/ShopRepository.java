@@ -290,7 +290,7 @@ public class ShopRepository {
                     case 400:
 
                     //토큰 검증 실패
-                    case 401:{
+                    case 403:{
                         onFailedLogIn.run();
                         break;
                     }
@@ -335,7 +335,7 @@ public class ShopRepository {
                     }
 
                     //토큰 검증 실패
-                    case 401:{
+                    case 403:{
                         onLogInFailed.run();
                         break;
                     }
@@ -380,7 +380,7 @@ public class ShopRepository {
                     }
 
                     //토큰 검증 실패
-                    case 401:{
+                    case 403:{
                         onLogInFailed.run();
                         break;
                     }

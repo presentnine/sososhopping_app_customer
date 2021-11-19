@@ -151,6 +151,33 @@
         android:id="@+id/mysosoMainFragment"
         android:name="com.sososhopping.customer.mysoso.view.MysosoMainFragment"
         android:label="MysosoMainFragment"
-        tools:layout="@layout/mysoso_main" />
+        tools:layout="@layout/mysoso_main" >
+        <action
+            android:id="@+id/action_mysosoMainFragment_to_mysosoPointFragment"
+            app:destination="@id/mysosoPointFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mysosoPointFragment"
+        android:name="com.sososhopping.customer.mysoso.view.MysosoPointFragment"
+        android:label="MysosoPointFragment"
+        tools:layout="@layout/mysoso_point">
+        <action
+            android:id="@+id/action_mysosoPointFragment_to_mysosoPointDetailFragment"
+            app:destination="@id/mysosoPointDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mysosoPointDetailFragment"
+        android:name="com.sososhopping.customer.mysoso.view.MysosoPointDetailFragment"
+        android:label="MysosoPointDetailFragment"
+        tools:layout="@layout/mysoso_point_detail">
+        <argument
+            android:name="storeId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_mysosoPointDetailFragment_to_shopMapFragment"
+            app:destination="@id/shopMapFragment"
+            app:popUpTo="@id/home2"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

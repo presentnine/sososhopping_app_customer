@@ -93,6 +93,12 @@
     <string name="mysoso_coupon">쿠폰</string>
     <string name="mysoso_map">지도</string>
 
+    <string name="mysoso_point_interest">관심가게</string>
+    <string name="mysoso_point_all">전체</string>
+
+    <!--My소소 포인트-->
+    <string name="mysoso_point_error">포인트 목록 조회에 실패했습니다.</string>
+    <string name="mysoso_point_detail">포인트 내역</string>
 
 
 </resources>
