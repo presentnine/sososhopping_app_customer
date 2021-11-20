@@ -8,6 +8,7 @@ import com.sososhopping.customer.shop.dto.ReviewListDto;
 import com.sososhopping.customer.shop.model.ReviewModel;
 import com.sososhopping.customer.shop.model.ShopIntroduceModel;
 import com.sososhopping.customer.shop.repository.ShopRepository;
+import com.sososhopping.customer.shop.repository.ShopReviewRepository;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -18,7 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ShopReviewViewModel extends ViewModel {
-    private final ShopRepository shopRepository = ShopRepository.getInstance();
+    private final ShopReviewRepository shopRepository = ShopReviewRepository.getInstance();
 
     ArrayList<ReviewModel> reviewModels = new ArrayList<>();
 

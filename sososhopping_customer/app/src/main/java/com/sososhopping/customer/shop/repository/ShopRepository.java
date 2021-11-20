@@ -29,12 +29,12 @@ public class ShopRepository {
     private static ShopRepository instance;
     private final ShopService shopService;
 
-    private ShopRepository(){
+    private ShopRepository() {
         this.shopService = ApiServiceFactory.createService(ShopService.class);
     }
 
     public static synchronized ShopRepository getInstance() {
-        if(instance == null){
+        if (instance == null) {
             instance = new ShopRepository();
         }
         return instance;
@@ -43,8 +43,8 @@ public class ShopRepository {
     public void requestShopIntroduce(String token, int storeId,
                                      Consumer<ShopIntroduceModel> shopIntroduceModel,
                                      Runnable onFailed,
-                                     Runnable onError){
-        if(token == null){
+                                     Runnable onError) {
+        if (token == null) {
             requestShopIntroduce(storeId, shopIntroduceModel, onFailed, onError);
             return;
         }
@@ -53,17 +53,17 @@ public class ShopRepository {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(Call<ShopIntroduceModel> call, Response<ShopIntroduceModel> response) {
-                switch (response.code()){
-                    case 200:{
+                switch (response.code()) {
+                    case 200: {
                         shopIntroduceModel.accept(response.body());
                         break;
                     }
                     //검색 없음
-                    case 404:{
+                    case 404: {
                         onFailed.run();
                         break;
                     }
-                    default:{
+                    default: {
                         onError.run();
                         break;
                     }
@@ -87,17 +87,17 @@ public class ShopRepository {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(Call<ShopIntroduceModel> call, Response<ShopIntroduceModel> response) {
-                switch (response.code()){
-                    case 200:{
+                switch (response.code()) {
+                    case 200: {
                         shopIntroduceModel.accept(response.body());
                         break;
                     }
                     //검색 없음
-                    case 404:{
+                    case 404: {
                         onFailed.run();
                         break;
                     }
-                    default:{
+                    default: {
                         onError.run();
                         break;
                     }
@@ -112,230 +112,25 @@ public class ShopRepository {
         });
     }
 
-    public void requestShopItem(int storeId, Consumer<ItemListDto> item,
-                                Runnable onFailed,
-                                Runnable onError){
-        shopService.requestShopItem(storeId).enqueue(new Callback<ItemListDto>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onResponse(Call<ItemListDto> call, Response<ItemListDto> response) {
-                switch (response.code()){
-                    case 200:{
-                        item.accept(response.body());
-                        break;
-                    }
-                    //검색 없음
-                    case 404:{
-                        onFailed.run();
-                        break;
-                    }
-                    default:{
-                        onError.run();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ItemListDto> call, Throwable t) {
-                onError.run();
-            }
-        });
-    }
-
-    public void requestShopCoupon(int storeId, Consumer<CouponListDto> couponModel,
-                                  Runnable onFailed,
-                                  Runnable onError) {
-
-        shopService.requestCoupons(storeId).enqueue(new Callback<CouponListDto>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onResponse(Call<CouponListDto> call, Response<CouponListDto> response) {
-                switch (response.code()){
-                    case 200:{
-                        couponModel.accept(response.body());
-                        break;
-                    }
-                    //검색 없음
-                    case 404:{
-                        onFailed.run();
-                        break;
-                    }
-                    default:{
-                        onError.run();;
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CouponListDto> call, Throwable t) {
-                onError.run();;
-            }
-        });
-
-    }
-
-    public void requestShopWriting(int storeId, Consumer<EventItemListDto> eventModel,
-                                   Runnable onFailed,
-                                   Runnable onError) {
-
-        shopService.requestWritings(storeId).enqueue(new Callback<EventItemListDto>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onResponse(Call<EventItemListDto> call, Response<EventItemListDto> response) {
-                switch (response.code()) {
-                    case 200: {
-                        eventModel.accept(response.body());
-                        break;
-                    }
-                    //검색 없음
-                    case 404: {
-                        onFailed.run();
-                        break;
-                    }
-                    default: {
-                        onError.run();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<EventItemListDto> call, Throwable t) {
-                onError.run();
-            }
-        });
-    }
-
-
-    public void requestShopReviews(int storeId, Consumer<ReviewListDto> reviewModel,
-                                   Runnable onFailed,
-                                   Runnable onError) {
-        shopService.requestReviews(storeId).enqueue(new Callback<ReviewListDto>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onResponse(Call<ReviewListDto> call, Response<ReviewListDto> response) {
-                switch (response.code()) {
-                    case 200: {
-                        reviewModel.accept(response.body());
-                        break;
-                    }
-                    //검색 없음
-                    case 404: {
-                        onFailed.run();
-                        break;
-                    }
-                    default: {
-                        onError.run();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ReviewListDto> call, Throwable t) {
-                onError.run();
-            }
-        });
-    }
-
-    public void requestShopEventDetail(int storeId, int writingId,
-                                       Consumer<EventDetailModel> eventDetailModel,
-                                       Runnable onFailed,
-                                       Runnable onError) {
-        shopService.requestWritingsDetail(storeId, writingId).enqueue(new Callback<EventDetailModel>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onResponse(Call<EventDetailModel> call, Response<EventDetailModel> response) {
-                switch (response.code()) {
-                    case 200: {
-                        eventDetailModel.accept(response.body());
-                        break;
-                    }
-                    //검색 없음
-                    case 400:
-                    case 404: {
-                        onFailed.run();
-                        break;
-                    }
-
-                    default: {
-                        onError.run();
-                    }
-                }
-            }
-            @Override
-            public void onFailure(Call<EventDetailModel> call, Throwable t) {
-                onError.run();
-            }
-        });
-    }
-
-    public void inputReview(String token,
-                            int storeId, ReviewInputDto reviewInputDto,
-                            Runnable onSuccess,
-                            Runnable onFailedLogIn,
-                            Runnable onFailed,
-                            Runnable onError){
-
-        shopService.inputReviews(token, storeId, reviewInputDto).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                switch (response.code()) {
-                    case 200:
-                    //작성 성공
-                    case 201:{
-                        onSuccess.run();
-                        break;
-                    }
-
-                    //내용 오류
-                    case 400:
-
-                    //토큰 검증 실패
-                    case 403:{
-                        onFailedLogIn.run();
-                        break;
-                    }
-
-                    //점포 없음
-                    case 404:
-
-                    //리뷰 중복 작성
-                    case 409: {
-                        onFailed.run();
-                        break;
-                    }
-
-                    default: {
-                        onError.run();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                onError.run();
-            }
-        });
-    }
-
     public void changeInterest(String token,
                                int storeId,
                                Runnable onSuccess,
                                Runnable onLogInFailed,
                                Runnable onFailed,
-                               Runnable onError){
+                               Runnable onError) {
         shopService.changeInterest(token, new StoreIdDto(storeId)).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 switch (response.code()) {
                     case 200:
                         //작성 성공
-                    case 201:{
+                    case 201: {
                         onSuccess.run();
                         break;
                     }
 
                     //토큰 검증 실패
-                    case 403:{
+                    case 403: {
                         onLogInFailed.run();
                         break;
                     }
@@ -343,10 +138,10 @@ public class ShopRepository {
                     //내용 오류
                     case 400:
 
-                    //점포 없음
-                    case 404:{
+                        //점포 없음
+                    case 404: {
                         onFailed.run();
-                        Log.d("error Log", response.raw()+"");
+                        Log.d("error Log", response.raw() + "");
                         break;
                     }
 
@@ -367,20 +162,20 @@ public class ShopRepository {
                             Runnable onSuccess,
                             Runnable onLogInFailed,
                             Runnable onFailed,
-                            Runnable onError){
+                            Runnable onError) {
         shopService.inputReports(token, storeId, content).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 switch (response.code()) {
                     case 200:
                         //작성 성공
-                    case 201:{
+                    case 201: {
                         onSuccess.run();
                         break;
                     }
 
                     //토큰 검증 실패
-                    case 403:{
+                    case 403: {
                         onLogInFailed.run();
                         break;
                     }
@@ -388,10 +183,10 @@ public class ShopRepository {
                     //내용 오류
                     case 400:
 
-                    //점포 없음
-                    case 404:{
+                        //점포 없음
+                    case 404: {
                         onFailed.run();
-                        Log.d("error Log", response.raw()+"");
+                        Log.d("error Log", response.raw() + "");
                         break;
                     }
 

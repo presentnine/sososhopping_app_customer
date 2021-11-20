@@ -19,6 +19,8 @@ public class ShopEventCouponAdapter extends RecyclerView.Adapter<ShopEventCoupon
     ArrayList<CouponModel> couponModels = new ArrayList<>();
     public String storeName;
     ItemShopCouponBinding binding;
+    OnItemClickListenerCoupon itemClickListener;
+
 
     @NonNull
     @NotNull
@@ -43,7 +45,14 @@ public class ShopEventCouponAdapter extends RecyclerView.Adapter<ShopEventCoupon
         return this.couponModels;
     }
 
+    //클릭 이벤트
+    public interface OnItemClickListenerCoupon{
+        void onItemClick(CouponModel couponModel);
+    }
 
+    public void setOnItemClickListener(OnItemClickListenerCoupon listener){
+        this.itemClickListener = listener;
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ItemShopCouponBinding binding;
@@ -56,6 +65,14 @@ public class ShopEventCouponAdapter extends RecyclerView.Adapter<ShopEventCoupon
                 @Override
                 public void onClick(View v) {
                     //쿠폰 저장 API
+                    int pos = getAdapterPosition();
+                    if(pos != RecyclerView.NO_POSITION){
+
+                        //리스너 호출
+                        if(itemClickListener != null){
+                            itemClickListener.onItemClick(couponModels.get(pos));
+                        }
+                    }
                 }
             });
 

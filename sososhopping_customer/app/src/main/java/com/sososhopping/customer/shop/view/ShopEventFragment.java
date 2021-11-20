@@ -14,6 +14,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.ShopEventBinding;
 import com.sososhopping.customer.shop.dto.CouponListDto;
@@ -116,6 +118,29 @@ public class ShopEventFragment extends Fragment {
                                 , writingId, shopInfoViewModel.getShopName().getValue()));
             }
         });
+
+        shopEventCouponAdapter.setOnItemClickListener(new ShopEventCouponAdapter.OnItemClickListenerCoupon() {
+            @Override
+            public void onItemClick(CouponModel couponModel) {
+                String token = ((MainActivity)getActivity()).getLoginToken();
+                if(token != null){
+
+                    int msgCode[]  = new int[2];
+                    msgCode[0] = R.string.event_coupon_addSucc;
+                    msgCode[1] = R.string.event_coupon_addFail;
+
+                    shopEventViewModel.addShopCoupon(token, couponModel.getCouponCode(),
+                            msgCode,
+                            ShopEventFragment.this::onResult,
+                            ShopEventFragment.this::onFailedLogInCoupon,
+                            ShopEventFragment.this::onNetworkError
+                            );
+                }
+                else{
+                    Toast.makeText(getContext(),getResources().getString(R.string.requireLogIn),Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -162,7 +187,17 @@ public class ShopEventFragment extends Fragment {
         Toast.makeText(getContext(),getResources().getString(R.string.shop_error), Toast.LENGTH_LONG).show();
     }
 
+    private void onResult(int msgCode) {
+        Toast.makeText(getContext(),getResources().getString(msgCode), Toast.LENGTH_SHORT).show();
+    }
+
+    private void onFailedLogInCoupon() {
+        NavHostFragment.findNavController(getParentFragment().getParentFragment())
+                .navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+    }
+
     private void onNetworkError() {
         NavHostFragment.findNavController(getParentFragment().getParentFragment()).navigate(R.id.action_global_networkErrorDialog);
+        getActivity().onBackPressed();
     }
 }
