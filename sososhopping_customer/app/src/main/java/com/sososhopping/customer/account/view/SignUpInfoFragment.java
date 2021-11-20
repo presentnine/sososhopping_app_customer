@@ -74,19 +74,13 @@ public class SignUpInfoFragment extends Fragment {
 
                 if(binding.editTextSignUpPhone.getError() != null) return;
 
-                //형식상 번호인증 + 중복여부 확인
-                phoneChecked = true;
-
-                //번호가 가입되었는지도 확인해야함
-                if(!phoneChecked){
-                    binding.textViewPhoneCheck.setText("이미 가입한 번호입니다");
-                }
-                else{
-                    binding.editTextSignUpPhone.setFocusable(false);
-                    binding.editTextSignUpPhone.setClickable(false);
-                    binding.textViewPhoneCheck.setText("인증완료");
-                }
-                binding.textViewPhoneCheck.setVisibility(View.VISIBLE);
+                //번호중복여부
+                signUpViewModel.requestPhoneDupCheck(
+                        binding.editTextSignUpPhone.getText().toString(),
+                        SignUpInfoFragment.this::onPhoneNotDuplicated,
+                        SignUpInfoFragment.this::onPhoneDuplicated,
+                        SignUpInfoFragment.this::onNetworkError
+                );
             }
         });
 
@@ -99,7 +93,6 @@ public class SignUpInfoFragment extends Fragment {
                 }
 
                 if(binding.editTextSignUpNickname.getError() != null) return;
-
 
                 //중복확인 요청 API
                 signUpViewModel.requestNicknameDupCheck(
@@ -189,16 +182,27 @@ public class SignUpInfoFragment extends Fragment {
 
     private void onNicknameDuplicated() {
         dupChecked = false;
-        signUpViewModel.getNicknameDupChecked().setValue(dupChecked);
         binding.textViewDupChecked.setText("사용이 불가능합니다.");
         binding.textViewDupChecked.setVisibility(View.VISIBLE);
     }
 
     private void onNicknameNotDuplicated(){
         dupChecked = true;
-        signUpViewModel.getNicknameDupChecked().setValue(dupChecked);
         binding.textViewDupChecked.setText("사용 가능");
         binding.textViewDupChecked.setVisibility(View.VISIBLE);
+    }
+
+    private void onPhoneDuplicated(){
+        phoneChecked = false;
+        binding.textViewPhoneCheck.setText("이미 가입한 번호입니다");
+        binding.textViewPhoneCheck.setVisibility(View.VISIBLE);
+    }
+    private void onPhoneNotDuplicated(){
+        phoneChecked = true;
+        binding.editTextSignUpPhone.setFocusable(false);
+        binding.editTextSignUpPhone.setClickable(false);
+        binding.textViewPhoneCheck.setText("인증완료");
+        binding.textViewPhoneCheck.setVisibility(View.VISIBLE);
     }
 
     private void onSignupSuccess() {

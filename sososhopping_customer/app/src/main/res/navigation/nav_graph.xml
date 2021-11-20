@@ -155,6 +155,9 @@
         <action
             android:id="@+id/action_mysosoMainFragment_to_mysosoPointFragment"
             app:destination="@id/mysosoPointFragment" />
+        <action
+            android:id="@+id/action_mysosoMainFragment_to_mysosoReviewFragment"
+            app:destination="@id/mysosoReviewFragment" />
     </fragment>
     <fragment
         android:id="@+id/mysosoPointFragment"
@@ -179,5 +182,10 @@
             app:popUpTo="@id/home2"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/mysosoReviewFragment"
+        android:name="com.sososhopping.customer.mysoso.view.MysosoReviewFragment"
+        android:label="MysosoReviewFragment"
+        tools:layout="@layout/mysoso_myreview"/>
 
 </navigation>

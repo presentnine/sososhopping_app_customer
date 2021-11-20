@@ -1,5 +1,6 @@
 package com.sososhopping.customer.mysoso.service;
 
+import com.sososhopping.customer.mysoso.dto.MyReviewsDto;
 import com.sososhopping.customer.mysoso.dto.PointDetailDto;
 import com.sososhopping.customer.mysoso.dto.PointListDto;
 
@@ -15,4 +16,7 @@ public interface MysosoService {
 
     @GET("my/points/{storeId}")
     Call<PointDetailDto> requestPointDetailList(@Header("token") String token, @Path("storeId") int storeId, @Query("at") String date);
+
+    @GET("my/reviews")
+    Call<MyReviewsDto> requestMyReviews(@Header("token") String token);
 }

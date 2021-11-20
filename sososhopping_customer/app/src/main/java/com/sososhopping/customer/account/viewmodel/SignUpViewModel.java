@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.sososhopping.customer.account.dto.EmailDupCheckRequestDto;
 import com.sososhopping.customer.account.dto.NicknameDupCheckRequestDto;
+import com.sososhopping.customer.account.dto.PhoneDupCheckRequestDto;
 import com.sososhopping.customer.account.dto.SignUpRequestDto;
 import com.sososhopping.customer.account.repository.SignUpRepository;
 
@@ -24,6 +25,7 @@ public class SignUpViewModel extends ViewModel {
     //이메일 중복 확인
     private final MutableLiveData<Boolean> emailDupChecked = new MutableLiveData<>(false);
     private final MutableLiveData<Boolean> nicknameDupChecked = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> phoneDupChecked = new MutableLiveData<>(false);
 
     //Repository
     private final SignUpRepository signUpRepository = SignUpRepository.getInstance();
@@ -105,13 +107,9 @@ public class SignUpViewModel extends ViewModel {
     }
 
     public void requestNicknameDupCheck(String nickname,
-                                        Runnable onChecked,
+                                        Runnable onNotDuplicated,
                                         Runnable onDuplicated,
                                         Runnable onError) {
-        Runnable onNotDuplicated = () -> {
-            onChecked.run();
-            nicknameDupChecked.setValue(true);
-        };
         signUpRepository.requestNicknameDuplicationCheck(this.toNicknameDupCheckRequestDto(nickname), onNotDuplicated, onDuplicated, onError);
     }
 
@@ -120,12 +118,23 @@ public class SignUpViewModel extends ViewModel {
         signUpRepository.requestSignup(this.toSignupRequestDto(), onSuccess, onError);
     }
 
+    public void requestPhoneDupCheck(String phone,
+                                     Runnable onNotDuplicated,
+                                     Runnable onDuplicated,
+                                     Runnable onError){
+        signUpRepository.requestPhoneDuplicationCheck(this.toPhoneDupCheckRequestDto(phone), onNotDuplicated, onDuplicated, onError);
+    }
+
     public EmailDupCheckRequestDto toEmailDupCheckRequestDto(String email) {
         return new EmailDupCheckRequestDto(email);
     }
 
     public NicknameDupCheckRequestDto toNicknameDupCheckRequestDto(String nickname){
         return new NicknameDupCheckRequestDto(nickname);
+    }
+
+    public PhoneDupCheckRequestDto toPhoneDupCheckRequestDto(String phone){
+        return new PhoneDupCheckRequestDto(phone);
     }
 
     public SignUpRequestDto toSignupRequestDto() {

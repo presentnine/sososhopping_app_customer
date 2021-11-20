@@ -2,6 +2,7 @@ package com.sososhopping.customer.account.repository;
 
 import com.sososhopping.customer.account.dto.EmailDupCheckRequestDto;
 import com.sososhopping.customer.account.dto.NicknameDupCheckRequestDto;
+import com.sososhopping.customer.account.dto.PhoneDupCheckRequestDto;
 import com.sososhopping.customer.account.dto.SignUpRequestDto;
 import com.sososhopping.customer.account.service.SignUpService;
 import com.sososhopping.customer.common.retrofit.ApiServiceFactory;
@@ -75,6 +76,33 @@ public class SignUpRepository {
                 }
             }
 
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                t.printStackTrace();
+                onFailed.run();
+            }
+        });
+    }
+
+    public void requestPhoneDuplicationCheck(PhoneDupCheckRequestDto dto,
+                                             Runnable onNotDuplicated,
+                                             Runnable onDuplicated,
+                                             Runnable onFailed){
+        signupService.requestPhoneDuplicationCheck(dto).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                switch (response.code()) {
+                    case 200:
+                        onNotDuplicated.run();
+                        break;
+                    case 409:
+                        onDuplicated.run();
+                        break;
+                    default:
+                        onFailed.run();
+                        break;
+                }
+            }
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 t.printStackTrace();

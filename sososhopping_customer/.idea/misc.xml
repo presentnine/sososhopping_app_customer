@@ -16,13 +16,16 @@
         <entry key="..\:/programs/AndroidPrograming/soso_shopping/sososhopping_customer/app/src/main/res/layout/item_mysoso_point_detail.xml" value="0.4" />
         <entry key="..\:/programs/AndroidPrograming/soso_shopping/sososhopping_customer/app/src/main/res/layout/item_shop_board.xml" value="0.25364583333333335" />
         <entry key="..\:/programs/AndroidPrograming/soso_shopping/sososhopping_customer/app/src/main/res/layout/item_shop_info.xml" value="0.264" />
+        <entry key="..\:/programs/AndroidPrograming/soso_shopping/sososhopping_customer/app/src/main/res/layout/item_shop_review.xml" value="0.25364583333333335" />
         <entry key="..\:/programs/AndroidPrograming/soso_shopping/sososhopping_customer/app/src/main/res/layout/mysoso_main.xml" value="0.264" />
+        <entry key="..\:/programs/AndroidPrograming/soso_shopping/sososhopping_customer/app/src/main/res/layout/mysoso_myreview.xml" value="0.25364583333333335" />
         <entry key="..\:/programs/AndroidPrograming/soso_shopping/sososhopping_customer/app/src/main/res/layout/mysoso_point.xml" value="0.25364583333333335" />
         <entry key="..\:/programs/AndroidPrograming/soso_shopping/sososhopping_customer/app/src/main/res/layout/mysoso_point_detail.xml" value="0.25364583333333335" />
         <entry key="..\:/programs/AndroidPrograming/soso_shopping/sososhopping_customer/app/src/main/res/layout/search_shop_list.xml" value="0.1" />
         <entry key="..\:/programs/AndroidPrograming/soso_shopping/sososhopping_customer/app/src/main/res/layout/shop_event.xml" value="0.25364583333333335" />
         <entry key="..\:/programs/AndroidPrograming/soso_shopping/sososhopping_customer/app/src/main/res/layout/shop_item_list.xml" value="0.25364583333333335" />
         <entry key="..\:/programs/AndroidPrograming/soso_shopping/sososhopping_customer/app/src/main/res/layout/shop_report.xml" value="0.25364583333333335" />
+        <entry key="..\:/programs/AndroidPrograming/soso_shopping/sososhopping_customer/app/src/main/res/layout/shop_review.xml" value="0.25364583333333335" />
       </map>
     </option>
   </component>
