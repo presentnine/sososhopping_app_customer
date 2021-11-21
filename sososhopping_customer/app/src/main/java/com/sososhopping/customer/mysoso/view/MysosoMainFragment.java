@@ -62,7 +62,7 @@ MysosoMainFragment extends Fragment {
         navConroller = Navigation.findNavController(view);
 
         //관심가게
-        binding.imageViewInterest.setOnClickListener(new View.OnClickListener() {
+        binding.constraintLayoutFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //하단바에 관심가게 클릭한 효과
@@ -78,6 +78,21 @@ MysosoMainFragment extends Fragment {
             }
         });
 
+        binding.imageViewMyRating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navConroller.navigate(R.id.action_mysosoMainFragment_to_mysosoReviewFragment);
+            }
+        });
+
+        //쿠폰
+        binding.imageViewMyCoupon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navConroller.navigate(R.id.action_mysosoMainFragment_to_mysosoCouponFragment);
+            }
+        });
+
 
 
         super.onViewCreated(view, savedInstanceState);
@@ -88,6 +103,7 @@ MysosoMainFragment extends Fragment {
         //상단바
         ((MainActivity)getActivity()).showTopAppBar();
         ((MainActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso));
+        ((MainActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
 
         //하단바
         ((MainActivity)getActivity()).showBottomNavigation();

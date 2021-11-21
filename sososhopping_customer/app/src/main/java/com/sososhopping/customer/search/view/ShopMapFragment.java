@@ -18,6 +18,7 @@ import androidx.navigation.Navigation;
 
 import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.R;
+import com.sososhopping.customer.common.types.Location;
 import com.sososhopping.customer.databinding.SearchShopMapBinding;
 import com.sososhopping.customer.search.HomeViewModel;
 import com.sososhopping.customer.search.model.ShopInfoShortModel;
@@ -100,11 +101,23 @@ public class ShopMapFragment extends Fragment {
         switch (navigateFrom){
             //홈에서 바로 옴 -> 별다른거 x
             case R.id.home2 : {
+                Location location = homeViewModel.getLocation(getContext());
+
+                //좌표 표시, 패널 띄우기
+                mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(location.getLat(), location.getLng()), 1, true);
+
                 break;
             }
             //리스트에서 옴 -> 검색내용 토대로 구성
             case R.id.shopListFragment:{
                 //shopViewModel을 토대로 좌표 재구성
+
+                Location location = homeViewModel.getLocation(getContext());
+
+                //좌표 표시, 패널 띄우기
+                mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(location.getLat(), location.getLng()), 1, true);
+
+
                 break;
             }
 

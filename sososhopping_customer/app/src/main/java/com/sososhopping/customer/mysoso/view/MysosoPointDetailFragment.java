@@ -158,7 +158,7 @@ public class MysosoPointDetailFragment extends Fragment {
         //상단바
         ((MainActivity)getActivity()).showTopAppBar();
         ((MainActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_point_detail));
-
+        ((MainActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
         //하단바
         ((MainActivity)getActivity()).hideBottomNavigation();
         super.onResume();
@@ -220,6 +220,8 @@ public class MysosoPointDetailFragment extends Fragment {
                 this::onSuccess,
                 this::onFailed,
                 this::onNetworkError);
+
+        binding.textView7.setText(pointDetailViewModel.returnDate(1));
     }
 
     public ArrayList<PointDetailModel> mockData(int index){

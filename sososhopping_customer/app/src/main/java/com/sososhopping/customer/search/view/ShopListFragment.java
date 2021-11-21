@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.R;
+import com.sososhopping.customer.common.types.Location;
 import com.sososhopping.customer.databinding.SearchShopListBinding;
 import com.sososhopping.customer.search.HomeViewModel;
 import com.sososhopping.customer.search.dto.ShopListDto;
@@ -29,6 +30,7 @@ import com.sososhopping.customer.search.view.adapter.ShopListAdapter;
 import java.util.ArrayList;
 
 public class ShopListFragment extends Fragment {
+
 
     private NavController navController;
     private ShopListAdapter shopListAdapter = new ShopListAdapter();
@@ -102,10 +104,14 @@ public class ShopListFragment extends Fragment {
         setAppBar(homeViewModel);
         ((MainActivity)getActivity()).showBottomNavigation();
 
+        Location location = homeViewModel.getLocation(getContext());
+
         if(homeViewModel.getAskType().getValue() == 1){
             homeViewModel.searchCategory(
                     ((MainActivity)getActivity()).getLoginToken(),
                     homeViewModel.getCategory().getValue(),
+                    location,
+                    null,
                     this::onSearchSuccessed,
                     this::onNetworkError);
         }
@@ -152,7 +158,6 @@ public class ShopListFragment extends Fragment {
 
     private void onSearchSuccessed(ShopListDto success){
         homeViewModel.setShopList(success.getShopInfoShortModels());
-        homeViewModel.calDistance(getContext());
         shopListAdapter.setShopLists(homeViewModel.getShopList().getValue());
         shopListAdapter.notifyDataSetChanged();
     }

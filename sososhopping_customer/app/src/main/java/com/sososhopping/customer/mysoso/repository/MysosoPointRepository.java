@@ -53,11 +53,10 @@ public class MysosoPointRepository {
                     }
                     //검색 없음
                     case 404:{
-                        onFailed.run();
                         break;
                     }
                     default:{
-                        onError.run();
+                        onFailed.run();
                         break;
                     }
                 }

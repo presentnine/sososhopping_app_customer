@@ -15,6 +15,7 @@
     <color name="main_500">#3E3FE9</color>
     <color name="main_700">#3029D0</color>
 
+    <color name="background">#efefef</color>
     <color name="text_0">#b3b3b3</color>
     <color name="text_200">#676767</color>
     <color name="text_400">#4d4d4d</color>

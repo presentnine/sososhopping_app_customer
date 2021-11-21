@@ -122,12 +122,12 @@ public class ShopEventCouponAdapter extends RecyclerView.Adapter<ShopEventCoupon
                     binding.textViewStartDate.setText(DateFormatMethod.dateFormatDay(couponModel.getStartDate()));
                 }
                 if(couponModel.getEndDate() != null){
-                    binding.textViewEndDate.setText(DateFormatMethod.dateFormatDay(couponModel.getEndDate()));
+                    binding.textViewEndDate.setText(DateFormatMethod.dateFormatDay(couponModel.getEndDate())+"까지 발급");
                 }
             }
 
             if(couponModel.getExpiryDate() != null){
-                binding.textViewCouponExpire.setText(DateFormatMethod.dateFormatDay(couponModel.getExpiryDate()));
+                binding.textViewCouponExpire.setText("저장 후 "+DateFormatMethod.dateFormatDay(couponModel.getExpiryDate())+"까지 사용가능");
             }
 
         }

@@ -130,7 +130,13 @@ public class ShopMainFragment extends Fragment {
     public void setShopInfo(ShopInfoShortModel shopInfoShortModel){
         binding.textViewShopName.setText(shopInfoShortModel.getName());
         binding.textViewRating.setText(Double.toString(shopInfoShortModel.getScore()));
-        binding.textViewDistance.setText(Integer.toString(shopInfoShortModel.getDistance())+"m");
+
+        //km로 변환
+        if(shopInfoShortModel.getDistance() >= 1){
+            binding.textViewDistance.setText(Math.round(shopInfoShortModel.getDistance()*10)/10.0+"km");
+        }else{
+            binding.textViewDistance.setText(Math.round(shopInfoShortModel.getDistance()*1000)+"m");
+        }
 
         //지역화폐, 배달여부
         if(!shopInfoShortModel.isLocalCurrencyStatus()){

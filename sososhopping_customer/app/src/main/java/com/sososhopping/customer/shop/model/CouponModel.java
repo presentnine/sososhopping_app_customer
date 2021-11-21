@@ -15,7 +15,7 @@ import lombok.Setter;
 @Builder
 public class CouponModel {
     int couponId;
-    String StoreName;
+    String storeName;
     String couponName;
     String couponCode;
     Integer minimumOrderPrice;
@@ -34,5 +34,9 @@ public class CouponModel {
             return rateAmount+"%";
         }
         return null;
+    }
+
+    public CouponModel(String storeName){
+        this.storeName = storeName;
     }
 }

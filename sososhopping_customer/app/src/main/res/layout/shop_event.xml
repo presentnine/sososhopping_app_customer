@@ -59,7 +59,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView_coupon"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -102,7 +103,10 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView_board"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/drawable_round_background"
+                    android:backgroundTint="@color/background"
+                    android:layout_margin="5dp"/>
             </LinearLayout>
 
         </LinearLayout>

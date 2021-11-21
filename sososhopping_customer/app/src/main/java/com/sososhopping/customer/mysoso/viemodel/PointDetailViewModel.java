@@ -1,5 +1,9 @@
 package com.sososhopping.customer.mysoso.viemodel;
 
+import android.os.Build;
+import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -9,6 +13,7 @@ import com.sososhopping.customer.mysoso.model.PointDetailModel;
 import com.sososhopping.customer.mysoso.repository.MysosoPointRepository;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -34,12 +39,19 @@ public class PointDetailViewModel extends ViewModel {
 
     public PointDetailViewModel(){
         //init
+        Calendar cal = Calendar.getInstance();
+
         for (int i=0; i<3; i++){
             detailList[i] = new MutableLiveData<>();
             detailList[i].setValue(new ArrayList<>());
             curDate[i] = new MutableLiveData<>();
-            curDate[i].setValue(new Date());
+
+            //set first day of month
+            cal.setTime(new Date());
+            cal.set(Calendar.DAY_OF_MONTH,1);
+            curDate[i].setValue(cal.getTime());;
         }
+
         changeMonth(false, 0,1);
         changeMonth(true,2,1);
         counter = 1;
@@ -49,9 +61,11 @@ public class PointDetailViewModel extends ViewModel {
         Calendar cal = Calendar.getInstance();
         cal.setTime(curDate[idx].getValue());
         if(state){
+            cal.set(Calendar.DAY_OF_MONTH,1);
             cal.add(Calendar.MONTH, amount); // Zero-based months
         }
         else{
+            cal.set(Calendar.DAY_OF_MONTH,1);
             cal.add(Calendar.MONTH, -amount );
         }
         curDate[idx].setValue(cal.getTime());

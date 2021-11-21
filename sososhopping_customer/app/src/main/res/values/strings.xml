@@ -69,6 +69,7 @@
     <string name="event_couponList">오늘의 쿠폰</string>
     <string name="event_coupon_addFail">쿠폰 저장에 실패하였습니다</string>
     <string name="event_coupon_addSucc">쿠폰 저장에 성공하였습니다</string>
+    <string name="event_coupon_shortLength">쿠폰 코드는 최소 16글자 이상입니다.</string>
     <string name="event_boardList">소식</string>
     <string name="news">소식</string>
     <string name="event">이벤트</string>

@@ -1,6 +1,7 @@
 package com.sososhopping.customer.shop.repository;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -90,8 +91,9 @@ public class ShopEventRepository {
                     //쿠폰없음
                     case 404:
                     default:
-                    onResult.accept(msgCodes[1]);
-                    break;
+                        Log.d("coupon", response.raw().toString());
+                        onResult.accept(msgCodes[1]);
+                        break;
 
                 }
             }

@@ -45,15 +45,6 @@ public class ShopItemListFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         binding.recyclerView.setLayoutManager(layoutManager);
 
-        //Adapter 연결
-        /*ArrayList<ShopItemModel> dummyItems = new ArrayList<>();
-        dummyItems.add(new ShopItemModel(1, "가상의 상품", "가상의 상품입니다 \n두 줄도 확인해보겠습니다.", "1개", 4500, null, true));
-        dummyItems.add(new ShopItemModel(2, "가상의 사과", "가상의 상품입니다 \n두 줄도 확인해보겠습니다.", "1통", 10000, null, false));
-        dummyItems.add(new ShopItemModel(3, "가상의 복숭아", "가상의 상품입니다 \n두 줄도 확인해보겠습니다. \n세 줄도 확인해보겠습니다.", "1박스", 6000, null, true));
-        dummyItems.add(new ShopItemModel(4, "가상의 호두", "가상의 상품입니다 \n두 줄도 확인해보겠습니다. \n세 줄도 확인해보겠습니다. \n네 줄도 확인해보겠습니다.", "1개", 4500, null, true));
-        shopItemAdapter.setShopItemModels(dummyItems);*/
-
-
 
         //상품은 Create에서 로딩
         int storeId = new ViewModelProvider(getActivity()).get(ShopInfoViewModel.class).getShopId().getValue();

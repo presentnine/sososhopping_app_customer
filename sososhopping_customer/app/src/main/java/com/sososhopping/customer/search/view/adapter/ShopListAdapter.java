@@ -110,10 +110,10 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ViewHo
             binding.textViewRating.setText(Double.toString(shopInfoShortModel.getScore()));
 
             //km로 변환
-            if(shopInfoShortModel.getDistance() >= 1000){
-                binding.textViewDistance.setText((float)(shopInfoShortModel.getDistance()*0.001)+"km");
+            if(shopInfoShortModel.getDistance() >= 1){
+                binding.textViewDistance.setText(Math.round(shopInfoShortModel.getDistance()*10)/10.0+"km");
             }else{
-                binding.textViewDistance.setText(shopInfoShortModel.getDistance()+"m");
+                binding.textViewDistance.setText(Math.round(shopInfoShortModel.getDistance()*1000)+"m");
             }
 
 

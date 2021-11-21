@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 
 import com.sososhopping.customer.common.retrofit.ApiServiceFactory;
+import com.sososhopping.customer.common.types.Location;
 import com.sososhopping.customer.search.dto.ShopListDto;
 import com.sososhopping.customer.search.model.ShopInfoShortModel;
 import com.sososhopping.customer.search.service.SearchService;
@@ -35,17 +36,20 @@ public class SearchRepository {
 
     public void searchCategory(String token,
                                String category,
+                               Location location,
+                               Integer radius,
                                Consumer<ShopListDto> onSuccess,
                                Runnable onError){
 
         if(token == null){
-            this.searchCategory(category, onSuccess, onError);
+            this.searchCategory(category, location, radius, onSuccess, onError);
         }
         else{
-            searchService.searchByCategory(token, category).enqueue(new Callback<ShopListDto>() {
+            searchService.searchByCategory(token, category, location.getLat(), location.getLng(), radius).enqueue(new Callback<ShopListDto>() {
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onResponse(Call<ShopListDto> call, Response<ShopListDto> response) {
+                    Log.d("response", response.raw().toString());
                     if (response.code() == 200) {
                         onSuccess.accept(response.body());
                     } else {
@@ -62,10 +66,12 @@ public class SearchRepository {
     }
 
     public void searchCategory(String category,
+                               Location location,
+                               Integer radius,
                                Consumer<ShopListDto> onSuccess,
                                Runnable onError){
 
-        searchService.searchByCategory(category).enqueue(new Callback<ShopListDto>() {
+        searchService.searchByCategory(category, location.getLat(), location.getLng(), radius).enqueue(new Callback<ShopListDto>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(Call<ShopListDto> call, Response<ShopListDto> response) {

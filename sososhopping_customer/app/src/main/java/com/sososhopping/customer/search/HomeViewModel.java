@@ -25,9 +25,12 @@ import lombok.Setter;
 
 @Getter @Setter
 public class HomeViewModel extends ViewModel {
+
+
+    private final int defaultRadius = 1000;
+
     //1 : 카테고리 / 0 : 검색
     private MutableLiveData<Integer> askType = new MutableLiveData<>();
-
     private MutableLiveData<Integer> searchType = new MutableLiveData<>();
     private MutableLiveData<String> searchContent = new MutableLiveData<>();
     private MutableLiveData<String> category = new MutableLiveData<>();
@@ -62,27 +65,28 @@ public class HomeViewModel extends ViewModel {
 
     public void searchCategory(String token,
                                String category,
+                               Location location,
+                               Integer radius,
                                Consumer<ShopListDto> onSuccess,
                                Runnable onError){
-        searchRepository.searchCategory(token, category,onSuccess,onError);
+
+        if(radius == null){
+            radius = defaultRadius;
+        }
+        searchRepository.searchCategory(token, category, location, radius, onSuccess,onError);
     }
 
-    public void calDistance(Context context){
-
+    public Location getLocation(Context context){
         GPSTracker gpsTracker = GPSTracker.getInstance(context);
+        Location location = null;
 
         if(gpsTracker.canGetLocation()){
             double latitude = gpsTracker.getLatitude();
             double longitude = gpsTracker.getLongitude();
-
-            if(shopList.getValue() != null){
-                for(ShopInfoShortModel s : shopList.getValue()){
-                    s.setDistance(CalculateDistance.distance(latitude, s.getLocation().getLat(),
-                            longitude, s.getLocation().getLng()) );
-                }
-            }
+            location = new Location(latitude, longitude);
         }
         gpsTracker.stopUsingGPS();
+        return location;
     }
 
 }

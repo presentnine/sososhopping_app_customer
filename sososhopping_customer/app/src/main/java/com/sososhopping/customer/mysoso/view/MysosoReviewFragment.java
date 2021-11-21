@@ -94,6 +94,7 @@ public class MysosoReviewFragment extends Fragment {
         ((MainActivity)getActivity()).showTopAppBar();
         ((MainActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_myRating));
 
+        ((MainActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
         //하단바
         ((MainActivity)getActivity()).showBottomNavigation();
         super.onResume();

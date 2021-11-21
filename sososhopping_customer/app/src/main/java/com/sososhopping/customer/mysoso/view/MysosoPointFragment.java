@@ -148,7 +148,7 @@ public class MysosoPointFragment extends Fragment {
         //상단바
         ((MainActivity)getActivity()).showTopAppBar();
         ((MainActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_point));
-
+        ((MainActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
         //하단바
         ((MainActivity)getActivity()).showBottomNavigation();
         super.onResume();
@@ -164,9 +164,6 @@ public class MysosoPointFragment extends Fragment {
         if(dto != null){
             adapterFavorite.setItems(dto.getPointListFavorite());
             adapterNotFavorite.setItems(dto.getPointListNotFavorite());
-
-            //샘플데이터
-            adapterFavorite.setItems(mockData());
 
             adapterFavorite.notifyDataSetChanged();
             adapterNotFavorite.notifyDataSetChanged();
@@ -184,18 +181,6 @@ public class MysosoPointFragment extends Fragment {
 
     private void onNetworkError() {
         NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
-    }
-
-    public ArrayList<PointInfoModel> mockData(){
-        ArrayList<PointInfoModel> sample = new ArrayList<>();
-        sample.add(new PointInfoModel(23, "샘플",null, 123,true));
-        sample.add(new PointInfoModel(23, "샘플1",null, 1234,true));
-        sample.add(new PointInfoModel(23, "샘플2",null, 123456,true));
-        sample.add(new PointInfoModel(23, "샘플3",null, 1234567,true));
-        sample.add(new PointInfoModel(23, "샘플4",null, 12345678,true));
-        sample.add(new PointInfoModel(23, "샘플5",null, 123456789,true));
-
-        return sample;
     }
 
 }
