@@ -1,0 +1,201 @@
+package com.sososhopping.customer.mysoso.view;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.NavGraphDirections;
+import com.sososhopping.customer.R;
+import com.sososhopping.customer.databinding.MysosoPointBinding;
+import com.sososhopping.customer.mysoso.dto.PointListDto;
+import com.sososhopping.customer.mysoso.model.PointInfoModel;
+import com.sososhopping.customer.mysoso.viemodel.PointInfoViewModel;
+import com.sososhopping.customer.mysoso.view.adapter.MysosoPointAdapter;
+
+import java.util.ArrayList;
+
+public class MysosoPointFragment extends Fragment {
+
+    MysosoPointBinding binding;
+    NavController navConroller;
+    PointInfoViewModel pointInfoViewModel;
+
+    private MysosoPointAdapter adapterFavorite = new MysosoPointAdapter();
+    private MysosoPointAdapter adapterNotFavorite = new MysosoPointAdapter();
+
+    public static MysosoPointFragment newInstance() {return new MysosoPointFragment();}
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //메뉴 변경 확인
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        super.onCreateOptionsMenu(menu,inflater);
+        menu.clear();
+        inflater.inflate(R.menu.menu_top_none, menu);
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState){
+        //binding 설정
+        binding = MysosoPointBinding.inflate(inflater,container,false);
+
+        //viewmodel 설정
+        pointInfoViewModel = new PointInfoViewModel();
+        pointInfoViewModel.requestPointList(((MainActivity)getActivity()).getLoginToken(),
+                this::onSuccess,
+                this::onFailedLogIn,
+                this::onFailed,
+                this::onNetworkError);
+
+        LinearLayoutManager layoutManagerFavorite = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        LinearLayoutManager layoutManagerNotFavorite = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        binding.recyclerViewPointFavorite.setLayoutManager(layoutManagerFavorite);
+        binding.recyclerViewPointNotFavorite.setLayoutManager(layoutManagerNotFavorite);
+
+        binding.recyclerViewPointFavorite.setAdapter(adapterFavorite);
+        binding.recyclerViewPointNotFavorite.setAdapter(adapterNotFavorite);
+
+        binding.imageButtonFavoriteArrowDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //내리기
+                binding.imageButtonFavoriteArrowDown.setVisibility(View.GONE);
+                binding.imageButtonFavoriteArrowUp.setVisibility(View.VISIBLE);
+                binding.recyclerViewPointFavorite.setVisibility(View.GONE);
+            }
+        });
+
+        binding.imageButtonFavoriteArrowUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //올리기
+                binding.imageButtonFavoriteArrowDown.setVisibility(View.VISIBLE);
+                binding.imageButtonFavoriteArrowUp.setVisibility(View.GONE);
+                binding.recyclerViewPointFavorite.setVisibility(View.VISIBLE);
+            }
+        });
+
+        binding.imageButtonNotFavoriteArrowDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //내리기
+                binding.imageButtonNotFavoriteArrowDown.setVisibility(View.GONE);
+                binding.imageButtonNotFavoriteArrowUp.setVisibility(View.VISIBLE);
+                binding.recyclerViewPointNotFavorite.setVisibility(View.GONE);
+            }
+        });
+
+        binding.imageButtonNotFavoriteArrowUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //올리기
+                binding.imageButtonNotFavoriteArrowDown.setVisibility(View.VISIBLE);
+                binding.imageButtonNotFavoriteArrowUp.setVisibility(View.GONE);
+                binding.recyclerViewPointNotFavorite.setVisibility(View.VISIBLE);
+            }
+        });
+
+        return binding.getRoot();
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        //Controller 설정
+        navConroller = Navigation.findNavController(view);
+        super.onViewCreated(view, savedInstanceState);
+
+        adapterFavorite.setOnItemClickListener(new MysosoPointAdapter.OnItemClickListenerBoard() {
+            @Override
+            public void onItemClick(int storeId) {
+                //이동
+                navConroller.navigate(MysosoPointFragmentDirections.actionMysosoPointFragmentToMysosoPointDetailFragment(storeId));
+            }
+        });
+
+        adapterNotFavorite.setOnItemClickListener(new MysosoPointAdapter.OnItemClickListenerBoard() {
+            @Override
+            public void onItemClick(int storeId) {
+                //이동
+                navConroller.navigate(MysosoPointFragmentDirections.actionMysosoPointFragmentToMysosoPointDetailFragment(storeId));
+            }
+        });
+
+    }
+
+    @Override
+    public void onResume() {
+        //상단바
+        ((MainActivity)getActivity()).showTopAppBar();
+        ((MainActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_point));
+
+        //하단바
+        ((MainActivity)getActivity()).showBottomNavigation();
+        super.onResume();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
+    public void onSuccess(PointListDto dto){
+        if(dto != null){
+            adapterFavorite.setItems(dto.getPointListFavorite());
+            adapterNotFavorite.setItems(dto.getPointListNotFavorite());
+
+            //샘플데이터
+            adapterFavorite.setItems(mockData());
+
+            adapterFavorite.notifyDataSetChanged();
+            adapterNotFavorite.notifyDataSetChanged();
+        }
+    }
+
+    private void onFailedLogIn(){
+        NavHostFragment.findNavController(this)
+                .navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+    }
+
+    private void onFailed() {
+        Toast.makeText(getContext(),getResources().getString(R.string.shop_error), Toast.LENGTH_LONG).show();
+    }
+
+    private void onNetworkError() {
+        NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
+    }
+
+    public ArrayList<PointInfoModel> mockData(){
+        ArrayList<PointInfoModel> sample = new ArrayList<>();
+        sample.add(new PointInfoModel(23, "샘플",null, 123,true));
+        sample.add(new PointInfoModel(23, "샘플1",null, 1234,true));
+        sample.add(new PointInfoModel(23, "샘플2",null, 123456,true));
+        sample.add(new PointInfoModel(23, "샘플3",null, 1234567,true));
+        sample.add(new PointInfoModel(23, "샘플4",null, 12345678,true));
+        sample.add(new PointInfoModel(23, "샘플5",null, 123456789,true));
+
+        return sample;
+    }
+
+}

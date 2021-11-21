@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_shop_graph"
+    app:startDestination="@id/shopMainFragment">
+
+    <fragment
+        android:id="@+id/shopEventDetailFragment"
+        android:name="com.sososhopping.customer.shop.view.ShopEventDetailFragment"
+        android:label="ShopEventDetailFragment"
+        tools:layout="@layout/shop_event_detail">
+        <argument
+            android:name="shopId"
+            app:argType="integer" />
+        <argument
+            android:name="writeId"
+            app:argType="integer" />
+        <argument
+            android:name="storeName"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/shopMainFragment"
+        android:name="com.sososhopping.customer.shop.view.ShopMainFragment"
+        android:label="ShopMainFragment"
+        tools:layout="@layout/shop_main">
+        <action
+            android:id="@+id/action_shopMainFragment_to_shopEventDetailFragment"
+            app:destination="@id/shopEventDetailFragment"
+            app:launchSingleTop="false" />
+        <action
+            android:id="@+id/action_shopMainFragment_to_shopReportFragment"
+            app:destination="@id/shopReportFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shopReportFragment"
+        android:name="com.sososhopping.customer.shop.view.ShopReportFragment"
+        android:label="ShopReportFragment"
+        tools:layout="@layout/shop_report">
+    </fragment>
+
+</navigation>

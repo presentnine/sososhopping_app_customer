@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="category_icon_detail">
+        <item>icon_category_mart</item>
+        <item>icon_category_meat</item>
+        <item>icon_category_seafood</item>
+        <item>icon_category_bakery</item>
+        <item>icon_category_cafe</item>
+        <item>icon_category_beauty_salon</item>
+        <item>icon_category_laundry</item>
+        <item>icon_category_bookstore</item>
+        <item>icon_category_office_tool</item>
+        <item>icon_category_academy</item>
+        <item>icon_category_camera</item>
+        <item>icon_category_flowers</item>
+        <item>icon_category_dress_shop</item>
+    </string-array>
+
+    <string-array name="category_icon_explain">
+        <item>마트</item>
+        <item>정육점</item>
+        <item>수산물</item>
+        <item>베이커리</item>
+        <item>카페</item>
+        <item>헤어숍</item>
+        <item>세탁소</item>
+        <item>서점</item>
+        <item>사무용품</item>
+        <item>학원</item>
+        <item>사진관</item>
+        <item>꽃집</item>
+        <item>의류</item>
+    </string-array>
+
+
+</resources>

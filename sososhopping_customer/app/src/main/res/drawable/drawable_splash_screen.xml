@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item android:drawable="@android:color/background_light">
+        <shape android:shape="rectangle">
+            <size android:width="40dp"
+                android:height="40dp">
+            </size>
+        </shape>
+    </item>
+
+    <item>
+        <bitmap
+        android:src="@drawable/icon_app_groceries"
+            android:gravity="center"/>
+    </item>
+
+</layer-list>

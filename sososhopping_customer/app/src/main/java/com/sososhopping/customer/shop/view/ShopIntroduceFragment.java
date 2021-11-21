@@ -1,0 +1,175 @@
+package com.sososhopping.customer.shop.view;
+
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+
+import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.NavGraphDirections;
+import com.sososhopping.customer.R;
+import com.sososhopping.customer.ShopGraphDirections;
+import com.sososhopping.customer.common.CarouselMethod;
+import com.sososhopping.customer.databinding.ShopIntroduceBinding;
+import com.sososhopping.customer.shop.model.ShopIntroduceModel;
+import com.sososhopping.customer.shop.viewmodel.ShopInfoViewModel;
+import com.sososhopping.customer.shop.viewmodel.ShopIntroduceViewModel;
+
+public class ShopIntroduceFragment extends Fragment {
+    private NavController navController;
+    private ShopIntroduceBinding binding;
+    private ShopIntroduceModel shopIntroduceModel;
+    private ShopInfoViewModel shopInfoViewModel;
+    private ShopIntroduceViewModel shopIntroduceViewModel = new ShopIntroduceViewModel();;
+
+    public static ShopIntroduceFragment newInstance(){return new ShopIntroduceFragment();}
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        binding = ShopIntroduceBinding.inflate(inflater, container, false);
+
+        shopIntroduceViewModel.setStoreId(new ViewModelProvider(getActivity()).get(ShopInfoViewModel.class).getShopId().getValue());
+        shopIntroduceViewModel.requestShopIntroduce(
+                ((MainActivity)getActivity()).getLoginToken(),
+                ShopIntroduceFragment.this::onSuccess,
+                ShopIntroduceFragment.this::onFailed,
+                ShopIntroduceFragment.this::onNetworkError);
+
+
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+        super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
+
+        binding.buttonShopMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(getParentFragment().getParentFragment().getParentFragment())
+                        .navigate(ShopGraphDirections.actionGlobalShopMapFragment(R.id.shopMainFragment)
+                                .setLat((float)shopIntroduceModel.getLocation().getLat())
+                                .setLng((float)shopIntroduceModel.getLocation().getLng()));
+            }
+        });
+
+        binding.buttonShopCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(shopIntroduceModel.getPhone() != null){
+                    startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+shopIntroduceModel.getPhone())));
+                }
+            }
+        });
+
+        binding.buttonShopChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        binding.buttonShopFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //관심가게 여부 변경 api
+                shopIntroduceViewModel.requestShopFavoriteChange(
+                        ((MainActivity)getActivity()).getLoginToken(),
+                        ShopIntroduceFragment.this::onSuccessFavoriteChange,
+                        ShopIntroduceFragment.this::onFailedLogIn,
+                        ShopIntroduceFragment.this::onFailed,
+                        ShopIntroduceFragment.this::onNetworkError);
+            }
+        });
+    }
+
+    private void onSuccess(ShopIntroduceModel shopIntroduceModel){
+        if(shopIntroduceModel != null){
+            this.shopIntroduceModel = shopIntroduceModel;
+
+            binding.textViewShopLocation.setText(shopIntroduceViewModel.getAddress(shopIntroduceModel));
+
+            //영업일 계산
+            try {
+                binding.textViewShopOpen.setText(shopIntroduceViewModel.getBusinessDay(shopIntroduceModel));
+
+
+            binding.textViewShopOpenDetail.setText(shopIntroduceModel.getExtraBusinessDay());
+
+            //제한
+            if(shopIntroduceModel.getMinimumOrderPrice() != null){
+                binding.textViewShopRestrict.setText(shopIntroduceViewModel.getMinimum(shopIntroduceModel));
+                binding.textViewShopRestrict.setVisibility(View.VISIBLE);
+            }else{
+                binding.textViewShopRestrict.setVisibility(View.GONE);
+            }
+
+            //설명
+            binding.textViewShopIntroduce.setText(shopIntroduceModel.getDescription());
+
+            //포인트
+            if(shopIntroduceModel.getSaveRate() != null){
+                binding.textViewShopPoint.setText(shopIntroduceViewModel.getSaveRate(shopIntroduceModel));
+            }
+
+            //번호
+            if(shopIntroduceModel.getPhone() != null){
+                binding.textViewShopPhone.setText(shopIntroduceModel.getPhone());
+            }
+            changeFavoriteState(shopIntroduceModel.isInterestStore());
+
+            //이미지
+            CarouselMethod carouselMethod = new CarouselMethod(binding.layoutIndicators, binding.viewpagerIntroduce, getContext());
+            carouselMethod.setCarousel(shopIntroduceModel.getStoreImages());
+
+            }catch (Exception e){
+                //View에서는 혹시 에러 터져도 진행되게
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void changeFavoriteState(boolean status){
+        if(!status){
+            binding.buttonShopFavorite.setText(getResources().getString(R.string.introduce_button_favorite));
+        }else{
+            binding.buttonShopFavorite.setText(getResources().getString(R.string.introduce_button_favorite_not));
+        }
+    }
+
+    private void onSuccessFavoriteChange(){
+        //관심여부 변경 (View단)
+        boolean status = !shopIntroduceModel.isInterestStore();
+        shopIntroduceModel.setInterestStore(status);
+        changeFavoriteState(status);
+        ((ShopMainFragment) getParentFragment().getParentFragment()).changeFavoriteState(status);
+    }
+
+    private void onFailedLogIn(){
+        NavHostFragment.findNavController(getParentFragment().getParentFragment()).navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+    }
+
+    private void onFailed() {
+        Toast.makeText(getContext(),getResources().getString(R.string.shop_error), Toast.LENGTH_LONG).show();
+    }
+
+    private void onNetworkError() {
+        NavHostFragment.findNavController(getParentFragment().getParentFragment()).navigate(R.id.action_global_networkErrorDialog);
+    }
+
+}

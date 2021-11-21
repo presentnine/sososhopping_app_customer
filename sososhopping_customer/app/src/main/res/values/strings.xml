@@ -1,0 +1,107 @@
+<resources>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="app_name">sososhopping_customer</string>
+    <string name="app_name_kor">소 소 한 장 보 기</string>
+    <string name="app_description">간편하게 살펴보는 내 주변 상점</string>
+
+    <!-- 회원가입 -->
+    <string name="signup_email">사용하실 이메일을 입력해주세요</string>
+    <string name="signup_password">사용하실 비밀번호를 입력해주세요</string>
+    <string name="signup_passwordDup">사용하실 비밀번호를 다시 입력해주세요</string>
+    <string name="signup_name">성함을 입력해주세요</string>
+    <string name="signup_phone">휴대전화번호을 입력해주세요 (-제외)</string>
+    <string name="signup_nickName">앱 내에서 사용하실 별명을 입력해주세요</string>
+    <string name="signup_roadAddress">도로명주소</string>
+    <string name="signup_detailAddress">상세주소</string>
+
+    <string name="signup_error_email">이메일을 정확하게 입력해주세요</string>
+    <string name="signup_error_password">비밀번호는 8자 이상이어야 합니다</string>
+    <string name="signup_error_passwordDup">비밀번호가 일치하지 않습니다</string>
+    <string name="signup_error_name">이름은 한글만 가능합니다</string>
+    <string name="signup_error_phone">전화번호를 정확하게 입력해주세요</string>
+    <string name="signup_error_nickname">별명은 8자 이내의 한글,영어,숫자만 가능합니다</string>
+    <string name="signup_error_roadAddress">도로명 주소를 입력해주세요</string>
+    <string name="signup_error_detailAddress">상세 주소를 입력해주세요</string>
+    <string name="signup_error_process">모든 절차를 통과하셔야 합니다</string>
+    <string name="signup_success">회원가입이 완료되었습니다!\n로그인을 시도해주세요</string>
+
+    <!-- Strings related to login -->
+    <string name="login_email">이메일을 입력해주세요</string>
+    <string name="login_password">비밀번호를 입력해주세요</string>
+    <string name="login_success">환영합니다</string>
+    <string name="login_failed">로그인에 실패하였습니다</string>
+
+    <string name="find_email">가입하신 이메일은 다음과 같습니다</string>
+    <string name="find_infoOk">가입 인증 완료! 비밀번호를 변경해주세요</string>
+    <string name="find_infoFail">가입 인증 실패! 가입 정보를 다시 확인해주세요</string>
+
+    <!--홈 관련-->
+    <string name="home_shop">상점</string>
+    <string name="home_item">상품</string>
+    <string name="textSample">내용을 입력해주세요</string>
+
+
+    <!--네트워크 에러-->
+    <string name="network_error_title">서버 연결 오류</string>
+    <string name="network_error_description">서버와 연결이 원활하지 않습니다.\n인터넷 연결 상태를 확인하고 잠시 후 다시 시도해주세요.</string>
+    <string name="network_error_ok">확인</string>
+
+    <!--네트워크 에러-->
+    <string name="login_error_description">로그인이 필요한 작업입니다. \n로그인 화면으로 이동하시겠습니까?</string>
+    <string name="login_error_token">로그인 상태 오류입니다. \n다시 로그인해 주세요</string>
+    <string name="login_error_ok">로그인하기</string>
+
+    <!--매장 관련-->
+    <!--매장 소개-->
+    <string name="introduce_location">매장의 영업위치입니다</string>
+    <string name="introduce_businessTime">매장의 영업시간입니다</string>
+    <string name="introduce_description">매장의 상세 설명입니다</string>
+    <string name="introduce_point">정책이 아직 준비되지 않았습니다.</string>
+    <string name="introduce_button_favorite">관심설정</string>
+    <string name="introduce_button_favorite_not">관심해제</string>
+
+    <!--범용 에러-->
+    <string name="shop_error">정보를 불러오는데 실패했습니다</string>
+    <string name="requireLogIn">로그인 후 이용해주세요</string>
+
+    <!--이벤트 페이지-->
+    <string name="event_couponList">오늘의 쿠폰</string>
+    <string name="event_coupon_addFail">쿠폰 저장에 실패하였습니다</string>
+    <string name="event_coupon_addSucc">쿠폰 저장에 성공하였습니다</string>
+    <string name="event_boardList">소식</string>
+    <string name="news">소식</string>
+    <string name="event">이벤트</string>
+
+    <!--리뷰-->
+    <string name="review_input">리뷰를 작성했습니다</string>
+
+    <!--신고-->
+    <string name="report_title">신고하기</string>
+    <string name="report_warning">신고 내용은 30글자 이상이어야 합니다.</string>
+    <string name="report_input">신고를 작성했습니다.</string>
+    <string name="report_description">불법, 부정, 허위 및 불량 업소 등에 관하여 신고받은 내용은 고객센터에서 면밀히 검토 후 조치합니다.\n금전적인 피해 및 기타 추가적인 증빙사항은 위 고객센터 이메일 (abcdefg@gmail.com)로 연락주세요</string>
+
+    <!--My소소-->
+    <string name="mysoso">My소소</string>
+    <string name="mysoso_myInfo">`닉네임`님의 정보 보기</string>
+    <string name="mysoso_interest">나의 관심가게</string>
+    <string name="mysoso_chat">채팅목록</string>
+    <string name="mysoso_serviceInfo">고객센터</string>
+    <string name="mysoso_setting">설정</string>
+    <string name="mysoso_shoppingBag">장바구니</string>
+    <string name="mysoso_payHistory">결제내역</string>
+    <string name="mysoso_myRating">내 후기</string>
+    <string name="mysoso_point">포인트</string>
+    <string name="mysoso_coupon">쿠폰</string>
+    <string name="mysoso_map">지도</string>
+
+    <string name="mysoso_point_interest">관심가게</string>
+    <string name="mysoso_point_all">전체</string>
+
+    <!--My소소 포인트-->
+    <string name="mysoso_point_error">포인트 목록 조회에 실패했습니다.</string>
+    <string name="mysoso_point_detail">포인트 내역</string>
+
+
+</resources>
