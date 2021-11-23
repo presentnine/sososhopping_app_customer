@@ -41,6 +41,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/layout_distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
@@ -56,7 +57,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="450m"
+                        android:text="0m"
                         android:textSize="@dimen/search_shop_description" />
                 </LinearLayout>
 

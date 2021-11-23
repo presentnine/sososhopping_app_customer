@@ -8,6 +8,7 @@
         android:layout_height="match_parent"
         tools:context=".account.view.SignUpInfoFragment">
 
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -19,22 +20,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="개인정보 입력"
-                    android:textAllCaps="false"
-                    android:textColor="@color/main_400"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.05" />
+                android:layout_height="match_parent"
+                android:paddingTop="20dp">
 
                 <LinearLayout
                     android:id="@+id/linearLayout"
@@ -42,48 +29,47 @@
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.2">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textField_SignUpName"
+                        android:id="@+id/textField_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/signup_name"
+                        android:layout_marginBottom="10dp"
+                        android:hint="@string/name"
                         android:padding="2dp"
                         app:boxBackgroundColor="@color/white"
                         app:endIconMode="clear_text">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editText_SignUpName"
+                            android:id="@+id/editText_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:singleLine="true"
-                            />
+                            android:singleLine="true" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textField_SignUpPhone"
+                        android:id="@+id/textField_phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/signup_phone"
+                        android:hint="@string/phone"
                         android:padding="2dp"
                         app:boxBackgroundColor="@color/white"
                         app:endIconMode="clear_text">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editText_SignUpPhone"
+                            android:id="@+id/editText_phone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:singleLine="true"/>
+                            android:singleLine="true" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <LinearLayout
                         android:layout_width="@dimen/long_button"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
                         android:gravity="right">
 
                         <TextView
@@ -107,26 +93,85 @@
 
                     </LinearLayout>
 
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textField_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:hint="@string/email"
+                        android:padding="2dp"
+                        app:boxBackgroundColor="@color/white"
+                        app:endIconMode="clear_text"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editText_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:singleLine="true" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textField_password"
+                        android:layout_width="@dimen/long_button"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/password"
+                        android:inputType="textPassword"
+                        android:padding="2dp"
+                        app:boxBackgroundColor="@color/white"
+                        app:endIconMode="password_toggle">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editText_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"
+                            android:singleLine="true" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textField_passwordDup"
+                        android:layout_width="@dimen/long_button"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:hint="@string/passwordDup"
+                        android:padding="2dp"
+                        app:boxBackgroundColor="@color/white"
+                        app:endIconMode="password_toggle">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editText_passwordDup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"
+                            android:singleLine="true" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/textField_SignUpNickname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/signup_nickName"
+                        android:hint="@string/nickName"
                         android:padding="2dp"
                         app:boxBackgroundColor="@color/white"
                         app:endIconMode="clear_text">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editText_SignUpNickname"
+                            android:id="@+id/editText_nickname"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:singleLine="true"
-                            />
+                            android:singleLine="true" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <LinearLayout
                         android:layout_width="@dimen/long_button"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
                         android:gravity="right">
 
                         <TextView
@@ -150,64 +195,53 @@
 
                     </LinearLayout>
 
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:id="@+id/linearLayout3"
-                    android:layout_width="@dimen/long_button"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-                    app:layout_constraintVertical_bias="0.2">
-
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textField_SignUpRoadAddress"
+                        android:id="@+id/textField_roadAddress"
                         android:layout_width="@dimen/long_button"
                         android:layout_height="wrap_content"
-                        android:hint="@string/signup_roadAddress"
+                        android:hint="@string/roadAddress"
                         android:padding="2dp"
                         app:boxBackgroundColor="@color/white"
                         app:endIconMode="clear_text">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editText_SignUpRoadAddress"
+                            android:id="@+id/editText_roadAddress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:singleLine="true"/>
+                            android:singleLine="true" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textField_SignUpDetailAddress"
+                        android:id="@+id/textField_detailAddress"
                         android:layout_width="@dimen/long_button"
                         android:layout_height="wrap_content"
-                        android:hint="@string/signup_detailAddress"
+                        android:hint="@string/detailAddress"
                         android:padding="2dp"
                         app:boxBackgroundColor="@color/white"
                         app:endIconMode="clear_text">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editText_SignUpDetailAddress"
+                            android:id="@+id/editText_detailAddress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:singleLine="true"/>
+                            android:singleLine="true" />
                     </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <Button
+                        android:id="@+id/button_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="정보수정"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/button_signUp"
-                    android:layout_width="@dimen/long_button"
-                    android:layout_height="wrap_content"
-                    android:text="회원가입하기"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

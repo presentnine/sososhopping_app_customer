@@ -16,6 +16,17 @@
         <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
 
         <item name="android:textColor">@color/text_400</item>
+
+        <item name="checkboxStyle">@style/Widget.App.CheckBox</item>
+    </style>
+
+    <style name="Widget.App.CheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.CheckBox</item>
+    </style>
+
+    <style name="ThemeOverlay.App.CheckBox" parent="">
+        <item name="colorOnSurface">@color/text_800</item>
+        <item name="colorSecondary">@color/main_400</item>
     </style>
 
 

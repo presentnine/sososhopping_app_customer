@@ -28,7 +28,7 @@ public class ShopInfoShortModel implements Parcelable {
     private boolean deliveryStatus;
 
     private Location location = new Location();
-    private double distance;
+    private float distance;
 
     private double score;
     private boolean isInterestStore;
@@ -78,7 +78,7 @@ public class ShopInfoShortModel implements Parcelable {
         parcel.writeByte((byte) (localCurrencyStatus ? 1 : 0));
         parcel.writeByte((byte) (pickupStatus ? 1 : 0));
         parcel.writeByte((byte) (deliveryStatus ? 1 : 0));
-        parcel.writeDouble(distance);
+        parcel.writeFloat(distance);
         parcel.writeDouble(score);
         parcel.writeString(phone);
         parcel.writeByte((byte) (isInterestStore ? 1 : 0));

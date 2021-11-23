@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -80,12 +82,44 @@ public class MysosoReviewFragment extends Fragment {
         navConroller = Navigation.findNavController(view);
         super.onViewCreated(view, savedInstanceState);
 
-        mysosoReviewAdapter.setOnItemClickListener(new MysosoReviewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(MyreviewModel reviewModel) {
-                //삭제 / 이동할지 선택하기
-            }
-        });
+       mysosoReviewAdapter.setOnItemClickListener(new MysosoReviewAdapter.OnItemLongClickListener() {
+
+           @Override
+           public void onItemClick(View view, int storeId, int pos) {
+               PopupMenu popupMenu = new PopupMenu(getContext(),view);
+               getActivity().getMenuInflater().inflate(R.menu.menu_review_longclick, popupMenu.getMenu());
+
+               popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                   @Override
+                   public boolean onMenuItemClick(MenuItem menuItem) {
+
+                       switch (menuItem.getItemId()){
+
+                           case R.id.action_delete:{
+                               myReviewViewModel.deleteMyReview(
+                                       ((MainActivity)getActivity()).getLoginToken(),
+                                       storeId,
+                                       pos,
+                                       MysosoReviewFragment.this::onSuccess,
+                                       MysosoReviewFragment.this::onFailedDelete,
+                                       MysosoReviewFragment.this::onNetworkErrorDelete);
+                               break;
+                           }
+
+                           case R.id.action_navigate:{
+                               navConroller.navigate(MysosoReviewFragmentDirections.actionMysosoReviewFragmentToShopGraph(storeId));
+                               break;
+                           }
+                       }
+
+                       return false;
+                   }
+               });
+
+               popupMenu.show();
+
+           }
+    });
     }
 
     @Override
@@ -109,8 +143,8 @@ public class MysosoReviewFragment extends Fragment {
     public void onSuccess(MyReviewsDto dto){
         if(dto != null){
             mysosoReviewAdapter.setReviewModels(dto.getMyreviews());
+            mysosoReviewAdapter.notifyDataSetChanged();
         }
-        mysosoReviewAdapter.notifyDataSetChanged();
     }
 
     private void onFailedLogIn(){
@@ -119,11 +153,27 @@ public class MysosoReviewFragment extends Fragment {
     }
 
     private void onFailed() {
-        Toast.makeText(getContext(),getResources().getString(R.string.shop_error), Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(),getResources().getString(R.string.mysoso_myRating_delte_error), Toast.LENGTH_LONG).show();
     }
 
     private void onNetworkError() {
         NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
         getActivity().onBackPressed();
+    }
+
+    public void onSuccess(int pos){
+        if(pos != RecyclerView.NO_POSITION){
+            mysosoReviewAdapter.getReviewModels().remove(pos);
+            mysosoReviewAdapter.notifyItemRemoved(pos);
+            Toast.makeText(getContext(),getResources().getString(R.string.mysoso_myRating_delte_success), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void onFailedDelete() {
+        Toast.makeText(getContext(),getResources().getString(R.string.shop_error), Toast.LENGTH_LONG).show();
+    }
+
+    private void onNetworkErrorDelete() {
+        NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
     }
 }

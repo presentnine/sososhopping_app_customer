@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class MysosoReviewAdapter extends RecyclerView.Adapter<MysosoReviewAdapter.ViewHolder>{
     ArrayList<MyreviewModel> reviewModels = new ArrayList<>();
     ItemShopReviewBinding binding;
-    OnItemClickListener itemClickListener;
+    OnItemLongClickListener itemClickListener;
 
 
     @NonNull
@@ -50,11 +50,11 @@ public class MysosoReviewAdapter extends RecyclerView.Adapter<MysosoReviewAdapte
     }
 
     //클릭 이벤트
-    public interface OnItemClickListener{
-        void onItemClick(MyreviewModel reviewModel);
+    public interface OnItemLongClickListener{
+        void onItemClick(View view, int storeId, int pos);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(OnItemLongClickListener listener){
         this.itemClickListener = listener;
     }
 
@@ -66,17 +66,18 @@ public class MysosoReviewAdapter extends RecyclerView.Adapter<MysosoReviewAdapte
             super(binding.getRoot());
             this.binding = binding;
 
-            binding.getRoot().setOnClickListener(new View.OnClickListener() {
+            binding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
-                public void onClick(View v) {
+                public boolean onLongClick(View view) {
                     int pos = getAdapterPosition();
                     if(pos != RecyclerView.NO_POSITION){
 
                         //리스너 호출
                         if(itemClickListener != null){
-                            itemClickListener.onItemClick(reviewModels.get(pos));
+                            itemClickListener.onItemClick(view,reviewModels.get(pos).getStoreId(), pos);
                         }
                     }
+                    return false;
                 }
             });
         }

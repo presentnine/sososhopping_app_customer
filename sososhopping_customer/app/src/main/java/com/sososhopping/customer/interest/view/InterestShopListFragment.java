@@ -25,9 +25,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
+import com.sososhopping.customer.common.gps.CalculateDistance;
+import com.sososhopping.customer.common.gps.GPSTracker;
+import com.sososhopping.customer.common.types.Location;
 import com.sososhopping.customer.databinding.InterestShopListBinding;
 import com.sososhopping.customer.interest.viewmodel.InterestViewModel;
 import com.sososhopping.customer.search.dto.ShopListDto;
+import com.sososhopping.customer.search.model.ShopInfoShortModel;
 import com.sososhopping.customer.search.view.adapter.ShopListAdapter;
 import com.sososhopping.customer.shop.view.ShopMainFragment;
 
@@ -104,9 +108,8 @@ public class InterestShopListFragment extends Fragment {
             @Override
             public void onItemClick(View v, int pos) {
                 //검색조건으로 이동
-                Bundle bundle =  new Bundle();
-                bundle.putParcelable("shopInfo", shopListAdapter.getShopLists().get(pos));
-                navController.navigate(R.id.action_interestShopListFragment_to_shop_graph, bundle);
+                navController.navigate(InterestShopListFragmentDirections.actionInterestShopListFragmentToShopGraph(shopListAdapter.getShopLists().get(pos).getStoreId())
+                .setDistance(shopListAdapter.getShopLists().get(pos).getDistance()));
             }
 
             @Override
@@ -144,6 +147,20 @@ public class InterestShopListFragment extends Fragment {
 
     private void onSearchSuccessed(ShopListDto success){
         interestViewModel.getFavoriteList().setValue(success.getShopInfoShortModels());
+
+        GPSTracker gpsTracker = GPSTracker.getInstance(getContext());
+        Location me = new Location(gpsTracker.getLatitude(), gpsTracker.getLongitude());
+
+        for(ShopInfoShortModel s : success.getShopInfoShortModels()){
+            if(s.getLocation().getLat() == 0 && s.getLocation().getLng() == 0){
+                s.setDistance(-1);
+            }
+            else{
+                s.setDistance(CalculateDistance.distance(me,s.getLocation()));
+            }
+        }
+
+
         shopListAdapter.setShopLists(success.getShopInfoShortModels());
         shopListAdapter.notifyDataSetChanged();
     }
@@ -160,8 +177,9 @@ public class InterestShopListFragment extends Fragment {
     private void onSuccessFavoriteChange(){
         if(clickedPos != -1){
             //화면상의 표시 변경
-            shopListAdapter.getShopLists().remove(clickedPos);
-            shopListAdapter.notifyDataSetChanged();
+            ShopInfoShortModel shopInfoShortModel = shopListAdapter.getShopLists().get(clickedPos);
+            shopInfoShortModel.setInterestStore(!shopInfoShortModel.isInterestStore());
+            shopListAdapter.notifyItemChanged(clickedPos);
         }
     }
 

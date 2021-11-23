@@ -3,11 +3,14 @@ package com.sososhopping.customer.shop.viewmodel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.gson.Gson;
 import com.sososhopping.customer.shop.dto.ItemListDto;
 import com.sososhopping.customer.shop.model.ShopItemModel;
 import com.sososhopping.customer.shop.repository.ShopItemRepository;
 import com.sososhopping.customer.shop.repository.ShopRepository;
 import com.sososhopping.customer.shop.repository.ShopReviewRepository;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -28,4 +31,5 @@ public class ShopItemViewModel extends ViewModel {
                                 Runnable onError){
         shopRepository.requestShopItem(storeId,onSuccess,onFailed, onError);
     }
+
 }

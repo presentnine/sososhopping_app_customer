@@ -23,6 +23,7 @@ import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.common.types.Location;
 import com.sososhopping.customer.databinding.SearchShopListBinding;
+import com.sososhopping.customer.interest.view.InterestShopListFragmentDirections;
 import com.sososhopping.customer.search.HomeViewModel;
 import com.sososhopping.customer.search.dto.ShopListDto;
 import com.sososhopping.customer.search.view.adapter.ShopListAdapter;
@@ -84,11 +85,9 @@ public class ShopListFragment extends Fragment {
         shopListAdapter.setOnItemClickListener(new ShopListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
-
                 //해당 매장을 검색조건으로 이동
-                Bundle bundle =  new Bundle();
-                bundle.putParcelable("shopInfo", shopListAdapter.getShopLists().get(pos));
-                navController.navigate(R.id.action_shopListFragment_to_shop_graph, bundle);
+                navController.navigate(ShopListFragmentDirections.actionShopListFragmentToShopGraph(shopListAdapter.getShopLists().get(pos).getStoreId())
+                .setDistance(shopListAdapter.getShopLists().get(pos).getDistance()));
             }
 
             @Override

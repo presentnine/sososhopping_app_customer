@@ -41,7 +41,6 @@
     <string name="home_item">상품</string>
     <string name="textSample">내용을 입력해주세요</string>
 
-
     <!--네트워크 에러-->
     <string name="network_error_title">서버 연결 오류</string>
     <string name="network_error_description">서버와 연결이 원활하지 않습니다.\n인터넷 연결 상태를 확인하고 잠시 후 다시 시도해주세요.</string>
@@ -77,6 +76,10 @@
     <!--리뷰-->
     <string name="review_input">리뷰를 작성했습니다</string>
 
+    <!--메뉴 다이얼로그-->
+    <string name="menu_delete">삭제</string>
+    <string name="menu_navigate">매장이동</string>
+
     <!--신고-->
     <string name="report_title">신고하기</string>
     <string name="report_warning">신고 내용은 30글자 이상이어야 합니다.</string>
@@ -104,5 +107,18 @@
     <string name="mysoso_point_error">포인트 목록 조회에 실패했습니다.</string>
     <string name="mysoso_point_detail">포인트 내역</string>
 
+    <!--리뷰-->
+    <string name="mysoso_myRating_delte_error">리뷰 삭제에 실패하였습니다</string>
+    <string name="mysoso_myRating_delte_success">리뷰 삭제에 성공하였습니다</string>
+
+    <!--내정보-->
+    <string name="email">이메일</string>
+    <string name="password">비밀번호</string>
+    <string name="passwordDup">비밀번호 재확인</string>
+    <string name="name">이름</string>
+    <string name="phone">휴대전화번호</string>
+    <string name="nickName">별명</string>
+    <string name="roadAddress">도로명주소</string>
+    <string name="detailAddress">상세주소</string>
 
 </resources>

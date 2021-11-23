@@ -15,4 +15,13 @@ public class MyReviewViewModel {
                                 Runnable onError){
         myReviewsRepository.requestMyReviews(token,onSuccess,onFailedLogin,onFailed,onError);
     }
+
+    public void deleteMyReview(String token,
+                               int storeId,
+                               int position,
+                               Consumer<Integer> onSuccess,
+                               Runnable onFailed,
+                               Runnable onError){
+        myReviewsRepository.deleteMyReview(token, storeId, position, onSuccess, onFailed, onError);
+    }
 }

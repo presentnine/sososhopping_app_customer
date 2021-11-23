@@ -8,6 +8,7 @@ import com.sososhopping.customer.mysoso.dto.PointListDto;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -24,10 +25,14 @@ public interface MysosoService {
     @GET("my/reviews")
     Call<MyReviewsDto> requestMyReviews(@Header("token") String token);
 
+    @DELETE("stores/{storeId}/reviews")
+    Call<Void> deleteMyReview(@Header("token") String token, @Path("storeId") int storeId);
+
     @GET("my/coupons")
     Call<MyCouponsDto> requestMyCoupons(@Header("token") String token);
 
     @POST("my/coupons")
     Call<Void> addCoupons(@Header("token") String token, @Body AddCouponDto addCouponDto);
+
 
 }

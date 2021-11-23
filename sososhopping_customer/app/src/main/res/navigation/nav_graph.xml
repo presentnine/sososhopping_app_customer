@@ -62,11 +62,6 @@
         <action
             android:id="@+id/action_shopMapFragment_to_searchDialogFragment"
             app:destination="@id/searchDialogFragment" />
-        <action
-            android:id="@+id/action_shopMapFragment_to_shopMainFragment"
-            app:destination="@id/shop_graph"
-            app:popUpTo="@id/shopMapFragment"
-            app:popUpToInclusive="true" />
         <argument
             android:name="navigateFrom"
             app:argType="integer" />
@@ -110,6 +105,13 @@
             app:destination="@id/shopMapFragment"
             app:popUpTo="@id/shop_graph"
             app:popUpToInclusive="false" />
+        <argument
+            android:name="storeId"
+            app:argType="integer" />
+        <argument
+            android:name="distance"
+            app:argType="float"
+            android:defaultValue="-1"/>
     </navigation>
 
     <navigation android:id="@+id/navigation_login"
@@ -161,6 +163,9 @@
         <action
             android:id="@+id/action_mysosoMainFragment_to_mysosoCouponFragment"
             app:destination="@id/mysosoCouponFragment" />
+        <action
+            android:id="@+id/action_mysosoMainFragment_to_mysosoMyInfoFragment"
+            app:destination="@id/mysosoMyInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/mysosoPointFragment"
@@ -189,11 +194,31 @@
         android:id="@+id/mysosoReviewFragment"
         android:name="com.sososhopping.customer.mysoso.view.MysosoReviewFragment"
         android:label="MysosoReviewFragment"
-        tools:layout="@layout/mysoso_myreview"/>
+        tools:layout="@layout/mysoso_myreview">
+        <action
+            android:id="@+id/action_mysosoReviewFragment_to_shop_graph"
+            app:destination="@id/shop_graph"
+            app:popUpTo="@id/mysosoMainFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
     <fragment
         android:id="@+id/mysosoCouponFragment"
         android:name="com.sososhopping.customer.mysoso.view.MysosoCouponFragment"
         android:label="MysosoCouponFragment"
         tools:layout="@layout/mysoso_coupons"/>
+    <fragment
+        android:id="@+id/mysosoMyInfoFragment"
+        android:name="com.sososhopping.customer.mysoso.view.MysosoMyInfoFragment"
+        android:label="MysosoMyInfoFragment"
+        tools:layout="@layout/mysoso_myinfo"/>
+    <fragment
+        android:id="@+id/cartMainFragment"
+        android:name="com.sososhopping.customer.cart.view.CartMainFragment"
+        android:label="CartMainFragment"
+        tools:layout="@layout/cart_main">
+        <action
+            android:id="@+id/action_cartMainFragment_to_shop_graph"
+            app:destination="@id/shop_graph" />
+    </fragment>
 
 </navigation>

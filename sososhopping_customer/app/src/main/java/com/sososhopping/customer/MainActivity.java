@@ -87,6 +87,13 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
 
+                    case R.id.menu_cart:{
+                        getViewModelStore().clear();
+                        binding.bottomNavigation.getMenu().findItem(R.id.menu_cart).setChecked(true);
+                        navController.navigate(R.id.cartMainFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                        break;
+                    }
+
                     case R.id.menu_mysoso: {
                         getViewModelStore().clear();
                         binding.bottomNavigation.getMenu().findItem(R.id.menu_mysoso).setChecked(true);
@@ -121,6 +128,13 @@ public class MainActivity extends AppCompatActivity {
                         getViewModelStore().clear();
                         binding.bottomNavigation.getMenu().findItem(R.id.menu_interest).setChecked(true);
                         navController.navigate(R.id.interestShopListFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                        break;
+                    }
+
+                    case R.id.menu_cart:{
+                        getViewModelStore().clear();
+                        binding.bottomNavigation.getMenu().findItem(R.id.menu_cart).setChecked(true);
+                        navController.navigate(R.id.cartMainFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
                         break;
                     }
 
@@ -185,7 +199,10 @@ public class MainActivity extends AppCompatActivity {
                     doubleBackToExitPressedOnce = false;
                 }
             }, 2000);
-        } else if (start == R.id.signUpStartFragment || start == R.id.interestShopListFragment || start == R.id.mysosoMainFragment) {
+        } else if (start == R.id.signUpStartFragment ||
+                start == R.id.interestShopListFragment ||
+                start == R.id.mysosoMainFragment ||
+                start == R.id.cartMainFragment) {
             navController.navigate(R.id.action_global_home2, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
             binding.bottomNavigation.getMenu().findItem(R.id.menu_home).setChecked(true);
         } else {

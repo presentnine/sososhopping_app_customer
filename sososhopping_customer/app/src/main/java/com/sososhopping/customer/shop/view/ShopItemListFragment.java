@@ -29,6 +29,7 @@ import java.util.ArrayList;
 public class ShopItemListFragment extends Fragment {
     private NavController navController;
     private ShopItemAdapter shopItemAdapter = new ShopItemAdapter();
+    private ShopInfoViewModel shopInfoViewModel;
     private ShopItemViewModel shopItemViewModel;
     private ShopItemListBinding binding;
 
@@ -40,6 +41,7 @@ public class ShopItemListFragment extends Fragment {
         binding = ShopItemListBinding.inflate(inflater, container, false);
 
         //부모레벨
+        shopInfoViewModel = new ViewModelProvider(getActivity()).get(ShopInfoViewModel.class);
         shopItemViewModel = new ViewModelProvider(getParentFragment().getParentFragment()).get(ShopItemViewModel.class);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
@@ -47,7 +49,7 @@ public class ShopItemListFragment extends Fragment {
 
 
         //상품은 Create에서 로딩
-        int storeId = new ViewModelProvider(getActivity()).get(ShopInfoViewModel.class).getShopId().getValue();
+        int storeId = shopInfoViewModel.getShopId().getValue();
         shopItemViewModel.requestShopItem(storeId,
                 this::onSuccess,
                 this::onFailed,

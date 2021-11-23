@@ -31,8 +31,8 @@ public class ShopIntroduceFragment extends Fragment {
     private NavController navController;
     private ShopIntroduceBinding binding;
     private ShopIntroduceModel shopIntroduceModel;
+    private ShopIntroduceViewModel shopIntroduceViewModel = new ShopIntroduceViewModel();
     private ShopInfoViewModel shopInfoViewModel;
-    private ShopIntroduceViewModel shopIntroduceViewModel = new ShopIntroduceViewModel();;
 
     public static ShopIntroduceFragment newInstance(){return new ShopIntroduceFragment();}
 
@@ -41,13 +41,14 @@ public class ShopIntroduceFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = ShopIntroduceBinding.inflate(inflater, container, false);
 
-        shopIntroduceViewModel.setStoreId(new ViewModelProvider(getActivity()).get(ShopInfoViewModel.class).getShopId().getValue());
+        shopInfoViewModel = new ViewModelProvider(getActivity()).get(ShopInfoViewModel.class);
+        shopIntroduceViewModel.setStoreId(shopInfoViewModel.getShopId().getValue());
+
         shopIntroduceViewModel.requestShopIntroduce(
                 ((MainActivity)getActivity()).getLoginToken(),
                 ShopIntroduceFragment.this::onSuccess,
                 ShopIntroduceFragment.this::onFailed,
                 ShopIntroduceFragment.this::onNetworkError);
-
 
         return binding.getRoot();
     }
@@ -100,6 +101,11 @@ public class ShopIntroduceFragment extends Fragment {
 
     private void onSuccess(ShopIntroduceModel shopIntroduceModel){
         if(shopIntroduceModel != null){
+
+            if(shopInfoViewModel.getShopIntroduceModel().getValue() == null){
+                ((ShopMainFragment)getParentFragment().getParentFragment()).initialSetting(shopIntroduceModel);
+            }
+
             this.shopIntroduceModel = shopIntroduceModel;
 
             binding.textViewShopLocation.setText(shopIntroduceViewModel.getAddress(shopIntroduceModel));

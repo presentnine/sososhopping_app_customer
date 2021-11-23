@@ -101,7 +101,7 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.ViewHo
                 public void onClick(View v) {
                     int count = Integer.parseInt(binding.textViewItemNum.getText().toString());
                     //0까지만
-                    if(count > 0){
+                    if(count > 1){
                         binding.textViewItemNum.setText(Integer.toString(--count));
                     }
                 }
