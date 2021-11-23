@@ -36,16 +36,16 @@ public class SearchRepository {
 
     public void searchCategory(String token,
                                String category,
-                               Location location,
+                               Double lat, Double lng,
                                Integer radius,
                                Consumer<ShopListDto> onSuccess,
                                Runnable onError){
 
         if(token == null){
-            this.searchCategory(category, location, radius, onSuccess, onError);
+            this.searchCategory(category, lat, lng, radius, onSuccess, onError);
         }
         else{
-            searchService.searchByCategory(token, category, location.getLat(), location.getLng(), radius).enqueue(new Callback<ShopListDto>() {
+            searchService.searchByCategory(token, category, lat, lng, radius).enqueue(new Callback<ShopListDto>() {
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onResponse(Call<ShopListDto> call, Response<ShopListDto> response) {
@@ -66,12 +66,12 @@ public class SearchRepository {
     }
 
     public void searchCategory(String category,
-                               Location location,
+                               Double lat, Double lng,
                                Integer radius,
                                Consumer<ShopListDto> onSuccess,
                                Runnable onError){
 
-        searchService.searchByCategory(category, location.getLat(), location.getLng(), radius).enqueue(new Callback<ShopListDto>() {
+        searchService.searchByCategory(category, lat, lng, radius).enqueue(new Callback<ShopListDto>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(Call<ShopListDto> call, Response<ShopListDto> response) {
@@ -84,6 +84,56 @@ public class SearchRepository {
             @Override
             public void onFailure(Call<ShopListDto> call, Throwable t) {
                 t.printStackTrace();
+                onError.run();
+            }
+        });
+    }
+
+    public void searchSearch(String token, String type, String q, Double lat, Double lng, Integer radius,
+                             Consumer<ShopListDto> onSuccess,
+                             Runnable onError){
+        if(token == null){
+            searchSearch(type, q, lat, lng, radius, onSuccess, onError);
+        }
+        else{
+            searchService.searchBySearch(token, type, lat, lng, radius, q).enqueue(new Callback<ShopListDto>() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override
+                public void onResponse(Call<ShopListDto> call, Response<ShopListDto> response) {
+                    if (response.code() == 200) {
+                        onSuccess.accept(response.body());
+                    } else {
+                        Log.d("log", response.raw().toString());
+                        Log.d("log", response.errorBody().toString());
+                        onError.run();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ShopListDto> call, Throwable t) {
+                    t.printStackTrace();
+                    onError.run();
+                }
+            });
+        }
+    }
+
+    public void searchSearch(String type, String q, Double lat, Double lng, Integer radius,
+                             Consumer<ShopListDto> onSuccess,
+                             Runnable onError){
+        searchService.searchBySearch(type, lat, lng, radius, q).enqueue(new Callback<ShopListDto>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<ShopListDto> call, Response<ShopListDto> response) {
+                if (response.code() == 200) {
+                    onSuccess.accept(response.body());
+                } else {
+                    onError.run();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ShopListDto> call, Throwable t) {
                 onError.run();
             }
         });

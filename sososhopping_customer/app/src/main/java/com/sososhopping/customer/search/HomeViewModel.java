@@ -11,6 +11,7 @@ import com.sososhopping.customer.common.gps.CalculateDistance;
 import com.sososhopping.customer.common.gps.GPSTracker;
 import com.sososhopping.customer.common.types.Location;
 import com.sososhopping.customer.common.types.enumType.CategoryType;
+import com.sososhopping.customer.common.types.enumType.SearchType;
 import com.sososhopping.customer.search.dto.ShopListDto;
 import com.sososhopping.customer.search.model.ShopInfoShortModel;
 import com.sososhopping.customer.search.repository.SearchRepository;
@@ -31,7 +32,7 @@ public class HomeViewModel extends ViewModel {
 
     //1 : 카테고리 / 0 : 검색
     private MutableLiveData<Integer> askType = new MutableLiveData<>();
-    private MutableLiveData<Integer> searchType = new MutableLiveData<>();
+    private MutableLiveData<SearchType> searchType = new MutableLiveData<>();
     private MutableLiveData<String> searchContent = new MutableLiveData<>();
     private MutableLiveData<String> category = new MutableLiveData<>();
     private MutableLiveData<ArrayList<ShopInfoShortModel>> shopList= new MutableLiveData<>();
@@ -46,21 +47,14 @@ public class HomeViewModel extends ViewModel {
     //1 : 상품 / 0 : 상점
     public void setSearchType(Boolean checked){
         if(checked){
-            searchType.setValue(1);
+            searchType.setValue(SearchType.ITEM);
         }else{
-            searchType.setValue(0);
+            searchType.setValue(SearchType.STORE);
         }
     }
 
     public void setSearchContent(String content){
-        if(content != null){
-            if(!TextUtils.isEmpty(content)){
-                searchContent.setValue(content);
-            }
-        }
-        else{
-            searchContent.setValue(null);
-        }
+        searchContent.setValue(content);
     }
 
     public void searchCategory(String token,
@@ -73,7 +67,16 @@ public class HomeViewModel extends ViewModel {
         if(radius == null){
             radius = defaultRadius;
         }
-        searchRepository.searchCategory(token, category, location, radius, onSuccess,onError);
+        searchRepository.searchCategory(token, category, location.getLat(), location.getLng(), radius, onSuccess,onError);
+    }
+
+    public void searchSearch(String token, SearchType type, String q, Location location, Integer radius,
+                             Consumer<ShopListDto> onSuccess,
+                             Runnable onError){
+        if(radius == null){
+            radius = defaultRadius;
+        }
+        searchRepository.searchSearch(token, type.toString(), q, location.getLat(), location.getLng(), radius, onSuccess, onError);
     }
 
     public Location getLocation(Context context){

@@ -23,4 +23,19 @@ public interface SearchService {
                                        @Query(value = "lat") Double lat,
                                        @Query(value = "lng") Double lng,
                                        @Query(value = "radius") Integer radius);
+
+    @GET("search")
+    Call<ShopListDto> searchBySearch(@Header ("token") String token,
+                                     @Query(value = "type") String type,
+                                     @Query(value = "lat") Double lat,
+                                     @Query(value = "lng") Double lng,
+                                     @Query(value = "radius") Integer radius,
+                                     @Query(value = "q") String q);
+
+    @GET("search")
+    Call<ShopListDto> searchBySearch(@Query(value = "type") String type,
+                                     @Query(value = "lat") Double lat,
+                                     @Query(value = "lng") Double lng,
+                                     @Query(value = "radius") Integer radius,
+                                     @Query(value = "q") String q);
 }

@@ -44,6 +44,9 @@ public interface ShopService {
     @POST("stores/{storeId}/reviews")
     Call<Void> inputReviews(@Header("token") String token, @Path("storeId") int storeId, @Body ReviewInputDto reviewInputDto);
 
+    @GET("stores/{storeId}/reviews/check")
+    Call<Void> checkReviews(@Header("token") String token, @Path("storeId") int storeId);
+
     @POST("my/interest_store")
     Call<Void> changeInterest(@Header("token") String token, @Body StoreIdDto storeIdDto);
 

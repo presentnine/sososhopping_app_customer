@@ -72,14 +72,13 @@ public class HomeFragment extends Fragment{
                     //검색조건 : 상품
                     binding.textViewShop.setTextColor(getResources().getColor(R.color.text_0));
                     binding.textViewItem.setTextColor(getResources().getColor(R.color.text_400));
-                    homeViewModel.setSearchType(isChecked);
                 }
                 else{
                     //검색조건 : 상점
                     binding.textViewItem.setTextColor(getResources().getColor(R.color.text_0));
                     binding.textViewShop.setTextColor(getResources().getColor(R.color.text_400));
-                    homeViewModel.setSearchType(!isChecked);
                 }
+                homeViewModel.setSearchType(isChecked);
             }
         });
 
@@ -92,15 +91,6 @@ public class HomeFragment extends Fragment{
 
         homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
         navController = Navigation.findNavController(view);
-
-        //다른데서 왔으면 바로 토스해주기
-        /*if(getArguments() != null){
-            if(getArguments().getParcelable("shopInfo") != null){
-                NavHostFragment.findNavController(getParentFragment()).navigate(R.id.shop_graph, getArguments());
-            }
-        }*/
-
-
 
         categoryAdapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
@@ -130,6 +120,7 @@ public class HomeFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 homeViewModel.getAskType().setValue(0);
+                homeViewModel.setSearchType(binding.switchShopOrItem.isChecked());
                 homeViewModel.setSearchContent(binding.editTextSearch.getText().toString());
                 navController.navigate(R.id.action_home2_to_shopListFragment);
             }

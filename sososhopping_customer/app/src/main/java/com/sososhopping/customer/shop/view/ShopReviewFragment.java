@@ -16,6 +16,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.ShopReviewBinding;
 import com.sososhopping.customer.shop.dto.ReviewListDto;
@@ -75,6 +76,14 @@ public class ShopReviewFragment extends Fragment {
                 this::onFailed,
                 this::onNetworkError);
 
+        String token = ((MainActivity)getActivity()).getLoginToken();
+        if(token != null){
+            reviewViewModel.checkShopReview(token, storeId,
+                    this::onDup,
+                    this::onFailed,
+                    this::onNetworkError);
+        }
+
         super.onResume();
     }
 
@@ -97,5 +106,9 @@ public class ShopReviewFragment extends Fragment {
 
     private void onNetworkError() {
         NavHostFragment.findNavController(getParentFragment().getParentFragment()).navigate(R.id.action_global_networkErrorDialog);
+    }
+
+    private void onDup(){
+        binding.buttonAddReview.setVisibility(View.GONE);
     }
 }

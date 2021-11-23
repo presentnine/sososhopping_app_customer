@@ -114,8 +114,17 @@ public class ShopListFragment extends Fragment {
                     this::onSearchSuccessed,
                     this::onNetworkError);
         }
+
+        //상품 or 매장으로검색
         else if(homeViewModel.getAskType().getValue() == 0){
-            //상품으로검색
+            homeViewModel.searchSearch(
+                    ((MainActivity)getActivity()).getLoginToken(),
+                    homeViewModel.getSearchType().getValue(),
+                    homeViewModel.getSearchContent().getValue(),
+                    location,
+                    null,
+                    this::onSearchSuccessed,
+                    this::onNetworkError);
         }
 
         super.onResume();
