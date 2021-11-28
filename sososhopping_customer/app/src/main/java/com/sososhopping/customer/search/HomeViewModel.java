@@ -28,7 +28,7 @@ import lombok.Setter;
 public class HomeViewModel extends ViewModel {
 
 
-    private final int defaultRadius = 1000;
+    private final int defaultRadius = 100000000;
 
     //1 : 카테고리 / 0 : 검색
     private MutableLiveData<Integer> askType = new MutableLiveData<>();

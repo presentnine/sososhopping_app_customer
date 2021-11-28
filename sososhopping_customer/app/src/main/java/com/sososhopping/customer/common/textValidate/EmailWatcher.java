@@ -1,4 +1,4 @@
-package com.sososhopping.customer.account.view.textValidate;
+package com.sososhopping.customer.common.textValidate;
 
 import android.text.Editable;
 import android.text.TextWatcher;

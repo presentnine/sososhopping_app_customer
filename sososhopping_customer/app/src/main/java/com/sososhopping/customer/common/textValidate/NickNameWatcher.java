@@ -1,4 +1,4 @@
-package com.sososhopping.customer.account.view.textValidate;
+package com.sososhopping.customer.common.textValidate;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,7 +31,7 @@ public class NickNameWatcher implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        if(validateEmail(s.toString())){
+        if(validateNickname(s.toString())){
             nickNameTextLayout.setError(null);
             nickNameTextLayout.setErrorEnabled(false);
         }
@@ -42,7 +42,7 @@ public class NickNameWatcher implements TextWatcher {
         dupCheckTextView.setVisibility(View.INVISIBLE);
     }
 
-    public boolean validateEmail(String s){
+    public boolean validateNickname(String s){
         String regex = "^[0-9a-zA-Z가-힣]*$";
         return s.matches(regex);
     }

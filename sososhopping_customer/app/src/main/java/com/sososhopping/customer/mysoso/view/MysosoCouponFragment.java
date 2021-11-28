@@ -58,6 +58,15 @@ public class MysosoCouponFragment extends Fragment{
                 this::onNetworkError);
 
         //등록
+        return binding.getRoot();
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
+
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,19 +92,15 @@ public class MysosoCouponFragment extends Fragment{
             }
         });
 
-        return binding.getRoot();
-    }
-
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(view);
-
         mysosoCouponAdapter.setOnItemClickListener(new MysosoCouponAdapter.OnItemClickListenerChild() {
             @Override
             public void onItemClick(CouponModel couponModel) {
                 //쿠폰 삭제 / 매장으로 이동
+            }
+
+            @Override
+            public void onItemLongClick(CouponModel couponModel) {
+
             }
         });
 

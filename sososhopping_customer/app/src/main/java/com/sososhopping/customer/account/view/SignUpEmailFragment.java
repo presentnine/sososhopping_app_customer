@@ -14,14 +14,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 
-import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.account.viewmodel.SignUpViewModel;
-import com.sososhopping.customer.account.view.textValidate.EmailWatcher;
-import com.sososhopping.customer.account.view.textValidate.PasswordDupWatcher;
-import com.sososhopping.customer.account.view.textValidate.PasswordWatcher;
+import com.sososhopping.customer.common.textValidate.EmailWatcher;
+import com.sososhopping.customer.common.textValidate.PasswordDupWatcher;
+import com.sososhopping.customer.common.textValidate.PasswordWatcher;
 import com.sososhopping.customer.databinding.AccountSignUpEmailBinding;
 
 public class SignUpEmailFragment extends Fragment {

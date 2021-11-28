@@ -3,6 +3,7 @@ package com.sososhopping.customer.shop.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -63,7 +64,7 @@ public class ShopMainFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.shop_main,container,false);
 
         //ViewModel Setting -> Main에서 유지되게
-        shopInfoViewModel = new ViewModelProvider(getActivity()).get(ShopInfoViewModel.class);
+        shopInfoViewModel = new ViewModelProvider(this).get(ShopInfoViewModel.class);
         shopInfoViewModel.setShopId(ShopMainFragmentArgs.fromBundle(getArguments()).getStoreId());
 
         if(shopInfoViewModel.getDistance().getValue() == null){

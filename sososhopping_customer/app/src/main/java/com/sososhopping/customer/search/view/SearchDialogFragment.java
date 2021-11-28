@@ -55,7 +55,7 @@ public class SearchDialogFragment extends DialogFragment {
         super.onViewCreated(view,savedInstanceState);
 
         navController = Navigation.findNavController(getParentFragment().getView());
-        homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
+        homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
         //초기 조건 설정
         boolean isChecked = homeViewModel.getSearchType().getValue().equals(SearchType.ITEM);

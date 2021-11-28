@@ -22,11 +22,13 @@ import java.util.ArrayList;
 public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHolder>{
 
     ArrayList<CartItemDto> items;
-    ItemCartItemBinding binding;
+    com.sososhopping.customer.databinding.ItemCartItemBinding binding;
     OnItemClickListenerCartItem itemClickListener;
+    int adapterCase;
 
-    public CartItemAdapter(ArrayList<CartItemDto> items){
+    public CartItemAdapter(ArrayList<CartItemDto> items, int adapterCase){
         this.items = items;
+        this.adapterCase = adapterCase;
     }
 
     @NonNull
@@ -129,7 +131,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
 
         public void bindItem(CartItemDto dto){
 
-            binding.textViewGoods.setText(dto.getName());
+            binding.textViewGoods.setText(dto.getItemName());
             binding.textViewItemDescription.setText(dto.getDescription());
 
             binding.textViewItemNum.setText(Integer.toString(dto.getNum()));
@@ -138,11 +140,16 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
 
             //판매불가면 못누르게
             if(!dto.getSaleStatus()){
-                binding.checkBox.setChecked(false);
-                binding.checkBox.setClickable(false);
+                binding.checkBox.setEnabled(false);
+                binding.textViewUnAvailable.setVisibility(View.VISIBLE);
             }else {
                 binding.checkBox.setChecked(true);
                 dto.setPurchase(true);
+            }
+
+            //구매로직은 다르게
+            if(adapterCase == R.id.purchaseFragment){
+                binding.checkBox.setVisibility(View.GONE);
             }
 
             //이미지
@@ -155,6 +162,5 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
                     .fallback(R.drawable.icon_app_groceries)
                     .into(binding.imageViewGoods);
         }
-
     }
 }

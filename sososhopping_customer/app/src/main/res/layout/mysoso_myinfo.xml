@@ -40,6 +40,7 @@
                         android:layout_marginBottom="10dp"
                         android:hint="@string/name"
                         android:padding="2dp"
+                        android:enabled="false"
                         app:boxBackgroundColor="@color/white"
                         app:endIconMode="clear_text">
 
@@ -56,6 +57,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/phone"
                         android:padding="2dp"
+                        android:enabled="false"
                         app:boxBackgroundColor="@color/white"
                         app:endIconMode="clear_text">
 
@@ -89,6 +91,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:padding="5dp"
+                            android:enabled="false"
                             android:text="번호인증" />
 
                     </LinearLayout>
@@ -103,6 +106,7 @@
                         android:padding="2dp"
                         app:boxBackgroundColor="@color/white"
                         app:endIconMode="clear_text"
+                        android:enabled="false"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -121,6 +125,7 @@
                         android:layout_width="@dimen/long_button"
                         android:layout_height="wrap_content"
                         android:hint="@string/password"
+                        android:enabled="false"
                         android:inputType="textPassword"
                         android:padding="2dp"
                         app:boxBackgroundColor="@color/white"
@@ -141,6 +146,7 @@
                         android:layout_marginBottom="10dp"
                         android:hint="@string/passwordDup"
                         android:padding="2dp"
+                        android:enabled="false"
                         app:boxBackgroundColor="@color/white"
                         app:endIconMode="password_toggle">
 
@@ -153,11 +159,12 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textField_SignUpNickname"
+                        android:id="@+id/textField_nickname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/nickName"
                         android:padding="2dp"
+                        android:enabled="false"
                         app:boxBackgroundColor="@color/white"
                         app:endIconMode="clear_text">
 
@@ -191,6 +198,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:padding="5dp"
+                            android:enabled="false"
                             android:text="중복확인" />
 
                     </LinearLayout>
@@ -201,6 +209,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/roadAddress"
                         android:padding="2dp"
+                        android:enabled="false"
                         app:boxBackgroundColor="@color/white"
                         app:endIconMode="clear_text">
 
@@ -217,6 +226,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/detailAddress"
                         android:padding="2dp"
+                        android:enabled="false"
                         app:boxBackgroundColor="@color/white"
                         app:endIconMode="clear_text">
 

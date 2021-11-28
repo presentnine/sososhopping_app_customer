@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/drawable_round_background"
@@ -15,7 +15,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:paddingTop="5dp"
-            android:paddingLeft="15dp"
+            android:paddingLeft="5dp"
             android:paddingBottom="2dp">
 
             <CheckBox
@@ -29,8 +29,8 @@
 
             <ImageView
                 android:id="@+id/imageView_goods"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -157,5 +157,20 @@
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <TextView
+            android:id="@+id/textView_unAvailable"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/drawable_background_gray"
+            android:gravity="center"
+            android:text="구매불가"
+            android:textColor="@color/error_text"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

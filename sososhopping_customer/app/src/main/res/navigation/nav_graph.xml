@@ -219,6 +219,29 @@
         <action
             android:id="@+id/action_cartMainFragment_to_shop_graph"
             app:destination="@id/shop_graph" />
+        <action
+            android:id="@+id/action_cartMainFragment_to_purchaseFragment"
+            app:destination="@id/purchaseFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/purchaseFragment"
+        android:name="com.sososhopping.customer.cart.view.PurchaseFragment"
+        android:label="PurchaseFragment"
+        tools:layout="@layout/purchase_main">
+        <argument
+            android:name="purchaseList"
+            app:argType="com.sososhopping.customer.cart.dto.CartItemDto[]" />
+        <argument
+            android:name="storeId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_purchaseFragment_to_purchaseCouponDialogFragment"
+            app:destination="@id/purchaseCouponDialogFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/purchaseCouponDialogFragment"
+        android:name="com.sososhopping.customer.cart.view.PurchaseCouponDialogFragment"
+        android:label="PurchaseCouponDialogFragment"
+        tools:layout="@layout/purchase_coupon"/>
 
 </navigation>

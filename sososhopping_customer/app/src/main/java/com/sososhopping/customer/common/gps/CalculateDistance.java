@@ -10,7 +10,6 @@ public class CalculateDistance {
     public static float distance(Location start, Location target) {
 
         final int R = 6371; // Radius of the earth
-        Log.d("calDis", start.getLat() + " " + start.getLng() + " " + target.getLat() + " " + target.getLng());
 
         double theta = start.getLng() - target.getLng();
         double distance = Math.sin(Math.toRadians(start.getLat()))

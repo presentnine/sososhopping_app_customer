@@ -1,6 +1,11 @@
 package com.sososhopping.customer.cart.dto;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.gson.annotations.SerializedName;
+
+import org.jetbrains.annotations.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,13 +16,15 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PurchaseDto{
+public class CartUpdateDto {
+    @SerializedName("itemId")
     Integer itemId;
-    int num;
+    @SerializedName("quantity")
+    int quantity;
 
     @Override
     public boolean equals(@Nullable @org.jetbrains.annotations.Nullable Object obj) {
-        PurchaseDto a = (PurchaseDto) obj;
+        CartUpdateDto a = (CartUpdateDto) obj;
         return a.itemId == this.itemId;
     }
 
@@ -25,4 +32,12 @@ public class PurchaseDto{
     public int hashCode() {
         return itemId.hashCode();
     }
+
+    @NonNull
+    @NotNull
+    @Override
+    public String toString() {
+        return itemId + " " + quantity;
+    }
+
 }

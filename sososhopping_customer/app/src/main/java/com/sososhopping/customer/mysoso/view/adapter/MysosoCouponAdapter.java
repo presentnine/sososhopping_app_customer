@@ -133,6 +133,7 @@ public class MysosoCouponAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     //클릭 이벤트
     public interface OnItemClickListenerChild{
         void onItemClick(CouponModel couponModel);
+        void onItemLongClick(CouponModel couponModel);
     }
 
     public void setOnItemClickListener(OnItemClickListenerChild listener){
@@ -176,6 +177,21 @@ public class MysosoCouponAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             itemClickListenerChild.onItemClick(items.get(pos).getCouponModel());
                         }
                     }
+                }
+            });
+
+            binding.linearLayoutCouponInfo.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    int pos = getAdapterPosition();
+                    if(pos != RecyclerView.NO_POSITION){
+
+                        //리스너 호출
+                        if(itemClickListenerChild != null){
+                            itemClickListenerChild.onItemLongClick(items.get(pos).getCouponModel());
+                        }
+                    }
+                    return false;
                 }
             });
 

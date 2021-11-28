@@ -1,4 +1,4 @@
-package com.sososhopping.customer.account.view.textValidate;
+package com.sososhopping.customer.common.textValidate;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,7 +27,7 @@ public class NameWatcher implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        if(validateEmail(s.toString())){
+        if(validateEmail(s.toString()) && s.length() >= 2){
             nameTextLayout.setError(null);
             nameTextLayout.setErrorEnabled(false);
         }

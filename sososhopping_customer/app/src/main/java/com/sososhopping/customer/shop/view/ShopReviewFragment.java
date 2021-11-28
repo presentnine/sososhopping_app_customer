@@ -46,7 +46,7 @@ public class ShopReviewFragment extends Fragment {
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater,
                              @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         binding = ShopReviewBinding.inflate(inflater, container,false);
-        storeId = new ViewModelProvider(getActivity()).get(ShopInfoViewModel.class).getShopId().getValue();
+        storeId = new ViewModelProvider(getParentFragment().getParentFragment()).get(ShopInfoViewModel.class).getShopId().getValue();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         binding.recyclerViewReview.setLayoutManager(layoutManager);

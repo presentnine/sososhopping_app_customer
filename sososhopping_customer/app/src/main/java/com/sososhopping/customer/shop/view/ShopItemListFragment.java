@@ -1,6 +1,7 @@
 package com.sososhopping.customer.shop.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.ShopItemListBinding;
 import com.sososhopping.customer.shop.dto.ItemListDto;
@@ -41,7 +43,7 @@ public class ShopItemListFragment extends Fragment {
         binding = ShopItemListBinding.inflate(inflater, container, false);
 
         //부모레벨
-        shopInfoViewModel = new ViewModelProvider(getActivity()).get(ShopInfoViewModel.class);
+        shopInfoViewModel = new ViewModelProvider(getParentFragment().getParentFragment()).get(ShopInfoViewModel.class);
         shopItemViewModel = new ViewModelProvider(getParentFragment().getParentFragment()).get(ShopItemViewModel.class);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
@@ -71,7 +73,24 @@ public class ShopItemListFragment extends Fragment {
             }
             @Override
             public void onItemAdd(View v, int pos, int num) {
+
+                int itemId = shopItemAdapter.getShopItemModelLists().get(pos).getItemId();
+
                 //장바구니 담기 API
+                shopItemViewModel.addCart(((MainActivity)getActivity()).getLoginToken(),
+                        itemId, num,
+                        ShopItemListFragment.this::onSuccessAdd,
+                        ShopItemListFragment.this::onDupAdd,
+                        ShopItemListFragment.this::onFailed,
+                        ShopItemListFragment.this::onNetworkError);
+
+            }
+        });
+
+        binding.buttonToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity)getActivity()).getBinding().bottomNavigation.setSelectedItemId(R.id.menu_cart);
             }
         });
     }
@@ -94,11 +113,21 @@ public class ShopItemListFragment extends Fragment {
         shopItemAdapter.notifyDataSetChanged();
     }
 
+    private void onSuccessAdd(){
+        Log.e("왜 아무일도 안생김?", "담기 시작");
+        Toast.makeText(getContext(), getResources().getString(R.string.item_addCart_succ), Toast.LENGTH_SHORT).show();
+    }
+
+    private void onDupAdd(){
+        Toast.makeText(getContext(), getResources().getString(R.string.item_addCart_dup), Toast.LENGTH_SHORT).show();
+    }
+
     private void onFailed() {
-        Toast.makeText(getContext(),getResources().getString(R.string.shop_error), Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(),getResources().getString(R.string.shop_error), Toast.LENGTH_SHORT).show();
     }
 
     private void onNetworkError() {
+        getActivity().onBackPressed();
         NavHostFragment.findNavController(getParentFragment().getParentFragment()).navigate(R.id.action_global_networkErrorDialog);
     }
 }

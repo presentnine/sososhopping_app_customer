@@ -9,9 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sososhopping.customer.R;
 import com.sososhopping.customer.cart.dto.CartItemDto;
 import com.sososhopping.customer.cart.dto.CartStoreDto;
-import com.sososhopping.customer.cart.dto.PurchaseDto;
+import com.sososhopping.customer.cart.dto.CartUpdateDto;
 import com.sososhopping.customer.databinding.ItemCartStoreBinding;
 
 import org.jetbrains.annotations.NotNull;
@@ -65,6 +66,7 @@ public class CartStoreAdapter extends  RecyclerView.Adapter<CartStoreAdapter.Vie
     public void setCartstores(ArrayList<CartStoreDto> c){
         this.cartstores = c;
     }
+    public ArrayList<CartStoreDto> getCartstores(){return this.cartstores;}
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ItemCartStoreBinding binding;
@@ -94,11 +96,11 @@ public class CartStoreAdapter extends  RecyclerView.Adapter<CartStoreAdapter.Vie
                     int pos = getAdapterPosition();
                     if(pos != RecyclerView.NO_POSITION){
 
-                        ArrayList<PurchaseDto> purchaseList = new ArrayList<>();
+                        ArrayList<CartUpdateDto> purchaseList = new ArrayList<>();
 
                         for(CartItemDto c : cartstores.get(pos).getCartItems()){
                             if(c.isPurchase()){
-                                purchaseList.add(new PurchaseDto(c.getItemId(), c.getNum()));
+                                purchaseList.add(new CartUpdateDto(c.getItemId(), c.getNum()));
                             }
                         }
 
@@ -117,7 +119,7 @@ public class CartStoreAdapter extends  RecyclerView.Adapter<CartStoreAdapter.Vie
             binding.textViewTotalStorePrice.setText(Integer.toString(cartStoreDto.getTotalPrice()));
 
             //아이템 추가
-            itemAdapter = new CartItemAdapter(cartStoreDto.getCartItems());
+            itemAdapter = new CartItemAdapter(cartStoreDto.getCartItems(), R.id.cartMainFragment);
             binding.recyclerviewItem.setAdapter(itemAdapter);
 
             itemAdapter.setOnItemClickListener(new OnItemClickListenerCartItem() {

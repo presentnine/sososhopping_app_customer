@@ -1,5 +1,9 @@
 package com.sososhopping.customer.mysoso.viemodel;
 
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.sososhopping.customer.mysoso.dto.AddCouponDto;
 import com.sososhopping.customer.mysoso.dto.MyCouponsDto;
 import com.sososhopping.customer.mysoso.repository.MysosoCouponRepository;
@@ -14,13 +18,13 @@ import java.util.function.Consumer;
 import lombok.Getter;
 
 @Getter
-public class MyCouponViewModel {
+public class MyCouponViewModel extends ViewModel {
     private MysosoCouponRepository mysosoCouponRepository = MysosoCouponRepository.getInstance();
-    ArrayList<CouponModel> myCoupons = new ArrayList<>();
+    MutableLiveData<ArrayList<CouponModel>> myCoupons = new MutableLiveData<>();
 
 
     public void setMyCoupons(ArrayList<CouponModel> coupons){
-        this.myCoupons = coupons;
+        this.myCoupons.setValue(coupons);
     }
 
     public ArrayList<ExpandableCouponData> parser(){
@@ -29,7 +33,7 @@ public class MyCouponViewModel {
         ArrayList<ExpandableCouponData> parse = new ArrayList<>();
 
         //1. parse with storeName
-        for (CouponModel c : myCoupons){
+        for (CouponModel c : myCoupons.getValue()){
             if(!map.containsKey(c.getStoreName())){
                 map.put(c.getStoreName(), new ArrayList<>());
             }

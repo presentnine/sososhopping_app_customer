@@ -15,7 +15,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.R;
-import com.sososhopping.customer.common.CarouselMethod;
+import com.sososhopping.customer.common.carousel.CarouselMethod;
 import com.sososhopping.customer.common.DateFormatMethod;
 import com.sososhopping.customer.databinding.ShopEventDetailBinding;
 import com.sososhopping.customer.shop.model.EventDetailModel;

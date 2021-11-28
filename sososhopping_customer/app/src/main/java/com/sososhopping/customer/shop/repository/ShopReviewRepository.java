@@ -124,7 +124,7 @@ public class ShopReviewRepository {
                         onDup.run();
                         break;
 
-                    default:
+                    case 404:
                         onFailed.run();
                         break;
                 }

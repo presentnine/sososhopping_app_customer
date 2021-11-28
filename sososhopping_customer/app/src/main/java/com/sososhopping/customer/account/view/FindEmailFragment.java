@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,8 +16,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.sososhopping.customer.R;
-import com.sososhopping.customer.account.view.textValidate.NameWatcher;
-import com.sososhopping.customer.account.view.textValidate.PhoneWatcher;
+import com.sososhopping.customer.common.textValidate.NameWatcher;
+import com.sososhopping.customer.common.textValidate.PhoneWatcher;
 import com.sososhopping.customer.databinding.AccountFindEmailBinding;
 
 
@@ -61,7 +60,7 @@ public class FindEmailFragment extends Fragment {
                     binding.textViewPhoneCheck.setText("인증실패");
                 }
                 else{
-                    blockEditText(binding.editTextFindEmailPhone);
+                    binding.editTextFindEmailPhone.setEnabled(false);
                     binding.textViewPhoneCheck.setText("인증완료");
                 }
                 binding.textViewPhoneCheck.setVisibility(View.VISIBLE);
@@ -86,7 +85,7 @@ public class FindEmailFragment extends Fragment {
                 if(email != null){
                     binding.editTextSignUpEmail.setText(email);
                 }
-                blockEditText(binding.editTextFindEmailName);
+                binding.textFieldFindEmailName.setEnabled(false);
                 binding.buttonInfoCheck.setClickable(false);
             }
         });
@@ -110,11 +109,6 @@ public class FindEmailFragment extends Fragment {
     //mockData
     public String getEmail(){
         return "abc@abc.com";
-    }
-
-    public void blockEditText(EditText editText){
-        editText.setFocusable(false);
-        editText.setClickable(false);
     }
 
     public void checkLayoutEmpty(){

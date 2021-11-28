@@ -41,6 +41,8 @@ public class ShopEventFragment extends Fragment {
     private ShopInfoViewModel shopInfoViewModel;
     private ShopEventViewModel shopEventViewModel;
 
+    private final int[] msgCode = {R.string.event_coupon_addSucc, R.string.event_coupon_addFail, R.string.event_coupon_addDup};
+
     public static ShopEventFragment newInstance() { return new ShopEventFragment();   }
 
     @Override
@@ -49,7 +51,7 @@ public class ShopEventFragment extends Fragment {
         binding = ShopEventBinding.inflate(inflater,container,false);
 
         shopEventViewModel = new ShopEventViewModel();
-        shopInfoViewModel = new ViewModelProvider(getActivity()).get(ShopInfoViewModel.class);
+        shopInfoViewModel = new ViewModelProvider(getParentFragment().getParentFragment()).get(ShopInfoViewModel.class);
 
         LinearLayoutManager layoutManager_coupon = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         LinearLayoutManager layoutManager_event = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
@@ -125,9 +127,10 @@ public class ShopEventFragment extends Fragment {
                 String token = ((MainActivity)getActivity()).getLoginToken();
                 if(token != null){
 
-                    int msgCode[]  = new int[2];
+                    int msgCode[]  = new int[3];
                     msgCode[0] = R.string.event_coupon_addSucc;
                     msgCode[1] = R.string.event_coupon_addFail;
+                    msgCode[2] = R.string.event_coupon_addDup;
 
                     shopEventViewModel.addShopCoupon(token, couponModel.getCouponCode(),
                             msgCode,
@@ -145,7 +148,7 @@ public class ShopEventFragment extends Fragment {
 
     @Override
     public void onResume(){
-        int storeId = new ViewModelProvider(getActivity()).get(ShopInfoViewModel.class).getShopId().getValue();
+        int storeId = new ViewModelProvider(getParentFragment().getParentFragment()).get(ShopInfoViewModel.class).getShopId().getValue();
 
         shopEventViewModel.requestShopCoupon(storeId,
                 ShopEventFragment.this::onSuccessCoupon,

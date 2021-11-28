@@ -18,7 +18,7 @@
     <string name="signup_error_email">이메일을 정확하게 입력해주세요</string>
     <string name="signup_error_password">비밀번호는 8자 이상이어야 합니다</string>
     <string name="signup_error_passwordDup">비밀번호가 일치하지 않습니다</string>
-    <string name="signup_error_name">이름은 한글만 가능합니다</string>
+    <string name="signup_error_name">이름은 2글자 이상의 한글만 가능합니다</string>
     <string name="signup_error_phone">전화번호를 정확하게 입력해주세요</string>
     <string name="signup_error_nickname">별명은 8자 이내의 한글,영어,숫자만 가능합니다</string>
     <string name="signup_error_roadAddress">도로명 주소를 입력해주세요</string>
@@ -60,6 +60,12 @@
     <string name="introduce_button_favorite">관심설정</string>
     <string name="introduce_button_favorite_not">관심해제</string>
 
+    <!--장바구니-->
+    <string name="item_addCart_error">현재 판매하지 않는 물건입니다</string>
+    <string name="item_addCart_succ">장바구니에 담는데 성공하였습니다.</string>
+    <string name="item_addCart_dup">이미 장바구니에 담긴 물건입니다</string>
+    <string name="item_deleteCart_error">장바구니 물건 삭제에 실패했습니다</string>
+
     <!--범용 에러-->
     <string name="shop_error">정보를 불러오는데 실패했습니다</string>
     <string name="requireLogIn">로그인 후 이용해주세요</string>
@@ -68,6 +74,7 @@
     <string name="event_couponList">오늘의 쿠폰</string>
     <string name="event_coupon_addFail">쿠폰 저장에 실패하였습니다</string>
     <string name="event_coupon_addSucc">쿠폰 저장에 성공하였습니다</string>
+    <string name="event_coupon_addDup">이미 저장한 쿠폰입니다</string>
     <string name="event_coupon_shortLength">쿠폰 코드는 최소 16글자 이상입니다.</string>
     <string name="event_boardList">소식</string>
     <string name="news">소식</string>
@@ -88,7 +95,7 @@
 
     <!--My소소-->
     <string name="mysoso">My소소</string>
-    <string name="mysoso_myInfo">`닉네임`님의 정보 보기</string>
+    <string name="mysoso_myInfo">내 정보 보기</string>
     <string name="mysoso_interest">나의 관심가게</string>
     <string name="mysoso_chat">채팅목록</string>
     <string name="mysoso_serviceInfo">고객센터</string>
@@ -116,9 +123,10 @@
     <string name="password">비밀번호</string>
     <string name="passwordDup">비밀번호 재확인</string>
     <string name="name">이름</string>
-    <string name="phone">휴대전화번호</string>
+    <string name="phone">휴대전화번호 (-제외)</string>
     <string name="nickName">별명</string>
     <string name="roadAddress">도로명주소</string>
     <string name="detailAddress">상세주소</string>
+    <string name="mysoso_myInfo_editSuccess">내정보 수정에 성공하였습니다</string>
 
 </resources>

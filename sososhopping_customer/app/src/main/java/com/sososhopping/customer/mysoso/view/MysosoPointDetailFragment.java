@@ -187,7 +187,7 @@ public class MysosoPointDetailFragment extends Fragment {
             adapters[index].setItems(pointDetailViewModel.getDetailList()[index].getValue());
         }
         //가짜데이터
-        adapters[index].setItems(mockData(index*10));
+        //adapters[index].setItems(mockData(index*10));
     }
 
     private void onFailed() {

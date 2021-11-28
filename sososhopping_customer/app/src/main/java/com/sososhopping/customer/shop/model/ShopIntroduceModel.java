@@ -39,6 +39,7 @@ public class ShopIntroduceModel {
     float score;
     @SerializedName("isInterestStore")
     boolean isInterestStore;
+    int myPoint;
 }
 
 

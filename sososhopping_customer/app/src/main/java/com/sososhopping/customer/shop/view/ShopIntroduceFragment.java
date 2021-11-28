@@ -3,7 +3,6 @@ package com.sososhopping.customer.shop.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,7 @@ import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.ShopGraphDirections;
-import com.sososhopping.customer.common.CarouselMethod;
+import com.sososhopping.customer.common.carousel.CarouselMethod;
 import com.sososhopping.customer.databinding.ShopIntroduceBinding;
 import com.sososhopping.customer.shop.model.ShopIntroduceModel;
 import com.sososhopping.customer.shop.viewmodel.ShopInfoViewModel;
@@ -41,9 +40,8 @@ public class ShopIntroduceFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = ShopIntroduceBinding.inflate(inflater, container, false);
 
-        shopInfoViewModel = new ViewModelProvider(getActivity()).get(ShopInfoViewModel.class);
+        shopInfoViewModel = new ViewModelProvider(getParentFragment().getParentFragment()).get(ShopInfoViewModel.class);
         shopIntroduceViewModel.setStoreId(shopInfoViewModel.getShopId().getValue());
-
         shopIntroduceViewModel.requestShopIntroduce(
                 ((MainActivity)getActivity()).getLoginToken(),
                 ShopIntroduceFragment.this::onSuccess,

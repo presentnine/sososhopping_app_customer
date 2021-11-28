@@ -1,4 +1,4 @@
-package com.sososhopping.customer.common;
+package com.sososhopping.customer.common.carousel;
 
 import android.content.Context;
 import android.view.ViewGroup;

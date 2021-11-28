@@ -65,6 +65,10 @@ public class HomeFragment extends Fragment{
         categoryAdapter.setCategory(getCategoryDetail(), getCategoryIconId());
         binding.recyclerViewCategory.setAdapter(categoryAdapter);
 
+
+        //처음 searchType
+        homeViewModel =  new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
+        homeViewModel.setSearchType(false);
         binding.switchShopOrItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -89,7 +93,6 @@ public class HomeFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view,savedInstanceState);
 
-        homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
         navController = Navigation.findNavController(view);
 
         categoryAdapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {

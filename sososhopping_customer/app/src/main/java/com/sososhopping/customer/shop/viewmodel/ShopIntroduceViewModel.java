@@ -31,7 +31,7 @@ public class ShopIntroduceViewModel {
         for(int i=0; i<businessDaySize; i++){
             if(group[i] != -1) continue;
             group[i] = i;
-            weekDay.put(i, shopIntroduceModel.getBusinessDays().get(i).getDay());
+            weekDay.put(i, shopIntroduceModel.getBusinessDays().get(i).getDay().getValue());
 
             for(int j=i+1; j<businessDaySize; j++){
                 if(group[j] != -1) continue;
@@ -39,7 +39,7 @@ public class ShopIntroduceViewModel {
                 if(shopIntroduceModel.getBusinessDays().get(i).getOpenTime().equals(shopIntroduceModel.getBusinessDays().get(j).getOpenTime()) &&
                         shopIntroduceModel.getBusinessDays().get(i).getCloseTime().equals(shopIntroduceModel.getBusinessDays().get(j).getCloseTime())){
                     group[j] = i;
-                    weekDay.put(i, weekDay.get(i) +", "+shopIntroduceModel.getBusinessDays().get(j).getDay());
+                    weekDay.put(i, weekDay.get(i) +", "+shopIntroduceModel.getBusinessDays().get(j).getDay().getValue());
                 }
             }
         }

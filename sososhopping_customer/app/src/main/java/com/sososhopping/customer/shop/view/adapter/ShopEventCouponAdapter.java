@@ -61,36 +61,6 @@ public class ShopEventCouponAdapter extends RecyclerView.Adapter<ShopEventCoupon
             super(binding.getRoot());
             this.binding = binding;
 
-            binding.buttonAddCoupon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //쿠폰 저장 API
-                    int pos = getAdapterPosition();
-                    if(pos != RecyclerView.NO_POSITION){
-
-                        //리스너 호출
-                        if(itemClickListener != null){
-                            itemClickListener.onItemClick(couponModels.get(pos));
-                        }
-                    }
-                }
-            });
-
-            //화면 바뀌게
-            binding.linearLayoutCouponInfo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    binding.linearLayoutCouponCode.setVisibility(View.VISIBLE);
-                    binding.linearLayoutCouponInfo.setVisibility(View.INVISIBLE);
-                }
-            });
-            binding.linearLayoutCouponCode.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    binding.linearLayoutCouponCode.setVisibility(View.INVISIBLE);
-                    binding.linearLayoutCouponInfo.setVisibility(View.VISIBLE);
-                }
-            });
         }
 
         public void bindItem(CouponModel couponModel){
@@ -129,6 +99,37 @@ public class ShopEventCouponAdapter extends RecyclerView.Adapter<ShopEventCoupon
             if(couponModel.getExpiryDate() != null){
                 binding.textViewCouponExpire.setText("저장 후 "+DateFormatMethod.dateFormatDay(couponModel.getExpiryDate())+"까지 사용가능");
             }
+
+            binding.buttonAddCoupon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //쿠폰 저장 API
+                    int pos = getAdapterPosition();
+                    if(pos != RecyclerView.NO_POSITION){
+
+                        //리스너 호출
+                        if(itemClickListener != null){
+                            itemClickListener.onItemClick(couponModels.get(pos));
+                        }
+                    }
+                }
+            });
+
+            //화면 바뀌게
+            binding.linearLayoutCouponInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    binding.linearLayoutCouponCode.setVisibility(View.VISIBLE);
+                    binding.linearLayoutCouponInfo.setVisibility(View.INVISIBLE);
+                }
+            });
+            binding.linearLayoutCouponCode.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    binding.linearLayoutCouponCode.setVisibility(View.INVISIBLE);
+                    binding.linearLayoutCouponInfo.setVisibility(View.VISIBLE);
+                }
+            });
 
         }
     }

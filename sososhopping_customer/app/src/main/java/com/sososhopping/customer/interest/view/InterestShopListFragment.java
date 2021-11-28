@@ -3,6 +3,7 @@ package com.sososhopping.customer.interest.view;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;

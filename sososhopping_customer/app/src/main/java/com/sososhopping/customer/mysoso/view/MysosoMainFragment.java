@@ -61,6 +61,15 @@ MysosoMainFragment extends Fragment {
         //Controller 설정
         navConroller = Navigation.findNavController(view);
 
+        //내정보
+        binding.constraintLayoutMyinfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navConroller.navigate(R.id.action_mysosoMainFragment_to_mysosoMyInfoFragment);
+            }
+        });
+
+
         //관심가게
         binding.constraintLayoutFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +102,14 @@ MysosoMainFragment extends Fragment {
             }
         });
 
+        //장바구니
+        binding.imageViewShoppingBag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //하단바 클릭한 효과
+                ((MainActivity) getActivity()).getBinding().bottomNavigation.setSelectedItemId(R.id.menu_cart);
+            }
+        });
 
 
         super.onViewCreated(view, savedInstanceState);

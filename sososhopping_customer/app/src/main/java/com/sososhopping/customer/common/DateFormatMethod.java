@@ -2,6 +2,7 @@ package com.sososhopping.customer.common;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DateFormatMethod {
@@ -36,5 +37,26 @@ public class DateFormatMethod {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    public static String dateFormat(int year, int month, int day){
+        Calendar c = Calendar.getInstance();
+        c.set(year, month, day);
+        return new SimpleDateFormat("yyyy/MM/dd").format(c.getTime());
+    }
+
+    public static String timeFormat(int hour, int min){
+        StringBuilder sb = new StringBuilder();
+        if(hour < 10){
+            sb.append(0);
+        }
+        sb.append(hour);
+        sb.append(":");
+        if(min < 10){
+            sb.append(0);
+        }
+        sb.append(min);
+        return sb.toString();
     }
 }

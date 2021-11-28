@@ -1,4 +1,4 @@
-package com.sososhopping.customer.common;
+package com.sososhopping.customer.common.carousel;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

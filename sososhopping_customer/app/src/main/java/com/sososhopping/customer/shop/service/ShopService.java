@@ -1,6 +1,7 @@
 package com.sososhopping.customer.shop.service;
 
 import com.sososhopping.customer.mysoso.dto.AddCouponDto;
+import com.sososhopping.customer.shop.dto.AddCartDto;
 import com.sososhopping.customer.shop.dto.CouponListDto;
 import com.sososhopping.customer.shop.dto.EventItemListDto;
 import com.sososhopping.customer.shop.dto.ItemListDto;
@@ -55,4 +56,7 @@ public interface ShopService {
 
     @POST("my/coupons")
     Call<Void> addCoupons(@Header("token") String token, @Body AddCouponDto addCouponDto);
+
+    @POST("my/cart")
+    Call<Void> addCart(@Header("token")String token, @Body AddCartDto dto);
 }

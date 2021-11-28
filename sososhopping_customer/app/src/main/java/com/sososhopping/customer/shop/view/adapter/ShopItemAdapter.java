@@ -64,30 +64,36 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.ViewHo
         public ViewHolder(ItemShopGoodsBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+        }
 
-            binding.getRoot().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int pos = getAdapterPosition();
-                    if(pos != RecyclerView.NO_POSITION){
 
-                        //세부정보 나타내는 페이지로 이동해야함
-                        if(itemClickListener != null){
-                            itemClickListener.onItemClick(v, pos);
-                        }
-                    }
-                }
-            });
+        public void bindItem(ShopItemModel shopItemModel){
+            binding.textViewGoods.setText(shopItemModel.getName());
+            binding.textViewItemDescription.setText(shopItemModel.getDescription());
+            binding.textViewItemScale.setText(shopItemModel.getPurchaseUnit());
+            binding.textViewItemPrice.setText(Integer.toString(shopItemModel.getPrice()));
+
+            //판매불가면 못누르게
+            if(!shopItemModel.getSaleStatus()){
+                binding.textViewUnAvailable.setVisibility(View.VISIBLE);
+            }
+
+            //이미지
+            Glide.with(itemView)
+                    .load(shopItemModel.getImgUrl())
+                    .transform(new CenterCrop(),new RoundedCorners(10))
+                    .thumbnail(0.2f)
+                    .placeholder(R.drawable.icon_app_groceries)
+                    .error(R.drawable.icon_app_groceries)
+                    .fallback(R.drawable.icon_app_groceries)
+                    .into(binding.imageViewGoods);
+
 
             binding.buttonItemAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     int pos = getAdapterPosition();
                     if(pos != RecyclerView.NO_POSITION){
-                        //장바구니 담는 로직
-                        Log.d("장바구니 담기", binding.textViewGoods + " " + binding.textViewItemNum);
-
                         if(itemClickListener != null){
                             itemClickListener.onItemAdd(v,pos,Integer.parseInt(binding.textViewItemNum.getText().toString()));
                         }
@@ -118,29 +124,20 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.ViewHo
                     }
                 }
             });
-        }
 
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    if(pos != RecyclerView.NO_POSITION){
 
-        public void bindItem(ShopItemModel shopItemModel){
-            binding.textViewGoods.setText(shopItemModel.getName());
-            binding.textViewItemDescription.setText(shopItemModel.getDescription());
-            binding.textViewItemScale.setText(shopItemModel.getPurchaseUnit());
-            binding.textViewItemPrice.setText(Integer.toString(shopItemModel.getPrice()));
-
-            //판매불가면 못누르게
-            if(!shopItemModel.getSaleStatus()){
-                binding.buttonItemAdd.setClickable(false);
-            }
-
-            //이미지
-            Glide.with(itemView)
-                    .load(shopItemModel.getImgUrl())
-                    .transform(new CenterCrop(),new RoundedCorners(10))
-                    .thumbnail(0.2f)
-                    .placeholder(R.drawable.icon_app_groceries)
-                    .error(R.drawable.icon_app_groceries)
-                    .fallback(R.drawable.icon_app_groceries)
-                    .into(binding.imageViewGoods);
+                        //세부정보 나타내는 페이지로 이동해야함
+                        if(itemClickListener != null){
+                            itemClickListener.onItemClick(v, pos);
+                        }
+                    }
+                }
+            });
         }
     }
 }

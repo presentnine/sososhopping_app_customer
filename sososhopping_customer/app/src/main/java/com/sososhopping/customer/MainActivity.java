@@ -287,6 +287,10 @@ public class MainActivity extends AppCompatActivity {
         return this.isLogIn;
     }
 
+    public void setTopAppBarTitle(String title){
+        binding.topAppBar.setTitle(title);
+    }
+
     //해시 키 값 구하기
     private void getAppKeyHash() {
         try {

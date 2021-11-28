@@ -2,9 +2,11 @@ package com.sososhopping.customer.mysoso.service;
 
 import com.sososhopping.customer.mysoso.dto.AddCouponDto;
 import com.sososhopping.customer.mysoso.dto.MyCouponsDto;
+import com.sososhopping.customer.mysoso.dto.MyInfoEditDto;
 import com.sososhopping.customer.mysoso.dto.MyReviewsDto;
 import com.sososhopping.customer.mysoso.dto.PointDetailDto;
 import com.sososhopping.customer.mysoso.dto.PointListDto;
+import com.sososhopping.customer.mysoso.model.MyInfoModel;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -12,6 +14,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -34,5 +37,9 @@ public interface MysosoService {
     @POST("my/coupons")
     Call<Void> addCoupons(@Header("token") String token, @Body AddCouponDto addCouponDto);
 
+    @GET("info")
+    Call<MyInfoModel> requestMyInfo(@Header("token") String token);
 
+    @PUT("info")
+    Call<Void> requestEditMyInfo(@Header("token") String token, @Body MyInfoEditDto dto);
 }

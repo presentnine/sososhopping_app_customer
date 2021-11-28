@@ -9,6 +9,7 @@ public class ApiServiceFactory {
 
     private final static Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(Constant.BASE_URL)
+            .addConverterFactory(new NullOnEmptyConverterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 

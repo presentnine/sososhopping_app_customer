@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="item_info">물품정보</string>
+    <string name="payments_info">결제수단</string>
+    <string name="payments_cash">현장 결제</string>
+    <string name="payments_cash_noti">현장 결제 시 배송 서비스는 불가합니다.</string>
+    <string name="payments_locayPay">지역화폐/재난지원금</string>
+
+    <string name="payments_extra">기타 결제수단</string>
+    <string name="payments_extra_short">결제수단</string>
+    <string-array name="payments_types">
+        <item>신용/체크카드</item>
+        <item>휴대폰결제</item>
+        <item>네이버페이</item>
+        <item>카카오페이</item>
+        <item>토스</item>
+    </string-array>
+
+    <string name="visit_method">수령방법</string>
+    <string name="visit_info">방문 예약</string>
+    <string name="visit">방문</string>
+    <string name="visit_date">방문일</string>
+    <string name="visit_time">방문 시간</string>
+
+    <string name="delivery_info">배송 정보</string>
+    <string name="delivery">배송</string>
+    <string name="delivery_myinfo">내 정보와 동일하게</string>
+    <string name="delivery_street">도로명 주소</string>
+    <string name="delivery_detail">상세 주소</string>
+
+    <string name="point">포인트</string>
+    <string name="point_use">사용 포인트</string>
+    <string name="point_use_all">전액사용</string>
+    <string name="point_use_err">사용가능한 포인트를 초과하였습니다</string>
+
+    <string name="coupon">쿠폰</string>
+    <string name="coupon_use">사용하기</string>
+
+    <string name="total_pay_info">결제금액</string>
+    <string name="total_pay_price">총 상품 금액</string>
+    <string name="total_pay_point">포인트 사용</string>
+    <string name="total_pay_coupon">쿠폰 사용</string>
+    <string name="total_pay_delivery">배송비</string>
+    <string name="total_pay_final">최종 결제</string>
+
+    <!--최후 검증-->
+    <string name="final_process_error">모든 과정을 완료해주셔야 합니다</string>
+    <string name="final_visit_empty">방문 정보를 모두 입력하셔야 합니다</string>
+    <string name="final_purchase_empty">결제 수단을 선택하셔야 합니다</string>
+    <string name="order_error">주문에 실패하였습니다</string>
+    <string name="order_success">주문에 성공하였습니다</string>
+</resources>
