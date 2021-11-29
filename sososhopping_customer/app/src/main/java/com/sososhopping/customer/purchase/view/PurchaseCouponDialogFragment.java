@@ -1,5 +1,7 @@
-package com.sososhopping.customer.mysoso.view;
+package com.sososhopping.customer.purchase.view;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,9 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,9 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
-import com.sososhopping.customer.databinding.MysosoCouponsBinding;
+import com.sososhopping.customer.purchase.viewmodel.PurchaseCouponViewModel;
+import com.sososhopping.customer.purchase.viewmodel.PurchaseViewModel;
+import com.sososhopping.customer.databinding.PurchaseCouponBinding;
 import com.sososhopping.customer.mysoso.dto.MyCouponsDto;
-import com.sososhopping.customer.mysoso.viemodel.MyCouponViewModel;
 import com.sososhopping.customer.mysoso.view.adapter.ExpandableCouponData;
 import com.sososhopping.customer.mysoso.view.adapter.MysosoCouponAdapter;
 import com.sososhopping.customer.shop.model.CouponModel;
@@ -28,21 +30,25 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
+public class PurchaseCouponDialogFragment extends DialogFragment {
 
-public class MysosoCouponFragment extends Fragment{
+    private PurchaseCouponBinding binding;
+    private MysosoCouponAdapter mysosoCouponAdapter;
+    private PurchaseCouponViewModel purchaseCouponViewModel;
+    private PurchaseViewModel purchaseViewModel;
 
-    MysosoCouponsBinding binding;
-    NavController navController;
-    MyCouponViewModel myCouponViewModel;
-    MysosoCouponAdapter mysosoCouponAdapter;
+    public static PurchaseCouponDialogFragment newInstance() {return new PurchaseCouponDialogFragment();}
 
-    public static MysosoCouponFragment newInstance() {return new MysosoCouponFragment();}
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState){
         //binding 설정
-        binding = MysosoCouponsBinding.inflate(inflater, container,false);
+        binding = PurchaseCouponBinding.inflate(inflater,container,false);
         LinearLayoutManager layoutManager_coupon = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         binding.recyclerViewCoupon.setLayoutManager(layoutManager_coupon);
 
@@ -50,23 +56,26 @@ public class MysosoCouponFragment extends Fragment{
         binding.recyclerViewCoupon.setAdapter(mysosoCouponAdapter);
 
         //viewmodel 설정
-        myCouponViewModel = new MyCouponViewModel();
-        myCouponViewModel.requestCoupons(((MainActivity)getActivity()).getLoginToken(),
-                null,
+
+        purchaseViewModel = new ViewModelProvider(getActivity()).get(PurchaseViewModel.class);
+        purchaseCouponViewModel = new ViewModelProvider(this).get(PurchaseCouponViewModel.class);
+        purchaseCouponViewModel.requestCoupons(
+                ((MainActivity)getActivity()).getLoginToken(),
+                purchaseViewModel.getShopInfo().getValue().getStoreId(),
                 this::onSuccess,
                 this::onFailedLogIn,
                 this::onFailed,
-                this::onNetworkError);
+                this::onNetworkError
+        );
+
+
 
         //등록
         return binding.getRoot();
     }
-
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(view);
 
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,38 +92,48 @@ public class MysosoCouponFragment extends Fragment{
                 msgCode[1] = R.string.event_coupon_addFail;
 
                 //쿠폰 저장
-                myCouponViewModel.addShopCoupon(((MainActivity)getActivity()).getLoginToken(),
+                purchaseCouponViewModel.addShopCoupon(((MainActivity)getActivity()).getLoginToken(),
                         binding.editTextAddCode.getText().toString(),
                         msgCode,
-                        MysosoCouponFragment.this::onResult,
-                        MysosoCouponFragment.this::onFailedLogIn,
-                        MysosoCouponFragment.this::onNetworkError
+                        PurchaseCouponDialogFragment.this::onResult,
+                        PurchaseCouponDialogFragment.this::onFailedLogIn,
+                        PurchaseCouponDialogFragment.this::onNetworkError
                 );
+            }
+        });
+
+        binding.imageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().onBackPressed();
+                dismiss();
             }
         });
 
         mysosoCouponAdapter.setOnItemClickListener(new MysosoCouponAdapter.OnItemClickListenerChild() {
             @Override
             public void onItemClick(CouponModel couponModel) {
-                //쿠폰 삭제 / 매장으로 이동
+                //돌아가기
+                purchaseViewModel.getUseCoupon().setValue(couponModel);
+                getActivity().onBackPressed();
+                dismiss();
             }
 
             @Override
             public void onItemLongClick(CouponModel couponModel) {
-
             }
         });
+
+
 
     }
 
     @Override
-    public void onResume() {
-        //상단바
-        ((MainActivity)getActivity()).showTopAppBar();
-        ((MainActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_coupon));
-        ((MainActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
-        //하단바
-        super.onResume();
+    public void onStart(){
+        super.onStart();
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,  ViewGroup.LayoutParams.MATCH_PARENT);
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(R.drawable.drawable_round_background));
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
     }
 
     @Override
@@ -123,15 +142,27 @@ public class MysosoCouponFragment extends Fragment{
         binding = null;
     }
 
+
     public void onSuccess(MyCouponsDto dto){
         if(dto != null){
-            myCouponViewModel.setMyCoupons(dto.getCoupons());
-            mysosoCouponAdapter.setItems(myCouponViewModel.parser());
+            purchaseCouponViewModel.setMyCoupons(dto.getCoupons());
+            mysosoCouponAdapter.setItems(purchaseCouponViewModel.parser());
             mysosoCouponAdapter.notifyDataSetChanged();
         }
     }
+
     private void onResult(int msgCode) {
         Toast.makeText(getContext(),getResources().getString(msgCode), Toast.LENGTH_SHORT).show();
+
+        //다시 불러오기
+        purchaseCouponViewModel.requestCoupons(
+                ((MainActivity)getActivity()).getLoginToken(),
+                purchaseViewModel.getShopInfo().getValue().getStoreId(),
+                this::onSuccess,
+                this::onFailedLogIn,
+                this::onFailed,
+                this::onNetworkError
+        );
     }
 
     private void onFailedLogIn(){
@@ -146,5 +177,6 @@ public class MysosoCouponFragment extends Fragment{
     private void onNetworkError() {
         NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
     }
+
 
 }

@@ -22,9 +22,6 @@ import retrofit2.http.Path;
 public interface ShopService {
 
     @GET("stores/{storeId}")
-    Call<ShopIntroduceModel> requestShopIntroduce(@Path("storeId") int storeId);
-
-    @GET("stores/{storeId}")
     Call<ShopIntroduceModel> requestShopIntroduce(@Header("token") String token, @Path("storeId") int storeId);
 
     @GET("stores/{storeId}/items")

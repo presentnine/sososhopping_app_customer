@@ -23,7 +23,8 @@ public interface MysosoService {
     Call<PointListDto> requestPointList(@Header("token") String token);
 
     @GET("my/points/{storeId}")
-    Call<PointDetailDto> requestPointDetailList(@Header("token") String token, @Path("storeId") int storeId, @Query("at") String date);
+    Call<PointDetailDto> requestPointDetailList(
+            @Header("token") String token, @Path("storeId") int storeId, @Query("at") String date);
 
     @GET("my/reviews")
     Call<MyReviewsDto> requestMyReviews(@Header("token") String token);
@@ -32,7 +33,8 @@ public interface MysosoService {
     Call<Void> deleteMyReview(@Header("token") String token, @Path("storeId") int storeId);
 
     @GET("my/coupons")
-    Call<MyCouponsDto> requestMyCoupons(@Header("token") String token);
+    Call<MyCouponsDto> requestMyCoupons(@Header("token") String token,
+                                        @Query("storeId") Integer storeId);
 
     @POST("my/coupons")
     Call<Void> addCoupons(@Header("token") String token, @Body AddCouponDto addCouponDto);

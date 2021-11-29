@@ -52,11 +52,12 @@ public class MyCouponViewModel extends ViewModel {
     }
 
     public void requestCoupons(String token,
+                               Integer storeId,
                                Consumer<MyCouponsDto> onSuccess,
                                Runnable onFailedLogIn,
                                Runnable onFailed,
                                Runnable onError){
-        mysosoCouponRepository.requestCoupon(token, onSuccess, onFailedLogIn, onFailed, onError);
+        mysosoCouponRepository.requestCoupon(token,storeId, onSuccess, onFailedLogIn, onFailed, onError);
     }
 
 

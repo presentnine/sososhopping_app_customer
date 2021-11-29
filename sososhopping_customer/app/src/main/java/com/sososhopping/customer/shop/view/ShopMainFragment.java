@@ -173,41 +173,9 @@ public class ShopMainFragment extends Fragment {
     }
 
 
-    /*public void setShopInfo(ShopInfoShortModel shopInfoShortModel){
-        binding.textViewShopName.setText(shopInfoShortModel.getName());
-        binding.textViewRating.setText(Double.toString(shopInfoShortModel.getScore()));
-
-        //km로 변환
-        if(shopInfoShortModel.getDistance() >= 1){
-            binding.textViewDistance.setText(Math.round(shopInfoShortModel.getDistance()*10)/10.0+"km");
-        }else{
-            binding.textViewDistance.setText(Math.round(shopInfoShortModel.getDistance()*1000)+"m");
-        }
-
-        //지역화폐, 배달여부
-        if(!shopInfoShortModel.isLocalCurrencyStatus()){
-            binding.layoutLocalPay.setVisibility(View.GONE);
-        }
-        if(!shopInfoShortModel.isDeliveryStatus()){
-            binding.layoutDelivery.setVisibility(View.GONE);
-        }
-        if(!shopInfoShortModel.isInterestStore()){
-            binding.layoutFavorite.setVisibility(View.GONE);
-        }
-
-        //이미지
-        Glide.with(binding.getRoot())
-                .load(shopInfoShortModel.getImgUrl())
-                .transform(new CenterCrop(),new RoundedCorners(10))
-                .thumbnail(0.2f)
-                .placeholder(R.drawable.icon_app_groceries)
-                .error(R.drawable.icon_app_groceries)
-                .fallback(R.drawable.icon_app_groceries)
-                .into(binding.imageViewStore);
-    }*/
-
     public void setAppBar(MainActivity activity){
         activity.getBinding().topAppBar.setTitle("매장 정보");
+        activity.getBinding().topAppBar.setOnClickListener(null);
         activity.getBinding().topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -219,7 +187,7 @@ public class ShopMainFragment extends Fragment {
                             Toast.makeText(getContext(),"등록된 전화번호가 없습니다",Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+ shopInfoViewModel.getPhone())));
+                            startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+ shopInfoViewModel.getPhone().getValue())));
                         }
                         break;
                     }

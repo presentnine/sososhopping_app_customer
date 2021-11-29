@@ -48,5 +48,11 @@
     <string name="final_visit_empty">방문 정보를 모두 입력하셔야 합니다</string>
     <string name="final_purchase_empty">결제 수단을 선택하셔야 합니다</string>
     <string name="order_error">주문에 실패하였습니다</string>
-    <string name="order_success">주문에 성공하였습니다</string>
+
+    <!--주문 성공-->
+    <string name="order_store">매장으로</string>
+    <string name="order_cart">장바구니</string>
+    <string name="order_myPurchase">주문목록</string>
+    <string name="order_success">주문 완료</string>
+    <string name="order_success_comment">성공적으로 주문을 완료하였습니다.\n주문 내역을 확인해주세요.\n주문은 상점 승인 이후 진행됩니다.</string>
 </resources>

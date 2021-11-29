@@ -44,45 +44,7 @@ public class ShopRepository {
                                      Consumer<ShopIntroduceModel> shopIntroduceModel,
                                      Runnable onFailed,
                                      Runnable onError) {
-        if (token == null) {
-            requestShopIntroduce(storeId, shopIntroduceModel, onFailed, onError);
-            return;
-        }
         shopService.requestShopIntroduce(token, storeId).enqueue(new Callback<ShopIntroduceModel>() {
-            @SneakyThrows
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onResponse(Call<ShopIntroduceModel> call, Response<ShopIntroduceModel> response) {
-                switch (response.code()) {
-                    case 200: {
-                        shopIntroduceModel.accept(response.body());
-                        break;
-                    }
-                    //검색 없음
-                    case 404: {
-                        onFailed.run();
-                        break;
-                    }
-                    default: {
-                        onError.run();
-                        break;
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ShopIntroduceModel> call, Throwable t) {
-                t.printStackTrace();
-                onError.run();
-            }
-        });
-    }
-
-    public void requestShopIntroduce(int storeId,
-                                     Consumer<ShopIntroduceModel> shopIntroduceModel,
-                                     Runnable onFailed,
-                                     Runnable onError) {
-        shopService.requestShopIntroduce(storeId).enqueue(new Callback<ShopIntroduceModel>() {
             @SneakyThrows
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override

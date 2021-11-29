@@ -32,11 +32,12 @@ public class MysosoCouponRepository {
     }
 
     public void requestCoupon(String token,
+                              Integer storeId,
                               Consumer<MyCouponsDto> onSuccess,
                               Runnable onFailedLogIn,
                               Runnable onFailed,
                               Runnable onError){
-        mysosoService.requestMyCoupons(token).enqueue(new Callback<MyCouponsDto>() {
+        mysosoService.requestMyCoupons(token,storeId).enqueue(new Callback<MyCouponsDto>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(Call<MyCouponsDto> call, Response<MyCouponsDto> response) {

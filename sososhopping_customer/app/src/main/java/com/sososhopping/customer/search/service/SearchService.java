@@ -11,11 +11,6 @@ import retrofit2.http.Header;
 import retrofit2.http.Query;
 
 public interface SearchService {
-    @GET("stores")
-    Call<ShopListDto> searchByCategory(@Query(value = "type") String type,
-                                       @Query(value = "lat") Double lat,
-                                       @Query(value = "lng") Double lng,
-                                       @Query(value = "radius") Integer radius);
 
     @GET("stores")
     Call<ShopListDto> searchByCategory(@Header ("token") String token,

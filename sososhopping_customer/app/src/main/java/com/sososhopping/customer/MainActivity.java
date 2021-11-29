@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
@@ -185,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         int start = Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId();
-        if (start == R.id.home2) {
+        if(start == R.id.home2){
             if (doubleBackToExitPressedOnce) {
                 finish();
                 return;
@@ -199,13 +200,12 @@ public class MainActivity extends AppCompatActivity {
                     doubleBackToExitPressedOnce = false;
                 }
             }, 2000);
-        } else if (start == R.id.signUpStartFragment ||
-                start == R.id.interestShopListFragment ||
-                start == R.id.mysosoMainFragment ||
-                start == R.id.cartMainFragment) {
+        }
+        else if(getSupportFragmentManager().getBackStackEntryCount() < 1){
             navController.navigate(R.id.action_global_home2, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
             binding.bottomNavigation.getMenu().findItem(R.id.menu_home).setChecked(true);
-        } else {
+        }
+        else{
             super.onBackPressed();
         }
     }

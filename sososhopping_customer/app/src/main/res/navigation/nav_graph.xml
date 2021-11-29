@@ -213,7 +213,7 @@
         tools:layout="@layout/mysoso_myinfo"/>
     <fragment
         android:id="@+id/cartMainFragment"
-        android:name="com.sososhopping.customer.cart.view.CartMainFragment"
+        android:name="com.sososhopping.customer.purchase.view.CartMainFragment"
         android:label="CartMainFragment"
         tools:layout="@layout/cart_main">
         <action
@@ -225,23 +225,44 @@
     </fragment>
     <fragment
         android:id="@+id/purchaseFragment"
-        android:name="com.sososhopping.customer.cart.view.PurchaseFragment"
+        android:name="com.sososhopping.customer.purchase.view.PurchaseFragment"
         android:label="PurchaseFragment"
         tools:layout="@layout/purchase_main">
         <argument
             android:name="purchaseList"
-            app:argType="com.sososhopping.customer.cart.dto.CartItemDto[]" />
+            app:argType="com.sososhopping.customer.purchase.dto.CartItemDto[]" />
         <argument
             android:name="storeId"
             app:argType="integer" />
         <action
             android:id="@+id/action_purchaseFragment_to_purchaseCouponDialogFragment"
             app:destination="@id/purchaseCouponDialogFragment" />
+        <action
+            android:id="@+id/action_purchaseFragment_to_purchaseSuccessFragment"
+            app:destination="@id/purchaseSuccessFragment"
+            app:popUpTo="@id/purchaseFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <dialog
         android:id="@+id/purchaseCouponDialogFragment"
-        android:name="com.sososhopping.customer.cart.view.PurchaseCouponDialogFragment"
+        android:name="com.sososhopping.customer.purchase.view.PurchaseCouponDialogFragment"
         android:label="PurchaseCouponDialogFragment"
         tools:layout="@layout/purchase_coupon"/>
+
+    <fragment
+        android:id="@+id/purchaseSuccessFragment"
+        android:name="com.sososhopping.customer.purchase.view.PurchaseSuccessFragment"
+        android:label="PurchaseSuccessFragment"
+        tools:layout="@layout/purchase_success">
+
+        <action
+            android:id="@+id/action_purchaseSuccessFragment_to_shop_graph"
+            app:destination="@id/shop_graph"
+            app:popUpTo="@id/purchaseSuccessFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="storeId"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>

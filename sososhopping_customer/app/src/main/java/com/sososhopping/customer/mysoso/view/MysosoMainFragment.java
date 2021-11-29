@@ -120,6 +120,7 @@ MysosoMainFragment extends Fragment {
         //상단바
         ((MainActivity)getActivity()).showTopAppBar();
         ((MainActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso));
+        ((MainActivity)getActivity()).getBinding().topAppBar.setOnClickListener(null);
         ((MainActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
 
         //하단바

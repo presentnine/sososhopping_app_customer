@@ -134,7 +134,7 @@ public class InterestShopListFragment extends Fragment {
         //상단바
         ((MainActivity)getActivity()).showTopAppBar();
         ((MainActivity)getActivity()).getBinding().topAppBar.setTitle("관심가게");
-
+        ((MainActivity)getActivity()).getBinding().topAppBar.setOnClickListener(null);
         //하단바
         ((MainActivity)getActivity()).showBottomNavigation();
         super.onResume();

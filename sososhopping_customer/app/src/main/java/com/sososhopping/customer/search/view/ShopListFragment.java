@@ -141,10 +141,17 @@ public class ShopListFragment extends Fragment {
         MainActivity activity = (MainActivity) getActivity();
         activity.getBinding().topAppBar.setTitle(homeViewModel.getSearchContent().getValue());
         activity.getBinding().topAppBar.setTitleCentered(false);
+        activity.getBinding().topAppBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //검색 dialog 띄우기
+                navController.navigate(ShopListFragmentDirections.actionShopListFragmentToSearchDialogFragment(R.id.shopListFragment));
+                return;
+            }
+        });
         activity.getBinding().topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-
                 switch (item.getItemId()){
                     case R.id.menu_search :{
                         //검색 dialog 띄우기

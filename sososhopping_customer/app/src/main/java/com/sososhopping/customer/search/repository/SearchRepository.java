@@ -40,41 +40,11 @@ public class SearchRepository {
                                Integer radius,
                                Consumer<ShopListDto> onSuccess,
                                Runnable onError){
-
-        if(token == null){
-            this.searchCategory(category, lat, lng, radius, onSuccess, onError);
-        }
-        else{
-            searchService.searchByCategory(token, category, lat, lng, radius).enqueue(new Callback<ShopListDto>() {
-                @RequiresApi(api = Build.VERSION_CODES.N)
-                @Override
-                public void onResponse(Call<ShopListDto> call, Response<ShopListDto> response) {
-                    Log.d("response", response.raw().toString());
-                    if (response.code() == 200) {
-                        onSuccess.accept(response.body());
-                    } else {
-                        onError.run();
-                    }
-                }
-                @Override
-                public void onFailure(Call<ShopListDto> call, Throwable t) {
-                    t.printStackTrace();
-                    onError.run();
-                }
-            });
-        }
-    }
-
-    public void searchCategory(String category,
-                               Double lat, Double lng,
-                               Integer radius,
-                               Consumer<ShopListDto> onSuccess,
-                               Runnable onError){
-
-        searchService.searchByCategory(category, lat, lng, radius).enqueue(new Callback<ShopListDto>() {
+        searchService.searchByCategory(token, category, lat, lng, radius).enqueue(new Callback<ShopListDto>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(Call<ShopListDto> call, Response<ShopListDto> response) {
+                Log.d("response", response.raw().toString());
                 if (response.code() == 200) {
                     onSuccess.accept(response.body());
                 } else {
