@@ -41,6 +41,11 @@ public class PurchaseFragment_Payments {
                         binding.includeLayoutPurchase.menuPaymentsExtra.setErrorEnabled(false);
                         //결제수단 등록
                         purchaseViewModel.setPaymentType(PaymentType.CASH);
+
+                        //배송 안되게
+                        binding.includeLayoutVisit.toggleButton.check(R.id.button_visit);
+                        binding.includeLayoutVisit.buttonDelivery.setEnabled(false);
+
                         break;
                     }
 
@@ -56,14 +61,17 @@ public class PurchaseFragment_Payments {
 
                         //결제수단 등록
                         purchaseViewModel.setPaymentType(PaymentType.LOCAL);
+
+                        //배송 가능
+                        binding.includeLayoutVisit.buttonDelivery.setEnabled(true);
                         break;
                     }
 
                     case R.id.radio_extra:{
                         binding.includeLayoutPurchase.textViewCashNotice.setVisibility(View.GONE);
                         binding.includeLayoutPurchase.menuPaymentsExtra.setEnabled(true);
-                        //결제수단 등록
-                        purchaseViewModel.setPaymentType(PaymentType.CARD);
+                        //배송 가능
+                        binding.includeLayoutVisit.buttonDelivery.setEnabled(true);
                         break;
                     }
                 }
@@ -79,6 +87,24 @@ public class PurchaseFragment_Payments {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 binding.includeLayoutPurchase.menuPaymentsExtra.setError(null);
                 binding.includeLayoutPurchase.menuPaymentsExtra.setErrorEnabled(false);
+
+                switch (i){
+                    case 0:
+                        purchaseViewModel.setPaymentType(PaymentType.CARD);
+                        break;
+                    case 1:
+                        purchaseViewModel.setPaymentType(PaymentType.PHONE);
+                        break;
+                    case 2:
+                        purchaseViewModel.setPaymentType(PaymentType.KAKAO);
+                        break;
+                    case 3:
+                        purchaseViewModel.setPaymentType(PaymentType.NAVER);
+                        break;
+                    case 4:
+                        purchaseViewModel.setPaymentType(PaymentType.TOSS);
+                        break;
+                }
             }
         });
     }

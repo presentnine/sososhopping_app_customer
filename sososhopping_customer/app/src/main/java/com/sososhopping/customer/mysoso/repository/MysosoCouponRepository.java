@@ -85,6 +85,7 @@ public class MysosoCouponRepository {
                     }
                     //중복저장
                     case 409:{
+                        onResult.accept(msgCodes[2]);
                         break;
                     }
                     //쿠폰 기간 x , 수량 소진

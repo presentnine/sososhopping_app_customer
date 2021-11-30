@@ -116,7 +116,7 @@ public class CartStoreAdapter extends  RecyclerView.Adapter<CartStoreAdapter.Vie
 
         public void bindItem(CartStoreDto cartStoreDto){
             binding.textViewStoreName.setText(cartStoreDto.getStoreName());
-            binding.textViewTotalStorePrice.setText(Integer.toString(cartStoreDto.getTotalPrice()));
+            binding.textViewTotalStorePrice.setText(cartStoreDto.getTotalPrice()+"원");
 
             //아이템 추가
             itemAdapter = new CartItemAdapter(cartStoreDto.getCartItems(), R.id.cartMainFragment);
@@ -138,7 +138,7 @@ public class CartStoreAdapter extends  RecyclerView.Adapter<CartStoreAdapter.Vie
                 public void itemCountChanged(int itemId, int val) {
                     int changedVal =  cartStoreDto.getCartItems().get(itemId).getPrice() * val;
                     cartStoreDto.setTotalPrice( cartStoreDto.getTotalPrice() + changedVal);
-                    binding.textViewTotalStorePrice.setText(Integer.toString(cartStoreDto.getTotalPrice()));
+                    binding.textViewTotalStorePrice.setText(cartStoreDto.getTotalPrice()+"원");
 
                     itemClickListener.itemCountChanged(changedVal);
                 }

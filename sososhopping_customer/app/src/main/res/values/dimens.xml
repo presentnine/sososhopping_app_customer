@@ -22,4 +22,7 @@
     <dimen name="viewpager_frameSize">320dp</dimen>
 
     <dimen name="card_radius">3dp</dimen>
+
+    <!--padding-->
+    <dimen name="five">5dp</dimen>
 </resources>

@@ -74,10 +74,11 @@ public class PurchaseViewModel extends ViewModel {
         if(date != null){
             visitDate = date.replaceAll("/","-")+" "+time+":00";
         }
-        String couponCode = null;
+
+        Long couponCode = null;
 
         if(useCoupon.getValue() != null){
-            couponCode = useCoupon.getValue().getCouponCode();
+            couponCode = useCoupon.getValue().getCouponId();
         }
 
         OrderRequestDto dto = OrderRequestDto.builder()
@@ -144,14 +145,14 @@ public class PurchaseViewModel extends ViewModel {
             if(cp.getCouponType().equals(CouponType.FIX)){
                 //전체금액보다 사용 쿠폰금액이 더 크면
                 if(cp.getFixAmount() > totalPrice.getValue()){
-                    couponDiscount.setValue(-totalPrice.getValue());
+                    couponDiscount.setValue(totalPrice.getValue());
                 }
                 else{
-                    couponDiscount.setValue(-cp.getFixAmount());
+                    couponDiscount.setValue(cp.getFixAmount());
                 }
             }
             else{
-                couponDiscount.setValue(-(int)(totalPrice.getValue()*cp.getRateAmount())/100);
+                couponDiscount.setValue((int)(totalPrice.getValue()*cp.getRateAmount() / 100));
             }
         }
     }

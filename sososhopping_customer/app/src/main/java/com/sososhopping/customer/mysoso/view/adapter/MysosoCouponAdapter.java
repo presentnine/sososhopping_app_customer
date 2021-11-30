@@ -207,7 +207,7 @@ public class MysosoCouponAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             binding.textViewCouponName.setText(couponModel.getCouponName());
 
             //제한조건
-            if(couponModel.getMinimumOrderPrice() != null){
+            if(couponModel.getMinimumOrderPrice() != 0){
                 binding.textViewMinimum.setText(Integer.toString(couponModel.getMinimumOrderPrice()));
             }
             else{

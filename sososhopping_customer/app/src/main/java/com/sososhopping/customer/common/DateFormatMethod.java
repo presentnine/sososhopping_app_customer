@@ -39,6 +39,17 @@ public class DateFormatMethod {
         return null;
     }
 
+    public static String dateFormatToKorean(String exdate){
+        try {
+            Date date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(exdate);
+            return new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm").format(date);
+
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     public static String dateFormat(int year, int month, int day){
         Calendar c = Calendar.getInstance();

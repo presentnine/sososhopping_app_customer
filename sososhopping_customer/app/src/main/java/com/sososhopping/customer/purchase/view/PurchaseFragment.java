@@ -218,7 +218,7 @@ public class PurchaseFragment extends Fragment {
         }
         //영업하지 않는 매장
         if(!shopIntroduceModel.isBusinessStatus()){
-            Toast.makeText(getContext(), "영업하지 않는 매장입니다", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "현재 영업하지 않는 매장입니다", Toast.LENGTH_LONG).show();
             getActivity().onBackPressed();
         }
 

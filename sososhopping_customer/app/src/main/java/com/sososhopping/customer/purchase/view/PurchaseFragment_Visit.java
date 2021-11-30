@@ -3,7 +3,9 @@ package com.sososhopping.customer.purchase.view;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -141,18 +143,12 @@ public class PurchaseFragment_Visit {
                 new PhoneWatcher(binding.includeLayoutVisit.textFieldPhone, rs.getString(R.string.signup_error_phone))
         );
 
-        binding.includeLayoutVisit.editTextDate.setEnabled(false);
-
-
-
-
-        //달력 클릭 시 날짜 선택
-        binding.includeLayoutVisit.textFieldDate.setEndIconOnClickListener(new View.OnClickListener() {
+        binding.includeLayoutVisit.editTextDate.setFocusable(false);
+        binding.includeLayoutVisit.editTextDate.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
                 Calendar cal = Calendar.getInstance();
-
                 DatePickerDialog dialog = DatePickerDialog.newInstance(
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
@@ -166,28 +162,34 @@ public class PurchaseFragment_Visit {
                         cal.get(Calendar.MONTH),
                         cal.get(Calendar.DAY_OF_MONTH));
 
-                //주문시각 30분 뒤부터 가능
-                cal.add(Calendar.MINUTE, 30);
-                dialog.setMinDate(cal);
-
-                //7일간 가능
-                for (int i = 0; i < 8; i++) {
-                    if (!checkUnAvailableDate(cal.get(Calendar.DAY_OF_WEEK))) {
-                        Calendar[] c = new Calendar[1];
-                        c[0] = cal;
-                        dialog.setDisabledDays(c);
-                    }
-
-                    if (i == 7) break;
-                    cal.add(Calendar.DATE, 1);
+                try{
+                    setDialogDate(dialog);
+                    dialog.show(fm, "픽업 날짜");
                 }
-                dialog.setMaxDate(cal);
-                dialog.show(fm, "픽업 날짜");
+                catch (Exception e){
+                    Toast.makeText(context, "오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+            }
+        });
+        binding.includeLayoutVisit.editTextDate.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                binding.includeLayoutVisit.editTextTime.setText(null);
             }
         });
 
-        binding.includeLayoutVisit.editTextTime.setEnabled(false);
-        binding.includeLayoutVisit.textFieldTime.setEndIconOnClickListener(new View.OnClickListener() {
+
+        binding.includeLayoutVisit.editTextTime.setFocusable(false);
+        binding.includeLayoutVisit.editTextTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (TextUtils.isEmpty(binding.includeLayoutVisit.editTextDate.getText())) {
@@ -208,60 +210,16 @@ public class PurchaseFragment_Visit {
                         c.get(Calendar.MINUTE),
                         true
                 );
-                SimpleDateFormat sf = new SimpleDateFormat("yyyy/MM/dd");
-                Timepoint[] t = null;
                 try {
-                    Date d = sf.parse(String.valueOf(binding.includeLayoutVisit.editTextDate.getText()));
-                    c.setTime(d);
-                    t = getSelectableTime(c.get(Calendar.DAY_OF_WEEK));
-
-                    if (t != null) {
-                        dialog.setMinTime(t[0]);
-                        dialog.setMaxTime(t[1]);
-                    }
-
-                } catch (ParseException e) {
+                    setDialogTime(dialog, String.valueOf(binding.includeLayoutVisit.editTextDate.getText()));
+                    dialog.show(fm, "픽업 시간");
+                }
+                catch (Exception e) {
+                    Toast.makeText(context, "오류가 발생하였습니다. 다른 요일을 선택해주세요", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
-
-                dialog.show(fm, "픽업 시간");
             }
         });
-    }
-
-    private void setDateAndTime(DatePickerDialog dateDialog, TimePickerDialog timeDialog){
-        Calendar cal = Calendar.getInstance();
-
-        //주문시각 30분 뒤부터 가능
-        cal.add(Calendar.MINUTE, 30);
-        Date current = cal.getTime();
-
-        try{
-            if(purchaseViewModel.getShopInfo().getValue() != null){
-
-                int weekday = dayOfWeekSwitcher(cal.get(Calendar.DAY_OF_WEEK));
-
-                int minTime = Integer.parseInt(new SimpleDateFormat("HHmm").format(cal.getTime()));
-                int minTimeBus = Integer.parseInt(purchaseViewModel.getShopInfo().getValue().getBusinessDays()
-                        .get(weekday).getOpenTime());
-
-                int start = Math.max(minTime, minTimeBus);
-                int end = Integer.parseInt(purchaseViewModel.getShopInfo().getValue().getBusinessDays().get(weekday).getCloseTime());
-
-                //이날은 못 하는날
-                if(start >= end){
-                    cal.add(Calendar.DATE,1);
-                    dateDialog.setMinDate(cal);
-                }
-
-            }
-        }catch (Exception e){
-
-        }
-
-
-
-
     }
 
     protected void setDeliveryLayout(Resources rs){
@@ -303,14 +261,89 @@ public class PurchaseFragment_Visit {
         });
     }
 
-    public int dayOfWeekSwitcher(int dayOfWeek){
-        if(dayOfWeek == Calendar.SUNDAY){
-            dayOfWeek = 6;
+    public void setDialogDate(DatePickerDialog dialog){
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.HOUR, 1);
+
+        //7일간 가능
+        int lastdays = 7;
+
+        //주문시각 1시간 뒤부터 가능
+        try{
+            //영업 안하면 exception 발생
+            int start = compareStartTime(cal);
+            int end = Integer.parseInt(getEndTime(cal.get(Calendar.DAY_OF_WEEK)));
+
+            if(start >= end){
+                cal.add(Calendar.DATE,1);
+                dialog.setMinDate(cal);
+                lastdays--;
+            }
+        }
+        //애초에 안하는 날이니 안하게 체크
+        catch (Exception e){
+            Calendar[] c = new Calendar[1];
+            c[0] = cal;
+            dialog.setDisabledDays(c);
+        }
+        finally {
+            dialog.setMinDate(cal);
+
+            for (int i = 0; i < lastdays; i++) {
+                cal.add(Calendar.DATE, 1);
+
+                if (!checkUnAvailableDate(cal.get(Calendar.DAY_OF_WEEK))) {
+                    Calendar[] c = new Calendar[1];
+                    c[0] = cal;
+                    dialog.setDisabledDays(c);
+                }
+            }
+            dialog.setMaxDate(cal);
+        }
+    }
+
+    public void setDialogTime(TimePickerDialog dialog, String date) throws Exception {
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy/MM/dd");
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.HOUR,1);
+
+        String start, end;
+
+        //1시간 더한 날이랑 선택된 날이랑 같으면 시작시간 비교 필요
+        if(sf.format(cal.getTime()).equals(date)){
+            start = String.valueOf(compareStartTime(cal));
         }
         else{
-            dayOfWeek = dayOfWeek -2;
+            start = getStartTime(cal.get(Calendar.DAY_OF_WEEK));
         }
-        return dayOfWeek;
+        end = getEndTime(cal.get(Calendar.DAY_OF_WEEK));
+
+        //에러 발생
+        if(Integer.parseInt(start) >= Integer.parseInt(end)){
+            throw new Exception();
+        }
+
+        //앞에 0 사라짐
+        if(start.length() < 4){
+            start = 0+start;
+        }
+
+        Timepoint[] t = getSelectableTime(start, end);
+        dialog.setMinTime(t[0]);
+        dialog.setMaxTime(t[1]);
+    }
+
+    public Timepoint[] getSelectableTime(String start, String end){
+        int startH = Integer.parseInt(start.substring(0,2));
+        int startM = Integer.parseInt(start.substring(2,4));
+
+        int endH = Integer.parseInt(end.substring(0,2));
+        int endM = Integer.parseInt(end.substring(2,4));
+
+        Timepoint[] t = new Timepoint[2];
+        t[0] = new Timepoint(startH, startM);
+        t[1] = new Timepoint(endH, endM);
+        return t;
     }
 
     public boolean checkUnAvailableDate(int dayOfWeek){
@@ -324,39 +357,35 @@ public class PurchaseFragment_Visit {
         return true;
     }
 
-    public Timepoint[] getSelectableTime(int dayOfWeek){
+    public int compareStartTime(Calendar cal){
+        int currentMin = Integer.parseInt(new SimpleDateFormat("HHmm").format(cal.getTime()));
+        int businessMin = Integer.parseInt(getStartTime(cal.get(Calendar.DAY_OF_WEEK)));
+        return Math.max(currentMin, businessMin);
+    }
+
+    public String getStartTime(int dayOfWeek){
         dayOfWeek = dayOfWeekSwitcher(dayOfWeek);
-        String start, end;
-
-        Calendar calendar = Calendar.getInstance();
-        //30분 추가
-        calendar.add(Calendar.MINUTE,30);
-
-        try{
-            if(purchaseViewModel.getShopInfo().getValue() != null){
-                int minTime = Integer.parseInt(new SimpleDateFormat("HHmm").format(calendar.getTime()));
-                int minTimeBus = Integer.parseInt(purchaseViewModel.getShopInfo().getValue().getBusinessDays().get(dayOfWeek).getOpenTime());
-
-                start = Integer.toString(Math.max(minTime, minTimeBus));
-
-
-                int startH = Integer.parseInt(start.substring(0,2));
-                int startM = Integer.parseInt(start.substring(2,4));
-
-                end = purchaseViewModel.getShopInfo().getValue().getBusinessDays().get(dayOfWeek).getCloseTime();
-
-                int endH = Integer.parseInt(end.substring(0,2));
-                int endM = Integer.parseInt(end.substring(2,4));
-
-                Log.e("times", minTime + " " + minTimeBus + " " + start + " " +end);
-
-                Timepoint[] t = new Timepoint[2];
-                t[0] = new Timepoint(startH, startM);
-                t[1] = new Timepoint(endH, endM);
-                return t;
-            }
-        }catch (Exception e){
+        if(purchaseViewModel.getShopInfo().getValue() != null){
+            return purchaseViewModel.getShopInfo().getValue().getBusinessDays().get(dayOfWeek).getOpenTime();
         }
         return null;
+    }
+
+    public String getEndTime(int dayOfWeek){
+        dayOfWeek = dayOfWeekSwitcher(dayOfWeek);
+        if(purchaseViewModel.getShopInfo().getValue() != null){
+            return purchaseViewModel.getShopInfo().getValue().getBusinessDays().get(dayOfWeek).getCloseTime();
+        }
+        return null;
+    }
+
+    public int dayOfWeekSwitcher(int dayOfWeek){
+        if(dayOfWeek == Calendar.SUNDAY){
+            dayOfWeek = 6;
+        }
+        else{
+            dayOfWeek = dayOfWeek -2;
+        }
+        return dayOfWeek;
     }
 }

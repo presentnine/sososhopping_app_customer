@@ -16,7 +16,8 @@
             android:paddingBottom="5dp"
             android:paddingTop="10dp"
             android:text="@string/coupon"
-            android:textColor="@color/text_800"
+            android:textColor="@color/text_400"
+            android:textStyle="bold"
             android:textSize="16sp" />
 
         <View
@@ -87,7 +88,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/point"
-                android:textColor="@color/text_800"
+                android:textColor="@color/text_400"
+                android:textStyle="bold"
                 android:textSize="16sp" />
 
         </LinearLayout>

@@ -3,6 +3,7 @@ package com.sososhopping.customer.shop.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,6 @@ public class ShopIntroduceFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = ShopIntroduceBinding.inflate(inflater, container, false);
-
         shopInfoViewModel = new ViewModelProvider(getParentFragment().getParentFragment()).get(ShopInfoViewModel.class);
         shopIntroduceViewModel.setStoreId(shopInfoViewModel.getShopId().getValue());
         shopIntroduceViewModel.requestShopIntroduce(

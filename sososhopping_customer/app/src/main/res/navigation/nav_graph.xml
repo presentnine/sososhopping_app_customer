@@ -166,6 +166,9 @@
         <action
             android:id="@+id/action_mysosoMainFragment_to_mysosoMyInfoFragment"
             app:destination="@id/mysosoMyInfoFragment" />
+        <action
+            android:id="@+id/action_mysosoMainFragment_to_mysosoOrderListMainFragment"
+            app:destination="@id/mysosoOrderListMainFragment" />
     </fragment>
     <fragment
         android:id="@+id/mysosoPointFragment"
@@ -258,11 +261,16 @@
         <action
             android:id="@+id/action_purchaseSuccessFragment_to_shop_graph"
             app:destination="@id/shop_graph"
-            app:popUpTo="@id/purchaseSuccessFragment"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
         <argument
             android:name="storeId"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/mysosoOrderListMainFragment"
+        android:name="com.sososhopping.customer.mysoso.view.MysosoOrderListMainFragment"
+        android:label="MysosoOrderListMainFragment"
+        tools:layout="@layout/mysoso_order_list"/>
 
 </navigation>

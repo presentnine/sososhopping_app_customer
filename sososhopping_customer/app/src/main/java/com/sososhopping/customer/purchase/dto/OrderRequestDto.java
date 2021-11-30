@@ -38,7 +38,7 @@ public class OrderRequestDto {
     int usedPoint;
 
     @SerializedName("couponId")
-    String couponId;
+    Long couponId;
 
     @SerializedName("finalPrice")
     int finalPrice;

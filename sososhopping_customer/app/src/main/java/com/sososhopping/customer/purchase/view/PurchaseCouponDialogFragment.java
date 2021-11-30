@@ -113,7 +113,12 @@ public class PurchaseCouponDialogFragment extends DialogFragment {
         mysosoCouponAdapter.setOnItemClickListener(new MysosoCouponAdapter.OnItemClickListenerChild() {
             @Override
             public void onItemClick(CouponModel couponModel) {
-                //돌아가기
+
+                //쿠폰 최소금액보다 많은 경우
+                if(couponModel.getMinimumOrderPrice() > purchaseViewModel.getTotalPrice().getValue()){
+                    Toast.makeText(getContext(), "쿠폰 최소 사용금액보다 구매 금액이 부족합니다", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 purchaseViewModel.getUseCoupon().setValue(couponModel);
                 getActivity().onBackPressed();
                 dismiss();

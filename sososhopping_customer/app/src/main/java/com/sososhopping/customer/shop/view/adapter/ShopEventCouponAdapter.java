@@ -72,7 +72,7 @@ public class ShopEventCouponAdapter extends RecyclerView.Adapter<ShopEventCoupon
             binding.textViewStoreName.setText(storeName);
 
             //제한조건
-            if(couponModel.getMinimumOrderPrice() != null){
+            if(couponModel.getMinimumOrderPrice() != 0){
                 binding.textViewMinimum.setText(Integer.toString(couponModel.getMinimumOrderPrice()));
             }
             else{
@@ -83,7 +83,7 @@ public class ShopEventCouponAdapter extends RecyclerView.Adapter<ShopEventCoupon
                 binding.linearLayoutDate.setVisibility(View.GONE);
 
                 //크기조절용
-                if(couponModel.getMinimumOrderPrice() == null){
+                if(couponModel.getMinimumOrderPrice() == 0){
                     binding.buttonAddCoupon.setText(null);
                 }
             }

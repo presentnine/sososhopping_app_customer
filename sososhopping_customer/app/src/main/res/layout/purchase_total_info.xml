@@ -15,7 +15,8 @@
             android:paddingBottom="5dp"
             android:paddingTop="10dp"
             android:text="@string/total_pay_info"
-            android:textColor="@color/text_800"
+            android:textColor="@color/text_400"
+            android:textStyle="bold"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -106,8 +107,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="5dp"
+        android:paddingTop="10dp"
         android:text="@string/total_pay_final"
-        android:textColor="@color/text_800"
+        android:textColor="@color/text_400"
+        android:textStyle="bold"
         android:textSize="16sp" />
 
     <TextView
@@ -120,6 +123,7 @@
         android:text="0원"
         android:textColor="@color/main_500"
         android:gravity="right"
+        android:textStyle="bold"
         android:textSize="18sp" />
 
     <Button
@@ -127,7 +131,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="구매하기"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
 
 </LinearLayout>

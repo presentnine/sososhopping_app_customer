@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="20dp"
         android:text="@string/order_success"
+        android:textStyle="bold"
         android:textSize="24sp" />
 
     <LinearLayout

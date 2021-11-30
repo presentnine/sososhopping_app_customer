@@ -97,7 +97,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
                         if(count < 99){
                             binding.textViewItemNum.setText(Integer.toString(++count));
                             items.get(pos).setNum(count);
-                            binding.textViewItemPrice.setText(Integer.toString(items.get(pos).getPrice() * count));
+                            binding.textViewItemPrice.setText(items.get(pos).getPrice() * count+"원");
 
                             //장바구니 수정 api
                             itemClickListener.itemCountChanged(pos, 1);
@@ -118,7 +118,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
                         if(count > 1){
                             binding.textViewItemNum.setText(Integer.toString(--count));
                             items.get(pos).setNum(count);
-                            binding.textViewItemPrice.setText(Integer.toString(items.get(pos).getPrice() * count));
+                            binding.textViewItemPrice.setText(items.get(pos).getPrice() * count+"원");
 
                             //장바구니 수정 api
                             itemClickListener.itemCountChanged(pos, -1);
@@ -135,7 +135,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
             binding.textViewItemDescription.setText(dto.getDescription());
 
             binding.textViewItemNum.setText(Integer.toString(dto.getNum()));
-            binding.textViewItemPrice.setText(Integer.toString(dto.getPrice() * dto.getNum()));
+            binding.textViewItemPrice.setText(dto.getPrice() * dto.getNum()+"원");
 
 
             //판매불가면 못누르게

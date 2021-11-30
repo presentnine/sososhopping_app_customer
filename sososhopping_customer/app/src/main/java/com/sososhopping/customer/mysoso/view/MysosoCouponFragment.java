@@ -73,14 +73,15 @@ public class MysosoCouponFragment extends Fragment{
             public void onClick(View view) {
                 String code = binding.editTextAddCode.getText().toString();
 
-                if(code.length() < 16){
+                if(code.length() != 10){
                     Toast.makeText(getContext(),getResources().getString(R.string.event_coupon_shortLength),Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                int msgCode[]  = new int[2];
+                int msgCode[]  = new int[3];
                 msgCode[0] = R.string.event_coupon_addSucc;
                 msgCode[1] = R.string.event_coupon_addFail;
+                msgCode[2] = R.string.event_coupon_addDup;
 
                 //쿠폰 저장
                 myCouponViewModel.addShopCoupon(((MainActivity)getActivity()).getLoginToken(),

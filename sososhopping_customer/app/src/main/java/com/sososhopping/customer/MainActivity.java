@@ -185,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        Log.e("BackStack 수", navHostFragment.getChildFragmentManager().getBackStackEntryCount() + "");
         int start = Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId();
         if(start == R.id.home2){
             if (doubleBackToExitPressedOnce) {
@@ -201,9 +202,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }, 2000);
         }
-        else if(getSupportFragmentManager().getBackStackEntryCount() < 1){
-            navController.navigate(R.id.action_global_home2, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
-            binding.bottomNavigation.getMenu().findItem(R.id.menu_home).setChecked(true);
+        else if(navHostFragment.getChildFragmentManager().getBackStackEntryCount() < 1){
+            binding.bottomNavigation.setSelectedItemId(R.id.menu_home);
         }
         else{
             super.onBackPressed();

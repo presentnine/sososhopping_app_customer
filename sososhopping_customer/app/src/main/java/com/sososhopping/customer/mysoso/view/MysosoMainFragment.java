@@ -110,6 +110,13 @@ MysosoMainFragment extends Fragment {
                 ((MainActivity) getActivity()).getBinding().bottomNavigation.setSelectedItemId(R.id.menu_cart);
             }
         });
+        //결제내역
+        binding.imageViewPayHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navConroller.navigate(MysosoMainFragmentDirections.actionMysosoMainFragmentToMysosoOrderListMainFragment());
+            }
+        });
 
 
         super.onViewCreated(view, savedInstanceState);

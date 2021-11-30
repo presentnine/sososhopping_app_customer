@@ -32,6 +32,7 @@
     <string name="point_use">사용 포인트</string>
     <string name="point_use_all">전액사용</string>
     <string name="point_use_err">사용가능한 포인트를 초과하였습니다</string>
+    <string name="point_info">포인트는 내가 보유한 포인트 중, 구매하실 물품 총액에서 쿠폰 사용으로 할인된 금액을 제외한 부분만큼 최대로 사용하실 수 있습니다.\n\n할인 적용 순서 : 1. 쿠폰, 2. 포인트</string>
 
     <string name="coupon">쿠폰</string>
     <string name="coupon_use">사용하기</string>
@@ -50,9 +51,16 @@
     <string name="order_error">주문에 실패하였습니다</string>
 
     <!--주문 성공-->
-    <string name="order_store">매장으로</string>
+    <string name="order_store">매장으로</string>전체
     <string name="order_cart">장바구니</string>
     <string name="order_myPurchase">주문목록</string>
     <string name="order_success">주문 완료</string>
     <string name="order_success_comment">성공적으로 주문을 완료하였습니다.\n주문 내역을 확인해주세요.\n주문은 상점 승인 이후 진행됩니다.</string>
+
+    <!--주문내역-->
+    <string name="pending">승인대기</string>
+    <string name="approve">진행중</string>
+    <string name="reject_cancel">거절/취소</string>
+    <string name="done">주문완료</string>
+
 </resources>

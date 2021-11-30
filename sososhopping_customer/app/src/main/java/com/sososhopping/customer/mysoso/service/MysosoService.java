@@ -4,6 +4,7 @@ import com.sososhopping.customer.mysoso.dto.AddCouponDto;
 import com.sososhopping.customer.mysoso.dto.MyCouponsDto;
 import com.sososhopping.customer.mysoso.dto.MyInfoEditDto;
 import com.sososhopping.customer.mysoso.dto.MyReviewsDto;
+import com.sososhopping.customer.mysoso.dto.OrderListDto;
 import com.sososhopping.customer.mysoso.dto.PointDetailDto;
 import com.sososhopping.customer.mysoso.dto.PointListDto;
 import com.sososhopping.customer.mysoso.model.MyInfoModel;
@@ -44,4 +45,7 @@ public interface MysosoService {
 
     @PUT("info")
     Call<Void> requestEditMyInfo(@Header("token") String token, @Body MyInfoEditDto dto);
+
+    @GET("my/orders")
+    Call<OrderListDto> requestMyOrders(@Header("token") String token, @Query("statuses") String[] status);
 }
