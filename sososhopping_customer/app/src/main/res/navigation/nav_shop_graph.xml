@@ -35,7 +35,7 @@
             app:destination="@id/shopReportFragment" />
         <argument
             android:name="storeId"
-            app:argType="integer" />
+            app:argType="long" />
         <argument
             android:name="distance"
             app:argType="float"

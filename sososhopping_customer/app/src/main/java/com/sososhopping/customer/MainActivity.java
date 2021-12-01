@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -158,13 +159,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //상단바
         setSupportActionBar(binding.topAppBar);
-        binding.topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //getAppKeyHash();
         //권한 요청
@@ -265,7 +262,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void showTopAppBar() {
         binding.topAppBar.setVisibility(View.VISIBLE);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
+    public void setTopAppBarHome(boolean b){getSupportActionBar().setDisplayHomeAsUpEnabled(b);}
 
     public void hideTopAppBar() {
         binding.topAppBar.setVisibility(View.GONE);

@@ -61,7 +61,7 @@ public class PurchaseSuccessFragment extends Fragment {
         binding.buttonMyPurchase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                navController.navigate(PurchaseSuccessFragmentDirections.actionPurchaseSuccessFragmentToMysosoOrderListFragment());
             }
         });
 

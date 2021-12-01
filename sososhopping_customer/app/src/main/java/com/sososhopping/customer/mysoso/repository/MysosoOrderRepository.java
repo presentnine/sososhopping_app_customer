@@ -1,13 +1,17 @@
 package com.sososhopping.customer.mysoso.repository;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
 import com.sososhopping.customer.common.retrofit.ApiServiceFactory;
+import com.sososhopping.customer.mysoso.dto.OrderCancelDto;
+import com.sososhopping.customer.mysoso.dto.OrderDetailDto;
 import com.sososhopping.customer.mysoso.dto.OrderListDto;
 import com.sososhopping.customer.mysoso.service.MysosoService;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import retrofit2.Call;
@@ -31,7 +35,7 @@ public class MysosoOrderRepository {
     }
 
     public void requestMyOrderLists(String token,
-                                    String[] statuses,
+                                    String statuses,
                                     Consumer<OrderListDto> onSuccess,
                                     Runnable onLogInFailed,
                                     Runnable onFailed,
@@ -59,6 +63,64 @@ public class MysosoOrderRepository {
 
             @Override
             public void onFailure(Call<OrderListDto> call, Throwable t) {
+                onError.run();
+            }
+        });
+    }
+
+    public void requestMyOrderDetails(String token,
+                                      long orderId,
+                                      Consumer<OrderDetailDto> onSuccess,
+                                      Runnable onFailed,
+                                      Runnable onError){
+
+        mysosoService.requestMyOrdersDetail(token, orderId).enqueue(new Callback<OrderDetailDto>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<OrderDetailDto> call, Response<OrderDetailDto> response) {
+                switch (response.code()){
+                    case 200:
+                        onSuccess.accept(response.body());
+                        break;
+
+                    default:
+                        onFailed.run();
+                        break;
+
+                }
+            }
+            @Override
+            public void onFailure(Call<OrderDetailDto> call, Throwable t) {
+                onError.run();
+            }
+        });
+    }
+
+    public void requestMyOrderCancel(String token,
+                                      long orderId,
+                                      OrderCancelDto action,
+                                      Runnable onSuccess,
+                                      Runnable onFailed,
+                                      Runnable onError){
+
+        mysosoService.requestMyOrdersCancel(token, orderId,action).enqueue(new Callback<OrderDetailDto>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<OrderDetailDto> call, Response<OrderDetailDto> response) {
+                Log.e("?", response.raw().toString());
+                switch (response.code()){
+                    case 200:
+                        onSuccess.run();
+                        break;
+
+                    default:
+                        onFailed.run();
+                        break;
+
+                }
+            }
+            @Override
+            public void onFailure(Call<OrderDetailDto> call, Throwable t) {
                 onError.run();
             }
         });

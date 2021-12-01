@@ -8,6 +8,7 @@
 
     <string name="payments_extra">기타 결제수단</string>
     <string name="payments_extra_short">결제수단</string>
+    <string name="payments_information">결제정보</string>
     <string-array name="payments_types">
         <item>신용/체크카드</item>
         <item>휴대폰결제</item>
@@ -17,16 +18,18 @@
     </string-array>
 
     <string name="visit_method">수령방법</string>
-    <string name="visit_info">방문 예약</string>
+    <string name="visit_info">방문 정보</string>
     <string name="visit">방문</string>
     <string name="visit_date">방문일</string>
     <string name="visit_time">방문 시간</string>
+    <string name="phone_num">휴대전화번호</string>
 
     <string name="delivery_info">배송 정보</string>
     <string name="delivery">배송</string>
     <string name="delivery_myinfo">내 정보와 동일하게</string>
     <string name="delivery_street">도로명 주소</string>
     <string name="delivery_detail">상세 주소</string>
+    <string name="delivery_address">주소</string>
 
     <string name="point">포인트</string>
     <string name="point_use">사용 포인트</string>
@@ -55,12 +58,17 @@
     <string name="order_cart">장바구니</string>
     <string name="order_myPurchase">주문목록</string>
     <string name="order_success">주문 완료</string>
-    <string name="order_success_comment">성공적으로 주문을 완료하였습니다.\n주문 내역을 확인해주세요.\n주문은 상점 승인 이후 진행됩니다.</string>
+    <string name="order_success_comment">고객님의 주문을 성공적으로 완료하였습니다.\n주문 내역을 확인해주세요.</string>
+    <string name="order_info">주문 과정은 점주님의 승인 절차를 걸쳐 진행됩니다.\n주문의 취소는 점주님의 승인이 있기 전인,  \&apos;승인대기\&apos; 기간에만 가능합니다. \n\&apos;승인대기\&apos;이후의 취소는 점주에게 문의하여  \&apos;주문거절\&apos;을 통해 취소할 수 있습니다.\n상점의 여건에 따라 주문은 거절될 수 있습니다.</string>
 
     <!--주문내역-->
-    <string name="pending">승인대기</string>
+    <string name="pending">대기</string>
     <string name="approve">진행중</string>
     <string name="reject_cancel">거절/취소</string>
-    <string name="done">주문완료</string>
+    <string name="done">완료</string>
+
+    <!--에러-->
+    <string name="order_cancel_success">주문 취소에 성공하였습니다.</string>
+    <string name="order_cancel_failed">주문 취소에 실패하였습니다.</string>
 
 </resources>

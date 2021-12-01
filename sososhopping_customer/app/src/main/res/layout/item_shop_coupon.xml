@@ -30,8 +30,8 @@
                     android:id="@+id/button_addCoupon"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:text="받기"
                     android:minWidth="0dp"
+                    android:text="받기"
                     app:icon="@drawable/ic_baseline_get_app_24"
                     app:iconGravity="textTop"
                     app:iconTint="@color/white"
@@ -39,7 +39,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

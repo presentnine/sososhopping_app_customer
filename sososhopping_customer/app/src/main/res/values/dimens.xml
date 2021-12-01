@@ -25,4 +25,10 @@
 
     <!--padding-->
     <dimen name="five">5dp</dimen>
+
+    <!--forText-->
+    <dimen name="normal_minus">14sp</dimen>
+    <dimen name="normal">16sp</dimen>
+    <dimen name="normal_plus">18sp</dimen>
+    <dimen name="large_minus">20sp</dimen>
 </resources>

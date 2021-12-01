@@ -65,7 +65,7 @@ public class ShopMainFragment extends Fragment {
 
         //ViewModel Setting -> Main에서 유지되게
         shopInfoViewModel = new ViewModelProvider(this).get(ShopInfoViewModel.class);
-        shopInfoViewModel.setShopId(ShopMainFragmentArgs.fromBundle(getArguments()).getStoreId());
+        shopInfoViewModel.setShopId((int)ShopMainFragmentArgs.fromBundle(getArguments()).getStoreId());
 
         if(shopInfoViewModel.getDistance().getValue() == null){
             shopInfoViewModel.getDistance().setValue(ShopMainFragmentArgs.fromBundle(getArguments()).getDistance());

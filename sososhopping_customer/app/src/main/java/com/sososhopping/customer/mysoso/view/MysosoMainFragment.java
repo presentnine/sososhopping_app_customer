@@ -114,7 +114,7 @@ MysosoMainFragment extends Fragment {
         binding.imageViewPayHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navConroller.navigate(MysosoMainFragmentDirections.actionMysosoMainFragmentToMysosoOrderListMainFragment());
+                navConroller.navigate(MysosoMainFragmentDirections.actionMysosoMainFragmentToMysosoOrderListFragment());
             }
         });
 
@@ -129,6 +129,7 @@ MysosoMainFragment extends Fragment {
         ((MainActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso));
         ((MainActivity)getActivity()).getBinding().topAppBar.setOnClickListener(null);
         ((MainActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
+        ((MainActivity)getActivity()).setTopAppBarHome(false);
 
         //하단바
         ((MainActivity)getActivity()).showBottomNavigation();

@@ -2,7 +2,7 @@ package com.sososhopping.customer.purchase.repository;
 
 import android.util.Log;
 
-import com.sososhopping.customer.purchase.dto.OrderRequestDto;
+import com.sososhopping.customer.purchase.model.OrderRequestModel;
 import com.sososhopping.customer.purchase.service.PurchaseService;
 import com.sososhopping.customer.common.retrofit.ApiServiceFactory;
 
@@ -26,7 +26,7 @@ public class PurchaseRepository {
         return instance;
     }
     public void requestOrders(String token,
-                              OrderRequestDto dto,
+                              OrderRequestModel dto,
                               Runnable onSuccess,
                               Runnable onFailed,
                               Runnable onError){

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 import com.sososhopping.customer.purchase.dto.CartItemDto;
 import com.sososhopping.customer.purchase.dto.CartStoreDto;
 import com.sososhopping.customer.purchase.dto.CartUpdateDto;
-import com.sososhopping.customer.purchase.dto.OrderRequestDto;
+import com.sososhopping.customer.purchase.model.OrderRequestModel;
 import com.sososhopping.customer.purchase.repository.PurchaseRepository;
 import com.sososhopping.customer.common.types.enumType.CouponType;
 import com.sososhopping.customer.common.types.enumType.OrderType;
@@ -64,7 +64,7 @@ public class PurchaseViewModel extends ViewModel {
         paymentType = PaymentType.CASH;
     }
 
-    public OrderRequestDto orderRequestDto(String name, String phone, String date, String time, String road, String detail){
+    public OrderRequestModel orderRequestDto(String name, String phone, String date, String time, String road, String detail){
         ArrayList<CartUpdateDto> purchaseItems = new ArrayList<>();
 
         for(CartItemDto d : purchaseList.getValue().getCartItems()){
@@ -81,7 +81,7 @@ public class PurchaseViewModel extends ViewModel {
             couponCode = useCoupon.getValue().getCouponId();
         }
 
-        OrderRequestDto dto = OrderRequestDto.builder()
+        OrderRequestModel dto = OrderRequestModel.builder()
                 .storeId(shopInfo.getValue().getStoreId())
                 .orderItems(purchaseItems)
                 .orderType(orderType)
@@ -180,7 +180,7 @@ public class PurchaseViewModel extends ViewModel {
     }
 
     public void requestOrder(String token,
-                             OrderRequestDto dto,
+                             OrderRequestModel dto,
                              Runnable onSuccess,
                              Runnable onFailed,
                              Runnable onError){

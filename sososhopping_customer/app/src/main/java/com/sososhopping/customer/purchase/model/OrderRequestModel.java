@@ -1,10 +1,11 @@
-package com.sososhopping.customer.purchase.dto;
+package com.sososhopping.customer.purchase.model;
 
 import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 import com.sososhopping.customer.common.types.enumType.OrderType;
 import com.sososhopping.customer.common.types.enumType.PaymentType;
+import com.sososhopping.customer.purchase.dto.CartUpdateDto;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +22,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderRequestDto {
+public class OrderRequestModel {
     @SerializedName("storeId")
     int storeId;
 

@@ -44,6 +44,11 @@ public class HomeViewModel extends ViewModel {
     }
     public void setShopList(ArrayList<ShopInfoShortModel> s) {shopList.setValue(s);}
 
+    public void initHome(){
+        this.setSearchType(false);
+        this.searchContent.setValue("");
+    }
+
     //1 : 상품 / 0 : 상점
     public void setSearchType(Boolean checked){
         if(checked){

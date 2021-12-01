@@ -68,7 +68,8 @@ public class HomeFragment extends Fragment{
 
         //처음 searchType
         homeViewModel =  new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
-        homeViewModel.setSearchType(false);
+        homeViewModel.initHome();
+
         binding.switchShopOrItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

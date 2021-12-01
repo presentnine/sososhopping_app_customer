@@ -34,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
-public class MysosoOrderListMainFragment extends Fragment {
+public class MysosoOrderListFragment extends Fragment {
 
     private MysosoOrderListBinding binding;
     private NavController navController;
@@ -43,12 +43,13 @@ public class MysosoOrderListMainFragment extends Fragment {
     MysosoOrderListAdapter orderListAdapter;
 
     private final OrderStatus INITIAL_ORDERSTAT = OrderStatus.PENDING;
+    ArrayAdapter<OrderStatus> adapterApprove;
+    ArrayAdapter<OrderStatus> adapterCancel;
     private final OrderStatus[] searchTypeApprove = {OrderStatus.APPROVE_ALL, OrderStatus.APPROVE, OrderStatus.READY};
     private final OrderStatus[] searchTypeCancel = {OrderStatus.CANCEL_ALL, OrderStatus.REJECT, OrderStatus.CANCEL};
+    private OrderStatus beforeChecked = OrderStatus.PENDING;
 
-    int beforeSpinnerClick = -1;
-
-    public static MysosoOrderListMainFragment newInstance() {return new MysosoOrderListMainFragment();}
+    public static MysosoOrderListFragment newInstance() {return new MysosoOrderListFragment();}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,14 +87,14 @@ public class MysosoOrderListMainFragment extends Fragment {
             }
         });
 
-        //재검색
+        //초기 검색
         orderListViewModel.requestMyOrderLists(
                 ((MainActivity)getActivity()).getLoginToken(),
                 INITIAL_ORDERSTAT,
-                MysosoOrderListMainFragment.this::onSuccess,
-                MysosoOrderListMainFragment.this::onFailedLogIn,
-                MysosoOrderListMainFragment.this::onFailed,
-                MysosoOrderListMainFragment.this::onNetworkError
+                MysosoOrderListFragment.this::onSuccess,
+                MysosoOrderListFragment.this::onFailedLogIn,
+                MysosoOrderListFragment.this::onFailed,
+                MysosoOrderListFragment.this::onNetworkError
         );
         return binding.getRoot();
     }
@@ -103,8 +104,9 @@ public class MysosoOrderListMainFragment extends Fragment {
         //상단바
         ((MainActivity)getActivity()).showTopAppBar();
         ((MainActivity)getActivity()).setTopAppBarTitle("주문내역");
+
         //하단바
-        ((MainActivity)getActivity()).hideBottomNavigation();
+        ((MainActivity)getActivity()).showBottomNavigation();
         super.onResume();
     }
 
@@ -113,16 +115,25 @@ public class MysosoOrderListMainFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
 
-        binding.spinnerSearchType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                binding.textViewSearchType.setText(adapterView.getSelectedItem().toString());
+        adapterApprove = new ArrayAdapter<OrderStatus>(getContext(), android.R.layout.simple_spinner_item, searchTypeApprove);
+        adapterApprove.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapterCancel = new ArrayAdapter<OrderStatus>(getContext(), android.R.layout.simple_spinner_item, searchTypeCancel);
+        adapterCancel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-                if(beforeSpinnerClick == i){
+        binding.spinnerSearchType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                OrderStatus od = (OrderStatus)adapterView.getSelectedItem();
+
+                if(od != beforeChecked){
                     //재검색
-                    getListCall((OrderStatus) adapterView.getSelectedItem());
+                    getListCall(od);
                 }
-                beforeSpinnerClick = i;
+                beforeChecked = od;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
 
@@ -133,28 +144,23 @@ public class MysosoOrderListMainFragment extends Fragment {
                     case 0:{
                         getListCall(OrderStatus.PENDING);
                         binding.linearLayoutSpinner.setVisibility(View.GONE);
+                        beforeChecked = OrderStatus.PENDING;
                         break;
                     }
                     case 1:{
                         //스피너 설정 필요
-                        ArrayAdapter<OrderStatus> adapter = new ArrayAdapter<OrderStatus>(getContext(), android.R.layout.simple_spinner_item, searchTypeApprove);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        binding.spinnerSearchType.setAdapter(adapter);
+                        binding.spinnerSearchType.setAdapter(adapterApprove);
 
                         //초기 설정
-                        beforeSpinnerClick = 0;
                         binding.spinnerSearchType.setSelection(0);
                         binding.linearLayoutSpinner.setVisibility(View.VISIBLE);
                         break;
                     }
                     case 2:{
                         //스피너 설정 필요
-                        ArrayAdapter<OrderStatus> adapter = new ArrayAdapter<OrderStatus>(getContext(), android.R.layout.simple_spinner_item, searchTypeCancel);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        binding.spinnerSearchType.setAdapter(adapter);
+                        binding.spinnerSearchType.setAdapter(adapterCancel);
 
                         //초기 설정
-                        beforeSpinnerClick = 0;
                         binding.spinnerSearchType.setSelection(0);
                         binding.linearLayoutSpinner.setVisibility(View.VISIBLE);
                         break;
@@ -162,6 +168,7 @@ public class MysosoOrderListMainFragment extends Fragment {
                     case 3:{
                         getListCall(OrderStatus.DONE);
                         binding.linearLayoutSpinner.setVisibility(View.GONE);
+                        beforeChecked = OrderStatus.DONE;
                         break;
                     }
                 }
@@ -180,6 +187,8 @@ public class MysosoOrderListMainFragment extends Fragment {
                     }
                     case 1:
                     case 2:
+                        //새로고침되게
+                        beforeChecked = OrderStatus.PENDING;
                         binding.spinnerSearchType.setSelection(0);
                         break;
                     case 3:{
@@ -193,6 +202,7 @@ public class MysosoOrderListMainFragment extends Fragment {
             @Override
             public void onItemClick(long orderId) {
                 //세부정보로 이동
+                navController.navigate(MysosoOrderListFragmentDirections.actionMysosoOrderListMainFragmentToMysosoOrderDetailFragment(orderId));
             }
         });
     }
@@ -208,10 +218,10 @@ public class MysosoOrderListMainFragment extends Fragment {
         orderListViewModel.requestMyOrderLists(
                 ((MainActivity)getActivity()).getLoginToken(),
                 orderStatus,
-                MysosoOrderListMainFragment.this::onSuccess,
-                MysosoOrderListMainFragment.this::onFailedLogIn,
-                MysosoOrderListMainFragment.this::onFailed,
-                MysosoOrderListMainFragment.this::onNetworkError
+                MysosoOrderListFragment.this::onSuccess,
+                MysosoOrderListFragment.this::onFailedLogIn,
+                MysosoOrderListFragment.this::onFailed,
+                MysosoOrderListFragment.this::onNetworkError
         );
     }
 

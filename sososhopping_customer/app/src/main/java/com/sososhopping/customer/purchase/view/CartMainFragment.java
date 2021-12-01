@@ -118,6 +118,7 @@ public class CartMainFragment extends Fragment {
         ((MainActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_shoppingBag));
         ((MainActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
         ((MainActivity)getActivity()).getBinding().topAppBar.setOnClickListener(null);
+        ((MainActivity)getActivity()).setTopAppBarHome(false);
 
         cartViewModel.requestMyCart(((MainActivity)getActivity()).getLoginToken(),
                 this::onSuccess,

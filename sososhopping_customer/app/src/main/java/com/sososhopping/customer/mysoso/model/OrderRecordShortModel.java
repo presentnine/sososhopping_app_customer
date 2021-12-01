@@ -2,6 +2,7 @@ package com.sososhopping.customer.mysoso.model;
 
 import com.google.gson.annotations.SerializedName;
 import com.sososhopping.customer.common.types.enumType.OrderStatus;
+import com.sososhopping.customer.common.types.enumType.OrderType;
 
 import lombok.Getter;
 
@@ -14,7 +15,7 @@ public class OrderRecordShortModel {
     @SerializedName("storeName")
     String storeName;
 
-    @SerializedName("orderDescription")
+    @SerializedName("description")
     String orderDescription;
 
     @SerializedName("imgUrl")
@@ -22,6 +23,9 @@ public class OrderRecordShortModel {
 
     @SerializedName("finalPrice")
     int finalPrice;
+
+    @SerializedName("orderType")
+    OrderType orderType;
 
     @SerializedName("orderStatus")
     OrderStatus orderStatus;

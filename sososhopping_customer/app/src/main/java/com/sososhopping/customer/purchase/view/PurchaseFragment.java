@@ -1,11 +1,19 @@
 package com.sososhopping.customer.purchase.view;
 
+import android.app.ActionBar;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,7 +26,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.R;
-import com.sososhopping.customer.purchase.dto.OrderRequestDto;
+import com.sososhopping.customer.purchase.model.OrderRequestModel;
 import com.sososhopping.customer.purchase.viewmodel.PurchaseViewModel;
 import com.sososhopping.customer.common.types.enumType.OrderType;
 import com.sososhopping.customer.databinding.PurchaseMainBinding;
@@ -142,6 +150,41 @@ public class PurchaseFragment extends Fragment {
         );
         purchaseFragment_point.setPointLayout(getResources(), navController);
 
+        binding.includeLayoutTotal.buttonTotalInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupWindow pop = new PopupWindow(getContext());
+                LinearLayout layout = new LinearLayout(getContext());
+
+                TextView textView = new TextView(getContext());
+                textView.setText(getResources().getString(R.string.order_info));
+                textView.setTextColor(getResources().getColor(R.color.white));
+                textView.setGravity(Gravity.CENTER);
+
+                ActionBar.LayoutParams params = new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                layout.addView(textView, params);
+                layout.setPadding(20,10,10,20);
+
+                layout.setBackground(getResources().getDrawable(R.drawable.drawable_background_toast));
+                pop.setContentView(layout);
+
+
+                // Closes the popup window when touch outside.
+                pop.setOutsideTouchable(true);
+                pop.setFocusable(true);
+                pop.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    pop.showAsDropDown(binding.includeLayoutTotal.buttonTotalInfo,
+                            (int)0.2*binding.includeLayoutPoint.textFieldUsePoint.getWidth(),
+                            -2*binding.includeLayoutPoint.textFieldUsePoint.getHeight(),Gravity.CENTER);
+                }
+                else{
+                    pop.showAsDropDown(binding.includeLayoutTotal.buttonTotalInfo,
+                            (int)0.2*binding.includeLayoutPoint.textFieldUsePoint.getWidth(),
+                            -2*binding.includeLayoutPoint.textFieldUsePoint.getHeight());
+                }
+            }
+        });
 
         binding.includeLayoutTotal.buttonFinalPurchase.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,7 +196,7 @@ public class PurchaseFragment extends Fragment {
                 }
 
                 // 2. Dto 생성
-                OrderRequestDto dto;
+                OrderRequestModel dto;
                 if(purchaseViewModel.getOrderType() == OrderType.ONSITE){
 
                     dto = purchaseViewModel.orderRequestDto(

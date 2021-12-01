@@ -16,12 +16,9 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-
         <!-- Customize your theme here. -->
         <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
-
         <item name="android:textColor">@color/text_400</item>
-
         <item name="checkboxStyle">@style/Widget.App.CheckBox</item>
     </style>
 
@@ -33,7 +30,6 @@
         <item name="colorOnSurface">@color/text_800</item>
         <item name="colorSecondary">@color/main_400</item>
     </style>
-
 
     <style name="Theme.Sososhopping_customer.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -63,6 +59,16 @@
         <item name="colorControlActivated">@color/orange_rating</item>
         <item name="colorControlNormal">@color/text_400</item>
     </style>
+
+    <!--redButton-->
+    <style name="CustomRedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="colorPrimary">@color/red_cart</item>
+        <item name="colorOnPrimary">@color/red_cart</item>
+        <item name="colorControlHighlight">@color/red_cart</item>
+    </style>
+
+
+
 
 
 </resources>

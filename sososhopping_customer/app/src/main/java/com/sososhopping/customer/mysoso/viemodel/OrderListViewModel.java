@@ -9,6 +9,7 @@ import com.sososhopping.customer.mysoso.model.OrderRecordShortModel;
 import com.sososhopping.customer.mysoso.repository.MysosoOrderRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import lombok.Getter;
@@ -34,24 +35,26 @@ public class OrderListViewModel extends ViewModel {
         mysosoOrderRepository.requestMyOrderLists(token, changeOrderStatus(orderStatuses), onSuccess, onLogInFailed, onFailed, onError);
     }
 
-    public String[] changeOrderStatus(OrderStatus orderStatuses){
-        ArrayList<String> results = new ArrayList<>();
+    public String changeOrderStatus(OrderStatus orderStatuses){
+        StringBuilder sb = new StringBuilder();
         switch (orderStatuses){
             case APPROVE_ALL:
-                results.add(OrderStatus.APPROVE.getValue());
-                results.add(OrderStatus.READY.getValue());
+                sb.append(OrderStatus.APPROVE.getStat());
+                sb.append(",");
+                sb.append(OrderStatus.READY.getStat());
                 break;
 
             case CANCEL_ALL:
-                results.add(OrderStatus.CANCEL.getValue());
-                results.add(OrderStatus.REJECT.getValue());
+                sb.append(OrderStatus.CANCEL.getStat());
+                sb.append(",");
+                sb.append(OrderStatus.REJECT.getStat());
                 break;
 
             default:
-                results.add(orderStatuses.getValue());
+                sb.append(orderStatuses.getStat());
                 break;
         }
 
-        return results.toArray(new String[results.size()]);
+        return sb.toString();
     }
 }

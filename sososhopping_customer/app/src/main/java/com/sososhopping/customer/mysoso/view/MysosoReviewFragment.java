@@ -1,5 +1,7 @@
 package com.sososhopping.customer.mysoso.view;
 
+import android.content.DialogInterface;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,18 +18,21 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.dialog.MaterialDialogs;
 import com.sososhopping.customer.MainActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.MysosoMyreviewBinding;
 import com.sososhopping.customer.mysoso.dto.MyReviewsDto;
-import com.sososhopping.customer.mysoso.dto.PointListDto;
-import com.sososhopping.customer.mysoso.model.MyreviewModel;
 import com.sososhopping.customer.mysoso.viemodel.MyReviewViewModel;
 import com.sososhopping.customer.mysoso.view.adapter.MysosoReviewAdapter;
+import com.sososhopping.customer.mysoso.view.adapter.SwipeController;
+import com.sososhopping.customer.mysoso.view.adapter.SwipeControllerActions;
 
 public class MysosoReviewFragment extends Fragment {
     MysosoMyreviewBinding binding;
@@ -58,11 +63,7 @@ public class MysosoReviewFragment extends Fragment {
                              @Nullable Bundle savedInstanceState){
         //binding 설정
         binding = MysosoMyreviewBinding.inflate(inflater,container,false);
-
-        binding.recyclerViewReview.setLayoutManager(
-                new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false)
-        );
-        binding.recyclerViewReview.setAdapter(mysosoReviewAdapter);
+        setupRecyclerView();
 
         //viewmodel 설정
         myReviewViewModel = new MyReviewViewModel();
@@ -81,46 +82,9 @@ public class MysosoReviewFragment extends Fragment {
         //Controller 설정
         navConroller = Navigation.findNavController(view);
         super.onViewCreated(view, savedInstanceState);
-
-       mysosoReviewAdapter.setOnItemClickListener(new MysosoReviewAdapter.OnItemLongClickListener() {
-
-           @Override
-           public void onItemClick(View view, int storeId, int pos) {
-               PopupMenu popupMenu = new PopupMenu(getContext(),view);
-               getActivity().getMenuInflater().inflate(R.menu.menu_review_longclick, popupMenu.getMenu());
-
-               popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                   @Override
-                   public boolean onMenuItemClick(MenuItem menuItem) {
-
-                       switch (menuItem.getItemId()){
-
-                           case R.id.action_delete:{
-                               myReviewViewModel.deleteMyReview(
-                                       ((MainActivity)getActivity()).getLoginToken(),
-                                       storeId,
-                                       pos,
-                                       MysosoReviewFragment.this::onSuccess,
-                                       MysosoReviewFragment.this::onFailedDelete,
-                                       MysosoReviewFragment.this::onNetworkErrorDelete);
-                               break;
-                           }
-
-                           case R.id.action_navigate:{
-                               navConroller.navigate(MysosoReviewFragmentDirections.actionMysosoReviewFragmentToShopGraph(storeId));
-                               break;
-                           }
-                       }
-
-                       return false;
-                   }
-               });
-
-               popupMenu.show();
-
-           }
-    });
     }
+
+
 
     @Override
     public void onResume() {
@@ -175,5 +139,63 @@ public class MysosoReviewFragment extends Fragment {
 
     private void onNetworkErrorDelete() {
         NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
+    }
+
+    private void setupRecyclerView() {
+
+        binding.recyclerViewReview.setLayoutManager(
+                new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false)
+        );
+        binding.recyclerViewReview.setAdapter(mysosoReviewAdapter);
+
+        SwipeController swipeController = new SwipeController(new SwipeControllerActions() {
+            @Override
+            public void onLeftClicked(int pos) {
+
+                navConroller.navigate(MysosoReviewFragmentDirections.actionMysosoReviewFragmentToShopGraph(
+                        mysosoReviewAdapter.getReviewModels().get(pos).getStoreId()
+                ));
+            }
+
+            @Override
+            public void onRightClicked(int pos) {
+                //안전을 위해서 다이얼로그 추가
+                new MaterialAlertDialogBuilder(getContext())
+                        .setTitle("정말 삭제하시겠습니까?")
+                        .setNeutralButton("네", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                myReviewViewModel.deleteMyReview(
+                                        ((MainActivity)getActivity()).getLoginToken(),
+                                        mysosoReviewAdapter.getReviewModels().get(pos).getStoreId(),
+                                        pos,
+                                        MysosoReviewFragment.this::onSuccess,
+                                        MysosoReviewFragment.this::onFailedDelete,
+                                        MysosoReviewFragment.this::onNetworkErrorDelete);
+                            }
+                        })
+                        .setPositiveButton("아니오", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
+                        .show();
+            }
+
+            @Override
+            public void onReset(int pos) {
+                mysosoReviewAdapter.notifyItemChanged(pos);
+            }
+        }, getResources());
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
+        itemTouchhelper.attachToRecyclerView(binding.recyclerViewReview);
+
+        binding.recyclerViewReview.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                swipeController.onDraw(c);
+            }
+        });
     }
 }

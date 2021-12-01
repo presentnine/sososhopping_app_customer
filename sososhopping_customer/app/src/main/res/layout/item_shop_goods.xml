@@ -57,7 +57,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Goods Name"
-                        android:textSize="14dp" />
+                        android:textSize="@dimen/normal" />
                 </LinearLayout>
 
                 <TextView
@@ -68,7 +68,7 @@
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:text="A"
-                    android:textSize="@dimen/search_shop_description" />
+                    android:textSize="@dimen/normal_minus" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -92,14 +92,14 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="xx개"
-                            android:textSize="14dp" />
+                            android:textSize="@dimen/normal_minus" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text=" / "
-                            android:textSize="14dp" />
+                            android:textSize="@dimen/normal_minus" />
 
                         <TextView
                             android:id="@+id/textView_item_price"
@@ -107,7 +107,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="4000원"
-                            android:textSize="14dp" />
+                            android:textSize="@dimen/normal_minus" />
                     </LinearLayout>
 
 
@@ -143,7 +143,7 @@
                             android:layout_marginRight="10dp"
                             android:gravity="center"
                             android:text="1"
-                            android:textSize="16sp" />
+                            android:textSize="@dimen/normal" />
 
                         <Button
                             android:id="@+id/button_count_plus"

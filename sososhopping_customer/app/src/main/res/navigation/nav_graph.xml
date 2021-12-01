@@ -63,9 +63,6 @@
             android:id="@+id/action_shopMapFragment_to_searchDialogFragment"
             app:destination="@id/searchDialogFragment" />
         <argument
-            android:name="navigateFrom"
-            app:argType="integer" />
-        <argument
             android:name="lat"
             app:argType="float"
             android:defaultValue="37.583912" />
@@ -73,6 +70,9 @@
             android:name="lng"
             app:argType="float"
             android:defaultValue="127.058981" />
+        <argument
+            android:name="navigateFrom"
+            app:argType="integer" />
     </fragment>
 
     <dialog
@@ -107,7 +107,7 @@
             app:popUpToInclusive="false" />
         <argument
             android:name="storeId"
-            app:argType="integer" />
+            app:argType="long" />
         <argument
             android:name="distance"
             app:argType="float"
@@ -167,8 +167,8 @@
             android:id="@+id/action_mysosoMainFragment_to_mysosoMyInfoFragment"
             app:destination="@id/mysosoMyInfoFragment" />
         <action
-            android:id="@+id/action_mysosoMainFragment_to_mysosoOrderListMainFragment"
-            app:destination="@id/mysosoOrderListMainFragment" />
+            android:id="@+id/action_mysosoMainFragment_to_mysosoOrderListFragment"
+            app:destination="@id/mysosoOrderListFragment" />
     </fragment>
     <fragment
         android:id="@+id/mysosoPointFragment"
@@ -266,11 +266,33 @@
         <argument
             android:name="storeId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_purchaseSuccessFragment_to_mysosoOrderListFragment"
+            app:destination="@id/mysosoOrderListFragment" />
     </fragment>
     <fragment
-        android:id="@+id/mysosoOrderListMainFragment"
-        android:name="com.sososhopping.customer.mysoso.view.MysosoOrderListMainFragment"
+        android:id="@+id/mysosoOrderListFragment"
+        android:name="com.sososhopping.customer.mysoso.view.MysosoOrderListFragment"
         android:label="MysosoOrderListMainFragment"
-        tools:layout="@layout/mysoso_order_list"/>
+        tools:layout="@layout/mysoso_order_list">
+        <action
+            android:id="@+id/action_mysosoOrderListMainFragment_to_mysosoOrderDetailFragment"
+            app:destination="@id/mysosoOrderDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mysosoOrderDetailFragment"
+        android:name="com.sososhopping.customer.mysoso.view.MysosoOrderDetailFragment"
+        android:label="MysosoOrderDetailFragment"
+        tools:layout="@layout/mysoso_order_detail">
+        <argument
+            android:name="orderId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_mysosoOrderDetailFragment_to_shop_graph"
+            app:destination="@id/shop_graph" />
+        <action
+            android:id="@+id/action_mysosoOrderDetailFragment_self"
+            app:destination="@id/mysosoOrderDetailFragment" />
+    </fragment>
 
 </navigation>
