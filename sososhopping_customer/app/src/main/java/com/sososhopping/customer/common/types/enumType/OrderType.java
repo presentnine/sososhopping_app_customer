@@ -6,6 +6,7 @@ public enum OrderType {
 
     @SerializedName("픽업")
     ONSITE("픽업"),
+
     @SerializedName("배송")
     DELIVERY("배송");
 

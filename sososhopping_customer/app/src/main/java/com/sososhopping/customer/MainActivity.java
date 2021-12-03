@@ -19,6 +19,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     //로그인용
     Boolean isLogIn = false;
-    String loginToken;
+    MutableLiveData<String> loginToken = new MutableLiveData<>();
 
     public ActivityMainBinding getBinding() {
         return binding;
@@ -169,6 +171,13 @@ public class MainActivity extends AppCompatActivity {
 
         //자동로그인 시도
         autoLogIn();
+
+        loginToken.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                initLoginButton();
+            }
+        });
     }
 
 
@@ -247,7 +256,6 @@ public class MainActivity extends AppCompatActivity {
             binding.bottomNavigation.setClickable(false);
         }
     }
-
     public void hideLoginButton() {
         binding.buttonAccountLogIn.setVisibility(View.GONE);
     }
@@ -272,11 +280,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String getLoginToken() {
-        return loginToken;
+        return loginToken.getValue();
     }
 
     public void setLoginToken(String loginToken) {
-        this.loginToken = loginToken;
+        this.loginToken.setValue(loginToken);
     }
 
     public void setIsLogIn(boolean is) {
@@ -289,6 +297,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void setTopAppBarTitle(String title){
         binding.topAppBar.setTitle(title);
+    }
+
+    public void bottomItemClicked(int id){
+        binding.bottomNavigation.setSelectedItemId(id);
     }
 
     //해시 키 값 구하기

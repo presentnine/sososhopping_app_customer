@@ -116,7 +116,6 @@ public class SignUpInfoFragment extends Fragment {
 
         navController = Navigation.findNavController(view);
         signUpViewModel = new ViewModelProvider(requireParentFragment()).get(SignUpViewModel.class);
-        // TODO: Use the ViewModel
 
         //다음화면으로
         binding.buttonSignUp.setOnClickListener(new View.OnClickListener() {

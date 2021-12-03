@@ -85,16 +85,15 @@ public class MysosoPointAdapter extends RecyclerView.Adapter<MysosoPointAdapter.
 
 
             //이미지
-            if(pointInfoModel.getImgUrl() != null){
-                Glide.with(itemView)
-                        .load(pointInfoModel.getImgUrl())
-                        .transform(new CenterCrop(),new CircleCrop())
-                        .thumbnail(0.2f)
-                        .placeholder(R.drawable.icon_app_groceries)
-                        .error(R.drawable.icon_app_groceries)
-                        .fallback(R.drawable.icon_app_groceries)
-                        .into(binding.imageViewShop);
-            }
+            Glide.with(itemView)
+                    .load(pointInfoModel.getImgUrl())
+                    .override(100,100)
+                    .transform(new CenterCrop(),new CircleCrop())
+                    .thumbnail(0.2f)
+                    .placeholder(R.drawable.icon_app_groceries)
+                    .error(R.drawable.icon_app_groceries)
+                    .fallback(R.drawable.icon_app_groceries)
+                    .into(binding.imageViewShop);
 
 
         }

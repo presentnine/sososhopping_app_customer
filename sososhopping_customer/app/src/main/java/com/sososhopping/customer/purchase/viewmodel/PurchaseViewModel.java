@@ -84,7 +84,7 @@ public class PurchaseViewModel extends ViewModel {
         OrderRequestModel dto = OrderRequestModel.builder()
                 .storeId(shopInfo.getValue().getStoreId())
                 .orderItems(purchaseItems)
-                .orderType(orderType)
+                .orderType(orderType.toString())
                 .paymentType(paymentType)
                 .usedPoint(usePoint.getValue())
                 .couponId(couponCode)

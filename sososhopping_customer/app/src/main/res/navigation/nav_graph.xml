@@ -169,6 +169,9 @@
         <action
             android:id="@+id/action_mysosoMainFragment_to_mysosoOrderListFragment"
             app:destination="@id/mysosoOrderListFragment" />
+        <action
+            android:id="@+id/action_mysosoMainFragment_to_mysosoSettingFragment"
+            app:destination="@id/mysosoSettingFragment" />
     </fragment>
     <fragment
         android:id="@+id/mysosoPointFragment"
@@ -294,5 +297,16 @@
             android:id="@+id/action_mysosoOrderDetailFragment_self"
             app:destination="@id/mysosoOrderDetailFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/mysosoCustomerServiceDialog"
+        android:name="com.sososhopping.customer.mysoso.view.MysosoCustomerServiceDialog"
+        android:label="MysosoCustomerServiceDialog"
+        tools:layout="@layout/mysoso_customerservice_dialog"/>
+    <action android:id="@+id/action_global_mysosoCustomerServiceDialog" app:destination="@id/mysosoCustomerServiceDialog" />
+    <fragment
+        android:id="@+id/mysosoSettingFragment"
+        android:name="com.sososhopping.customer.mysoso.view.MysosoSettingFragment"
+        android:label="MysosoSettingFragment"
+        tools:layout="@layout/mysoso_setting"/>
 
 </navigation>

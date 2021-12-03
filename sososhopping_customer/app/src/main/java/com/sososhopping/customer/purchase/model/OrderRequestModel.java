@@ -27,10 +27,11 @@ public class OrderRequestModel {
     int storeId;
 
     @SerializedName("orderItems")
+    @Builder.Default
     ArrayList<CartUpdateDto> orderItems = new ArrayList<>();
 
     @SerializedName("orderType")
-    OrderType orderType;
+    String orderType;
 
     @SerializedName("paymentType")
     PaymentType paymentType;

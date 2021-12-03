@@ -107,7 +107,8 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ViewHo
         public void bindItem(ShopInfoShortModel shopInfoShortModel){
             binding.textViewShopName.setText(shopInfoShortModel.getName());
             binding.textViewShopDescription.setText(shopInfoShortModel.getDescription());
-            binding.textViewRating.setText(Double.toString(shopInfoShortModel.getScore()));
+
+            binding.textViewRating.setText(Double.toString(Math.round(shopInfoShortModel.getScore()*10)/10));
 
             //km로 변환
             if(shopInfoShortModel.getDistance() >= 1){
@@ -164,7 +165,7 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ViewHo
 
             //Draw New Heart
             Drawable wrapped = DrawableCompat.wrap(AppCompatResources.getDrawable(binding.getRoot().getContext(), drawableImage));
-            DrawableCompat.setTint(wrapped, binding.getRoot().getResources().getColor(R.color.main_500));
+            DrawableCompat.setTint(wrapped, binding.getRoot().getResources().getColor(R.color.main_0));
             binding.imageViewFavorite.setImageDrawable(wrapped);
         }
     }

@@ -46,6 +46,8 @@
     <string name="total_pay_coupon">쿠폰 사용</string>
     <string name="total_pay_delivery">배송비</string>
     <string name="total_pay_final">최종 결제</string>
+    <string name="total_pay_date">일시</string>
+    <string name="total_pay_type">결제수단</string>
 
     <!--최후 검증-->
     <string name="final_process_error">모든 과정을 완료해주셔야 합니다</string>

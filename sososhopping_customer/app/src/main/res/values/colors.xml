@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <!--color to use-->
+    <color name="main_0">#CCCDFA</color>
     <color name="main_200">#A3A3F6</color>
     <!--<color name="main_400">#3E3FE9</color>-->
     <color name="main_400">#5D5FEF</color>

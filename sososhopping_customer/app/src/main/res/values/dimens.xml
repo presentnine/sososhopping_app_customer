@@ -31,4 +31,7 @@
     <dimen name="normal">16sp</dimen>
     <dimen name="normal_plus">18sp</dimen>
     <dimen name="large_minus">20sp</dimen>
+    <dimen name="large">24sp</dimen>
+
+    <dimen name="large_plus">28sp</dimen>
 </resources>

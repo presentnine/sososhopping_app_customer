@@ -54,7 +54,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
                             android:src="@drawable/ic_baseline_favorite_24"
-                            app:tint="@color/main_500">
+                            app:tint="@color/main_0">
                         </ImageView>
                     </LinearLayout>
 
@@ -64,6 +64,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="2"
+                        android:lines="2"
                         android:text="ShopDescription \n 2 Length only"
                         android:textSize="@dimen/search_shop_description"
                         android:layout_marginBottom="5dp"/>
@@ -77,7 +78,8 @@
                             android:id="@+id/layout_ratingTag"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_marginRight="10dp">
+                            android:layout_marginRight="10dp"
+                            android:gravity="center_vertical">
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -89,7 +91,7 @@
                             <TextView
                                 android:id="@+id/textView_rating"
                                 android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:text="4.0"
                                 android:textSize="@dimen/search_shop_description"/>
                         </LinearLayout>
@@ -98,7 +100,8 @@
                             android:id="@+id/layout_localPay"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_marginRight="10dp">
+                            android:layout_marginRight="10dp"
+                            android:gravity="center_vertical">
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -108,7 +111,7 @@
                             </ImageView>
                             <TextView
                                 android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:text="지역화폐"
                                 android:textSize="@dimen/search_shop_description"/>
                         </LinearLayout>
@@ -117,7 +120,8 @@
                             android:id="@+id/layout_delivery"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_marginRight="10dp">
+                            android:layout_marginRight="10dp"
+                            android:gravity="center_vertical">
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -129,7 +133,7 @@
 
                             <TextView
                                 android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:text="배달가능"
                                 android:textSize="@dimen/search_shop_description"/>
                         </LinearLayout>
@@ -141,7 +145,8 @@
 
                         <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical">
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -152,7 +157,7 @@
                             <TextView
                                 android:id="@+id/textView_distance"
                                 android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:text="450m"
                                 android:textSize="@dimen/search_shop_description"/>
                         </LinearLayout>

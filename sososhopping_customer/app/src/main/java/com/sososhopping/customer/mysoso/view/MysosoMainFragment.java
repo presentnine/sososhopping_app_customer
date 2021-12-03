@@ -75,7 +75,23 @@ MysosoMainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //하단바에 관심가게 클릭한 효과
-                ((MainActivity) getActivity()).getBinding().bottomNavigation.setSelectedItemId(R.id.menu_interest);
+                ((MainActivity) getActivity()).bottomItemClicked(R.id.menu_interest);
+            }
+        });
+
+        //고객센터
+        binding.constraintLayoutCustomerService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navConroller.navigate(MysosoMainFragmentDirections.actionGlobalMysosoCustomerServiceDialog());
+            }
+        });
+
+        //설정
+        binding.constraintLayoutSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navConroller.navigate(MysosoMainFragmentDirections.actionMysosoMainFragmentToMysosoSettingFragment());
             }
         });
 
@@ -107,7 +123,7 @@ MysosoMainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //하단바 클릭한 효과
-                ((MainActivity) getActivity()).getBinding().bottomNavigation.setSelectedItemId(R.id.menu_cart);
+                ((MainActivity) getActivity()).bottomItemClicked(R.id.menu_cart);
             }
         });
         //결제내역
@@ -117,6 +133,8 @@ MysosoMainFragment extends Fragment {
                 navConroller.navigate(MysosoMainFragmentDirections.actionMysosoMainFragmentToMysosoOrderListFragment());
             }
         });
+
+
 
 
         super.onViewCreated(view, savedInstanceState);

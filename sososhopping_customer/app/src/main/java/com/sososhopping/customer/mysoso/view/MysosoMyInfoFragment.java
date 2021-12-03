@@ -188,6 +188,7 @@ public class MysosoMyInfoFragment extends Fragment {
         //상단바
         ((MainActivity)getActivity()).showTopAppBar();
         //하단바
+        ((MainActivity)getActivity()).hideBottomNavigation();
         super.onResume();
     }
 

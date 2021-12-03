@@ -22,4 +22,11 @@ public class SharedPreferenceManager {
         SharedPreferences prefs = getPreferences(context);
         return prefs.getString(key, Constant.SHARED_PREFERENCE_DEFAULT_STRING);
     }
+
+    public static void deleteString(Context context, String key){
+        SharedPreferences prefs = getPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove(key);
+        editor.commit();
+    }
 }

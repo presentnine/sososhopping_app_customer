@@ -79,7 +79,7 @@ public class ShopMainFragment extends Fragment {
 
     public void initialSetting(ShopIntroduceModel shopIntroduceModel){
         binding.textViewShopName.setText(shopIntroduceModel.getName());
-        binding.textViewRating.setText(Double.toString(shopIntroduceModel.getScore()));
+        binding.textViewRating.setText(Double.toString(Math.round(shopIntroduceModel.getScore()*10)/10));
 
         //안 받아왔으면
         if(shopInfoViewModel.getDistance().getValue() == -1){

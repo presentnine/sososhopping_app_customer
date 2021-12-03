@@ -141,7 +141,7 @@ public class MysosoOrderDetailFragment extends Fragment {
             binding.layoutVisit.setVisibility(View.GONE);
         }
 
-        //binding.textViewPurchaseType.setText(orderDetailDto.getPaymentType().getValue());
+        binding.textViewPurchaseType.setText(orderDetailDto.getPaymentType().getValue());
         binding.textViewPurchaseDate.setText(DateFormatMethod.dateFormatToKorean(orderDetailDto.getCreatedAt()));
 
         //금액
