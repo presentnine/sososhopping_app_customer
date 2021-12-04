@@ -6,10 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,8 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.dialog.MaterialDialogs;
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.MysosoMyreviewBinding;
@@ -67,7 +64,7 @@ public class MysosoReviewFragment extends Fragment {
 
         //viewmodel 설정
         myReviewViewModel = new MyReviewViewModel();
-        myReviewViewModel.requestMyReview(((MainActivity)getActivity()).getLoginToken(),
+        myReviewViewModel.requestMyReview(((HomeActivity)getActivity()).getLoginToken(),
                 this::onSuccess,
                 this::onFailedLogIn,
                 this::onFailed,
@@ -89,12 +86,12 @@ public class MysosoReviewFragment extends Fragment {
     @Override
     public void onResume() {
         //상단바
-        ((MainActivity)getActivity()).showTopAppBar();
-        ((MainActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_myRating));
+        ((HomeActivity)getActivity()).showTopAppBar();
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_myRating));
 
-        ((MainActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
         //하단바
-        ((MainActivity)getActivity()).showBottomNavigation();
+        ((HomeActivity)getActivity()).showBottomNavigation();
         super.onResume();
     }
 
@@ -166,7 +163,7 @@ public class MysosoReviewFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 myReviewViewModel.deleteMyReview(
-                                        ((MainActivity)getActivity()).getLoginToken(),
+                                        ((HomeActivity)getActivity()).getLoginToken(),
                                         mysosoReviewAdapter.getReviewModels().get(pos).getStoreId(),
                                         pos,
                                         MysosoReviewFragment.this::onSuccess,

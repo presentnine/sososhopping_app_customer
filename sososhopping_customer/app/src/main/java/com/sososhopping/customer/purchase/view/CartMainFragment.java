@@ -18,7 +18,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.purchase.dto.CartDto;
@@ -87,7 +87,7 @@ public class CartMainFragment extends Fragment {
             @Override
             public void itemDelete(int storePos, int itemPos, CartItemDto cartItemDto) {
                 int itemId = cartStoreAdapter.getCartstores().get(storePos).getCartItems().get(itemPos).getItemId();
-                cartViewModel.requestDelete(((MainActivity)getActivity()).getLoginToken(), itemId, storePos, itemPos,
+                cartViewModel.requestDelete(((HomeActivity)getActivity()).getLoginToken(), itemId, storePos, itemPos,
                         CartMainFragment.this::onDeleteSuccess,
                         CartMainFragment.this::onFailed,
                         CartMainFragment.this::onNetworkError);
@@ -114,13 +114,13 @@ public class CartMainFragment extends Fragment {
     @Override
     public void onResume() {
         //상단바
-        ((MainActivity)getActivity()).showTopAppBar();
-        ((MainActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_shoppingBag));
-        ((MainActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
-        ((MainActivity)getActivity()).getBinding().topAppBar.setOnClickListener(null);
-        ((MainActivity)getActivity()).setTopAppBarHome(false);
+        ((HomeActivity)getActivity()).showTopAppBar();
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_shoppingBag));
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setOnClickListener(null);
+        ((HomeActivity)getActivity()).setTopAppBarHome(false);
 
-        cartViewModel.requestMyCart(((MainActivity)getActivity()).getLoginToken(),
+        cartViewModel.requestMyCart(((HomeActivity)getActivity()).getLoginToken(),
                 this::onSuccess,
                 this::onFailedLogIn,
                 this::onNetworkError);
@@ -135,7 +135,7 @@ public class CartMainFragment extends Fragment {
 
         //장바구니 목록 전부 보내주기 -> 업데이트용
         cartViewModel.updateItem(
-                ((MainActivity)getActivity()).getLoginToken(),
+                ((HomeActivity)getActivity()).getLoginToken(),
                 cartViewModel.getCartList());
         Log.i("보내기", cartViewModel.getCartList().toString());
     }

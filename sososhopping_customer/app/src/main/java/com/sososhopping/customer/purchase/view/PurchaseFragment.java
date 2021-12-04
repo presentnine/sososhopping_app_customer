@@ -24,7 +24,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.purchase.model.OrderRequestModel;
 import com.sososhopping.customer.purchase.viewmodel.PurchaseViewModel;
@@ -87,7 +87,7 @@ public class PurchaseFragment extends Fragment {
 
         //상점정보 -> 에러만 뜨게
         purchaseViewModel.requestShopIntroduce(
-                ((MainActivity)getActivity()).getLoginToken(),
+                ((HomeActivity)getActivity()).getLoginToken(),
                 purchaseViewModel.getPurchaseList().getValue().getStoreId(),
                 this::onSuccess,
                 this::onNetworkError,
@@ -127,7 +127,7 @@ public class PurchaseFragment extends Fragment {
 
         //내정보 받아오기
         purchaseViewModel.requestMyInfo(
-                ((MainActivity)getActivity()).getLoginToken(),
+                ((HomeActivity)getActivity()).getLoginToken(),
                 this::onSuccessMyInfo,
                 this::onFailedMyInfo
         );
@@ -221,7 +221,7 @@ public class PurchaseFragment extends Fragment {
 
                 // 3. 구매 요청
                 purchaseViewModel.requestOrder(
-                        ((MainActivity)getActivity()).getLoginToken(),
+                        ((HomeActivity)getActivity()).getLoginToken(),
                         dto,
                         PurchaseFragment.this::onSuccessOrder,
                         PurchaseFragment.this::onFailedOrder,
@@ -235,11 +235,11 @@ public class PurchaseFragment extends Fragment {
     @Override
     public void onResume() {
         //상단바
-        ((MainActivity)getActivity()).showTopAppBar();
-        ((MainActivity)getActivity()).setTopAppBarTitle("구매하기");
+        ((HomeActivity)getActivity()).showTopAppBar();
+        ((HomeActivity)getActivity()).setTopAppBarTitle("구매하기");
 
         //하단바
-        ((MainActivity)getActivity()).hideBottomNavigation();
+        ((HomeActivity)getActivity()).hideBottomNavigation();
         super.onResume();
     }
 

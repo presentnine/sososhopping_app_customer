@@ -13,12 +13,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
@@ -38,7 +36,7 @@ import org.jetbrains.annotations.NotNull;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class MainActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     public NavController navController;
     private NavHostFragment navHostFragment;
@@ -55,16 +53,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //권한 요청
+        getPermission();
+
+        //자동로그인 시도
+        autoLogIn();
+
         setTheme(R.style.Theme_Sososhopping_customer_NoActionBar);
+
+        loginToken.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                initLoginButton();
+            }
+        });
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
-        //navController.addOnDestinationChangedListener(new CustomDestinationChangedListener(binding,this));
-
 
         //하단바 -> 그냥 커스텀으로 사용하기
-        //NavigationUI.setupWithNavController(binding.bottomNavigation,navController);
         binding.bottomNavigation.getMenu().findItem(R.id.menu_home).setChecked(true);
         binding.bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -105,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
                 }
-
                 return false;
             }
         });
@@ -166,18 +174,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //getAppKeyHash();
-        //권한 요청
-        getPermission();
-
-        //자동로그인 시도
-        autoLogIn();
-
-        loginToken.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                initLoginButton();
-            }
-        });
     }
 
 
@@ -199,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             this.doubleBackToExitPressedOnce = true;
-            Toast.makeText(MainActivity.this, "종료하시려면 한번 더 눌러주세요", Toast.LENGTH_SHORT).show();
+            Toast.makeText(HomeActivity.this, "종료하시려면 한번 더 눌러주세요", Toast.LENGTH_SHORT).show();
 
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -238,14 +234,6 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_success), Toast.LENGTH_SHORT).show();
     }
 
-    //권한
-    public void getPermission() {
-        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-        if (permissionCheck == PackageManager.PERMISSION_DENIED) { //포그라운드 위치 권한 확인
-            //위치 권한 요청
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-        }
-    }
 
     public void initLoginButton() {
         if (isLogIn) {
@@ -303,6 +291,14 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNavigation.setSelectedItemId(id);
     }
 
+    //권한
+    public void getPermission() {
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        if (permissionCheck == PackageManager.PERMISSION_DENIED) { //포그라운드 위치 권한 확인
+            //위치 권한 요청
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+        }
+    }
     //해시 키 값 구하기
     private void getAppKeyHash() {
         try {

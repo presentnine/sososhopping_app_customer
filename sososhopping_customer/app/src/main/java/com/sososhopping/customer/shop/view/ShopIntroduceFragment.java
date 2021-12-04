@@ -3,7 +3,6 @@ package com.sososhopping.customer.shop.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.ShopGraphDirections;
@@ -43,7 +42,7 @@ public class ShopIntroduceFragment extends Fragment {
         shopInfoViewModel = new ViewModelProvider(getParentFragment().getParentFragment()).get(ShopInfoViewModel.class);
         shopIntroduceViewModel.setStoreId(shopInfoViewModel.getShopId().getValue());
         shopIntroduceViewModel.requestShopIntroduce(
-                ((MainActivity)getActivity()).getLoginToken(),
+                ((HomeActivity)getActivity()).getLoginToken(),
                 ShopIntroduceFragment.this::onSuccess,
                 ShopIntroduceFragment.this::onFailed,
                 ShopIntroduceFragment.this::onNetworkError);
@@ -88,7 +87,7 @@ public class ShopIntroduceFragment extends Fragment {
             public void onClick(View v) {
                 //관심가게 여부 변경 api
                 shopIntroduceViewModel.requestShopFavoriteChange(
-                        ((MainActivity)getActivity()).getLoginToken(),
+                        ((HomeActivity)getActivity()).getLoginToken(),
                         ShopIntroduceFragment.this::onSuccessFavoriteChange,
                         ShopIntroduceFragment.this::onFailedLogIn,
                         ShopIntroduceFragment.this::onFailed,

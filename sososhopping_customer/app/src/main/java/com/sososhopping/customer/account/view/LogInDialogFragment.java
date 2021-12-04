@@ -1,13 +1,11 @@
 package com.sososhopping.customer.account.view;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.account.dto.LogInRequestDto;
 import com.sososhopping.customer.account.dto.LogInResponseDto;
@@ -28,8 +25,6 @@ import com.sososhopping.customer.account.viewmodel.LogInViewModel;
 import com.sososhopping.customer.common.Constant;
 import com.sososhopping.customer.common.sharedpreferences.SharedPreferenceManager;
 import com.sososhopping.customer.databinding.AccountLogInDialogBinding;
-
-import java.util.function.BiConsumer;
 
 public class LogInDialogFragment extends DialogFragment {
 
@@ -160,11 +155,11 @@ public class LogInDialogFragment extends DialogFragment {
 
         SharedPreferenceManager.setString(getContext(), Constant.SHARED_PREFERENCE_KEY_ID, id);
         SharedPreferenceManager.setString(getContext(), Constant.SHARED_PREFERENCE_KEY_PASSWORD, password);
-        ((MainActivity) getActivity()).setLoginToken(token);
+        ((HomeActivity) getActivity()).setLoginToken(token);
 
         //로그인 처리 후 홈화면 이동
-        ((MainActivity) getActivity()).setIsLogIn(true);
-        ((MainActivity) getActivity()).initLoginButton();
+        ((HomeActivity) getActivity()).setIsLogIn(true);
+        ((HomeActivity) getActivity()).initLoginButton();
         Toast.makeText(getContext(),getResources().getString(R.string.login_success),Toast.LENGTH_SHORT).show();
         navController.navigate(R.id.action_global_home2);
     }

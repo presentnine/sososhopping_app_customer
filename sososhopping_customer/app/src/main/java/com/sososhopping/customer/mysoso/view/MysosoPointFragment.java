@@ -17,16 +17,13 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.MysosoPointBinding;
 import com.sososhopping.customer.mysoso.dto.PointListDto;
-import com.sososhopping.customer.mysoso.model.PointInfoModel;
 import com.sososhopping.customer.mysoso.viemodel.PointInfoViewModel;
 import com.sososhopping.customer.mysoso.view.adapter.MysosoPointAdapter;
-
-import java.util.ArrayList;
 
 public class MysosoPointFragment extends Fragment {
 
@@ -61,7 +58,7 @@ public class MysosoPointFragment extends Fragment {
 
         //viewmodel 설정
         pointInfoViewModel = new PointInfoViewModel();
-        pointInfoViewModel.requestPointList(((MainActivity)getActivity()).getLoginToken(),
+        pointInfoViewModel.requestPointList(((HomeActivity)getActivity()).getLoginToken(),
                 this::onSuccess,
                 this::onFailedLogIn,
                 this::onFailed,
@@ -146,11 +143,11 @@ public class MysosoPointFragment extends Fragment {
     @Override
     public void onResume() {
         //상단바
-        ((MainActivity)getActivity()).showTopAppBar();
-        ((MainActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_point));
-        ((MainActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
+        ((HomeActivity)getActivity()).showTopAppBar();
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_point));
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
         //하단바
-        ((MainActivity)getActivity()).showBottomNavigation();
+        ((HomeActivity)getActivity()).showBottomNavigation();
         super.onResume();
     }
 

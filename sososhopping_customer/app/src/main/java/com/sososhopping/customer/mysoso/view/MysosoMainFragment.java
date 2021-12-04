@@ -12,13 +12,11 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.MysosoMainBinding;
 
 import org.jetbrains.annotations.Nullable;
-
-import java.math.BigInteger;
 
 public class
 MysosoMainFragment extends Fragment {
@@ -62,7 +60,7 @@ MysosoMainFragment extends Fragment {
         navConroller = Navigation.findNavController(view);
 
         //내정보
-        binding.constraintLayoutMyinfo.setOnClickListener(new View.OnClickListener() {
+        binding.cardViewMyInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 navConroller.navigate(R.id.action_mysosoMainFragment_to_mysosoMyInfoFragment);
@@ -71,16 +69,16 @@ MysosoMainFragment extends Fragment {
 
 
         //관심가게
-        binding.constraintLayoutFavorite.setOnClickListener(new View.OnClickListener() {
+        binding.cardViewInterest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //하단바에 관심가게 클릭한 효과
-                ((MainActivity) getActivity()).bottomItemClicked(R.id.menu_interest);
+                ((HomeActivity) getActivity()).bottomItemClicked(R.id.menu_interest);
             }
         });
 
         //고객센터
-        binding.constraintLayoutCustomerService.setOnClickListener(new View.OnClickListener() {
+        binding.cardViewServiceInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 navConroller.navigate(MysosoMainFragmentDirections.actionGlobalMysosoCustomerServiceDialog());
@@ -88,7 +86,7 @@ MysosoMainFragment extends Fragment {
         });
 
         //설정
-        binding.constraintLayoutSetting.setOnClickListener(new View.OnClickListener() {
+        binding.cardViewSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 navConroller.navigate(MysosoMainFragmentDirections.actionMysosoMainFragmentToMysosoSettingFragment());
@@ -96,14 +94,14 @@ MysosoMainFragment extends Fragment {
         });
 
         /*6개 메뉴*/
-        binding.imageViewMyPoint.setOnClickListener(new View.OnClickListener() {
+        binding.cardViewMyPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 navConroller.navigate(R.id.action_mysosoMainFragment_to_mysosoPointFragment);
             }
         });
 
-        binding.imageViewMyRating.setOnClickListener(new View.OnClickListener() {
+        binding.cardViewMyRating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 navConroller.navigate(R.id.action_mysosoMainFragment_to_mysosoReviewFragment);
@@ -111,7 +109,7 @@ MysosoMainFragment extends Fragment {
         });
 
         //쿠폰
-        binding.imageViewMyCoupon.setOnClickListener(new View.OnClickListener() {
+        binding.cardViewMyCoupon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 navConroller.navigate(R.id.action_mysosoMainFragment_to_mysosoCouponFragment);
@@ -119,15 +117,15 @@ MysosoMainFragment extends Fragment {
         });
 
         //장바구니
-        binding.imageViewShoppingBag.setOnClickListener(new View.OnClickListener() {
+        binding.cardViewShoppingBag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //하단바 클릭한 효과
-                ((MainActivity) getActivity()).bottomItemClicked(R.id.menu_cart);
+                ((HomeActivity) getActivity()).bottomItemClicked(R.id.menu_cart);
             }
         });
         //결제내역
-        binding.imageViewPayHistory.setOnClickListener(new View.OnClickListener() {
+        binding.cardViewPayHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 navConroller.navigate(MysosoMainFragmentDirections.actionMysosoMainFragmentToMysosoOrderListFragment());
@@ -143,14 +141,14 @@ MysosoMainFragment extends Fragment {
     @Override
     public void onResume() {
         //상단바
-        ((MainActivity)getActivity()).showTopAppBar();
-        ((MainActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso));
-        ((MainActivity)getActivity()).getBinding().topAppBar.setOnClickListener(null);
-        ((MainActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
-        ((MainActivity)getActivity()).setTopAppBarHome(false);
+        ((HomeActivity)getActivity()).showTopAppBar();
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso));
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setOnClickListener(null);
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
+        ((HomeActivity)getActivity()).setTopAppBarHome(false);
 
         //하단바
-        ((MainActivity)getActivity()).showBottomNavigation();
+        ((HomeActivity)getActivity()).showBottomNavigation();
         super.onResume();
     }
 

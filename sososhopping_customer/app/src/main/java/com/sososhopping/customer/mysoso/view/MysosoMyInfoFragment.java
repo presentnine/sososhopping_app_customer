@@ -15,7 +15,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.common.textValidate.NameWatcher;
@@ -51,7 +51,7 @@ public class MysosoMyInfoFragment extends Fragment {
 
         //viewmodel 설정
         myInfoViewModel = new MyInfoViewModel();
-        myInfoViewModel.requestMyInfo(((MainActivity)getActivity()).getLoginToken(),
+        myInfoViewModel.requestMyInfo(((HomeActivity)getActivity()).getLoginToken(),
                 this::onSuccess,
                 this::onFailedLogIn,
                 this::onFailed,
@@ -79,7 +79,7 @@ public class MysosoMyInfoFragment extends Fragment {
                     state = true;
                     setFocusable(true);
                     binding.buttonEdit.setText("수정완료");
-                    ((MainActivity)getActivity()).getBinding().topAppBar.setTitle("내 정보 수정");
+                    ((HomeActivity)getActivity()).getBinding().topAppBar.setTitle("내 정보 수정");
                 }
 
                 //수정완료
@@ -126,7 +126,7 @@ public class MysosoMyInfoFragment extends Fragment {
                     Log.e("edit", myInfoViewModel.toMyInfoEditDto().toString());
                     //정보 수정 절차 진행
                     myInfoViewModel.requestEditInfo(
-                            ((MainActivity)getActivity()).getLoginToken(),
+                            ((HomeActivity)getActivity()).getLoginToken(),
                             MysosoMyInfoFragment.this::onEditSuccess,
                             MysosoMyInfoFragment.this::onNetworkError);
                 }
@@ -186,9 +186,9 @@ public class MysosoMyInfoFragment extends Fragment {
     @Override
     public void onResume() {
         //상단바
-        ((MainActivity)getActivity()).showTopAppBar();
+        ((HomeActivity)getActivity()).showTopAppBar();
         //하단바
-        ((MainActivity)getActivity()).hideBottomNavigation();
+        ((HomeActivity)getActivity()).hideBottomNavigation();
         super.onResume();
     }
 

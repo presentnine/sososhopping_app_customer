@@ -37,7 +37,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="김밥"
-                    android:textSize="22sp" />
+                    android:textSize="@dimen/large_little" />
 
 
                 <LinearLayout

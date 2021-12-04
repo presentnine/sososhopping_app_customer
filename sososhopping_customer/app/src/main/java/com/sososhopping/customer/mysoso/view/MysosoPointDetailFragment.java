@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -20,18 +18,16 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.common.types.Location;
 import com.sososhopping.customer.databinding.MysosoPointDetailBinding;
 import com.sososhopping.customer.mysoso.dto.PointDetailDto;
 import com.sososhopping.customer.mysoso.model.PointDetailModel;
-import com.sososhopping.customer.mysoso.model.PointInfoModel;
 import com.sososhopping.customer.mysoso.viemodel.PointDetailViewModel;
 import com.sososhopping.customer.mysoso.view.adapter.MysosoPointDetailAdapter;
 
 import java.util.ArrayList;
-import java.util.function.BiConsumer;
 
 public class MysosoPointDetailFragment extends Fragment {
     MysosoPointDetailBinding binding;
@@ -93,7 +89,7 @@ public class MysosoPointDetailFragment extends Fragment {
 
                 //0 1(현재) 2 -> 1 2(현재) 0으로 변경 -> 0의 데이터를 새로 받아와야함
                 pointDetailViewModel.requestPointDetailFuture(
-                        ((MainActivity)getActivity()).getLoginToken(),
+                        ((HomeActivity)getActivity()).getLoginToken(),
                         true,
                         MysosoPointDetailFragment.this::onSuccess,
                         MysosoPointDetailFragment.this::onFailed,
@@ -115,7 +111,7 @@ public class MysosoPointDetailFragment extends Fragment {
 
                 //다음꺼 세팅
                 pointDetailViewModel.requestPointDetailFuture(
-                        ((MainActivity)getActivity()).getLoginToken(),
+                        ((HomeActivity)getActivity()).getLoginToken(),
                         false,
                         MysosoPointDetailFragment.this::onSuccess,
                         MysosoPointDetailFragment.this::onFailed,
@@ -156,11 +152,11 @@ public class MysosoPointDetailFragment extends Fragment {
     @Override
     public void onResume() {
         //상단바
-        ((MainActivity)getActivity()).showTopAppBar();
-        ((MainActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_point_detail));
-        ((MainActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
+        ((HomeActivity)getActivity()).showTopAppBar();
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_point_detail));
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
         //하단바
-        ((MainActivity)getActivity()).hideBottomNavigation();
+        ((HomeActivity)getActivity()).hideBottomNavigation();
         super.onResume();
     }
     
@@ -201,21 +197,21 @@ public class MysosoPointDetailFragment extends Fragment {
 
     public void initSetting(){
         pointDetailViewModel.requestPointDetail(
-                ((MainActivity)getActivity()).getLoginToken(),
+                ((HomeActivity)getActivity()).getLoginToken(),
                 1,
                 this::onSuccessInit,
                 this::onFailed,
                 this::onNetworkError);
 
         pointDetailViewModel.requestPointDetail(
-                ((MainActivity)getActivity()).getLoginToken(),
+                ((HomeActivity)getActivity()).getLoginToken(),
                 0,
                 this::onSuccess,
                 this::onFailed,
                 this::onNetworkError);
 
         pointDetailViewModel.requestPointDetail(
-                ((MainActivity)getActivity()).getLoginToken(),
+                ((HomeActivity)getActivity()).getLoginToken(),
                 2,
                 this::onSuccess,
                 this::onFailed,

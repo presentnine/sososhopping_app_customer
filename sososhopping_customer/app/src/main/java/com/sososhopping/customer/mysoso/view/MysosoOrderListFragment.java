@@ -20,7 +20,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.tabs.TabLayout;
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.common.types.enumType.OrderStatus;
@@ -89,7 +89,7 @@ public class MysosoOrderListFragment extends Fragment {
 
         //초기 검색
         orderListViewModel.requestMyOrderLists(
-                ((MainActivity)getActivity()).getLoginToken(),
+                ((HomeActivity)getActivity()).getLoginToken(),
                 INITIAL_ORDERSTAT,
                 MysosoOrderListFragment.this::onSuccess,
                 MysosoOrderListFragment.this::onFailedLogIn,
@@ -102,11 +102,11 @@ public class MysosoOrderListFragment extends Fragment {
     @Override
     public void onResume() {
         //상단바
-        ((MainActivity)getActivity()).showTopAppBar();
-        ((MainActivity)getActivity()).setTopAppBarTitle("주문내역");
+        ((HomeActivity)getActivity()).showTopAppBar();
+        ((HomeActivity)getActivity()).setTopAppBarTitle("주문내역");
 
         //하단바
-        ((MainActivity)getActivity()).showBottomNavigation();
+        ((HomeActivity)getActivity()).showBottomNavigation();
         super.onResume();
     }
 
@@ -216,7 +216,7 @@ public class MysosoOrderListFragment extends Fragment {
     public void getListCall(OrderStatus orderStatus){
         //재검색
         orderListViewModel.requestMyOrderLists(
-                ((MainActivity)getActivity()).getLoginToken(),
+                ((HomeActivity)getActivity()).getLoginToken(),
                 orderStatus,
                 MysosoOrderListFragment.this::onSuccess,
                 MysosoOrderListFragment.this::onFailedLogIn,

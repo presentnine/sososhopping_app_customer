@@ -1,9 +1,6 @@
 package com.sososhopping.customer.interest.view;
 
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,18 +9,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDeepLinkBuilder;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.common.gps.CalculateDistance;
@@ -34,7 +27,6 @@ import com.sososhopping.customer.interest.viewmodel.InterestViewModel;
 import com.sososhopping.customer.search.dto.ShopListDto;
 import com.sososhopping.customer.search.model.ShopInfoShortModel;
 import com.sososhopping.customer.search.view.adapter.ShopListAdapter;
-import com.sososhopping.customer.shop.view.ShopMainFragment;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -88,7 +80,7 @@ public class InterestShopListFragment extends Fragment {
 
         //검색
         interestViewModel.requestInterest(
-                ((MainActivity)getActivity()).getLoginToken(),
+                ((HomeActivity)getActivity()).getLoginToken(),
                 this::onSearchSuccessed,
                 this::onFailedLogIn,
                 this::onNetworkError
@@ -119,7 +111,7 @@ public class InterestShopListFragment extends Fragment {
 
                 //즐겨찾기 해제
                 interestViewModel.changeInterest(
-                        ((MainActivity) getActivity()).getLoginToken(),
+                        ((HomeActivity) getActivity()).getLoginToken(),
                         shopListAdapter.getShopLists().get(pos).getStoreId(),
                         InterestShopListFragment.this::onSuccessFavoriteChange,
                         InterestShopListFragment.this::onFailedLogIn,
@@ -132,13 +124,13 @@ public class InterestShopListFragment extends Fragment {
     @Override
     public void onResume() {
         //상단바
-        ((MainActivity)getActivity()).showTopAppBar();
-        ((MainActivity)getActivity()).getBinding().topAppBar.setTitle("관심가게");
-        ((MainActivity)getActivity()).getBinding().topAppBar.setOnClickListener(null);
-        ((MainActivity)getActivity()).setTopAppBarHome(false);
+        ((HomeActivity)getActivity()).showTopAppBar();
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitle("관심가게");
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setOnClickListener(null);
+        ((HomeActivity)getActivity()).setTopAppBarHome(false);
 
         //하단바
-        ((MainActivity)getActivity()).showBottomNavigation();
+        ((HomeActivity)getActivity()).showBottomNavigation();
         super.onResume();
     }
 

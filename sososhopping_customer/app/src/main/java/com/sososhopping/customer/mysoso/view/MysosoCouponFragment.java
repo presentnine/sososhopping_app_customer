@@ -14,7 +14,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.MysosoCouponsBinding;
@@ -51,7 +51,7 @@ public class MysosoCouponFragment extends Fragment{
 
         //viewmodel 설정
         myCouponViewModel = new MyCouponViewModel();
-        myCouponViewModel.requestCoupons(((MainActivity)getActivity()).getLoginToken(),
+        myCouponViewModel.requestCoupons(((HomeActivity)getActivity()).getLoginToken(),
                 null,
                 this::onSuccess,
                 this::onFailedLogIn,
@@ -84,7 +84,7 @@ public class MysosoCouponFragment extends Fragment{
                 msgCode[2] = R.string.event_coupon_addDup;
 
                 //쿠폰 저장
-                myCouponViewModel.addShopCoupon(((MainActivity)getActivity()).getLoginToken(),
+                myCouponViewModel.addShopCoupon(((HomeActivity)getActivity()).getLoginToken(),
                         binding.editTextAddCode.getText().toString(),
                         msgCode,
                         MysosoCouponFragment.this::onResult,
@@ -111,9 +111,9 @@ public class MysosoCouponFragment extends Fragment{
     @Override
     public void onResume() {
         //상단바
-        ((MainActivity)getActivity()).showTopAppBar();
-        ((MainActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_coupon));
-        ((MainActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
+        ((HomeActivity)getActivity()).showTopAppBar();
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_coupon));
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
         //하단바
         super.onResume();
     }

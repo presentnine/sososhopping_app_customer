@@ -17,16 +17,13 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.ShopItemListBinding;
 import com.sososhopping.customer.shop.dto.ItemListDto;
 import com.sososhopping.customer.shop.view.adapter.ShopItemAdapter;
-import com.sososhopping.customer.shop.model.ShopItemModel;
 import com.sososhopping.customer.shop.viewmodel.ShopInfoViewModel;
 import com.sososhopping.customer.shop.viewmodel.ShopItemViewModel;
-
-import java.util.ArrayList;
 
 public class ShopItemListFragment extends Fragment {
     private NavController navController;
@@ -77,7 +74,7 @@ public class ShopItemListFragment extends Fragment {
                 int itemId = shopItemAdapter.getShopItemModelLists().get(pos).getItemId();
 
                 //장바구니 담기 API
-                shopItemViewModel.addCart(((MainActivity)getActivity()).getLoginToken(),
+                shopItemViewModel.addCart(((HomeActivity)getActivity()).getLoginToken(),
                         itemId, num,
                         ShopItemListFragment.this::onSuccessAdd,
                         ShopItemListFragment.this::onDupAdd,
@@ -90,7 +87,7 @@ public class ShopItemListFragment extends Fragment {
         binding.buttonToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)getActivity()).getBinding().bottomNavigation.setSelectedItemId(R.id.menu_cart);
+                ((HomeActivity)getActivity()).getBinding().bottomNavigation.setSelectedItemId(R.id.menu_cart);
             }
         });
     }

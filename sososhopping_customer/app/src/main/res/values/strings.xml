@@ -1,6 +1,4 @@
 <resources>
-    <string name="title_activity_main">MainActivity</string>
-
     <string name="app_name">sososhopping_customer</string>
     <string name="app_name_kor">소 소 한 장 보 기</string>
     <string name="app_description">간편하게 살펴보는 내 주변 상점</string>

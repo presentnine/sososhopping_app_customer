@@ -27,7 +27,6 @@ import lombok.Setter;
 @Getter @Setter
 public class HomeViewModel extends ViewModel {
 
-
     private final int defaultRadius = 100000000;
 
     //1 : 카테고리 / 0 : 검색
@@ -35,6 +34,8 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<SearchType> searchType = new MutableLiveData<>();
     private MutableLiveData<String> searchContent = new MutableLiveData<>();
     private MutableLiveData<String> category = new MutableLiveData<>();
+
+    //검색결과
     private MutableLiveData<ArrayList<ShopInfoShortModel>> shopList= new MutableLiveData<>();
 
     private final SearchRepository searchRepository = SearchRepository.getInstance();
@@ -45,6 +46,7 @@ public class HomeViewModel extends ViewModel {
     public void setShopList(ArrayList<ShopInfoShortModel> s) {shopList.setValue(s);}
 
     public void initHome(){
+        this.shopList.setValue(new ArrayList<>());
         this.setSearchType(false);
         this.searchContent.setValue("");
     }

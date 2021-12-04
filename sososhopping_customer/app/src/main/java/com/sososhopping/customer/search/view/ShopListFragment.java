@@ -1,7 +1,6 @@
 package com.sososhopping.customer.search.view;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,19 +12,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
-import com.sososhopping.customer.common.types.Location;
 import com.sososhopping.customer.databinding.SearchShopListBinding;
-import com.sososhopping.customer.interest.view.InterestShopListFragmentDirections;
 import com.sososhopping.customer.search.HomeViewModel;
-import com.sososhopping.customer.search.dto.ShopListDto;
+import com.sososhopping.customer.search.model.ShopInfoShortModel;
 import com.sososhopping.customer.search.view.adapter.ShopListAdapter;
 
 import java.util.ArrayList;
@@ -68,9 +66,15 @@ public class ShopListFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         binding.recyclerViewShopList.setLayoutManager(layoutManager);
 
-        if(homeViewModel.getShopList().getValue() == null){
-            homeViewModel.setShopList(new ArrayList<>());
-        }
+        //리스트 바뀔때마다 업로딩되게
+        homeViewModel.getShopList().observe(this, new Observer<ArrayList<ShopInfoShortModel>>() {
+            @Override
+            public void onChanged(ArrayList<ShopInfoShortModel> shopInfoShortModels) {
+                shopListAdapter.setShopLists(homeViewModel.getShopList().getValue());
+                shopListAdapter.notifyDataSetChanged();
+            }
+        });
+
         shopListAdapter.setShopLists(homeViewModel.getShopList().getValue());
         binding.recyclerViewShopList.setAdapter(shopListAdapter);
 
@@ -99,34 +103,9 @@ public class ShopListFragment extends Fragment {
 
     @Override
     public void onResume() {
-        ((MainActivity)getActivity()).showTopAppBar();
+        ((HomeActivity)getActivity()).showTopAppBar();
         setAppBar(homeViewModel);
-        ((MainActivity)getActivity()).showBottomNavigation();
-
-        Location location = homeViewModel.getLocation(getContext());
-
-        if(homeViewModel.getAskType().getValue() == 1){
-            homeViewModel.searchCategory(
-                    ((MainActivity)getActivity()).getLoginToken(),
-                    homeViewModel.getCategory().getValue(),
-                    location,
-                    null,
-                    this::onSearchSuccessed,
-                    this::onNetworkError);
-        }
-
-        //상품 or 매장으로검색
-        else if(homeViewModel.getAskType().getValue() == 0){
-            homeViewModel.searchSearch(
-                    ((MainActivity)getActivity()).getLoginToken(),
-                    homeViewModel.getSearchType().getValue(),
-                    homeViewModel.getSearchContent().getValue(),
-                    location,
-                    null,
-                    this::onSearchSuccessed,
-                    this::onNetworkError);
-        }
-
+        ((HomeActivity)getActivity()).showBottomNavigation();
         super.onResume();
     }
 
@@ -138,7 +117,7 @@ public class ShopListFragment extends Fragment {
     }
 
     public void setAppBar(HomeViewModel homeViewModel){
-        MainActivity activity = (MainActivity) getActivity();
+        HomeActivity activity = (HomeActivity) getActivity();
         activity.getBinding().topAppBar.setTitle(homeViewModel.getSearchContent().getValue());
         activity.getBinding().topAppBar.setTitleCentered(false);
         activity.getBinding().topAppBar.setOnClickListener(new View.OnClickListener() {
@@ -170,15 +149,4 @@ public class ShopListFragment extends Fragment {
         });
         activity.invalidateOptionsMenu();
     }
-
-    private void onSearchSuccessed(ShopListDto success){
-        homeViewModel.setShopList(success.getShopInfoShortModels());
-        shopListAdapter.setShopLists(homeViewModel.getShopList().getValue());
-        shopListAdapter.notifyDataSetChanged();
-    }
-
-    private void onNetworkError() {
-        navController.navigate(R.id.action_global_networkErrorDialog);
-    }
-
 }

@@ -16,18 +16,15 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.ShopReviewBinding;
 import com.sososhopping.customer.shop.dto.ReviewListDto;
-import com.sososhopping.customer.shop.model.ReviewModel;
 import com.sososhopping.customer.shop.view.adapter.ShopReviewAdapter;
 import com.sososhopping.customer.shop.viewmodel.ShopInfoViewModel;
 import com.sososhopping.customer.shop.viewmodel.ShopReviewViewModel;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 
 
 public class ShopReviewFragment extends Fragment {
@@ -76,7 +73,7 @@ public class ShopReviewFragment extends Fragment {
                 this::onFailed,
                 this::onNetworkError);
 
-        String token = ((MainActivity)getActivity()).getLoginToken();
+        String token = ((HomeActivity)getActivity()).getLoginToken();
         if(token != null){
             reviewViewModel.checkShopReview(token, storeId,
                     this::onDup,

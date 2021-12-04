@@ -14,23 +14,17 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.ShopEventBinding;
 import com.sososhopping.customer.shop.dto.CouponListDto;
 import com.sososhopping.customer.shop.dto.EventItemListDto;
 import com.sososhopping.customer.shop.model.CouponModel;
-import com.sososhopping.customer.shop.model.EventItemModel;
-import com.sososhopping.customer.common.types.enumType.CouponType;
-import com.sososhopping.customer.common.types.enumType.WritingType;
 import com.sososhopping.customer.shop.view.adapter.ShopEventBoardAdapter;
 import com.sososhopping.customer.shop.view.adapter.ShopEventCouponAdapter;
 import com.sososhopping.customer.shop.viewmodel.ShopEventViewModel;
 import com.sososhopping.customer.shop.viewmodel.ShopInfoViewModel;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 
 public class ShopEventFragment extends Fragment {
@@ -124,7 +118,7 @@ public class ShopEventFragment extends Fragment {
         shopEventCouponAdapter.setOnItemClickListener(new ShopEventCouponAdapter.OnItemClickListenerCoupon() {
             @Override
             public void onItemClick(CouponModel couponModel) {
-                String token = ((MainActivity)getActivity()).getLoginToken();
+                String token = ((HomeActivity)getActivity()).getLoginToken();
                 if(token != null){
 
                     int msgCode[]  = new int[3];

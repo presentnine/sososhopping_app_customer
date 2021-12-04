@@ -9,10 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.PurchaseSuccessBinding;
 
@@ -54,7 +53,7 @@ public class PurchaseSuccessFragment extends Fragment {
         binding.buttonCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getActivity()).getBinding().bottomNavigation.setSelectedItemId(R.id.menu_cart);
+                ((HomeActivity)getActivity()).getBinding().bottomNavigation.setSelectedItemId(R.id.menu_cart);
             }
         });
 
@@ -68,7 +67,7 @@ public class PurchaseSuccessFragment extends Fragment {
         binding.buttonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getActivity()).getBinding().bottomNavigation.setSelectedItemId(R.id.menu_home);
+                ((HomeActivity)getActivity()).getBinding().bottomNavigation.setSelectedItemId(R.id.menu_home);
             }
         });
 
@@ -78,10 +77,10 @@ public class PurchaseSuccessFragment extends Fragment {
     @Override
     public void onResume() {
         //상단바
-        ((MainActivity)getActivity()).hideTopAppBar();
+        ((HomeActivity)getActivity()).hideTopAppBar();
 
         //하단바
-        ((MainActivity)getActivity()).hideBottomNavigation();
+        ((HomeActivity)getActivity()).hideBottomNavigation();
         super.onResume();
     }
 

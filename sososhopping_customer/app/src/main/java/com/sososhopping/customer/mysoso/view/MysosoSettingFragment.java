@@ -12,7 +12,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.common.Constant;
 import com.sososhopping.customer.common.sharedpreferences.SharedPreferenceManager;
@@ -99,11 +99,11 @@ public class MysosoSettingFragment extends Fragment {
     @Override
     public void onResume() {
         //상단바
-        ((MainActivity)getActivity()).showTopAppBar();
-        ((MainActivity)getActivity()).setTopAppBarTitle(getResources().getString(R.string.setting));
+        ((HomeActivity)getActivity()).showTopAppBar();
+        ((HomeActivity)getActivity()).setTopAppBarTitle(getResources().getString(R.string.setting));
 
         //하단바
-        ((MainActivity)getActivity()).hideBottomNavigation();
+        ((HomeActivity)getActivity()).hideBottomNavigation();
         super.onResume();
     }
 
@@ -116,10 +116,10 @@ public class MysosoSettingFragment extends Fragment {
     public void logOut(){
         SharedPreferenceManager.deleteString(getContext(), Constant.SHARED_PREFERENCE_KEY_ID);
         SharedPreferenceManager.deleteString(getContext(), Constant.SHARED_PREFERENCE_KEY_PASSWORD);
-        ((MainActivity)getActivity()).setLoginToken(null);
-        ((MainActivity)getActivity()).setIsLogIn(false);
+        ((HomeActivity)getActivity()).setLoginToken(null);
+        ((HomeActivity)getActivity()).setIsLogIn(false);
 
-        ((MainActivity) getActivity()).bottomItemClicked(R.id.menu_home);
+        ((HomeActivity) getActivity()).bottomItemClicked(R.id.menu_home);
     }
 
 }

@@ -3,7 +3,6 @@ package com.sososhopping.customer.shop.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,13 +24,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.google.android.material.tabs.TabLayout;
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.common.gps.CalculateDistance;
 import com.sososhopping.customer.common.gps.GPSTracker;
 import com.sososhopping.customer.common.types.Location;
 import com.sososhopping.customer.databinding.ShopMainBinding;
-import com.sososhopping.customer.search.model.ShopInfoShortModel;
 import com.sososhopping.customer.search.view.ShopListFragment;
 import com.sososhopping.customer.shop.model.ShopIntroduceModel;
 import com.sososhopping.customer.shop.viewmodel.ShopInfoViewModel;
@@ -119,7 +117,7 @@ public class ShopMainFragment extends Fragment {
 
         shopInfoViewModel.setItems(shopIntroduceModel);
         //상단바
-        setAppBar(((MainActivity)getActivity()));
+        setAppBar(((HomeActivity)getActivity()));
     }
 
     @Override
@@ -162,7 +160,7 @@ public class ShopMainFragment extends Fragment {
 
     @Override
     public void onResume() {
-        MainActivity activity = (MainActivity) getActivity();
+        HomeActivity activity = (HomeActivity) getActivity();
 
         //상단바 설정
         activity.showTopAppBar();
@@ -173,7 +171,7 @@ public class ShopMainFragment extends Fragment {
     }
 
 
-    public void setAppBar(MainActivity activity){
+    public void setAppBar(HomeActivity activity){
         activity.getBinding().topAppBar.setTitle("매장 정보");
         activity.getBinding().topAppBar.setOnClickListener(null);
         activity.getBinding().topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {

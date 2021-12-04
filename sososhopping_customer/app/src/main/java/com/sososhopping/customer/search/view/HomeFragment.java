@@ -1,7 +1,6 @@
 package com.sososhopping.customer.search.view;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +12,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.common.types.enumType.CategoryType;
 import com.sososhopping.customer.databinding.HomeBinding;
 import com.sososhopping.customer.search.dto.ShopListDto;
-import com.sososhopping.customer.search.model.ShopInfoShortModel;
 import com.sososhopping.customer.search.view.adapter.CategoryAdapter;
 import com.sososhopping.customer.search.HomeViewModel;
 
@@ -35,7 +32,6 @@ public class HomeFragment extends Fragment{
     private HomeViewModel homeViewModel;
 
     HomeBinding binding;
-
     public static HomeFragment newInstance() {
         return new HomeFragment();
     }
@@ -48,9 +44,9 @@ public class HomeFragment extends Fragment{
 
     @Override
     public void onResume() {
-        ((MainActivity)getActivity()).hideTopAppBar();
-        ((MainActivity)getActivity()).showBottomNavigation();
-        ((MainActivity)getActivity()).initLoginButton();
+        ((HomeActivity)getActivity()).hideTopAppBar();
+        ((HomeActivity)getActivity()).showBottomNavigation();
+        ((HomeActivity)getActivity()).initLoginButton();
         super.onResume();
     }
 
@@ -86,7 +82,6 @@ public class HomeFragment extends Fragment{
                 homeViewModel.setSearchType(isChecked);
             }
         });
-
         return binding.getRoot();
     }
 
@@ -95,26 +90,29 @@ public class HomeFragment extends Fragment{
         super.onViewCreated(view,savedInstanceState);
 
         navController = Navigation.findNavController(view);
-
         categoryAdapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
                 String category = categoryAdapter.getCategoryName(pos);
-
                 if(category.equals(CategoryType.MAP.toString())){
                     //전체검색으로 넘어가게
                     homeViewModel.getAskType().setValue(0);
                     navController.navigate(HomeFragmentDirections.actionHome2ToShopMapFragment(R.id.home2));
                 }
                 else{
-                    //해당 카테고리를 담아서 검색 navigate하기
-                    Log.d("카테고리 검색", category);
-
                     //ViewModel 설정 후 이동
                     homeViewModel.getAskType().setValue(1);
                     homeViewModel.setCategory(category);
                     homeViewModel.setSearchContent(null);
-                    navController.navigate(R.id.action_home2_to_shopListFragment);
+
+                    //홈에서 오면 이거한번 돌려야함
+                    homeViewModel.searchCategory(
+                            ((HomeActivity)getActivity()).getLoginToken(),
+                            homeViewModel.getCategory().getValue(),
+                            homeViewModel.getLocation(getContext()),
+                            null,
+                            HomeFragment.this::onSearchSuccessed,
+                            HomeFragment.this::onNetworkError);
                 }
 
             }
@@ -126,7 +124,15 @@ public class HomeFragment extends Fragment{
                 homeViewModel.getAskType().setValue(0);
                 homeViewModel.setSearchType(binding.switchShopOrItem.isChecked());
                 homeViewModel.setSearchContent(binding.editTextSearch.getText().toString());
-                navController.navigate(R.id.action_home2_to_shopListFragment);
+
+                homeViewModel.searchSearch(
+                        ((HomeActivity)getActivity()).getLoginToken(),
+                        homeViewModel.getSearchType().getValue(),
+                        homeViewModel.getSearchContent().getValue(),
+                        homeViewModel.getLocation(getContext()),
+                        null,
+                        HomeFragment.this::onSearchSuccessed,
+                        HomeFragment.this::onNetworkError);
             }
         });
     }
@@ -135,6 +141,15 @@ public class HomeFragment extends Fragment{
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private void onSearchSuccessed(ShopListDto success){
+        homeViewModel.setShopList(success.getShopInfoShortModels());
+        navController.navigate(HomeFragmentDirections.actionHome2ToShopListFragment());
+    }
+
+    private void onNetworkError() {
+        navController.navigate(R.id.action_global_networkErrorDialog);
     }
 
     public ArrayList<Integer> getCategoryIconId(){

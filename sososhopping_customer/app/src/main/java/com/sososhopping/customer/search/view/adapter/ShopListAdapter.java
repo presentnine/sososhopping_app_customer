@@ -21,6 +21,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.sososhopping.customer.R;
+import com.sososhopping.customer.common.StringFormatMethod;
 import com.sososhopping.customer.databinding.ItemShopInfoBinding;
 import com.sososhopping.customer.search.model.ShopInfoShortModel;
 
@@ -108,14 +109,10 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ViewHo
             binding.textViewShopName.setText(shopInfoShortModel.getName());
             binding.textViewShopDescription.setText(shopInfoShortModel.getDescription());
 
-            binding.textViewRating.setText(Double.toString(Math.round(shopInfoShortModel.getScore()*10)/10));
+            binding.textViewRating.setText(StringFormatMethod.getRating(shopInfoShortModel.getScore()));
 
             //km로 변환
-            if(shopInfoShortModel.getDistance() >= 1){
-                binding.textViewDistance.setText(Math.round(shopInfoShortModel.getDistance()*10)/10.0+"km");
-            }else{
-                binding.textViewDistance.setText(Math.round(shopInfoShortModel.getDistance()*1000)+"m");
-            }
+            binding.textViewDistance.setText(StringFormatMethod.getDistance(shopInfoShortModel.getDistance()));
 
 
             //지역화폐, 배달여부

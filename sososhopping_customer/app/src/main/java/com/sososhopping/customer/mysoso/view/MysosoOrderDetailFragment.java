@@ -16,7 +16,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.common.DateFormatMethod;
 import com.sososhopping.customer.common.types.enumType.OrderStatus;
@@ -52,7 +52,7 @@ public class MysosoOrderDetailFragment extends Fragment {
         //viewmodel 설정
         orderDetailViewModel = new ViewModelProvider(this).get(OrderDetailViewModel.class);
         orderDetailViewModel.requestMyOrderDetails(
-                ((MainActivity) getActivity()).getLoginToken(),
+                ((HomeActivity) getActivity()).getLoginToken(),
                 orderId,
                 this::onSuccess,
                 this::onFailed,
@@ -98,10 +98,10 @@ public class MysosoOrderDetailFragment extends Fragment {
     @Override
     public void onResume() {
         //상단바
-        ((MainActivity)getActivity()).showTopAppBar();
+        ((HomeActivity)getActivity()).showTopAppBar();
 
         //하단바
-        ((MainActivity)getActivity()).hideBottomNavigation();
+        ((HomeActivity)getActivity()).hideBottomNavigation();
         super.onResume();
     }
 
@@ -163,7 +163,7 @@ public class MysosoOrderDetailFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     orderDetailViewModel.requestMyOrderCancel(
-                            ((MainActivity)getActivity()).getLoginToken(),
+                            ((HomeActivity)getActivity()).getLoginToken(),
                             orderDetailDto.getOrderId(),
                             MysosoOrderDetailFragment.this::onSuccessCancel,
                             MysosoOrderDetailFragment.this::onFailedCancel,

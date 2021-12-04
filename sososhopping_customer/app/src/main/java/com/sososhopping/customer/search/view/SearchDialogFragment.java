@@ -3,7 +3,6 @@ package com.sososhopping.customer.search.view;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +15,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
-import com.sososhopping.customer.common.gps.GPSTracker;
 import com.sososhopping.customer.common.types.enumType.SearchType;
 import com.sososhopping.customer.databinding.SearchShopDialogBinding;
 import com.sososhopping.customer.search.HomeViewModel;
+import com.sososhopping.customer.search.dto.ShopListDto;
 
 public class SearchDialogFragment extends DialogFragment {
     private NavController navController;
@@ -45,8 +44,9 @@ public class SearchDialogFragment extends DialogFragment {
                              Bundle savedInstanceState){
 
         binding = SearchShopDialogBinding.inflate(inflater,container,false);
-        homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
         navigateTo = SearchDialogFragmentArgs.fromBundle(getArguments()).getNavigateFrom();
+        homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
+
         return binding.getRoot();
     }
 
@@ -77,15 +77,14 @@ public class SearchDialogFragment extends DialogFragment {
                 homeViewModel.getAskType().setValue(0);
                 homeViewModel.setSearchContent(binding.editTextSearch.getText().toString());
 
-                //리스트로 복귀
-                if(navigateTo == R.id.shopListFragment){
-                    navController.navigate(R.id.action_searchDialogFragment_to_shopListFragment);
-                    dismiss();
-                }
-                else if(navigateTo == R.id.shopMapFragment){
-                    navController.navigate(SearchDialogFragmentDirections.actionSearchDialogFragmentToShopMapFragment(R.id.searchDialogFragment));
-                    dismiss();
-                }
+                homeViewModel.searchSearch(
+                        ((HomeActivity)getActivity()).getLoginToken(),
+                        homeViewModel.getSearchType().getValue(),
+                        homeViewModel.getSearchContent().getValue(),
+                        homeViewModel.getLocation(getContext()),
+                        null,
+                        SearchDialogFragment.this::onSearchSuccessed,
+                        SearchDialogFragment.this::onNetworkError);
             }
         });
     }
@@ -109,4 +108,16 @@ public class SearchDialogFragment extends DialogFragment {
         super.onDestroyView();
         binding = null;
     }
+    private void onSearchSuccessed(ShopListDto success){
+        homeViewModel.setShopList(success.getShopInfoShortModels());
+
+        //리스트로 복귀
+        ((HomeActivity)getActivity()).setTopAppBarTitle(homeViewModel.getSearchContent().getValue());
+        dismiss();
+    }
+
+    private void onNetworkError() {
+        navController.navigate(R.id.action_global_networkErrorDialog);
+    }
+
 }

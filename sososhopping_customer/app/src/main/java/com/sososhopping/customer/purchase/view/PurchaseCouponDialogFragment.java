@@ -15,7 +15,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.purchase.viewmodel.PurchaseCouponViewModel;
@@ -60,7 +60,7 @@ public class PurchaseCouponDialogFragment extends DialogFragment {
         purchaseViewModel = new ViewModelProvider(getActivity()).get(PurchaseViewModel.class);
         purchaseCouponViewModel = new ViewModelProvider(this).get(PurchaseCouponViewModel.class);
         purchaseCouponViewModel.requestCoupons(
-                ((MainActivity)getActivity()).getLoginToken(),
+                ((HomeActivity)getActivity()).getLoginToken(),
                 purchaseViewModel.getShopInfo().getValue().getStoreId(),
                 this::onSuccess,
                 this::onFailedLogIn,
@@ -92,7 +92,7 @@ public class PurchaseCouponDialogFragment extends DialogFragment {
                 msgCode[1] = R.string.event_coupon_addFail;
 
                 //쿠폰 저장
-                purchaseCouponViewModel.addShopCoupon(((MainActivity)getActivity()).getLoginToken(),
+                purchaseCouponViewModel.addShopCoupon(((HomeActivity)getActivity()).getLoginToken(),
                         binding.editTextAddCode.getText().toString(),
                         msgCode,
                         PurchaseCouponDialogFragment.this::onResult,
@@ -161,7 +161,7 @@ public class PurchaseCouponDialogFragment extends DialogFragment {
 
         //다시 불러오기
         purchaseCouponViewModel.requestCoupons(
-                ((MainActivity)getActivity()).getLoginToken(),
+                ((HomeActivity)getActivity()).getLoginToken(),
                 purchaseViewModel.getShopInfo().getValue().getStoreId(),
                 this::onSuccess,
                 this::onFailedLogIn,
