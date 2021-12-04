@@ -30,7 +30,6 @@ public class HomeFragment extends Fragment{
     private NavController navController;
     private CategoryAdapter categoryAdapter = new CategoryAdapter();
     private HomeViewModel homeViewModel;
-
     HomeBinding binding;
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -97,7 +96,18 @@ public class HomeFragment extends Fragment{
                 if(category.equals(CategoryType.MAP.toString())){
                     //전체검색으로 넘어가게
                     homeViewModel.getAskType().setValue(0);
-                    navController.navigate(HomeFragmentDirections.actionHome2ToShopMapFragment(R.id.home2));
+                    homeViewModel.setSearchType(binding.switchShopOrItem.isChecked());
+                    homeViewModel.setSearchContent(binding.editTextSearch.getText().toString());
+
+                    homeViewModel.searchSearch(
+                            ((HomeActivity)getActivity()).getLoginToken(),
+                            homeViewModel.getSearchType().getValue(),
+                            homeViewModel.getSearchContent().getValue(),
+                            homeViewModel.getLocation(getContext()),
+                            null,
+                            false,
+                            HomeFragment.this::onSearchSuccessed,
+                            HomeFragment.this::onNetworkError);
                 }
                 else{
                     //ViewModel 설정 후 이동
@@ -131,6 +141,7 @@ public class HomeFragment extends Fragment{
                         homeViewModel.getSearchContent().getValue(),
                         homeViewModel.getLocation(getContext()),
                         null,
+                        true,
                         HomeFragment.this::onSearchSuccessed,
                         HomeFragment.this::onNetworkError);
             }
@@ -143,10 +154,16 @@ public class HomeFragment extends Fragment{
         binding = null;
     }
 
-    private void onSearchSuccessed(ShopListDto success){
+    private void onSearchSuccessed(ShopListDto success, Boolean list){
         homeViewModel.setShopList(success.getShopInfoShortModels());
-        navController.navigate(HomeFragmentDirections.actionHome2ToShopListFragment());
+
+        if(list){
+            navController.navigate(HomeFragmentDirections.actionHome2ToShopListFragment());
+        }else{
+            navController.navigate(HomeFragmentDirections.actionHome2ToShopMapFragment(R.id.home2));
+        }
     }
+
 
     private void onNetworkError() {
         navController.navigate(R.id.action_global_networkErrorDialog);

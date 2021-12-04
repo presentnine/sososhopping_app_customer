@@ -83,6 +83,7 @@ public class SearchDialogFragment extends DialogFragment {
                         homeViewModel.getSearchContent().getValue(),
                         homeViewModel.getLocation(getContext()),
                         null,
+                        true,
                         SearchDialogFragment.this::onSearchSuccessed,
                         SearchDialogFragment.this::onNetworkError);
             }
@@ -108,7 +109,7 @@ public class SearchDialogFragment extends DialogFragment {
         super.onDestroyView();
         binding = null;
     }
-    private void onSearchSuccessed(ShopListDto success){
+    private void onSearchSuccessed(ShopListDto success, Boolean b){
         homeViewModel.setShopList(success.getShopInfoShortModels());
 
         //리스트로 복귀

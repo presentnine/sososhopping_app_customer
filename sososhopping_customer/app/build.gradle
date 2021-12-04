@@ -6,6 +6,7 @@ plugins {
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 def kakao_api_key = properties.getProperty('kakao_api_key')
+def naver_api_key = properties.getProperty('naver_api_key')
 
 android {
     compileSdkVersion 31
@@ -24,6 +25,7 @@ android {
 
         // 키 - 값
         manifestPlaceholders = [KAKAO_API_KEY: kakao_api_key]
+        manifestPlaceholders = [NAVER_API_KEY: naver_api_key]
 
 
     }
@@ -81,8 +83,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     //DaumMap
-    implementation files('libs/libDaumMapAndroid.jar')
+    //implementation files('libs/libDaumMapAndroid.jar')
 
+    implementation 'com.naver.maps:map-sdk:3.13.0'
 
     //dateTimePicker
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'

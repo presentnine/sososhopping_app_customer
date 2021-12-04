@@ -18,6 +18,7 @@ import com.sososhopping.customer.search.repository.SearchRepository;
 import com.sososhopping.customer.shop.model.ShopItemModel;
 
 import java.util.ArrayList;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import lombok.Getter;
@@ -68,22 +69,22 @@ public class HomeViewModel extends ViewModel {
                                String category,
                                Location location,
                                Integer radius,
-                               Consumer<ShopListDto> onSuccess,
+                               BiConsumer<ShopListDto, Boolean> onSuccess,
                                Runnable onError){
 
         if(radius == null){
             radius = defaultRadius;
         }
-        searchRepository.searchCategory(token, category, location.getLat(), location.getLng(), radius, onSuccess,onError);
+        searchRepository.searchCategory(token, category, location.getLat(), location.getLng(), radius, onSuccess, onError);
     }
 
-    public void searchSearch(String token, SearchType type, String q, Location location, Integer radius,
-                             Consumer<ShopListDto> onSuccess,
+    public void searchSearch(String token, SearchType type, String q, Location location, Integer radius, Boolean b,
+                             BiConsumer<ShopListDto, Boolean> onSuccess,
                              Runnable onError){
         if(radius == null){
             radius = defaultRadius;
         }
-        searchRepository.searchSearch(token, type.toString(), q, location.getLat(), location.getLng(), radius, onSuccess, onError);
+        searchRepository.searchSearch(token, type.toString(), q, location.getLat(), location.getLng(), radius, b, onSuccess,  onError);
     }
 
     public Location getLocation(Context context){
