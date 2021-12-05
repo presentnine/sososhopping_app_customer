@@ -299,6 +299,9 @@ public class HomeActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
         }
     }
+
+
+
     //해시 키 값 구하기
     private void getAppKeyHash() {
         try {

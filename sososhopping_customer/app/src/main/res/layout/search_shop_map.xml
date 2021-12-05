@@ -38,6 +38,7 @@
     <include
         android:id="@+id/item_search_map"
         layout="@layout/item_search_map"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"

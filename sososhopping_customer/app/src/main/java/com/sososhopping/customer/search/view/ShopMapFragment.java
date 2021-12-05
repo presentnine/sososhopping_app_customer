@@ -1,8 +1,13 @@
 package com.sososhopping.customer.search.view;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.PointF;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,16 +30,21 @@ import androidx.navigation.Navigation;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.naver.maps.geometry.LatLng;
+import com.naver.maps.geometry.LatLngBounds;
 import com.naver.maps.map.CameraPosition;
 import com.naver.maps.map.CameraUpdate;
+import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.NaverMapOptions;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.UiSettings;
+import com.naver.maps.map.overlay.InfoWindow;
+import com.naver.maps.map.overlay.LocationOverlay;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.Overlay;
 import com.naver.maps.map.overlay.OverlayImage;
+import com.naver.maps.map.util.FusedLocationSource;
 import com.naver.maps.map.util.MarkerIcons;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
@@ -46,6 +56,7 @@ import com.sososhopping.customer.search.model.ShopInfoShortModel;
 import com.sososhopping.customer.shop.view.ShopMainFragment;
 
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
 
 public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
     private NavController navController;
@@ -53,6 +64,9 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
     private HomeViewModel homeViewModel;
     private int navigateFrom;
 
+    //네이버 지도 GPS
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
+    private FusedLocationSource locationSource;
     private MapFragment mapFragment;
     private NaverMap naverMap;
 
@@ -67,41 +81,15 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
         setHasOptionsMenu(true);
 
         homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
+
+        //현재위치
+        locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
+
         FragmentManager fm = getChildFragmentManager();
         mapFragment = (MapFragment)fm.findFragmentById(R.id.map);
 
-        NaverMapOptions options;
-        switch (navigateFrom){
-            //홈
-            //리스트에서 옴 -> 검색내용 토대로 구성
-            //검색결과로 구성
-            case R.id.home2 :
-            case R.id.shopListFragment:
-            case R.id.searchDialogFragment:
-            default:
-                Location location = homeViewModel.getLocation(getContext());
-
-                //내 좌표 표시, 패널 띄우기
-                options = new NaverMapOptions()
-                        .camera(new CameraPosition(new LatLng(location.getLat(), location.getLng()), 16));
-                break;
-
-
-            //상점에서 옴
-            case R.id.mysosoPointDetailFragment:
-            case R.id.shopReportFragment:
-            case R.id.shopMainFragment:{
-                double shopLat = ShopMapFragmentArgs.fromBundle(getArguments()).getLat();
-                double shopLng = ShopMapFragmentArgs.fromBundle(getArguments()).getLng();
-
-                //좌표 표시, 패널 띄우기
-                options = new NaverMapOptions()
-                        .camera(new CameraPosition(new LatLng(shopLat, shopLng), 2));
-                break;
-            }
-        }
         if (mapFragment == null) {
-            mapFragment = MapFragment.newInstance(options);
+            mapFragment = MapFragment.newInstance();
             fm.beginTransaction().add(R.id.map, mapFragment).commit();
         }
         mapFragment.getMapAsync(this::onMapReady);
@@ -123,8 +111,11 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
         focusedShop.observe(this, new Observer<ShopInfoShortModel>() {
             @Override
             public void onChanged(ShopInfoShortModel shopInfoShortModel) {
-                bindShopItem(shopInfoShortModel);
-                Log.e("선택", shopInfoShortModel.getScore()+" ");
+                if(shopInfoShortModel == null){
+                    binding.itemSearchMap.getRoot().setVisibility(View.GONE);
+                }else{
+                    bindShopItem(shopInfoShortModel);
+                }
             }
         });
 
@@ -132,7 +123,6 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onChanged(ArrayList<ShopInfoShortModel> shopInfoShortModels) {
                 if(naverMap != null){
-                    Log.e("마커 세팅", shopInfoShortModels.size()+"");
                     //마커 추가
                     addMarkers(naverMap);
                 }
@@ -145,10 +135,6 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-
-        //지도 연결
-
-        //마커 추가
     }
 
 
@@ -158,18 +144,86 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
         navigateFrom = ShopMapFragmentArgs.fromBundle(getArguments()).getNavigateFrom();
         this.naverMap = naverMap;
 
+        //트래킹 모드On
+        naverMap.setLocationSource(locationSource);
+        if(!locationSource.isActivated()){
+            naverMap.setLocationTrackingMode(LocationTrackingMode.None);
+        }
+        else{
+            naverMap.setLocationTrackingMode(LocationTrackingMode.NoFollow);
+        }
+
+        Location location =  homeViewModel.getLocation(getContext());
+        LatLng currentLocation = new LatLng(
+                location.getLat(),
+                location.getLng()
+        );
+
+        //위치 설정
+        LocationOverlay locationOverlay = naverMap.getLocationOverlay();
+        locationOverlay.setPosition(currentLocation);
+        locationOverlay.setVisible(true);
+
+
+        //버튼 클릭시 이동
         binding.buttonGps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Location location = homeViewModel.getLocation(getContext());
-                //좌표설정
-                naverMap.moveCamera(
-                        CameraUpdate.scrollTo(new LatLng(location.getLat(), location.getLng()))
+                Location location =  homeViewModel.getLocation(getContext());
+                LatLng currentLocation = new LatLng(
+                        location.getLat(),
+                        location.getLng()
                 );
+
+                //좌표설정
+                naverMap.moveCamera(CameraUpdate.scrollTo(currentLocation));
+                naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
             }
         });
+
+        //줌 + 한국으로 제한
+        naverMap.setMinZoom(5.0);
+        naverMap.setMaxZoom(18.0);
+        naverMap.setExtent(new LatLngBounds(new LatLng(31.43, 122.37),
+                new LatLng(44.35, 132)));
+
+        //초기 카메라 위치
+        switch (navigateFrom){
+            //홈
+            //리스트에서 옴 -> 검색내용 토대로 구성
+            //검색결과로 구성
+            case R.id.home2 :
+            case R.id.shopListFragment:
+            case R.id.searchDialogFragment:
+            default:
+                naverMap.moveCamera(CameraUpdate.scrollTo(currentLocation));
+                break;
+
+            //상점에서 옴
+            case R.id.mysosoPointDetailFragment:
+            case R.id.shopReportFragment:
+            case R.id.shopMainFragment:
+                double shopLat = ShopMapFragmentArgs.fromBundle(getArguments()).getLat();
+                double shopLng = ShopMapFragmentArgs.fromBundle(getArguments()).getLng();
+
+                //상점으로 이동
+                naverMap.moveCamera(CameraUpdate.scrollTo(new LatLng(shopLat, shopLng)));
+                break;
+        }
+        naverMap.moveCamera(CameraUpdate.zoomTo(16));
+
+        naverMap.setOnMapClickListener(new NaverMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(@NonNull PointF pointF, @NonNull LatLng latLng) {
+                focusedShop.postValue(null);
+            }
+        });
+
         UiSettings uiSettings = naverMap.getUiSettings();
         uiSettings.setLocationButtonEnabled(false);
+        uiSettings.setCompassEnabled(false);
+
+        //마커 추가
         addMarkers(naverMap);
     }
 
@@ -180,7 +234,6 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
         ((HomeActivity) getActivity()).hideBottomNavigation();
         ((HomeActivity) getActivity()).showTopAppBar();
         setAppBar(homeViewModel);
-
         super.onResume();
     }
 
@@ -194,7 +247,6 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
     public void addMarkers(NaverMap naverMap){
         if(markers != null){
             for(Marker m : markers){
-                Log.e("makrers", m.getTag().toString());
                 m.setMap(null);
             }
         }
@@ -202,29 +254,53 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
             markers = new ArrayList<>();
         }
 
+        //백그라운드 스레드로 마커 생성
+        Executor executor = new Executor() {
+            @Override
+            public void execute(Runnable command) {
+                new Thread(command).start();
+            }
+        };
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                createMarkers();
+            }
+        });
+
+        //메인에서 마커 추가
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(() -> {
+           for(Marker m : markers){
+               m.setMap(naverMap);
+           }
+        });
+    }
+
+    public void createMarkers(){
+
         for(int i= 0; i<homeViewModel.getShopList().getValue().size(); i++){
             ShopInfoShortModel s = homeViewModel.getShopList().getValue().get(i);
 
             Marker m = new Marker();
-
             m.setPosition(new LatLng(s.getLocation().getLat(), s.getLocation().getLng()));
             m.setIcon(MarkerIcons.GREEN);
-            //m.setIcon(OverlayImage.fromResource(R.drawable.icon_location_pin));
+            m.setWidth(72);
+            m.setHeight(108);
             m.setTag(i);
+
             m.setOnClickListener(new Overlay.OnClickListener() {
                 @Override
                 public boolean onClick(@NonNull Overlay overlay) {
                     Marker marker = (Marker) overlay;
                     focusedShop.postValue(homeViewModel.getShopList().getValue().get((Integer)marker.getTag()));
-                    return false;
+                    return true;
                 }
             });
-
-            m.setMap(naverMap);
             markers.add(m);
-            Log.e("tags", s.getName() + " " + s.getLocation().getLat() + " " + s.getLocation().getLng());
         }
     }
+
     public void bindShopItem(ShopInfoShortModel s){
         binding.itemSearchMap.textViewShopName.setText(s.getName());
 
@@ -245,6 +321,7 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View view) {
                 //이동
+                navController.navigate(ShopMapFragmentDirections.actionShopMapFragmentToShopGraph(s.getStoreId()));
             }
         });
 

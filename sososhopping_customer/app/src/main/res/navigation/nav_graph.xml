@@ -73,6 +73,12 @@
         <argument
             android:name="navigateFrom"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_shopMapFragment_to_searchDialogFragment2"
+            app:destination="@id/searchDialogFragment" />
+        <action
+            android:id="@+id/action_shopMapFragment_to_shop_graph"
+            app:destination="@id/shop_graph" />
     </fragment>
 
     <dialog
