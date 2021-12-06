@@ -111,7 +111,6 @@ public class MysosoOrderDetailFragment extends Fragment {
         binding = null;
     }
 
-    //추후에 페이징시 연결하는 메소드 추가해야함
     public void onSuccess(OrderDetailDto orderDetailDto){
         //set
         orderDetailViewModel.getOrderDetailDto().setValue(orderDetailDto);

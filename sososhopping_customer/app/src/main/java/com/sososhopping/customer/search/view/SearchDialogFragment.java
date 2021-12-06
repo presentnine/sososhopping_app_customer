@@ -17,9 +17,11 @@ import androidx.navigation.Navigation;
 
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
+import com.sososhopping.customer.common.types.enumType.AskType;
 import com.sososhopping.customer.common.types.enumType.SearchType;
 import com.sososhopping.customer.databinding.SearchShopDialogBinding;
 import com.sososhopping.customer.search.HomeViewModel;
+import com.sososhopping.customer.search.dto.PageableShopListDto;
 import com.sososhopping.customer.search.dto.ShopListDto;
 
 public class SearchDialogFragment extends DialogFragment {
@@ -74,19 +76,23 @@ public class SearchDialogFragment extends DialogFragment {
             public void onClick(View v) {
 
                 //검색모드
-                homeViewModel.getAskType().setValue(0);
+                homeViewModel.getAskType().setValue(AskType.Search);
                 homeViewModel.setSearchContent(binding.editTextSearch.getText().toString());
 
-                homeViewModel.searchSearch(
+                //offset 초기화
+                homeViewModel.resetPage();
+
+                homeViewModel.search(
                         ((HomeActivity)getActivity()).getLoginToken(),
-                        homeViewModel.getSearchType().getValue(),
-                        homeViewModel.getSearchContent().getValue(),
                         homeViewModel.getLocation(getContext()),
                         null,
-                        true,
-                        SearchDialogFragment.this::onSearchSuccessed,
-                        SearchDialogFragment.this::onNetworkError);
+                        0,
+                        null,
+                        SearchDialogFragment.this::onSearchSuccessedPage,
+                        SearchDialogFragment.this::onNetworkError
+                );
             }
+
         });
     }
 
@@ -109,8 +115,10 @@ public class SearchDialogFragment extends DialogFragment {
         super.onDestroyView();
         binding = null;
     }
-    private void onSearchSuccessed(ShopListDto success, Boolean b){
-        homeViewModel.setShopList(success.getShopInfoShortModels());
+
+    private void onSearchSuccessedPage(PageableShopListDto success, Integer navigate){
+        homeViewModel.getShopList().setValue(success.getContent());
+        homeViewModel.setOffset(success.getPageable().getOffset() + success.getNumberOfElements());
 
         //리스트로 복귀
         ((HomeActivity)getActivity()).setTopAppBarTitle(homeViewModel.getSearchContent().getValue());

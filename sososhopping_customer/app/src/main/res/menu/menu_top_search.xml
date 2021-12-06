@@ -8,6 +8,13 @@
         android:title="@string/nav_search"
         app:showAsAction="ifRoom"/>
 
+    <item android:id="@+id/menu_list"
+        android:icon="@drawable/ic_baseline_list_alt_24"
+        android:enabled="true"
+        android:title="@string/icon_list"
+        app:showAsAction="ifRoom"
+        />
+
     <item android:id="@+id/menu_map"
         android:icon="@drawable/ic_baseline_location_on_24"
         android:enabled="true"

@@ -11,8 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.HomeActivity;
+import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.MysosoMainBinding;
 
@@ -28,6 +31,14 @@ MysosoMainFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //로그인 안되면 못하게
+        if(!((HomeActivity)getActivity()).getIsLogIn()){
+            ((HomeActivity)getActivity()).bottomItemClicked(R.id.home2);
+            NavHostFragment.findNavController(this)
+                    .navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_description));
+        }
+
         //메뉴 변경 확인
         setHasOptionsMenu(true);
     }
@@ -47,8 +58,6 @@ MysosoMainFragment extends Fragment {
         binding = MysosoMainBinding.inflate(inflater,container,false);
 
         //viewmodel 설정
-
-
 
         return binding.getRoot();
     }

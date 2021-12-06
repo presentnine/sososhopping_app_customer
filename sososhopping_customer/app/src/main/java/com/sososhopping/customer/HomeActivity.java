@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -25,6 +27,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.account.dto.LogInResponseDto;
 import com.sososhopping.customer.account.viewmodel.LogInViewModel;
 import com.sososhopping.customer.common.Constant;
@@ -36,7 +39,7 @@ import org.jetbrains.annotations.NotNull;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback{
 
     public NavController navController;
     private NavHostFragment navHostFragment;
@@ -46,6 +49,10 @@ public class HomeActivity extends AppCompatActivity {
     Boolean isLogIn = false;
     MutableLiveData<String> loginToken = new MutableLiveData<>();
 
+    //권한용
+    private static final int PERMISSIONS_REQUEST_CODE = 100;
+    String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+
     public ActivityMainBinding getBinding() {
         return binding;
     }
@@ -54,13 +61,11 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //권한 요청
-        getPermission();
-
         //자동로그인 시도
         autoLogIn();
 
         setTheme(R.style.Theme_Sososhopping_customer_NoActionBar);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         loginToken.observe(this, new Observer<String>() {
             @Override
@@ -69,10 +74,17 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        //권한 요청
+        getPermission();
+
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
-
+        loginToken.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                initLoginButton();
+            }
+        });
         //하단바 -> 그냥 커스텀으로 사용하기
         binding.bottomNavigation.getMenu().findItem(R.id.menu_home).setChecked(true);
         binding.bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -86,10 +98,10 @@ public class HomeActivity extends AppCompatActivity {
                         navController.navigate(R.id.home2, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
                         break;
                     }
-                    case R.id.navigation_login: {
+                    case R.id.menu_chat: {
                         getViewModelStore().clear();
-                        binding.bottomNavigation.getMenu().findItem(R.id.menu_home).setChecked(true);
-                        navController.navigate(R.id.action_global_navigation_login);
+                        binding.bottomNavigation.getMenu().findItem(R.id.menu_chat).setChecked(true);
+                        navController.navigate(R.id.chatFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
                         break;
                     }
 
@@ -125,34 +137,29 @@ public class HomeActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.menu_home: {
                         getViewModelStore().clear();
-                        binding.bottomNavigation.getMenu().findItem(R.id.menu_home).setChecked(true);
                         navController.navigate(R.id.home2, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
                         break;
                     }
-                    case R.id.navigation_login: {
+                    case R.id.menu_chat: {
                         getViewModelStore().clear();
-                        binding.bottomNavigation.getMenu().findItem(R.id.menu_home).setChecked(true);
-                        navController.navigate(R.id.action_global_navigation_login);
+                        navController.navigate(R.id.chatFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
                         break;
                     }
 
                     case R.id.menu_interest: {
                         getViewModelStore().clear();
-                        binding.bottomNavigation.getMenu().findItem(R.id.menu_interest).setChecked(true);
                         navController.navigate(R.id.interestShopListFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
                         break;
                     }
 
                     case R.id.menu_cart:{
                         getViewModelStore().clear();
-                        binding.bottomNavigation.getMenu().findItem(R.id.menu_cart).setChecked(true);
                         navController.navigate(R.id.cartMainFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
                         break;
                     }
 
                     case R.id.menu_mysoso: {
                         getViewModelStore().clear();
-                        binding.bottomNavigation.getMenu().findItem(R.id.menu_mysoso).setChecked(true);
                         navController.navigate(R.id.mysosoMainFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
                         break;
                     }
@@ -291,16 +298,61 @@ public class HomeActivity extends AppCompatActivity {
         binding.bottomNavigation.setSelectedItemId(id);
     }
 
-    //권한
     public void getPermission() {
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         if (permissionCheck == PackageManager.PERMISSION_DENIED) { //포그라운드 위치 권한 확인
-            //위치 권한 요청
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+            Snackbar.make(getBinding().getRoot(), "앱을 사용하기 위해서는 위치정보 접근 권한이 필요합니다.", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("확인", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //위치 권한 요청
+                            ActivityCompat.requestPermissions(HomeActivity.this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE);
+                        }
+                    }).show();
         }
     }
 
+    //권한없으면 꺼버리기
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSIONS_REQUEST_CODE && grantResults.length == REQUIRED_PERMISSIONS.length) {
+            boolean check_result = true;
 
+            for(int result : grantResults){
+                if(result != PackageManager.PERMISSION_GRANTED){
+                    check_result = false;
+                    break;
+                }
+            }
+
+            if(check_result){
+                return;
+            }
+
+            for(String s : permissions){
+                //다시보지 않기
+                if(!ActivityCompat.shouldShowRequestPermissionRationale(this,s)){
+                    Snackbar.make(binding.getRoot(),"권한이 거부되었습니다.\n설정(앱 정보)에서 권한을 허용해야 합니다.", Snackbar.LENGTH_INDEFINITE)
+                            .setAction("확인", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    finish();
+                                }
+                            }).show();
+                }
+            }
+
+            Snackbar.make(binding.getRoot(),"권한이 거부되었습니다.\n앱을 다시 실행하여 권한을 허용해 주세요.", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("확인", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            finish();
+                        }
+                    }).show();
+
+        }
+    }
 
     //해시 키 값 구하기
     private void getAppKeyHash() {

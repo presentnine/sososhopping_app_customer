@@ -141,12 +141,12 @@ public class InterestShopListFragment extends Fragment {
     }
 
     private void onSearchSuccessed(ShopListDto success){
-        interestViewModel.getFavoriteList().setValue(success.getShopInfoShortModels());
+        interestViewModel.getFavoriteList().setValue(success.getResults());
 
         GPSTracker gpsTracker = GPSTracker.getInstance(getContext());
         Location me = new Location(gpsTracker.getLatitude(), gpsTracker.getLongitude());
 
-        for(ShopInfoShortModel s : success.getShopInfoShortModels()){
+        for(ShopInfoShortModel s : success.getResults()){
             if(s.getLocation().getLat() == 0 && s.getLocation().getLng() == 0){
                 s.setDistance(-1);
             }
@@ -156,7 +156,7 @@ public class InterestShopListFragment extends Fragment {
         }
 
 
-        shopListAdapter.setShopLists(success.getShopInfoShortModels());
+        shopListAdapter.setShopLists(success.getResults());
         shopListAdapter.notifyDataSetChanged();
     }
 

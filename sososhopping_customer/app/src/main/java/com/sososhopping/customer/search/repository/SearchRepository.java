@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi;
 
 import com.sososhopping.customer.common.retrofit.ApiServiceFactory;
 import com.sososhopping.customer.common.types.Location;
+import com.sososhopping.customer.search.dto.PageableShopListDto;
 import com.sososhopping.customer.search.dto.ShopListDto;
 import com.sososhopping.customer.search.model.ShopInfoShortModel;
 import com.sososhopping.customer.search.service.SearchService;
@@ -84,5 +85,57 @@ public class SearchRepository {
             }
         });
 
+    }
+
+
+    //페이징
+    public void searchByPage(String token, String type, String q, Double lat, Double lng, Integer radius, Integer offset,
+                             Integer navigate,
+                             BiConsumer<PageableShopListDto, Integer> onSuccess,
+                             Runnable onError){
+        searchService.searchBySearchPage(token, type, lat, lng, radius, q, offset).enqueue(new Callback<PageableShopListDto>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<PageableShopListDto> call, Response<PageableShopListDto> response) {
+                Log.d("log", response.raw().toString());
+                if (response.code() == 200) {
+                    onSuccess.accept(response.body(),navigate);
+                } else {
+                    Log.d("log", response.raw().toString());
+                    onError.run();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PageableShopListDto> call, Throwable t) {
+                t.printStackTrace();
+                onError.run();
+            }
+        });
+    }
+
+    public void categoryByPage(String token, String type,  Double lat, Double lng, Integer radius, Integer offset,
+                             Integer navigate,
+                             BiConsumer<PageableShopListDto, Integer> onSuccess,
+                             Runnable onError){
+        searchService.searchByCategoryPage(token, type, lat, lng, radius, offset).enqueue(new Callback<PageableShopListDto>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<PageableShopListDto> call, Response<PageableShopListDto> response) {
+                if (response.code() == 200) {
+                    onSuccess.accept(response.body(),navigate);
+                } else {
+                    Log.d("log", response.raw().toString());
+                    Log.d("log", response.errorBody().toString());
+                    onError.run();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PageableShopListDto> call, Throwable t) {
+                t.printStackTrace();
+                onError.run();
+            }
+        });
     }
 }

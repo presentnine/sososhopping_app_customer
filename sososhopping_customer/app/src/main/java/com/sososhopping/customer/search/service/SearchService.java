@@ -1,5 +1,6 @@
 package com.sososhopping.customer.search.service;
 
+import com.sososhopping.customer.search.dto.PageableShopListDto;
 import com.sososhopping.customer.search.dto.ShopListDto;
 import com.sososhopping.customer.search.model.ShopInfoShortModel;
 
@@ -27,10 +28,21 @@ public interface SearchService {
                                      @Query(value = "radius") Integer radius,
                                      @Query(value = "q") String q);
 
-    @GET("search")
-    Call<ShopListDto> searchBySearch(@Query(value = "type") String type,
-                                     @Query(value = "lat") Double lat,
-                                     @Query(value = "lng") Double lng,
-                                     @Query(value = "radius") Integer radius,
-                                     @Query(value = "q") String q);
+
+    @GET("search/page")
+    Call<PageableShopListDto> searchBySearchPage(@Header ("token") String token,
+                                                 @Query(value = "type") String type,
+                                                 @Query(value = "lat") Double lat,
+                                                 @Query(value = "lng") Double lng,
+                                                 @Query(value = "radius") Integer radius,
+                                                 @Query(value = "q") String q,
+                                                 @Query(value = "offset") Integer offset);
+
+    @GET("stores/page")
+    Call<PageableShopListDto> searchByCategoryPage(@Header ("token") String token,
+                                                 @Query(value = "type") String type,
+                                                 @Query(value = "lat") Double lat,
+                                                 @Query(value = "lng") Double lng,
+                                                 @Query(value = "radius") Integer radius,
+                                                 @Query(value = "offset") Integer offset);
 }

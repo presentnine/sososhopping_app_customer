@@ -1,5 +1,8 @@
 package com.sososhopping.customer.mysoso.view;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +14,14 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.common.Constant;
 import com.sososhopping.customer.common.sharedpreferences.SharedPreferenceManager;
 import com.sososhopping.customer.databinding.MysosoSettingBinding;
+import com.sososhopping.customer.mysoso.repository.MysosoMyInfoRepository;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -91,7 +96,26 @@ public class MysosoSettingFragment extends Fragment {
         binding.constraintLayoutQuit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                new MaterialAlertDialogBuilder(getContext())
+                        .setTitle("회원탈퇴")
+                        .setMessage("회원탈퇴 시 관련된 정보가 모두 삭제됩니다.\n회원탈퇴는 1일 정도 소요됩니다.\n정말 탈퇴하시겠습니까?")
+                        .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                MysosoMyInfoRepository.getInstance().requestQuit(
+                                        ((HomeActivity)getActivity()).getLoginToken(),
+                                        MysosoSettingFragment.this::onSuccess,
+                                        MysosoSettingFragment.this::onFailed
+                                );
+                            }
+                        })
+                        .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
 
+                            }
+                        })
+                        .show();
             }
         });
     }
@@ -122,4 +146,12 @@ public class MysosoSettingFragment extends Fragment {
         ((HomeActivity) getActivity()).bottomItemClicked(R.id.menu_home);
     }
 
+    public void onSuccess(){
+        Snackbar.make(binding.getRoot(),"회원탈퇴에 성공하였습니다.", Snackbar.LENGTH_SHORT).show();
+        logOut();
+    }
+
+    public void onFailed(){
+        Snackbar.make(binding.getRoot(),"회원탈퇴에 실패하였습니다\n잠시 후 다시 시도해주세요.", Snackbar.LENGTH_SHORT).show();
+    }
 }

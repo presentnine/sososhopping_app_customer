@@ -6,7 +6,7 @@
         android:title="@string/nav_interest"/>
 
 
-    <item android:id="@+id/navigation_login"
+    <item android:id="@+id/menu_chat"
         android:icon="@drawable/ic_baseline_chat_24"
         android:title="@string/nav_chat"/>
 

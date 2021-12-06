@@ -1,6 +1,7 @@
 package com.sososhopping.customer.search.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,10 +20,12 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.SearchShopListBinding;
 import com.sososhopping.customer.search.HomeViewModel;
+import com.sososhopping.customer.search.dto.PageableShopListDto;
 import com.sososhopping.customer.search.model.ShopInfoShortModel;
 import com.sososhopping.customer.search.view.adapter.ShopListAdapter;
 
@@ -50,6 +53,8 @@ public class ShopListFragment extends Fragment {
         super.onCreateOptionsMenu(menu,inflater);
         menu.clear();
         inflater.inflate(R.menu.menu_top_search, menu);
+        menu.findItem(R.id.menu_list).setVisible(false);
+        menu.findItem(R.id.menu_map).setVisible(true);
     }
 
     @Override
@@ -99,6 +104,36 @@ public class ShopListFragment extends Fragment {
                 //여기선 아무일 x
             }
         });
+
+
+        binding.recyclerViewShopList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if(!recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_DRAGGING){
+                    binding.progressCircular.setVisibility(View.VISIBLE);
+                }
+
+                else if (!recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_IDLE) {
+
+                    if(homeViewModel.getNumberOfElement() > 0){
+                        binding.progressCircular.setVisibility(View.VISIBLE);
+                        homeViewModel.search(
+                                ((HomeActivity)getActivity()).getLoginToken(),
+                                homeViewModel.getLocation(getContext()),
+                                null,
+                                null,
+                                null,
+                                ShopListFragment.this::onSearchSuccess,
+                                ShopListFragment.this::onNetworkError);
+                    }
+                }
+                else{
+                    binding.progressCircular.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     @Override
@@ -108,7 +143,6 @@ public class ShopListFragment extends Fragment {
         ((HomeActivity)getActivity()).showBottomNavigation();
         super.onResume();
     }
-
 
     @Override
     public void onDestroyView() {
@@ -143,10 +177,33 @@ public class ShopListFragment extends Fragment {
                         navController.navigate(ShopListFragmentDirections.actionShopListFragmentToShopMapFragment(R.id.shopListFragment));
                         break;
                     }
+                    case R.id.menu_list:{
+                        break;
+                    }
                 }
                 return false;
             }
         });
         activity.invalidateOptionsMenu();
+    }
+
+
+    private void onSearchSuccess(PageableShopListDto success, Integer navigate){
+        binding.progressCircular.setVisibility(View.GONE);
+        if(success.getNumberOfElements() > 0){
+            homeViewModel.getShopList().getValue().addAll(success.getContent());
+            //추가된거 밑에 추가
+            shopListAdapter.setShopLists(homeViewModel.getShopList().getValue());
+            shopListAdapter.notifyItemRangeInserted(homeViewModel.getOffset(), success.getNumberOfElements());
+        }
+
+        //몇개 추가되었는지
+        homeViewModel.setNumberOfElement(success.getNumberOfElements());
+        homeViewModel.setOffset(success.getPageable().getOffset() + success.getNumberOfElements());
+    }
+
+    private void onNetworkError(){
+        Snackbar.make(binding.getRoot(), "상점 정보를 더 불러오는데 실패했습니다", Snackbar.LENGTH_SHORT).show();
+        binding.progressCircular.setVisibility(View.GONE);
     }
 }

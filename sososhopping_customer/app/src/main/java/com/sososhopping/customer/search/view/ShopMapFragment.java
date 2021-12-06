@@ -71,7 +71,7 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
     private NaverMap naverMap;
 
     MutableLiveData<ShopInfoShortModel> focusedShop;
-    ArrayList<Marker> markers;
+    ArrayList<Marker> markers = new ArrayList<>();
 
     public static ShopMainFragment newInstance() {return new ShopMainFragment();}
 
@@ -100,6 +100,8 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
         super.onCreateOptionsMenu(menu,inflater);
         menu.clear();
         inflater.inflate(R.menu.menu_top_search, menu);
+        menu.findItem(R.id.menu_list).setVisible(true);
+        menu.findItem(R.id.menu_map).setVisible(false);
     }
 
     @Override
@@ -123,7 +125,7 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onChanged(ArrayList<ShopInfoShortModel> shopInfoShortModels) {
                 if(naverMap != null){
-                    //마커 추가
+                    //마커 재설정
                     addMarkers(naverMap);
                 }
             }
@@ -212,6 +214,7 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
         }
         naverMap.moveCamera(CameraUpdate.zoomTo(16));
 
+        //TODO: 클릭시 INFO 추가
         naverMap.setOnMapClickListener(new NaverMap.OnMapClickListener() {
             @Override
             public void onMapClick(@NonNull PointF pointF, @NonNull LatLng latLng) {
@@ -245,13 +248,12 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
 
 
     public void addMarkers(NaverMap naverMap){
-        if(markers != null){
-            for(Marker m : markers){
-                m.setMap(null);
-            }
-        }
-        else{
-            markers = new ArrayList<>();
+
+        //기존 마커 해제
+        int size = markers.size();
+        for(int i=0; i<size; i++){
+            markers.get(0).setMap(null);
+            markers.remove(0);
         }
 
         //백그라운드 스레드로 마커 생성
@@ -261,6 +263,7 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
                 new Thread(command).start();
             }
         };
+
         executor.execute(new Runnable() {
             @Override
             public void run() {
@@ -275,10 +278,10 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
                m.setMap(naverMap);
            }
         });
+
     }
 
     public void createMarkers(){
-
         for(int i= 0; i<homeViewModel.getShopList().getValue().size(); i++){
             ShopInfoShortModel s = homeViewModel.getShopList().getValue().get(i);
 
@@ -299,6 +302,7 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
             });
             markers.add(m);
         }
+        Log.e("생성 후 마커 (1)", markers.size()+"");
     }
 
     public void bindShopItem(ShopInfoShortModel s){
@@ -369,6 +373,11 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
                     }
                     case R.id.menu_map:{
                         //지도로 navigate
+                        break;
+                    }
+
+                    case R.id.menu_list:{
+                        navController.navigate(ShopMapFragmentDirections.actionShopMapFragmentToShopListFragment());
                         break;
                     }
                 }

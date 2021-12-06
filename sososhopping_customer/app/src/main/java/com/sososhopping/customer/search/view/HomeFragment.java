@@ -16,9 +16,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
+import com.sososhopping.customer.common.types.enumType.AskType;
 import com.sososhopping.customer.common.types.enumType.CategoryType;
 import com.sososhopping.customer.databinding.HomeBinding;
-import com.sososhopping.customer.search.dto.ShopListDto;
+import com.sososhopping.customer.search.dto.PageableShopListDto;
 import com.sososhopping.customer.search.view.adapter.CategoryAdapter;
 import com.sososhopping.customer.search.HomeViewModel;
 
@@ -37,7 +38,6 @@ public class HomeFragment extends Fragment{
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
     }
 
@@ -93,56 +93,54 @@ public class HomeFragment extends Fragment{
             @Override
             public void onItemClick(View v, int pos) {
                 String category = categoryAdapter.getCategoryName(pos);
+
+                Integer navigate;
+                homeViewModel.resetPage();
+
                 if(category.equals(CategoryType.MAP.toString())){
                     //전체검색으로 넘어가게
-                    homeViewModel.getAskType().setValue(0);
+                    homeViewModel.getAskType().setValue(AskType.Search);
                     homeViewModel.setSearchType(binding.switchShopOrItem.isChecked());
                     homeViewModel.setSearchContent(binding.editTextSearch.getText().toString());
-
-                    homeViewModel.searchSearch(
-                            ((HomeActivity)getActivity()).getLoginToken(),
-                            homeViewModel.getSearchType().getValue(),
-                            homeViewModel.getSearchContent().getValue(),
-                            homeViewModel.getLocation(getContext()),
-                            null,
-                            false,
-                            HomeFragment.this::onSearchSuccessed,
-                            HomeFragment.this::onNetworkError);
+                    navigate = R.id.shopMapFragment;
                 }
+
                 else{
                     //ViewModel 설정 후 이동
-                    homeViewModel.getAskType().setValue(1);
+                    homeViewModel.getAskType().setValue(AskType.Category);
                     homeViewModel.setCategory(category);
                     homeViewModel.setSearchContent(null);
-
-                    //홈에서 오면 이거한번 돌려야함
-                    homeViewModel.searchCategory(
-                            ((HomeActivity)getActivity()).getLoginToken(),
-                            homeViewModel.getCategory().getValue(),
-                            homeViewModel.getLocation(getContext()),
-                            null,
-                            HomeFragment.this::onSearchSuccessed,
-                            HomeFragment.this::onNetworkError);
+                    navigate = R.id.shopListFragment;
                 }
-
+                //검색
+                homeViewModel.search(
+                        ((HomeActivity)getActivity()).getLoginToken(),
+                        homeViewModel.getLocation(getContext()),
+                        null,
+                        0,
+                        navigate,
+                        HomeFragment.this::onSearchSuccess,
+                        HomeFragment.this::onNetworkError);
             }
         });
 
         binding.textFieldSearch.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                homeViewModel.getAskType().setValue(0);
+                homeViewModel.getAskType().setValue(AskType.Search);
                 homeViewModel.setSearchType(binding.switchShopOrItem.isChecked());
                 homeViewModel.setSearchContent(binding.editTextSearch.getText().toString());
 
-                homeViewModel.searchSearch(
+                homeViewModel.resetPage();
+
+                //검색
+                homeViewModel.search(
                         ((HomeActivity)getActivity()).getLoginToken(),
-                        homeViewModel.getSearchType().getValue(),
-                        homeViewModel.getSearchContent().getValue(),
                         homeViewModel.getLocation(getContext()),
                         null,
-                        true,
-                        HomeFragment.this::onSearchSuccessed,
+                        0,
+                        null,
+                        HomeFragment.this::onSearchSuccess,
                         HomeFragment.this::onNetworkError);
             }
         });
@@ -154,20 +152,29 @@ public class HomeFragment extends Fragment{
         binding = null;
     }
 
-    private void onSearchSuccessed(ShopListDto success, Boolean list){
-        homeViewModel.setShopList(success.getShopInfoShortModels());
+    private void onSearchSuccess(PageableShopListDto success, Integer navigate){
+        //offset 설정까지
+        homeViewModel.getShopList().setValue(success.getContent());
+        homeViewModel.setOffset(success.getPageable().getOffset() + success.getNumberOfElements());
 
-        if(list){
-            navController.navigate(HomeFragmentDirections.actionHome2ToShopListFragment());
-        }else{
-            navController.navigate(HomeFragmentDirections.actionHome2ToShopMapFragment(R.id.home2));
+        if(navigate != null){
+            if(navigate == R.id.shopMapFragment){
+                navController.navigate(HomeFragmentDirections.actionHome2ToShopMapFragment(R.id.home2));
+            }
+            else if(navigate == R.id.shopListFragment){
+                navController.navigate(HomeFragmentDirections.actionHome2ToShopListFragment());
+            }
         }
+        //default
+        else{
+            navController.navigate(HomeFragmentDirections.actionHome2ToShopListFragment());
+        }
+
     }
-
-
     private void onNetworkError() {
         navController.navigate(R.id.action_global_networkErrorDialog);
     }
+
 
     public ArrayList<Integer> getCategoryIconId(){
         ArrayList<Integer> iconId = new ArrayList<>();

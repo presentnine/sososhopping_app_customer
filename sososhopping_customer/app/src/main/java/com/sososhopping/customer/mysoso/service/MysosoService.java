@@ -58,4 +58,8 @@ public interface MysosoService {
 
     @POST("orders/{orderId}")
     Call<OrderDetailDto> requestMyOrdersCancel(@Header("token") String token, @Path("orderId") long orderId, @Body OrderCancelDto action);
+
+    //탈퇴
+    @DELETE("users")
+    Call<Void> requestQuit(@Header("token") String token);
 }

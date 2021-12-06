@@ -79,6 +79,11 @@
         <action
             android:id="@+id/action_shopMapFragment_to_shop_graph"
             app:destination="@id/shop_graph" />
+        <action
+            android:id="@+id/action_shopMapFragment_to_shopListFragment"
+            app:destination="@id/shopListFragment"
+            app:popUpTo="@id/shopMapFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <dialog
@@ -314,5 +319,10 @@
         android:name="com.sososhopping.customer.mysoso.view.MysosoSettingFragment"
         android:label="MysosoSettingFragment"
         tools:layout="@layout/mysoso_setting"/>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.sososhopping.customer.common.chat.view.ChatFragment"
+        android:label="ChatFragment"
+        tools:layout="@layout/chat_list"/>
 
 </navigation>

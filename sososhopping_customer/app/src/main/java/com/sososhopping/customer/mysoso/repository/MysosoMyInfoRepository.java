@@ -88,4 +88,28 @@ public class MysosoMyInfoRepository {
             }
         });
     }
+
+    public void requestQuit(String token,
+                            Runnable onSuccess,
+                            Runnable onFailed){
+        mysosoService.requestQuit(token).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                switch (response.code()){
+                    case 200:
+                        onSuccess.run();
+                        break;
+
+                    default:
+                        onFailed.run();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                onFailed.run();
+            }
+        });
+    }
 }
