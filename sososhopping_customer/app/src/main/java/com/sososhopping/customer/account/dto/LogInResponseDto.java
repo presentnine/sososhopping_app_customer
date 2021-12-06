@@ -14,7 +14,14 @@ public class LogInResponseDto {
     @SerializedName("token")
     String token;
 
+    @SerializedName("firebaseToken")
+    String firebaseToken;
+
     public String getToken() {
         return token;
+    }
+
+    public String getFirebaseToken() {
+        return firebaseToken;
     }
 }
