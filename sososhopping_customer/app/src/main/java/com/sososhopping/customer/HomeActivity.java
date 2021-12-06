@@ -12,8 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -26,8 +24,17 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.sososhopping.customer.account.dto.LogInResponseDto;
 import com.sososhopping.customer.account.viewmodel.LogInViewModel;
 import com.sososhopping.customer.common.Constant;
@@ -52,6 +59,15 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
     //권한용
     private static final int PERMISSIONS_REQUEST_CODE = 100;
     String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+
+    //파이어베이스 기능
+    public FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    public FirebaseUser user;
+    public FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    public DatabaseReference ref;
+    public String firebaseToken;
+    public boolean afterLogin = false;
+    public boolean firebaseConnection = false;
 
     public ActivityMainBinding getBinding() {
         return binding;
@@ -239,6 +255,7 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
         setLoginToken(responseDto.getToken());
         this.setIsLogIn(true);
         initLoginButton();
+        afterLoginSuccessFirebaseInit(responseDto.getFirebaseToken());
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_success), Toast.LENGTH_SHORT).show();
     }
 
@@ -369,6 +386,85 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
             Log.e("name not found", e.toString());
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
+        }
+    }
+
+    //앱이 다시 켜지면 firebase 재인증
+    @Override
+    protected void onStart() {
+        super.onStart();
+        firebaseAuthentication();
+    }
+
+    //앱이 백으로 옮겨지는 경우 오프라인 설정
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        //오프라인 설정
+        if (afterLogin == true) {
+            ref.child("User").child(this.user.getUid()).child("connection").setValue(false);
+            ref.child("User").child(this.user.getUid()).child("lastOnline").setValue(ServerValue.TIMESTAMP);
+            mAuth.signOut();
+            firebaseConnection = false;
+        }
+    }
+
+    //수동, 자동 로그인 성공 이후 파이어베이스 초기화
+    public void afterLoginSuccessFirebaseInit(String firebaseToken) {
+        this.firebaseToken = firebaseToken;
+
+        afterLogin = true;
+
+        mAuth = FirebaseAuth.getInstance();
+        mAuth.signInWithCustomToken(firebaseToken)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            user = mAuth.getCurrentUser();
+                            firebaseDatabase = FirebaseDatabase.getInstance();
+                            ref = firebaseDatabase.getReference();
+
+                            //FcmId 설정
+                            FirebaseMessaging.getInstance().getToken()
+                                    .addOnCompleteListener(new OnCompleteListener<String>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<String> task) {
+                                            if (!task.isSuccessful()) {
+                                                Log.w("TAG", "Fetching FCM registration token failed", task.getException());
+                                                return;
+                                            }
+
+                                            ref.child("FcmId").child(user.getUid()).setValue(task.getResult());
+                                        }
+                                    });
+
+                            //온라인 설정
+                            ref.child("User").child(user.getUid()).child("connection").setValue(true);
+                            firebaseConnection = true;
+                        }
+                    }
+                });
+    }
+
+    //파이어베이스 재연결용 인증 (+ 온라인 설정)
+    public void firebaseAuthentication() {
+        if (afterLogin == true) {
+            user = mAuth.getCurrentUser();
+            if (user == null) {
+                mAuth.signInWithCustomToken(firebaseToken)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    user = mAuth.getCurrentUser();
+                                    ref.child("User").child(user.getUid()).child("connection").setValue(true);
+                                    firebaseConnection = true;
+                                }
+                            }
+                        });
+            }
         }
     }
 }
