@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.sososhopping.customer.common.types.Location;
 import com.sososhopping.customer.shop.dto.ReportInputDto;
+import com.sososhopping.customer.shop.model.ShopIntroduceModel;
 import com.sososhopping.customer.shop.repository.ShopRepository;
 
 import lombok.Getter;
@@ -16,6 +17,8 @@ public class ShopInfoViewModel extends ViewModel {
     MutableLiveData<String> shopName = new MutableLiveData<>();
     MutableLiveData<String> phone = new MutableLiveData<>();
     MutableLiveData<Location> location = new MutableLiveData<>();
+    MutableLiveData<ShopIntroduceModel> shopIntroduceModel = new MutableLiveData<>();
+    MutableLiveData<Float> distance = new MutableLiveData<>();
 
     private ShopRepository shopRepository = ShopRepository.getInstance();
 
@@ -35,13 +38,6 @@ public class ShopInfoViewModel extends ViewModel {
         this.location.setValue(location);
     }
 
-    public void setShopInfoViewModel(int shopId, String shopName, String phone, Location location){
-        setShopId(shopId);
-        setShopName(shopName);
-        setPhone(phone);
-        setLocation(location);
-    }
-
     public void inputReport(String token, int shopId, String report,
                             Runnable onSuccess,
                             Runnable onLogInFailed,
@@ -49,5 +45,19 @@ public class ShopInfoViewModel extends ViewModel {
                             Runnable onError){
         shopRepository.inputReport(token, shopId, ReportInputDto.builder().report(report).build(),
                 onSuccess, onLogInFailed, onFailed, onError);
+    }
+
+    public void setDistance(float distance){
+        this.distance.setValue(distance);
+    }
+
+
+    public void setItems(ShopIntroduceModel item){
+        setShopId(item.getStoreId());
+        setShopName(item.getName());
+        setPhone(item.getPhone());
+        setLocation(item.getLocation());
+
+        this.shopIntroduceModel.setValue(item);
     }
 }

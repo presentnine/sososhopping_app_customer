@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,12 +15,15 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.R;
-import com.sososhopping.customer.account.view.textValidate.EmailWatcher;
-import com.sososhopping.customer.account.view.textValidate.NameWatcher;
-import com.sososhopping.customer.account.view.textValidate.PasswordDupWatcher;
-import com.sososhopping.customer.account.view.textValidate.PasswordWatcher;
-import com.sososhopping.customer.account.view.textValidate.PhoneWatcher;
+import com.sososhopping.customer.account.dto.FindInfoDto;
+import com.sososhopping.customer.account.viewmodel.FindPasswordViewModel;
+import com.sososhopping.customer.common.textValidate.EmailWatcher;
+import com.sososhopping.customer.common.textValidate.NameWatcher;
+import com.sososhopping.customer.common.textValidate.PasswordDupWatcher;
+import com.sososhopping.customer.common.textValidate.PasswordWatcher;
+import com.sososhopping.customer.common.textValidate.PhoneWatcher;
 import com.sososhopping.customer.databinding.AccountFindPasswordBinding;
 
 
@@ -29,6 +31,7 @@ public class FindPasswordFragment extends Fragment {
     private NavController navController;
     private AccountFindPasswordBinding binding;
     private Boolean phoneChecked = false;
+    private FindPasswordViewModel findPasswordViewModel = new FindPasswordViewModel();
     public static FindPasswordFragment newInstance() {
         return new FindPasswordFragment();
     }
@@ -66,10 +69,9 @@ public class FindPasswordFragment extends Fragment {
                 //번호인증실패시
                 if(!phoneChecked){
                     binding.textViewPhoneCheck.setText("인증실패");
-
                 }
                 else{
-                    blockEditText(binding.editTextFindPassPhone);
+                    binding.editTextFindPassPhone.setEnabled(false);
                     binding.textViewPhoneCheck.setText("인증완료");
                 }
                 binding.textViewPhoneCheck.setVisibility(View.VISIBLE);
@@ -92,16 +94,21 @@ public class FindPasswordFragment extends Fragment {
                 }
 
                 //이메일 + 성함 + 휴대전화번호 -> 가입여부 (비밀번호 재설정)
-                if(false){
-                    binding.textViewInfoCheck.setText(getResources().getString(R.string.find_infoFail));
+                try {
+                    findPasswordViewModel.requestPassword(
+                            new FindInfoDto(
+                                    binding.editTextFindPassName.getText().toString(),
+                                    binding.editTextFindPassPhone.getText().toString(),
+                                    binding.editTextFindPassEmail.getText().toString()
+                            ),
+                            FindPasswordFragment.this::onSuccessFound,
+                            FindPasswordFragment.this::onNotFound,
+                            FindPasswordFragment.this::onNetworkError
+                    );
+                    binding.textViewInfoCheck.setVisibility(View.VISIBLE);
+                }catch (Exception e){
+                    Snackbar.make(binding.getRoot(), getResources().getString(R.string.input_error), Snackbar.LENGTH_SHORT).show();
                 }
-                else{
-                    blockEditText(binding.editTextFindPassName);
-                    blockEditText(binding.editTextFindPassEmail);
-                    binding.buttonInfoCheck.setClickable(false);
-                    binding.textViewInfoCheck.setText(getResources().getString(R.string.find_infoOk));
-                }
-                binding.textViewInfoCheck.setVisibility(View.VISIBLE);
             }
         });
 
@@ -124,18 +131,21 @@ public class FindPasswordFragment extends Fragment {
                 }
 
                 //API로 변경된 이메일 + 비밀번호 전송 -> 변경되는지 확인
+                try {
+                    findPasswordViewModel.changePassword(
+                            findPasswordViewModel.getChangePasswordDto(binding.editTextFindPassPassword.getText().toString()),
+                            FindPasswordFragment.this::onSuccessChange,
+                            FindPasswordFragment.this::onFailedChange,
+                            FindPasswordFragment.this::onNetworkError);
 
-                //이후 이동
-                navController.navigate(R.id.action_findPasswordFragment_to_signUpStartFragment);
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Snackbar.make(binding.getRoot(), getResources().getString(R.string.input_error), Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
-
-    public void blockEditText(EditText editText){
-        editText.setFocusable(false);
-        editText.setClickable(false);
-    }
 
     public void checkLayoutEmpty(){
         if(TextUtils.isEmpty(binding.editTextFindPassEmail.getText().toString())){
@@ -156,5 +166,36 @@ public class FindPasswordFragment extends Fragment {
         if(TextUtils.isEmpty(binding.editTextFindPassPasswordDup.getText().toString())){
             binding.textFieldFindPassPasswordDup.setError(getResources().getString(R.string.signup_error_nickname));
         }
+    }
+
+    public void onSuccessFound(){
+        binding.editTextFindPassName.setEnabled(false);
+        binding.editTextFindPassEmail.setEnabled(false);
+        binding.buttonInfoCheck.setEnabled(false);
+
+        binding.textFieldFindPassPassword.setEnabled(true);
+        binding.textFieldFindPassPasswordDup.setEnabled(true);
+        binding.buttonToMain.setEnabled(true);
+        binding.textViewInfoCheck.setText(getResources().getString(R.string.find_infoOk));
+    }
+
+    public void onNotFound(){
+        binding.textViewInfoCheck.setText(getResources().getString(R.string.find_error));
+    }
+
+    public void onSuccessChange(){
+        Snackbar.make(binding.getRoot(), getResources().getString(R.string.find_change_success), Snackbar.LENGTH_SHORT).show();
+        getActivity().onBackPressed();
+    }
+
+
+    public void onFailedChange(){
+        Snackbar.make(binding.getRoot(), getResources().getString(R.string.find_change_failed), Snackbar.LENGTH_SHORT).show();
+        getActivity().onBackPressed();
+    }
+
+    private void onNetworkError() {
+        getActivity().onBackPressed();
+        navController.navigate(R.id.action_global_networkErrorDialog);
     }
 }

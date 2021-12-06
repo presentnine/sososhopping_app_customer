@@ -2,6 +2,7 @@
 <resources>
     <string name="icon_map">icon_app_map</string>
     <string name="icon_map_explain">지도</string>
+    <string name="icon_list">목록</string>
 
     <string name="nav_interest">관심가게</string>
     <string name="nav_chat">채팅</string>

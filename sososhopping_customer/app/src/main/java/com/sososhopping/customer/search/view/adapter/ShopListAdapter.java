@@ -21,6 +21,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.sososhopping.customer.R;
+import com.sososhopping.customer.common.StringFormatMethod;
 import com.sososhopping.customer.databinding.ItemShopInfoBinding;
 import com.sososhopping.customer.search.model.ShopInfoShortModel;
 
@@ -107,14 +108,11 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ViewHo
         public void bindItem(ShopInfoShortModel shopInfoShortModel){
             binding.textViewShopName.setText(shopInfoShortModel.getName());
             binding.textViewShopDescription.setText(shopInfoShortModel.getDescription());
-            binding.textViewRating.setText(Double.toString(shopInfoShortModel.getScore()));
+
+            binding.textViewRating.setText(StringFormatMethod.getRating(shopInfoShortModel.getScore()));
 
             //km로 변환
-            if(shopInfoShortModel.getDistance() >= 1000){
-                binding.textViewDistance.setText((float)(shopInfoShortModel.getDistance()*0.001)+"km");
-            }else{
-                binding.textViewDistance.setText(shopInfoShortModel.getDistance()+"m");
-            }
+            binding.textViewDistance.setText(StringFormatMethod.getDistance(shopInfoShortModel.getDistance()));
 
 
             //지역화폐, 배달여부
@@ -164,7 +162,7 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ViewHo
 
             //Draw New Heart
             Drawable wrapped = DrawableCompat.wrap(AppCompatResources.getDrawable(binding.getRoot().getContext(), drawableImage));
-            DrawableCompat.setTint(wrapped, binding.getRoot().getResources().getColor(R.color.main_500));
+            DrawableCompat.setTint(wrapped, binding.getRoot().getResources().getColor(R.color.main_0));
             binding.imageViewFavorite.setImageDrawable(wrapped);
         }
     }

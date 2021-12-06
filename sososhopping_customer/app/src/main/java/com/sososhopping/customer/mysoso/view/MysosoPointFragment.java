@@ -17,16 +17,13 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.MysosoPointBinding;
 import com.sososhopping.customer.mysoso.dto.PointListDto;
-import com.sososhopping.customer.mysoso.model.PointInfoModel;
 import com.sososhopping.customer.mysoso.viemodel.PointInfoViewModel;
 import com.sososhopping.customer.mysoso.view.adapter.MysosoPointAdapter;
-
-import java.util.ArrayList;
 
 public class MysosoPointFragment extends Fragment {
 
@@ -61,7 +58,7 @@ public class MysosoPointFragment extends Fragment {
 
         //viewmodel 설정
         pointInfoViewModel = new PointInfoViewModel();
-        pointInfoViewModel.requestPointList(((MainActivity)getActivity()).getLoginToken(),
+        pointInfoViewModel.requestPointList(((HomeActivity)getActivity()).getLoginToken(),
                 this::onSuccess,
                 this::onFailedLogIn,
                 this::onFailed,
@@ -146,11 +143,11 @@ public class MysosoPointFragment extends Fragment {
     @Override
     public void onResume() {
         //상단바
-        ((MainActivity)getActivity()).showTopAppBar();
-        ((MainActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_point));
-
+        ((HomeActivity)getActivity()).showTopAppBar();
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_point));
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
         //하단바
-        ((MainActivity)getActivity()).showBottomNavigation();
+        ((HomeActivity)getActivity()).showBottomNavigation();
         super.onResume();
     }
 
@@ -164,9 +161,6 @@ public class MysosoPointFragment extends Fragment {
         if(dto != null){
             adapterFavorite.setItems(dto.getPointListFavorite());
             adapterNotFavorite.setItems(dto.getPointListNotFavorite());
-
-            //샘플데이터
-            adapterFavorite.setItems(mockData());
 
             adapterFavorite.notifyDataSetChanged();
             adapterNotFavorite.notifyDataSetChanged();
@@ -184,18 +178,6 @@ public class MysosoPointFragment extends Fragment {
 
     private void onNetworkError() {
         NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
-    }
-
-    public ArrayList<PointInfoModel> mockData(){
-        ArrayList<PointInfoModel> sample = new ArrayList<>();
-        sample.add(new PointInfoModel(23, "샘플",null, 123,true));
-        sample.add(new PointInfoModel(23, "샘플1",null, 1234,true));
-        sample.add(new PointInfoModel(23, "샘플2",null, 123456,true));
-        sample.add(new PointInfoModel(23, "샘플3",null, 1234567,true));
-        sample.add(new PointInfoModel(23, "샘플4",null, 12345678,true));
-        sample.add(new PointInfoModel(23, "샘플5",null, 123456789,true));
-
-        return sample;
     }
 
 }

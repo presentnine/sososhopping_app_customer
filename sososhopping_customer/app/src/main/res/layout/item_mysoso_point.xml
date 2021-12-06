@@ -3,14 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:paddingBottom="5dp"
-    android:paddingTop="5dp"
-    android:background="@drawable/drawable_background_understroke">
+    android:paddingTop="10dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="10dp"
+    android:layout_marginBottom="3dp"
+    android:background="@drawable/drawable_round_background">
 
     <ImageView
         android:id="@+id/imageView_shop"
-        android:layout_width="wrap_content"
+        android:layout_width="30dp"
         android:layout_height="30dp"
         android:adjustViewBounds="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,14 +23,14 @@
         android:id="@+id/textView_shop_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="10dp"
         android:ellipsize="end"
         android:text="매장이름"
         android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/editText_shopPoint"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/imageView_shop"
+        app:layout_constraintStart_toEndOf="@+id/imageView_shop"
         app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -36,23 +38,23 @@
         android:id="@+id/editText_shopPoint"
         android:layout_width="100dp"
         android:layout_height="30dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
         android:singleLine="true"
-        android:textSize="16dp"
+        android:textSize="@dimen/normal"
+        android:gravity="right|center_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageView_favorite"
+        app:layout_constraintEnd_toStartOf="@+id/textView9"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView_favorite"
-        android:layout_width="24dp"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="P"
+        android:textSize="@dimen/normal"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/ic_baseline_favorite_border_24"
-        app:tint="@color/main_500"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

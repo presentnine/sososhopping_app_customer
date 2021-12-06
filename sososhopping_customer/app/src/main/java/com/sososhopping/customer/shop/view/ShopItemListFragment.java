@@ -1,6 +1,7 @@
 package com.sososhopping.customer.shop.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,19 +17,18 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.ShopItemListBinding;
 import com.sososhopping.customer.shop.dto.ItemListDto;
 import com.sososhopping.customer.shop.view.adapter.ShopItemAdapter;
-import com.sososhopping.customer.shop.model.ShopItemModel;
 import com.sososhopping.customer.shop.viewmodel.ShopInfoViewModel;
 import com.sososhopping.customer.shop.viewmodel.ShopItemViewModel;
-
-import java.util.ArrayList;
 
 public class ShopItemListFragment extends Fragment {
     private NavController navController;
     private ShopItemAdapter shopItemAdapter = new ShopItemAdapter();
+    private ShopInfoViewModel shopInfoViewModel;
     private ShopItemViewModel shopItemViewModel;
     private ShopItemListBinding binding;
 
@@ -40,23 +40,15 @@ public class ShopItemListFragment extends Fragment {
         binding = ShopItemListBinding.inflate(inflater, container, false);
 
         //부모레벨
+        shopInfoViewModel = new ViewModelProvider(getParentFragment().getParentFragment()).get(ShopInfoViewModel.class);
         shopItemViewModel = new ViewModelProvider(getParentFragment().getParentFragment()).get(ShopItemViewModel.class);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         binding.recyclerView.setLayoutManager(layoutManager);
 
-        //Adapter 연결
-        /*ArrayList<ShopItemModel> dummyItems = new ArrayList<>();
-        dummyItems.add(new ShopItemModel(1, "가상의 상품", "가상의 상품입니다 \n두 줄도 확인해보겠습니다.", "1개", 4500, null, true));
-        dummyItems.add(new ShopItemModel(2, "가상의 사과", "가상의 상품입니다 \n두 줄도 확인해보겠습니다.", "1통", 10000, null, false));
-        dummyItems.add(new ShopItemModel(3, "가상의 복숭아", "가상의 상품입니다 \n두 줄도 확인해보겠습니다. \n세 줄도 확인해보겠습니다.", "1박스", 6000, null, true));
-        dummyItems.add(new ShopItemModel(4, "가상의 호두", "가상의 상품입니다 \n두 줄도 확인해보겠습니다. \n세 줄도 확인해보겠습니다. \n네 줄도 확인해보겠습니다.", "1개", 4500, null, true));
-        shopItemAdapter.setShopItemModels(dummyItems);*/
-
-
 
         //상품은 Create에서 로딩
-        int storeId = new ViewModelProvider(getActivity()).get(ShopInfoViewModel.class).getShopId().getValue();
+        int storeId = shopInfoViewModel.getShopId().getValue();
         shopItemViewModel.requestShopItem(storeId,
                 this::onSuccess,
                 this::onFailed,
@@ -78,7 +70,24 @@ public class ShopItemListFragment extends Fragment {
             }
             @Override
             public void onItemAdd(View v, int pos, int num) {
+
+                int itemId = shopItemAdapter.getShopItemModelLists().get(pos).getItemId();
+
                 //장바구니 담기 API
+                shopItemViewModel.addCart(((HomeActivity)getActivity()).getLoginToken(),
+                        itemId, num,
+                        ShopItemListFragment.this::onSuccessAdd,
+                        ShopItemListFragment.this::onDupAdd,
+                        ShopItemListFragment.this::onFailed,
+                        ShopItemListFragment.this::onNetworkError);
+
+            }
+        });
+
+        binding.buttonToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((HomeActivity)getActivity()).getBinding().bottomNavigation.setSelectedItemId(R.id.menu_cart);
             }
         });
     }
@@ -101,11 +110,21 @@ public class ShopItemListFragment extends Fragment {
         shopItemAdapter.notifyDataSetChanged();
     }
 
+    private void onSuccessAdd(){
+        Log.e("왜 아무일도 안생김?", "담기 시작");
+        Toast.makeText(getContext(), getResources().getString(R.string.item_addCart_succ), Toast.LENGTH_SHORT).show();
+    }
+
+    private void onDupAdd(){
+        Toast.makeText(getContext(), getResources().getString(R.string.item_addCart_dup), Toast.LENGTH_SHORT).show();
+    }
+
     private void onFailed() {
-        Toast.makeText(getContext(),getResources().getString(R.string.shop_error), Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(),getResources().getString(R.string.shop_error), Toast.LENGTH_SHORT).show();
     }
 
     private void onNetworkError() {
+        getActivity().onBackPressed();
         NavHostFragment.findNavController(getParentFragment().getParentFragment()).navigate(R.id.action_global_networkErrorDialog);
     }
 }

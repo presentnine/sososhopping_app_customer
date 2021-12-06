@@ -16,17 +16,15 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.ShopReviewBinding;
 import com.sososhopping.customer.shop.dto.ReviewListDto;
-import com.sososhopping.customer.shop.model.ReviewModel;
 import com.sososhopping.customer.shop.view.adapter.ShopReviewAdapter;
 import com.sososhopping.customer.shop.viewmodel.ShopInfoViewModel;
 import com.sososhopping.customer.shop.viewmodel.ShopReviewViewModel;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 
 
 public class ShopReviewFragment extends Fragment {
@@ -45,7 +43,7 @@ public class ShopReviewFragment extends Fragment {
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater,
                              @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         binding = ShopReviewBinding.inflate(inflater, container,false);
-        storeId = new ViewModelProvider(getActivity()).get(ShopInfoViewModel.class).getShopId().getValue();
+        storeId = new ViewModelProvider(getParentFragment().getParentFragment()).get(ShopInfoViewModel.class).getShopId().getValue();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         binding.recyclerViewReview.setLayoutManager(layoutManager);
@@ -75,6 +73,14 @@ public class ShopReviewFragment extends Fragment {
                 this::onFailed,
                 this::onNetworkError);
 
+        String token = ((HomeActivity)getActivity()).getLoginToken();
+        if(token != null){
+            reviewViewModel.checkShopReview(token, storeId,
+                    this::onDup,
+                    this::onFailed,
+                    this::onNetworkError);
+        }
+
         super.onResume();
     }
 
@@ -97,5 +103,9 @@ public class ShopReviewFragment extends Fragment {
 
     private void onNetworkError() {
         NavHostFragment.findNavController(getParentFragment().getParentFragment()).navigate(R.id.action_global_networkErrorDialog);
+    }
+
+    private void onDup(){
+        binding.buttonAddReview.setVisibility(View.GONE);
     }
 }

@@ -2,25 +2,39 @@ package com.sososhopping.customer.common.gps;
 
 import android.util.Log;
 
-public class CalculateDistance {
-    public static int distance(double lat1, double lat2, double lon1,
-                                  double lon2) {
+import com.sososhopping.customer.common.types.Location;
 
-        Log.d("위경도", lat1 + " " + lat2 + " " + lon1 + " " + lon2);
+public class CalculateDistance {
+
+
+    public static float distance(Location start, Location target) {
 
         final int R = 6371; // Radius of the earth
 
-        double latDistance = Math.toRadians(lat2 - lat1);
-        double lonDistance = Math.toRadians(lon2 - lon1);
+        double theta = start.getLng() - target.getLng();
+        double distance = Math.sin(Math.toRadians(start.getLat()))
+                * Math.sin(Math.toRadians(target.getLat()))
+                + Math.cos(Math.toRadians(start.getLat()))
+                * Math.cos(Math.toRadians(target.getLat()))
+                * Math.cos(Math.toRadians(theta));
+
+        distance = Math.acos(distance);
+        distance = Math.toDegrees(distance);
+        distance = distance * 60 * 1.1515;
+        distance = distance * 1.609344; //km
+
+
+        /*double latDistance = Math.toRadians(target.getLat() - start.getLat());
+        double lonDistance = Math.toRadians(target.getLng() - start.getLat());
         double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                + Math.cos(Math.toRadians(start.getLat())) * Math.cos(Math.toRadians(target.getLat()))
                 * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distance = R * c * 1000; // convert to meters
+        double distance = (R * c);*/
 
         /*double height = el1 - el2;
         distance = Math.pow(distance, 2) + Math.pow(height, 2);*/
 
-        return (int) Math.round(distance);
+        return (float) distance;
     }
 }

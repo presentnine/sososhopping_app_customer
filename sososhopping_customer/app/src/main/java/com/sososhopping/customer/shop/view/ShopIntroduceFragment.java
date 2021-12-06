@@ -3,7 +3,6 @@ package com.sososhopping.customer.shop.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +16,11 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.ShopGraphDirections;
-import com.sososhopping.customer.common.CarouselMethod;
+import com.sososhopping.customer.common.carousel.CarouselMethod;
 import com.sososhopping.customer.databinding.ShopIntroduceBinding;
 import com.sososhopping.customer.shop.model.ShopIntroduceModel;
 import com.sososhopping.customer.shop.viewmodel.ShopInfoViewModel;
@@ -31,8 +30,8 @@ public class ShopIntroduceFragment extends Fragment {
     private NavController navController;
     private ShopIntroduceBinding binding;
     private ShopIntroduceModel shopIntroduceModel;
+    private ShopIntroduceViewModel shopIntroduceViewModel = new ShopIntroduceViewModel();
     private ShopInfoViewModel shopInfoViewModel;
-    private ShopIntroduceViewModel shopIntroduceViewModel = new ShopIntroduceViewModel();;
 
     public static ShopIntroduceFragment newInstance(){return new ShopIntroduceFragment();}
 
@@ -40,14 +39,13 @@ public class ShopIntroduceFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = ShopIntroduceBinding.inflate(inflater, container, false);
-
-        shopIntroduceViewModel.setStoreId(new ViewModelProvider(getActivity()).get(ShopInfoViewModel.class).getShopId().getValue());
+        shopInfoViewModel = new ViewModelProvider(getParentFragment().getParentFragment()).get(ShopInfoViewModel.class);
+        shopIntroduceViewModel.setStoreId(shopInfoViewModel.getShopId().getValue());
         shopIntroduceViewModel.requestShopIntroduce(
-                ((MainActivity)getActivity()).getLoginToken(),
+                ((HomeActivity)getActivity()).getLoginToken(),
                 ShopIntroduceFragment.this::onSuccess,
                 ShopIntroduceFragment.this::onFailed,
                 ShopIntroduceFragment.this::onNetworkError);
-
 
         return binding.getRoot();
     }
@@ -89,7 +87,7 @@ public class ShopIntroduceFragment extends Fragment {
             public void onClick(View v) {
                 //관심가게 여부 변경 api
                 shopIntroduceViewModel.requestShopFavoriteChange(
-                        ((MainActivity)getActivity()).getLoginToken(),
+                        ((HomeActivity)getActivity()).getLoginToken(),
                         ShopIntroduceFragment.this::onSuccessFavoriteChange,
                         ShopIntroduceFragment.this::onFailedLogIn,
                         ShopIntroduceFragment.this::onFailed,
@@ -100,6 +98,11 @@ public class ShopIntroduceFragment extends Fragment {
 
     private void onSuccess(ShopIntroduceModel shopIntroduceModel){
         if(shopIntroduceModel != null){
+
+            if(shopInfoViewModel.getShopIntroduceModel().getValue() == null){
+                ((ShopMainFragment)getParentFragment().getParentFragment()).initialSetting(shopIntroduceModel);
+            }
+
             this.shopIntroduceModel = shopIntroduceModel;
 
             binding.textViewShopLocation.setText(shopIntroduceViewModel.getAddress(shopIntroduceModel));

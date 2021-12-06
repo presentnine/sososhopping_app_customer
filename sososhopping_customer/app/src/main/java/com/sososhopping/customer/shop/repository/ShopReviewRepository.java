@@ -110,4 +110,30 @@ public class ShopReviewRepository {
             }
         });
     }
+
+    public void checkReviews(String token,
+                             int storeId,
+                             Runnable onDup,
+                             Runnable onFailed,
+                             Runnable onError){
+        shopService.checkReviews(token, storeId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                switch (response.code()){
+                    case 409:
+                        onDup.run();
+                        break;
+
+                    case 404:
+                        onFailed.run();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                onError.run();
+            }
+        });
+    }
 }

@@ -67,6 +67,28 @@ public class ShopEventBoardAdapter extends RecyclerView.Adapter<ShopEventBoardAd
         public ViewHolder(ItemShopBoardBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+        }
+
+        public void bindItem(EventItemModel eventItemModel) throws ParseException {
+            binding.textViewEventTitle.setText(eventItemModel.getTitle());
+            binding.textViewEventOrNews.setText(eventItemModel.getWritingType().getValue());
+            binding.textViewEventWriteDate.setText(DateFormatMethod.dateFormatMin(eventItemModel.getCreatedAt()));
+            if(eventItemModel.getDescription().length() >= 50){
+                binding.textViewEventDescription.setText(eventItemModel.getDescription().substring(0,49) + "...");
+            }
+            else{
+                binding.textViewEventDescription.setText(eventItemModel.getDescription());
+            }
+
+            //이미지
+            Glide.with(itemView)
+                    .load(eventItemModel.getImgUrl())
+                    .transform(new CenterCrop(),new RoundedCorners(10))
+                    .thumbnail(0.2f)
+                    .placeholder(R.drawable.icon_app_groceries)
+                    .error(R.drawable.icon_app_groceries)
+                    .fallback(R.drawable.icon_app_groceries)
+                    .into(binding.imageViewBoard);
 
             binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -81,29 +103,6 @@ public class ShopEventBoardAdapter extends RecyclerView.Adapter<ShopEventBoardAd
                     }
                 }
             });
-        }
-
-        public void bindItem(EventItemModel eventItemModel) throws ParseException {
-            binding.textViewEventTitle.setText(eventItemModel.getTitle());
-            binding.textViewEventOrNews.setText(eventItemModel.getWritingType().getValue());
-            binding.textViewEventWriteDate.setText(DateFormatMethod.dateFormatMin(eventItemModel.getCreatedAt()));
-            if(eventItemModel.getDescription().length() >= 50){
-                binding.textViewEventDescription.setText(eventItemModel.getDescription().substring(0,49) + "...");
-            }
-            else{
-                binding.textViewEventDescription.setText(eventItemModel.getDescription());
-            }
-
-
-            //이미지
-            Glide.with(itemView)
-                    .load(eventItemModel.getImgUrl())
-                    .transform(new CenterCrop(),new RoundedCorners(10))
-                    .thumbnail(0.2f)
-                    .placeholder(R.drawable.icon_app_groceries)
-                    .error(R.drawable.icon_app_groceries)
-                    .fallback(R.drawable.icon_app_groceries)
-                    .into(binding.imageViewBoard);
         }
     }
 }

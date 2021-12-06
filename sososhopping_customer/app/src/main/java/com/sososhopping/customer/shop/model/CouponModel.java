@@ -14,16 +14,16 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class CouponModel {
-    int couponId;
-    String StoreName;
+    long couponId;
+    String storeName;
     String couponName;
     String couponCode;
-    Integer minimumOrderPrice;
+    int minimumOrderPrice;
     String startDate;
     String endDate;
     String expiryDate;
     CouponType couponType;
-    Integer fixAmount;
+    int fixAmount;
     Double rateAmount;
 
     public String amount(){
@@ -34,5 +34,9 @@ public class CouponModel {
             return rateAmount+"%";
         }
         return null;
+    }
+
+    public CouponModel(String storeName){
+        this.storeName = storeName;
     }
 }

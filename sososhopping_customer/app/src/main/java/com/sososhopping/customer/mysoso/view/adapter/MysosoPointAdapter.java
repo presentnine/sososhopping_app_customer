@@ -83,31 +83,17 @@ public class MysosoPointAdapter extends RecyclerView.Adapter<MysosoPointAdapter.
             binding.textViewShopTitle.setText(pointInfoModel.getStoreName());
             binding.editTextShopPoint.setText(Integer.toString(pointInfoModel.getPoint()));
 
-            //favorite 색상 변경 함수
-                int drawableImage = 0;
-                if(pointInfoModel.isInterestStore()){
-                    drawableImage = R.drawable.ic_baseline_favorite_24;
-                }
-                else{
-                    drawableImage = R.drawable.ic_baseline_favorite_border_24;
-                }
-
-                //Draw New Heart
-                Drawable wrapped = DrawableCompat.wrap(AppCompatResources.getDrawable(binding.getRoot().getContext(), drawableImage));
-                DrawableCompat.setTint(wrapped, binding.getRoot().getResources().getColor(R.color.main_500));
-                binding.imageViewFavorite.setImageDrawable(wrapped);
 
             //이미지
-            if(pointInfoModel.getImgUrl() != null){
-                Glide.with(itemView)
-                        .load(pointInfoModel.getImgUrl())
-                        .transform(new CenterCrop(),new CircleCrop())
-                        .thumbnail(0.2f)
-                        .placeholder(R.drawable.icon_app_groceries)
-                        .error(R.drawable.icon_app_groceries)
-                        .fallback(R.drawable.icon_app_groceries)
-                        .into(binding.imageViewShop);
-            }
+            Glide.with(itemView)
+                    .load(pointInfoModel.getImgUrl())
+                    .override(100,100)
+                    .transform(new CenterCrop(),new CircleCrop())
+                    .thumbnail(0.2f)
+                    .placeholder(R.drawable.icon_app_groceries)
+                    .error(R.drawable.icon_app_groceries)
+                    .fallback(R.drawable.icon_app_groceries)
+                    .into(binding.imageViewShop);
 
 
         }

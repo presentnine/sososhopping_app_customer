@@ -1,6 +1,5 @@
 package com.sososhopping.customer.search.dto;
 
-import com.google.gson.annotations.SerializedName;
 import com.sososhopping.customer.search.model.ShopInfoShortModel;
 
 import java.util.ArrayList;
@@ -15,6 +14,5 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShopListDto {
-    @SerializedName("results")
-    ArrayList<ShopInfoShortModel> shopInfoShortModels = new ArrayList<>();
+    ArrayList<ShopInfoShortModel> results = new ArrayList<>();
 }

@@ -13,9 +13,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
-import com.sososhopping.customer.common.CarouselMethod;
+import com.sososhopping.customer.common.carousel.CarouselMethod;
 import com.sososhopping.customer.common.DateFormatMethod;
 import com.sososhopping.customer.databinding.ShopEventDetailBinding;
 import com.sososhopping.customer.shop.model.EventDetailModel;
@@ -68,7 +68,7 @@ public class ShopEventDetailFragment extends Fragment {
 
     @Override
     public void onResume() {
-        ((MainActivity) getActivity()).getBinding().topAppBar.setTitle(storeName);
+        ((HomeActivity) getActivity()).getBinding().topAppBar.setTitle(storeName);
         super.onResume();
     }
 

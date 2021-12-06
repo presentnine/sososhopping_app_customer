@@ -33,6 +33,13 @@
         <action
             android:id="@+id/action_shopMainFragment_to_shopReportFragment"
             app:destination="@id/shopReportFragment" />
+        <argument
+            android:name="storeId"
+            app:argType="long" />
+        <argument
+            android:name="distance"
+            app:argType="float"
+            android:defaultValue="-1"/>
     </fragment>
     <fragment
         android:id="@+id/shopReportFragment"

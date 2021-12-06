@@ -12,8 +12,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddCouponDto {
-    @SerializedName("couponId")
-    int couponId;
+    /*@SerializedName("couponId")
+    int couponId;*/
 
     @SerializedName("couponCode")
     String couponCode;

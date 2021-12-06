@@ -11,14 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
-import com.sososhopping.customer.MainActivity;
+import com.google.android.material.snackbar.Snackbar;
+import com.sososhopping.customer.HomeActivity;
+import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.MysosoMainBinding;
 
 import org.jetbrains.annotations.Nullable;
-
-import java.math.BigInteger;
 
 public class
 MysosoMainFragment extends Fragment {
@@ -30,6 +31,14 @@ MysosoMainFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //로그인 안되면 못하게
+        if(!((HomeActivity)getActivity()).getIsLogIn()){
+            ((HomeActivity)getActivity()).bottomItemClicked(R.id.home2);
+            NavHostFragment.findNavController(this)
+                    .navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_description));
+        }
+
         //메뉴 변경 확인
         setHasOptionsMenu(true);
     }
@@ -50,8 +59,6 @@ MysosoMainFragment extends Fragment {
 
         //viewmodel 설정
 
-
-
         return binding.getRoot();
     }
 
@@ -61,22 +68,79 @@ MysosoMainFragment extends Fragment {
         //Controller 설정
         navConroller = Navigation.findNavController(view);
 
+        //내정보
+        binding.cardViewMyInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navConroller.navigate(R.id.action_mysosoMainFragment_to_mysosoMyInfoFragment);
+            }
+        });
+
+
         //관심가게
-        binding.imageViewInterest.setOnClickListener(new View.OnClickListener() {
+        binding.cardViewInterest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //하단바에 관심가게 클릭한 효과
-                ((MainActivity) getActivity()).getBinding().bottomNavigation.setSelectedItemId(R.id.menu_interest);
+                ((HomeActivity) getActivity()).bottomItemClicked(R.id.menu_interest);
+            }
+        });
+
+        //고객센터
+        binding.cardViewServiceInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navConroller.navigate(MysosoMainFragmentDirections.actionGlobalMysosoCustomerServiceDialog());
+            }
+        });
+
+        //설정
+        binding.cardViewSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navConroller.navigate(MysosoMainFragmentDirections.actionMysosoMainFragmentToMysosoSettingFragment());
             }
         });
 
         /*6개 메뉴*/
-        binding.imageViewMyPoint.setOnClickListener(new View.OnClickListener() {
+        binding.cardViewMyPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 navConroller.navigate(R.id.action_mysosoMainFragment_to_mysosoPointFragment);
             }
         });
+
+        binding.cardViewMyRating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navConroller.navigate(R.id.action_mysosoMainFragment_to_mysosoReviewFragment);
+            }
+        });
+
+        //쿠폰
+        binding.cardViewMyCoupon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navConroller.navigate(R.id.action_mysosoMainFragment_to_mysosoCouponFragment);
+            }
+        });
+
+        //장바구니
+        binding.cardViewShoppingBag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //하단바 클릭한 효과
+                ((HomeActivity) getActivity()).bottomItemClicked(R.id.menu_cart);
+            }
+        });
+        //결제내역
+        binding.cardViewPayHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navConroller.navigate(MysosoMainFragmentDirections.actionMysosoMainFragmentToMysosoOrderListFragment());
+            }
+        });
+
 
 
 
@@ -86,11 +150,14 @@ MysosoMainFragment extends Fragment {
     @Override
     public void onResume() {
         //상단바
-        ((MainActivity)getActivity()).showTopAppBar();
-        ((MainActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso));
+        ((HomeActivity)getActivity()).showTopAppBar();
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso));
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setOnClickListener(null);
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
+        ((HomeActivity)getActivity()).setTopAppBarHome(false);
 
         //하단바
-        ((MainActivity)getActivity()).showBottomNavigation();
+        ((HomeActivity)getActivity()).showBottomNavigation();
         super.onResume();
     }
 

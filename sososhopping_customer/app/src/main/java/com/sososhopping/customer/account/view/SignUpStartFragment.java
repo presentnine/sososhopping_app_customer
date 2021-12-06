@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.AccountSignUpStartBinding;
 
@@ -55,9 +55,9 @@ public class SignUpStartFragment extends Fragment {
 
     @Override
     public void onResume() {
-        ((MainActivity)getActivity()).hideTopAppBar();
-        ((MainActivity)getActivity()).hideBottomNavigation();
-        ((MainActivity)getActivity()).hideLoginButton();
+        ((HomeActivity)getActivity()).hideTopAppBar();
+        ((HomeActivity)getActivity()).hideBottomNavigation();
+        ((HomeActivity)getActivity()).hideLoginButton();
         super.onResume();
     }
 

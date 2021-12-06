@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:text="@string/login_error_description"
             android:textSize="16sp"
-            android:textColor="@color/black"
+            android:textColor="@color/text_800"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -28,6 +28,7 @@
             android:layout_marginTop="24dp"
             android:text="@string/login_error_ok"
             android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/description"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

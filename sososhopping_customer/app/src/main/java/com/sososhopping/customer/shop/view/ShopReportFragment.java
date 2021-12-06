@@ -14,10 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.ShopGraphDirections;
@@ -109,7 +108,7 @@ public class ShopReportFragment extends Fragment {
                 }
 
                 shopInfoViewModel.inputReport(
-                        ((MainActivity)getActivity()).getLoginToken(),
+                        ((HomeActivity)getActivity()).getLoginToken(),
                         shopInfoViewModel.getShopId().getValue(),
                         binding.editTextReportContent.getText().toString(),
                         ShopReportFragment.this::onSuccess,
@@ -125,11 +124,11 @@ public class ShopReportFragment extends Fragment {
     @Override
     public void onResume() {
         //상단바
-        ((MainActivity)getActivity()).showTopAppBar();
-        ((MainActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.report_title));
+        ((HomeActivity)getActivity()).showTopAppBar();
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.report_title));
 
         //하단바
-        ((MainActivity)getActivity()).hideBottomNavigation();
+        ((HomeActivity)getActivity()).hideBottomNavigation();
         super.onResume();
     }
 

@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:layout_marginTop="10dp"
+        android:layout_margin="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,16 +29,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:background="@drawable/drawable_round_background">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
                         android:gravity="center"
                         android:text="@string/mysoso_point_interest"
-                        android:textColor="@color/text_800"
-                        android:textSize="18sp" />
+                        android:textColor="@color/text_400"
+                        android:textSize="@dimen/large_minus" />
 
                     <ImageButton
                         android:id="@+id/image_button_favorite_arrow_down"
@@ -59,7 +59,9 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView_pointFavorite"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/background"
+                    android:background="@drawable/drawable_round_background"/>
             </LinearLayout>
 
             <LinearLayout
@@ -72,16 +74,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:background="@drawable/drawable_round_background">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
                         android:gravity="center"
                         android:text="@string/mysoso_point_all"
-                        android:textColor="@color/text_800"
-                        android:textSize="18sp" />
+                        android:textColor="@color/text_400"
+                        android:textSize="@dimen/large_minus" />
 
                     <ImageButton
                         android:id="@+id/image_button_not_favorite_arrow_down"
@@ -102,7 +104,9 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView_pointNotFavorite"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/background"
+                    android:background="@drawable/drawable_round_background"/>
             </LinearLayout>
 
         </LinearLayout>

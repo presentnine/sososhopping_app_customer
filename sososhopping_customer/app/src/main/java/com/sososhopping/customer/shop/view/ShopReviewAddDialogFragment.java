@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.ShopReviewAddDialogBinding;
@@ -54,7 +54,7 @@ public class ShopReviewAddDialogFragment extends DialogFragment {
                 int score = (int) binding.ratingBarReview.getRating();
 
                 reviewViewModel.inputShopReviews(
-                        ((MainActivity)getActivity()).getLoginToken(),
+                        ((HomeActivity)getActivity()).getLoginToken(),
                         storeId,
                         reviewViewModel.getReviewInputDto(score, content),
                         ShopReviewAddDialogFragment.this::onSuccess,

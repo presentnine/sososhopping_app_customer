@@ -19,9 +19,9 @@ import androidx.navigation.Navigation;
 
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.account.viewmodel.SignUpViewModel;
-import com.sososhopping.customer.account.view.textValidate.NameWatcher;
-import com.sososhopping.customer.account.view.textValidate.NickNameWatcher;
-import com.sososhopping.customer.account.view.textValidate.PhoneWatcher;
+import com.sososhopping.customer.common.textValidate.NameWatcher;
+import com.sososhopping.customer.common.textValidate.NickNameWatcher;
+import com.sososhopping.customer.common.textValidate.PhoneWatcher;
 import com.sososhopping.customer.databinding.AccountSignUpInfoBinding;
 
 
@@ -116,7 +116,6 @@ public class SignUpInfoFragment extends Fragment {
 
         navController = Navigation.findNavController(view);
         signUpViewModel = new ViewModelProvider(requireParentFragment()).get(SignUpViewModel.class);
-        // TODO: Use the ViewModel
 
         //다음화면으로
         binding.buttonSignUp.setOnClickListener(new View.OnClickListener() {
@@ -199,8 +198,8 @@ public class SignUpInfoFragment extends Fragment {
     }
     private void onPhoneNotDuplicated(){
         phoneChecked = true;
-        binding.editTextSignUpPhone.setFocusable(false);
-        binding.editTextSignUpPhone.setClickable(false);
+        binding.editTextSignUpPhone.setEnabled(false);
+        binding.textFieldSignUpPhone.setEnabled(false);
         binding.textViewPhoneCheck.setText("인증완료");
         binding.textViewPhoneCheck.setVisibility(View.VISIBLE);
     }

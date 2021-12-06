@@ -61,6 +61,45 @@ public class ShopEventCouponAdapter extends RecyclerView.Adapter<ShopEventCoupon
             super(binding.getRoot());
             this.binding = binding;
 
+        }
+
+        public void bindItem(CouponModel couponModel){
+            binding.textViewCouponCode.setText(couponModel.getCouponCode());
+            binding.textViewCouponAmount.setText(couponModel.amount());
+
+            //코드, 이름
+            binding.textViewCouponName.setText(couponModel.getCouponName());
+            binding.textViewStoreName.setText(storeName);
+
+            //제한조건
+            if(couponModel.getMinimumOrderPrice() != 0){
+                binding.textViewMinimum.setText(Integer.toString(couponModel.getMinimumOrderPrice()));
+            }
+            else{
+                binding.linerlayoutMinimum.setVisibility(View.GONE);
+            }
+
+            if(couponModel.getStartDate() == null && couponModel.getEndDate() == null){
+                binding.linearLayoutDate.setVisibility(View.GONE);
+
+                //크기조절용
+                if(couponModel.getMinimumOrderPrice() == 0){
+                    binding.buttonAddCoupon.setText(null);
+                }
+            }
+            else{
+                if(couponModel.getStartDate() != null){
+                    binding.textViewStartDate.setText(DateFormatMethod.dateFormatDay(couponModel.getStartDate()));
+                }
+                if(couponModel.getEndDate() != null){
+                    binding.textViewEndDate.setText(DateFormatMethod.dateFormatDay(couponModel.getEndDate())+"까지 발급");
+                }
+            }
+
+            if(couponModel.getExpiryDate() != null){
+                binding.textViewCouponExpire.setText("저장 후 "+DateFormatMethod.dateFormatDay(couponModel.getExpiryDate())+"까지 사용가능");
+            }
+
             binding.buttonAddCoupon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -91,44 +130,6 @@ public class ShopEventCouponAdapter extends RecyclerView.Adapter<ShopEventCoupon
                     binding.linearLayoutCouponInfo.setVisibility(View.VISIBLE);
                 }
             });
-        }
-
-        public void bindItem(CouponModel couponModel){
-            binding.textViewCouponCode.setText(couponModel.getCouponCode());
-            binding.textViewCouponAmount.setText(couponModel.amount());
-
-            //코드, 이름
-            binding.textViewCouponName.setText(couponModel.getCouponName());
-            binding.textViewStoreName.setText(storeName);
-
-            //제한조건
-            if(couponModel.getMinimumOrderPrice() != null){
-                binding.textViewMinimum.setText(Integer.toString(couponModel.getMinimumOrderPrice()));
-            }
-            else{
-                binding.linerlayoutMinimum.setVisibility(View.GONE);
-            }
-
-            if(couponModel.getStartDate() == null && couponModel.getEndDate() == null){
-                binding.linearLayoutDate.setVisibility(View.GONE);
-
-                //크기조절용
-                if(couponModel.getMinimumOrderPrice() == null){
-                    binding.buttonAddCoupon.setText(null);
-                }
-            }
-            else{
-                if(couponModel.getStartDate() != null){
-                    binding.textViewStartDate.setText(DateFormatMethod.dateFormatDay(couponModel.getStartDate()));
-                }
-                if(couponModel.getEndDate() != null){
-                    binding.textViewEndDate.setText(DateFormatMethod.dateFormatDay(couponModel.getEndDate()));
-                }
-            }
-
-            if(couponModel.getExpiryDate() != null){
-                binding.textViewCouponExpire.setText(DateFormatMethod.dateFormatDay(couponModel.getExpiryDate()));
-            }
 
         }
     }

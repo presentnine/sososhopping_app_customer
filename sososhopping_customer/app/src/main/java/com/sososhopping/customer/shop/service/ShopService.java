@@ -1,6 +1,7 @@
 package com.sososhopping.customer.shop.service;
 
 import com.sososhopping.customer.mysoso.dto.AddCouponDto;
+import com.sososhopping.customer.shop.dto.AddCartDto;
 import com.sososhopping.customer.shop.dto.CouponListDto;
 import com.sososhopping.customer.shop.dto.EventItemListDto;
 import com.sososhopping.customer.shop.dto.ItemListDto;
@@ -19,9 +20,6 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface ShopService {
-
-    @GET("stores/{storeId}")
-    Call<ShopIntroduceModel> requestShopIntroduce(@Path("storeId") int storeId);
 
     @GET("stores/{storeId}")
     Call<ShopIntroduceModel> requestShopIntroduce(@Header("token") String token, @Path("storeId") int storeId);
@@ -44,6 +42,9 @@ public interface ShopService {
     @POST("stores/{storeId}/reviews")
     Call<Void> inputReviews(@Header("token") String token, @Path("storeId") int storeId, @Body ReviewInputDto reviewInputDto);
 
+    @GET("stores/{storeId}/reviews/check")
+    Call<Void> checkReviews(@Header("token") String token, @Path("storeId") int storeId);
+
     @POST("my/interest_store")
     Call<Void> changeInterest(@Header("token") String token, @Body StoreIdDto storeIdDto);
 
@@ -52,4 +53,7 @@ public interface ShopService {
 
     @POST("my/coupons")
     Call<Void> addCoupons(@Header("token") String token, @Body AddCouponDto addCouponDto);
+
+    @POST("my/cart")
+    Call<Void> addCart(@Header("token")String token, @Body AddCartDto dto);
 }

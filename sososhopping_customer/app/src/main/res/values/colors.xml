@@ -9,12 +9,14 @@
     <color name="white">#FFFFFFFF</color>
 
     <!--color to use-->
+    <color name="main_0">#CCCDFA</color>
     <color name="main_200">#A3A3F6</color>
-    <color name="main_400">#3E3FE9</color>
-    <!--<color name="main_400">#5D5FEF</color>-->
+    <!--<color name="main_400">#3E3FE9</color>-->
+    <color name="main_400">#5D5FEF</color>
     <color name="main_500">#3E3FE9</color>
     <color name="main_700">#3029D0</color>
 
+    <color name="background">#efefef</color>
     <color name="text_0">#b3b3b3</color>
     <color name="text_200">#676767</color>
     <color name="text_400">#4d4d4d</color>
@@ -26,5 +28,9 @@
     <color name="orange_rating">#F86C21</color>
     <color name="sky_local_pay">#03ADFC</color>
     <color name="teal_delivery">#28AFB0</color>
+    <color name="red_cancel">#ef5d6b</color>
+    <color name="green_done">#00DB00</color>
+    <color name="yellow_approve">#efe15d</color>
+    <color name="red_cart">#F5487F</color>
 
 </resources>

@@ -42,5 +42,12 @@ public class ShopReviewViewModel extends ViewModel {
         shopRepository.inputReview(token, storeId, reviewInputDto, onSuccess, onFailedLogIn, onFailed, onError);
     }
 
+    public void checkShopReview(String token, int storeId,
+                                Runnable onDup,
+                                Runnable onFailed,
+                                Runnable onError){
+        shopRepository.checkReviews(token, storeId, onDup, onFailed, onError);
+    }
+
 
 }

@@ -19,8 +19,6 @@ import java.util.ArrayList;
 public class MysosoReviewAdapter extends RecyclerView.Adapter<MysosoReviewAdapter.ViewHolder>{
     ArrayList<MyreviewModel> reviewModels = new ArrayList<>();
     ItemShopReviewBinding binding;
-    OnItemClickListener itemClickListener;
-
 
     @NonNull
     @NotNull
@@ -49,15 +47,6 @@ public class MysosoReviewAdapter extends RecyclerView.Adapter<MysosoReviewAdapte
         return reviewModels;
     }
 
-    //클릭 이벤트
-    public interface OnItemClickListener{
-        void onItemClick(MyreviewModel reviewModel);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener){
-        this.itemClickListener = listener;
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         ItemShopReviewBinding binding;
@@ -65,20 +54,6 @@ public class MysosoReviewAdapter extends RecyclerView.Adapter<MysosoReviewAdapte
         public ViewHolder(ItemShopReviewBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-
-            binding.getRoot().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int pos = getAdapterPosition();
-                    if(pos != RecyclerView.NO_POSITION){
-
-                        //리스너 호출
-                        if(itemClickListener != null){
-                            itemClickListener.onItemClick(reviewModels.get(pos));
-                        }
-                    }
-                }
-            });
         }
 
         public void bindItem(MyreviewModel reviewModel){

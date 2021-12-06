@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,9 +15,13 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.R;
-import com.sososhopping.customer.account.view.textValidate.NameWatcher;
-import com.sososhopping.customer.account.view.textValidate.PhoneWatcher;
+import com.sososhopping.customer.account.dto.FindEmailDto;
+import com.sososhopping.customer.account.dto.FindInfoDto;
+import com.sososhopping.customer.account.viewmodel.FindEmailViewModel;
+import com.sososhopping.customer.common.textValidate.NameWatcher;
+import com.sososhopping.customer.common.textValidate.PhoneWatcher;
 import com.sososhopping.customer.databinding.AccountFindEmailBinding;
 
 
@@ -27,6 +30,8 @@ public class FindEmailFragment extends Fragment {
     private NavController navController;
     private AccountFindEmailBinding binding;
     private Boolean phoneChecked = false;
+    private FindEmailViewModel findEmailViewModel = new FindEmailViewModel();
+
     public static FindEmailFragment newInstance() {
         return new FindEmailFragment();
     }
@@ -61,7 +66,7 @@ public class FindEmailFragment extends Fragment {
                     binding.textViewPhoneCheck.setText("인증실패");
                 }
                 else{
-                    blockEditText(binding.editTextFindEmailPhone);
+                    binding.editTextFindEmailPhone.setEnabled(false);
                     binding.textViewPhoneCheck.setText("인증완료");
                 }
                 binding.textViewPhoneCheck.setVisibility(View.VISIBLE);
@@ -81,13 +86,19 @@ public class FindEmailFragment extends Fragment {
                     return;
                 }
 
-                //성함 + 휴대전화번호 -> 이메일 API
-                String email = getEmail();
-                if(email != null){
-                    binding.editTextSignUpEmail.setText(email);
+                try {
+                    //성함 + 휴대전화번호 -> 이메일 API
+                    findEmailViewModel.requestEmail(
+                            new FindEmailDto((binding.editTextFindEmailName.getText().toString()),
+                                    binding.editTextFindEmailPhone.getText().toString()),
+                            FindEmailFragment.this::onSuccess,
+                            FindEmailFragment.this::onNotFound,
+                            FindEmailFragment.this::onNetworkError
+                    );
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Snackbar.make(binding.getRoot(), getResources().getString(R.string.input_error), Snackbar.LENGTH_SHORT).show();
                 }
-                blockEditText(binding.editTextFindEmailName);
-                binding.buttonInfoCheck.setClickable(false);
             }
         });
 
@@ -107,16 +118,6 @@ public class FindEmailFragment extends Fragment {
         });
     }
 
-    //mockData
-    public String getEmail(){
-        return "abc@abc.com";
-    }
-
-    public void blockEditText(EditText editText){
-        editText.setFocusable(false);
-        editText.setClickable(false);
-    }
-
     public void checkLayoutEmpty(){
         if(TextUtils.isEmpty(binding.editTextFindEmailName.getText().toString())){
             binding.textFieldFindEmailName.setError(getResources().getString(R.string.signup_error_name));
@@ -126,6 +127,25 @@ public class FindEmailFragment extends Fragment {
             binding.textFieldFindEmailPhone.setError(getResources().getString(R.string.signup_error_phone));
             binding.textFieldFindEmailPhone.setErrorEnabled(true);
         }
+    }
+
+    public void onSuccess(String email){
+        if(email != null){
+            binding.editTextFindEmail.setText(email);
+        }
+        binding.textFieldFindEmailName.setEnabled(false);
+        binding.buttonInfoCheck.setClickable(false);
+
+        binding.editTextFindEmail.setFocusable(false);
+    }
+
+    public void onNotFound(){
+        Snackbar.make(binding.getRoot(), getResources().getString(R.string.find_error), Snackbar.LENGTH_SHORT).show();
+    }
+
+    private void onNetworkError() {
+        getActivity().onBackPressed();
+        navController.navigate(R.id.action_global_networkErrorDialog);
     }
 
 }

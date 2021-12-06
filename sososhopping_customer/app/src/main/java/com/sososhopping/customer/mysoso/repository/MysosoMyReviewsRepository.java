@@ -62,4 +62,33 @@ public class MysosoMyReviewsRepository {
         });
 
     }
+
+    public void deleteMyReview(String token,
+                               int storeId,
+                               int position,
+                               Consumer<Integer> onSuccess,
+                               Runnable onFailed,
+                               Runnable onError){
+        mysosoService.deleteMyReview(token, storeId).enqueue(new Callback<Void>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                switch (response.code()) {
+                    case 200: {
+                        onSuccess.accept(position);
+                        break;
+                    }
+                    case 404:
+                    default:
+                        onFailed.run();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                onError.run();
+            }
+        });
+    }
 }

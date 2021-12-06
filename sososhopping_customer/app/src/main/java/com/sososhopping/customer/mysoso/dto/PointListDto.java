@@ -15,9 +15,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PointListDto {
-    @SerializedName("results")
+    @SerializedName("interestStorePoints")
     ArrayList<PointInfoModel> pointListFavorite = new ArrayList<>();
 
-    @SerializedName("result")
+    @SerializedName("storePoints")
     ArrayList<PointInfoModel> pointListNotFavorite = new ArrayList<>();
 }

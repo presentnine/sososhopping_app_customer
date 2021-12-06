@@ -1,6 +1,7 @@
 package com.sososhopping.customer.shop.repository;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -71,6 +72,7 @@ public class ShopEventRepository {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.e("쿠폰", response.raw().toString());
                 switch (response.code()){
                     case 201:{
                         onResult.accept(msgCodes[0]);
@@ -83,6 +85,7 @@ public class ShopEventRepository {
                     }
                     //중복저장
                     case 409:{
+                        onResult.accept(msgCodes[2]);
                         break;
                     }
                     //쿠폰 기간 x , 수량 소진
@@ -90,8 +93,8 @@ public class ShopEventRepository {
                     //쿠폰없음
                     case 404:
                     default:
-                    onResult.accept(msgCodes[1]);
-                    break;
+                        onResult.accept(msgCodes[1]);
+                        break;
 
                 }
             }

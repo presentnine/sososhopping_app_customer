@@ -24,18 +24,20 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.google.android.material.tabs.TabLayout;
-import com.sososhopping.customer.MainActivity;
+import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
+import com.sososhopping.customer.common.gps.CalculateDistance;
+import com.sososhopping.customer.common.gps.GPSTracker;
+import com.sososhopping.customer.common.types.Location;
 import com.sososhopping.customer.databinding.ShopMainBinding;
-import com.sososhopping.customer.search.model.ShopInfoShortModel;
 import com.sososhopping.customer.search.view.ShopListFragment;
+import com.sososhopping.customer.shop.model.ShopIntroduceModel;
 import com.sososhopping.customer.shop.viewmodel.ShopInfoViewModel;
 
 public class ShopMainFragment extends Fragment {
 
     private NavController navController;
     private ShopMainBinding binding;
-    private ShopInfoShortModel shopInfoShortModel;
     private ShopInfoViewModel shopInfoViewModel;
 
 
@@ -59,20 +61,63 @@ public class ShopMainFragment extends Fragment {
                              @Nullable Bundle savedInstanceState){
         binding = DataBindingUtil.inflate(inflater, R.layout.shop_main,container,false);
 
-        //상단 정보 설정
-        shopInfoShortModel = getArguments().getParcelable("shopInfo");
-        setShopInfo(shopInfoShortModel);
-
         //ViewModel Setting -> Main에서 유지되게
-        shopInfoViewModel = new ViewModelProvider(getActivity()).get(ShopInfoViewModel.class);
-        shopInfoViewModel.setShopId(shopInfoShortModel.getStoreId());
-        shopInfoViewModel.setShopName(shopInfoShortModel.getName());
-        shopInfoViewModel.setPhone(shopInfoShortModel.getPhone());
-        shopInfoViewModel.setLocation(shopInfoShortModel.getLocation());
+        shopInfoViewModel = new ViewModelProvider(this).get(ShopInfoViewModel.class);
+        shopInfoViewModel.setShopId((int)ShopMainFragmentArgs.fromBundle(getArguments()).getStoreId());
 
-
+        if(shopInfoViewModel.getDistance().getValue() == null){
+            shopInfoViewModel.getDistance().setValue(ShopMainFragmentArgs.fromBundle(getArguments()).getDistance());
+        }
+        if(shopInfoViewModel.getShopIntroduceModel().getValue() != null){
+            initialSetting(shopInfoViewModel.getShopIntroduceModel().getValue());
+        }
 
         return binding.getRoot();
+    }
+
+    public void initialSetting(ShopIntroduceModel shopIntroduceModel){
+        binding.textViewShopName.setText(shopIntroduceModel.getName());
+        binding.textViewRating.setText(Double.toString(Math.round(shopIntroduceModel.getScore()*10)/10));
+
+        //안 받아왔으면
+        if(shopInfoViewModel.getDistance().getValue() == -1){
+            if(shopIntroduceModel.getLocation() != null){
+                GPSTracker gpsTracker = GPSTracker.getInstance(getContext());
+                Location me = new Location(gpsTracker.getLatitude(), gpsTracker.getLongitude());
+                shopInfoViewModel.getDistance().setValue(CalculateDistance.distance(me, shopIntroduceModel.getLocation()));
+            }
+        }
+
+        if(shopInfoViewModel.getDistance().getValue() >= 1){
+            binding.textViewDistance.setText(Math.round(shopInfoViewModel.getDistance().getValue()*10)/10.0+"km");
+        }else{
+            binding.textViewDistance.setText(Math.round(shopInfoViewModel.getDistance().getValue()*1000)+"m");
+        }
+
+        //지역화폐, 배달여부
+        if(!shopIntroduceModel.isLocalCurrencyStatus()){
+            binding.layoutLocalPay.setVisibility(View.GONE);
+        }
+        if(!shopIntroduceModel.isDeliveryStatus()){
+            binding.layoutDelivery.setVisibility(View.GONE);
+        }
+        if(!shopIntroduceModel.isInterestStore()){
+            binding.layoutFavorite.setVisibility(View.GONE);
+        }
+
+        //이미지
+        Glide.with(binding.getRoot())
+                .load(shopIntroduceModel.getImgUrl())
+                .transform(new CenterCrop(),new RoundedCorners(10))
+                .thumbnail(0.2f)
+                .placeholder(R.drawable.icon_app_groceries)
+                .error(R.drawable.icon_app_groceries)
+                .fallback(R.drawable.icon_app_groceries)
+                .into(binding.imageViewStore);
+
+        shopInfoViewModel.setItems(shopIntroduceModel);
+        //상단바
+        setAppBar(((HomeActivity)getActivity()));
     }
 
     @Override
@@ -115,10 +160,9 @@ public class ShopMainFragment extends Fragment {
 
     @Override
     public void onResume() {
-        MainActivity activity = (MainActivity) getActivity();
+        HomeActivity activity = (HomeActivity) getActivity();
 
         //상단바 설정
-        setAppBar(activity, shopInfoShortModel.getName());
         activity.showTopAppBar();
 
         //하단바 숨기기
@@ -127,35 +171,9 @@ public class ShopMainFragment extends Fragment {
     }
 
 
-    public void setShopInfo(ShopInfoShortModel shopInfoShortModel){
-        binding.textViewShopName.setText(shopInfoShortModel.getName());
-        binding.textViewRating.setText(Double.toString(shopInfoShortModel.getScore()));
-        binding.textViewDistance.setText(Integer.toString(shopInfoShortModel.getDistance())+"m");
-
-        //지역화폐, 배달여부
-        if(!shopInfoShortModel.isLocalCurrencyStatus()){
-            binding.layoutLocalPay.setVisibility(View.GONE);
-        }
-        if(!shopInfoShortModel.isDeliveryStatus()){
-            binding.layoutDelivery.setVisibility(View.GONE);
-        }
-        if(!shopInfoShortModel.isInterestStore()){
-            binding.layoutFavorite.setVisibility(View.GONE);
-        }
-
-        //이미지
-        Glide.with(binding.getRoot())
-                .load(shopInfoShortModel.getImgUrl())
-                .transform(new CenterCrop(),new RoundedCorners(10))
-                .thumbnail(0.2f)
-                .placeholder(R.drawable.icon_app_groceries)
-                .error(R.drawable.icon_app_groceries)
-                .fallback(R.drawable.icon_app_groceries)
-                .into(binding.imageViewStore);
-    }
-
-    public void setAppBar(MainActivity activity, String shopName){
+    public void setAppBar(HomeActivity activity){
         activity.getBinding().topAppBar.setTitle("매장 정보");
+        activity.getBinding().topAppBar.setOnClickListener(null);
         activity.getBinding().topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -163,11 +181,11 @@ public class ShopMainFragment extends Fragment {
                 switch (item.getItemId()){
 
                     case R.id.menu_call:{
-                        if(shopInfoShortModel.getPhone() == null){
+                        if(shopInfoViewModel.getPhone() == null){
                             Toast.makeText(getContext(),"등록된 전화번호가 없습니다",Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+ shopInfoShortModel.getPhone())));
+                            startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+ shopInfoViewModel.getPhone().getValue())));
                         }
                         break;
                     }

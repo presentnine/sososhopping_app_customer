@@ -29,9 +29,12 @@
             android:id="@+id/recyclerView_review"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@drawable/drawable_round_background"
+            android:backgroundTint="@color/background"
             app:layout_constraintBottom_toTopOf="@+id/button_addReview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
