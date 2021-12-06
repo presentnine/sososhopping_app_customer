@@ -3,11 +3,11 @@ package com.sososhopping.customer.shop.viewmodel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.sososhopping.customer.common.Constant;
+import com.sososhopping.customer.shop.dto.PageableReviewListDto;
 import com.sososhopping.customer.shop.dto.ReviewInputDto;
 import com.sososhopping.customer.shop.dto.ReviewListDto;
 import com.sososhopping.customer.shop.model.ReviewModel;
-import com.sososhopping.customer.shop.model.ShopIntroduceModel;
-import com.sososhopping.customer.shop.repository.ShopRepository;
 import com.sososhopping.customer.shop.repository.ShopReviewRepository;
 
 import java.util.ArrayList;
@@ -21,13 +21,27 @@ import lombok.Setter;
 public class ShopReviewViewModel extends ViewModel {
     private final ShopReviewRepository shopRepository = ShopReviewRepository.getInstance();
 
-    ArrayList<ReviewModel> reviewModels = new ArrayList<>();
+    MutableLiveData<ArrayList<ReviewModel>> reviewModels = new MutableLiveData<>();
 
-    public void requestShopReviews(int storeId,
-                                   Consumer<ReviewListDto> onSuccess,
+    int offset;
+    int numberOfElement;
+
+    public void init(){
+        this.offset = 0;
+        this.numberOfElement = Constant.LIMIT_PAGE;
+        reviewModels.setValue(new ArrayList<>());
+    }
+
+    public void requestShopReviewsPage(int storeId,
+                                   Integer offset,
+                                   Consumer<PageableReviewListDto> onSuccess,
                                    Runnable onFailed,
                                    Runnable onError){
-        shopRepository.requestShopReviews(storeId, onSuccess, onFailed, onError);
+
+        if(offset == null){
+            offset = this.offset;
+        }
+        shopRepository.requestShopReviewsPage(storeId, offset, onSuccess, onFailed, onError);
     }
 
     public ReviewInputDto getReviewInputDto(int score, String content){

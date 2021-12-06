@@ -1,8 +1,8 @@
-package com.sososhopping.customer.search.dto;
+package com.sososhopping.customer.mysoso.dto;
 
 import com.sososhopping.customer.common.types.PageableDto;
 import com.sososhopping.customer.common.types.SortDto;
-import com.sososhopping.customer.search.model.ShopInfoShortModel;
+import com.sososhopping.customer.mysoso.model.OrderRecordShortModel;
 
 import java.util.ArrayList;
 
@@ -15,13 +15,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PageableShopListDto{
+public class PageableOrderListDto {
 
-    ArrayList<ShopInfoShortModel> content = new ArrayList<>();
+    ArrayList<OrderRecordShortModel> content = new ArrayList<>();
+
     PageableDto pageable;
     SortDto sort;
 
     int numberOfElements;
-    int size;
-    boolean empty;
+
 }

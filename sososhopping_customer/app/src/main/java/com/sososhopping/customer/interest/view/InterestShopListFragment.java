@@ -126,6 +126,7 @@ public class InterestShopListFragment extends Fragment {
         //상단바
         ((HomeActivity)getActivity()).showTopAppBar();
         ((HomeActivity)getActivity()).getBinding().topAppBar.setTitle("관심가게");
+        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
         ((HomeActivity)getActivity()).getBinding().topAppBar.setOnClickListener(null);
         ((HomeActivity)getActivity()).setTopAppBarHome(false);
 

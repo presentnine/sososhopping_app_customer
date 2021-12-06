@@ -194,7 +194,9 @@ public class ShopMainFragment extends Fragment {
 
                     }
                     case R.id.menu_report:{
-                        navController.navigate(R.id.action_shopMainFragment_to_shopReportFragment);
+                        if(shopInfoViewModel.getShopId().getValue() != null){
+                            navController.navigate(ShopMainFragmentDirections.actionShopMainFragmentToShopReportFragment(shopInfoViewModel.getShopId().getValue()));
+                        }
                         break;
                     }
                 }

@@ -1,5 +1,7 @@
 package com.sososhopping.customer.shop.view;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -21,9 +24,8 @@ import com.sososhopping.customer.databinding.ShopEventDetailBinding;
 import com.sososhopping.customer.shop.model.EventDetailModel;
 import com.sososhopping.customer.shop.viewmodel.ShopEventDetailViewModel;
 
-public class ShopEventDetailFragment extends Fragment {
+public class ShopEventDetailFragment extends DialogFragment {
     ShopEventDetailBinding binding;
-    EventDetailModel eventDetailModel;
     ShopEventDetailViewModel shopEventDetailViewModel = new ShopEventDetailViewModel();
 
     int writingId, storeId;
@@ -32,16 +34,10 @@ public class ShopEventDetailFragment extends Fragment {
     public static ShopEventDetailFragment newInstance(){return new ShopEventDetailFragment();}
 
     @Override
-    public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.menu_top_none, menu);
+    public void onStart(){
+        super.onStart();
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     @Override
@@ -64,12 +60,13 @@ public class ShopEventDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view,savedInstanceState);
-    }
 
-    @Override
-    public void onResume() {
-        ((HomeActivity) getActivity()).getBinding().topAppBar.setTitle(storeName);
-        super.onResume();
+        binding.buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().onBackPressed();
+            }
+        });
     }
 
     public void setShopInfo(EventDetailModel eventDetailModel){
@@ -108,7 +105,7 @@ public class ShopEventDetailFragment extends Fragment {
     }
 
     private void onNetworkError() {
-        NavHostFragment.findNavController(getParentFragment().getParentFragment()).navigate(R.id.action_global_networkErrorDialog);
+        NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
     }
 
 }

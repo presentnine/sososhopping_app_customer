@@ -11,29 +11,57 @@
         android:layout_height="match_parent"
         android:name="com.naver.maps.map.MapFragment" />
 
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/button_gps"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:clickable="true"
-        android:padding="10dp"
-        app:cardBackgroundColor="#C0FFFFFF"
-        app:cardCornerRadius="27.5dp"
-        app:cardElevation="5dp"
+        android:orientation="horizontal"
+        android:gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/item_search_map"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:rippleColor="@color/white">
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/button_pager"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:clickable="true"
             android:padding="10dp"
-            android:src="@drawable/ic_baseline_my_location_24" />
+            app:cardBackgroundColor="#D9FFFFFF"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="5dp"
+            app:rippleColor="@color/white">
 
-    </com.google.android.material.card.MaterialCardView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="더 찾아보기"
+                android:textColor="@color/text_800"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/button_gps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:clickable="true"
+            app:cardBackgroundColor="#D9FFFFFF"
+            app:cardCornerRadius="27.5dp"
+            app:cardElevation="5dp"
+            app:rippleColor="@color/white">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:src="@drawable/ic_baseline_my_location_24" />
+        </com.google.android.material.card.MaterialCardView>
+
+
+
+    </LinearLayout>
+
 
     <include
         android:id="@+id/item_search_map"

@@ -18,6 +18,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.sososhopping.customer.HomeActivity;
@@ -26,9 +27,11 @@ import com.sososhopping.customer.R;
 import com.sososhopping.customer.common.types.enumType.OrderStatus;
 import com.sososhopping.customer.databinding.MysosoOrderListBinding;
 import com.sososhopping.customer.mysoso.dto.OrderListDto;
+import com.sososhopping.customer.mysoso.dto.PageableOrderListDto;
 import com.sososhopping.customer.mysoso.model.OrderRecordShortModel;
 import com.sososhopping.customer.mysoso.viemodel.OrderListViewModel;
 import com.sososhopping.customer.mysoso.view.adapter.MysosoOrderListAdapter;
+import com.sososhopping.customer.search.view.ShopListFragment;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -87,15 +90,48 @@ public class MysosoOrderListFragment extends Fragment {
             }
         });
 
+        binding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if(!recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_DRAGGING){
+                    binding.progressCircular.setVisibility(View.VISIBLE);
+                }
+
+                else if (!recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_IDLE) {
+
+                    if(orderListViewModel.getNumberOfElement() > 0){
+                        binding.progressCircular.setVisibility(View.VISIBLE);
+
+                        orderListViewModel.requestMyOrderListsPage(
+                                ((HomeActivity)getActivity()).getLoginToken(),
+                                beforeChecked,
+                                null,
+                                MysosoOrderListFragment.this::onSuccess,
+                                MysosoOrderListFragment.this::onFailedLogIn,
+                                MysosoOrderListFragment.this::onFailed,
+                                MysosoOrderListFragment.this::onNetworkError
+                        );
+                    }
+                }
+                else{
+                    binding.progressCircular.setVisibility(View.GONE);
+                }
+            }
+        });
+
         //초기 검색
-        orderListViewModel.requestMyOrderLists(
+        orderListViewModel.requestMyOrderListsPage(
                 ((HomeActivity)getActivity()).getLoginToken(),
                 INITIAL_ORDERSTAT,
+                null,
                 MysosoOrderListFragment.this::onSuccess,
                 MysosoOrderListFragment.this::onFailedLogIn,
                 MysosoOrderListFragment.this::onFailed,
                 MysosoOrderListFragment.this::onNetworkError
         );
+
         return binding.getRoot();
     }
 
@@ -120,6 +156,7 @@ public class MysosoOrderListFragment extends Fragment {
         adapterCancel = new ArrayAdapter<OrderStatus>(getContext(), android.R.layout.simple_spinner_item, searchTypeCancel);
         adapterCancel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+        //스피너
         binding.spinnerSearchType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -137,6 +174,7 @@ public class MysosoOrderListFragment extends Fragment {
             }
         });
 
+        //탭레이아웃
         binding.taplayoutPurchaseStatus.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -214,10 +252,14 @@ public class MysosoOrderListFragment extends Fragment {
     }
 
     public void getListCall(OrderStatus orderStatus){
+        //페이징 리셋하고
+        orderListViewModel.resetPage();
+
         //재검색
-        orderListViewModel.requestMyOrderLists(
+        orderListViewModel.requestMyOrderListsPage(
                 ((HomeActivity)getActivity()).getLoginToken(),
                 orderStatus,
+                0,
                 MysosoOrderListFragment.this::onSuccess,
                 MysosoOrderListFragment.this::onFailedLogIn,
                 MysosoOrderListFragment.this::onFailed,
@@ -225,10 +267,25 @@ public class MysosoOrderListFragment extends Fragment {
         );
     }
 
-    //추후에 페이징시 연결하는 메소드 추가해야함
-    public void onSuccess(OrderListDto orderListDto){
-        orderListViewModel.getOrderList().getValue().clear();
-        orderListViewModel.getOrderList().setValue(orderListDto.getResults());
+    //재검색 결과 / 스크롤 결과 구분해야함
+    public void onSuccess(PageableOrderListDto success){
+        binding.progressCircular.setVisibility(View.GONE);
+
+        //최초
+        if(orderListViewModel.getOffset() == 0){
+            orderListViewModel.getOrderList().getValue().clear();
+            orderListViewModel.getOrderList().setValue(success.getContent());
+        }
+        //스크롤
+        else{
+            if(success.getNumberOfElements() > 0){
+                orderListViewModel.getOrderList().getValue().addAll(success.getContent());
+                orderListAdapter.setItems(orderListViewModel.getOrderList().getValue());
+                orderListAdapter.notifyItemRangeInserted(orderListViewModel.getOffset(), success.getNumberOfElements());
+            }
+        }
+        orderListViewModel.setNumberOfElement(success.getNumberOfElements());
+        orderListViewModel.setOffset(success.getPageable().getOffset() + success.getNumberOfElements());
     }
 
     private void onFailedLogIn(){

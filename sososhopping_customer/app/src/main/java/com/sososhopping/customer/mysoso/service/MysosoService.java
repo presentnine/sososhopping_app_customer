@@ -7,6 +7,7 @@ import com.sososhopping.customer.mysoso.dto.MyReviewsDto;
 import com.sososhopping.customer.mysoso.dto.OrderCancelDto;
 import com.sososhopping.customer.mysoso.dto.OrderDetailDto;
 import com.sososhopping.customer.mysoso.dto.OrderListDto;
+import com.sososhopping.customer.mysoso.dto.PageableOrderListDto;
 import com.sososhopping.customer.mysoso.dto.PointDetailDto;
 import com.sososhopping.customer.mysoso.dto.PointListDto;
 import com.sososhopping.customer.mysoso.model.MyInfoModel;
@@ -52,6 +53,9 @@ public interface MysosoService {
 
     @GET("my/orders")
     Call<OrderListDto> requestMyOrders(@Header("token") String token, @Query("statuses") String status);
+
+    @GET("my/orders/page")
+    Call<PageableOrderListDto> requestMyOrdersPage(@Header("token") String token, @Query("statuses") String status, @Query("offset") Integer offset);
 
     @GET("my/orders/{orderId}")
     Call<OrderDetailDto> requestMyOrdersDetail(@Header("token") String token, @Path("orderId") long orderId);

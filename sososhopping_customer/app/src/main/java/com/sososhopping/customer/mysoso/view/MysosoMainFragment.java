@@ -141,6 +141,13 @@ MysosoMainFragment extends Fragment {
             }
         });
 
+        //지도
+        binding.cardViewMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
 
 

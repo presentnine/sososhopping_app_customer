@@ -63,6 +63,7 @@ public class MysosoMyReviewsRepository {
 
     }
 
+
     public void deleteMyReview(String token,
                                int storeId,
                                int position,

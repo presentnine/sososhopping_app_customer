@@ -1,5 +1,7 @@
 package com.sososhopping.customer.search;
 
+import static com.sososhopping.customer.common.Constant.*;
+
 import android.content.Context;
 import android.location.LocationManager;
 import android.text.TextUtils;
@@ -7,6 +9,7 @@ import android.text.TextUtils;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.sososhopping.customer.common.Constant;
 import com.sososhopping.customer.common.gps.CalculateDistance;
 import com.sososhopping.customer.common.gps.GPSTracker;
 import com.sososhopping.customer.common.types.Location;
@@ -30,9 +33,6 @@ import lombok.Setter;
 @Getter @Setter
 public class HomeViewModel extends ViewModel {
 
-    private final int defaultRadius = 1000;
-    private final int limitPage = 5;
-
     //카테고리 or 검색
     private MutableLiveData<AskType> askType = new MutableLiveData<>();
 
@@ -44,7 +44,7 @@ public class HomeViewModel extends ViewModel {
     //검색결과
     private MutableLiveData<ArrayList<ShopInfoShortModel>> shopList= new MutableLiveData<>();
     int offset = 0;
-    int numberOfElement = limitPage;
+    int numberOfElement = LIMIT_PAGE;
 
     private final SearchRepository searchRepository = SearchRepository.getInstance();
 
@@ -59,7 +59,7 @@ public class HomeViewModel extends ViewModel {
 
     public void resetPage(){
         this.offset = 0;
-        this.numberOfElement = limitPage;
+        this.numberOfElement = LIMIT_PAGE;
     }
 
 
@@ -76,7 +76,7 @@ public class HomeViewModel extends ViewModel {
                        Runnable onError){
 
         if(radius == null){
-            radius = defaultRadius;
+            radius = DEFAULT_RAD;
         }
 
         String type;

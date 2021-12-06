@@ -52,6 +52,7 @@ import com.sososhopping.customer.common.StringFormatMethod;
 import com.sososhopping.customer.common.types.Location;
 import com.sososhopping.customer.databinding.SearchShopMapBinding;
 import com.sososhopping.customer.search.HomeViewModel;
+import com.sososhopping.customer.search.dto.PageableShopListDto;
 import com.sososhopping.customer.search.model.ShopInfoShortModel;
 import com.sososhopping.customer.shop.view.ShopMainFragment;
 
@@ -137,6 +138,22 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
+
+        binding.buttonPager.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(homeViewModel.getNumberOfElement() > 0){
+                    homeViewModel.search(
+                            ((HomeActivity)getActivity()).getLoginToken(),
+                            homeViewModel.getLocation(getContext()),
+                            null,
+                            null,
+                            null,
+                            ShopMapFragment.this::onSearchSuccess,
+                            ShopMapFragment.this::onNetworkError);
+                }
+            }
+        });
     }
 
 
@@ -203,7 +220,6 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
 
             //상점에서 옴
             case R.id.mysosoPointDetailFragment:
-            case R.id.shopReportFragment:
             case R.id.shopMainFragment:
                 double shopLat = ShopMapFragmentArgs.fromBundle(getArguments()).getLat();
                 double shopLng = ShopMapFragmentArgs.fromBundle(getArguments()).getLng();
@@ -230,7 +246,6 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
         addMarkers(naverMap);
     }
 
-
     @Override
     public void onResume() {
         //앱바 설정
@@ -245,7 +260,6 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
         super.onDestroyView();
         binding = null;
     }
-
 
     public void addMarkers(NaverMap naverMap){
 
@@ -267,7 +281,7 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                createMarkers();
+                createMarkers(0);
             }
         });
 
@@ -278,11 +292,36 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
                m.setMap(naverMap);
            }
         });
-
     }
 
-    public void createMarkers(){
-        for(int i= 0; i<homeViewModel.getShopList().getValue().size(); i++){
+    //추가 된 경우
+    public void addMarkersPage(NaverMap naverMap, int index){
+        //백그라운드 스레드로 마커 생성
+        Executor executor = new Executor() {
+            @Override
+            public void execute(Runnable command) {
+                new Thread(command).start();
+            }
+        };
+
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                createMarkers(index);
+            }
+        });
+
+        //메인에서 마커 추가
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(() -> {
+            for(Marker m : markers){
+                m.setMap(naverMap);
+            }
+        });
+    }
+
+    public void createMarkers(int startIdx){
+        for(int i= startIdx; i<homeViewModel.getShopList().getValue().size(); i++){
             ShopInfoShortModel s = homeViewModel.getShopList().getValue().get(i);
 
             Marker m = new Marker();
@@ -304,6 +343,7 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
         }
         Log.e("생성 후 마커 (1)", markers.size()+"");
     }
+
 
     public void bindShopItem(ShopInfoShortModel s){
         binding.itemSearchMap.textViewShopName.setText(s.getName());
@@ -387,5 +427,19 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
         activity.invalidateOptionsMenu();
     }
 
+    private void onSearchSuccess(PageableShopListDto success, Integer navigate){
+        if(success.getNumberOfElements() > 0){
+            homeViewModel.getShopList().getValue().addAll(success.getContent());
+            //추가된거 밑에
+            addMarkersPage(naverMap, homeViewModel.getOffset());
+        }
 
+        //몇개 추가되었는지 갱신
+        homeViewModel.setNumberOfElement(success.getNumberOfElements());
+        homeViewModel.setOffset(success.getPageable().getOffset() + success.getNumberOfElements());
+    }
+
+    private void onNetworkError(){
+        Snackbar.make(binding.getRoot(), "상점 정보를 더 불러오는데 실패했습니다", Snackbar.LENGTH_SHORT).show();
+    }
 }

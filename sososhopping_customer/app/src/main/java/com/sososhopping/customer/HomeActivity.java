@@ -85,6 +85,7 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
                 initLoginButton();
             }
         });
+
         //하단바 -> 그냥 커스텀으로 사용하기
         binding.bottomNavigation.getMenu().findItem(R.id.menu_home).setChecked(true);
         binding.bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -240,7 +241,6 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
         initLoginButton();
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_success), Toast.LENGTH_SHORT).show();
     }
-
 
     public void initLoginButton() {
         if (isLogIn) {

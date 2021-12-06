@@ -9,6 +9,7 @@ import com.sososhopping.customer.common.retrofit.ApiServiceFactory;
 import com.sososhopping.customer.mysoso.dto.AddCouponDto;
 import com.sososhopping.customer.shop.dto.CouponListDto;
 import com.sososhopping.customer.shop.dto.EventItemListDto;
+import com.sososhopping.customer.shop.dto.PageableWritingListDto;
 import com.sososhopping.customer.shop.model.EventDetailModel;
 import com.sososhopping.customer.shop.service.ShopService;
 
@@ -133,6 +134,39 @@ public class ShopEventRepository {
 
             @Override
             public void onFailure(Call<EventItemListDto> call, Throwable t) {
+                onError.run();
+            }
+        });
+    }
+
+    public void requestShopWritingPage(int storeId,
+                                       Integer offset,
+                                       Consumer<PageableWritingListDto> eventModel,
+                                   Runnable onFailed,
+                                   Runnable onError) {
+
+        shopService.requestWritingsPage(storeId, offset).enqueue(new Callback<PageableWritingListDto>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<PageableWritingListDto> call, Response<PageableWritingListDto> response) {
+                switch (response.code()) {
+                    case 200: {
+                        eventModel.accept(response.body());
+                        break;
+                    }
+                    //검색 없음
+                    case 404: {
+                        onFailed.run();
+                        break;
+                    }
+                    default: {
+                        onError.run();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PageableWritingListDto> call, Throwable t) {
                 onError.run();
             }
         });

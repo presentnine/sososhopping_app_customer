@@ -7,4 +7,8 @@ public class Constant {
     public static final String SHARED_PREFERENCE_KEY_ID = "id";
     public static final String SHARED_PREFERENCE_KEY_PASSWORD = "password";
     public static final String SHARED_PREFERENCE_DEFAULT_STRING = "";
+
+    public static final Integer DEFAULT_RAD = 100;
+    public static final Integer LIMIT_PAGE = 10;
+
 }
