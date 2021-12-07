@@ -1,8 +1,10 @@
 package com.sososhopping.customer.shop.viewmodel;
 
+import com.sososhopping.customer.common.Constant;
 import com.sososhopping.customer.mysoso.dto.AddCouponDto;
 import com.sososhopping.customer.shop.dto.CouponListDto;
 import com.sososhopping.customer.shop.dto.EventItemListDto;
+import com.sososhopping.customer.shop.dto.PageableWritingListDto;
 import com.sososhopping.customer.shop.model.CouponModel;
 import com.sososhopping.customer.shop.model.EventItemModel;
 import com.sososhopping.customer.shop.repository.ShopEventRepository;
@@ -22,16 +24,32 @@ public class ShopEventViewModel {
     ArrayList<CouponModel> couponModels = new ArrayList<>();
     ArrayList<EventItemModel> eventItemModels = new ArrayList<>();
 
+    int offset;
+    int numberOfElement;
+
+    public void init(){
+        this.offset = 0;
+        this.numberOfElement = Constant.LIMIT_PAGE;
+    }
+
     public void requestShopCoupon(int storeId, Consumer<CouponListDto> couponModel,
                                   Runnable onFailed,
                                   Runnable onError){
         shopRepository.requestShopCoupon(storeId, couponModel, onFailed, onError);
     }
 
-    public void requestShopEvent(int storeId, Consumer<EventItemListDto> eventItemModel,
+    public void requestShopEvent(int storeId,
+                                 Integer offset,
+                                 Consumer<PageableWritingListDto> eventItemModel,
                                  Runnable onFailed,
                                  Runnable onError){
-        shopRepository.requestShopWriting(storeId, eventItemModel,onFailed,onError);
+
+
+        if(offset == null){
+            offset = this.offset;
+        }
+
+        shopRepository.requestShopWritingPage(storeId, offset, eventItemModel,onFailed,onError);
     }
 
     public AddCouponDto setAddCouponDto(String code){

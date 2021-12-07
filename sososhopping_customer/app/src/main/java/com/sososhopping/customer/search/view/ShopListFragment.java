@@ -77,6 +77,8 @@ public class ShopListFragment extends Fragment {
             public void onChanged(ArrayList<ShopInfoShortModel> shopInfoShortModels) {
                 shopListAdapter.setShopLists(homeViewModel.getShopList().getValue());
                 shopListAdapter.notifyDataSetChanged();
+
+
             }
         });
 
@@ -95,8 +97,10 @@ public class ShopListFragment extends Fragment {
             @Override
             public void onItemClick(View v, int pos) {
                 //해당 매장을 검색조건으로 이동
-                navController.navigate(ShopListFragmentDirections.actionShopListFragmentToShopGraph(shopListAdapter.getShopLists().get(pos).getStoreId())
-                .setDistance(shopListAdapter.getShopLists().get(pos).getDistance()));
+
+                navController.navigate(ShopListFragmentDirections.actionShopListFragmentToShopGraph(
+                        shopListAdapter.getShopLists().get(pos).getStoreId())
+                        .setDistance(shopListAdapter.getShopLists().get(pos).getDistance()));
             }
 
             @Override

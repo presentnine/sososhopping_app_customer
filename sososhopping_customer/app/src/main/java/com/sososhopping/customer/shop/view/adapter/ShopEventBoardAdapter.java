@@ -39,7 +39,7 @@ public class ShopEventBoardAdapter extends RecyclerView.Adapter<ShopEventBoardAd
     @SneakyThrows
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-        holder.bindItem(eventItemModels.get(position));
+        holder.bindItem(eventItemModels.get(holder.getAdapterPosition()));
     }
 
     @Override

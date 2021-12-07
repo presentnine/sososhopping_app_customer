@@ -1,5 +1,7 @@
 package com.sososhopping.customer.shop.dto;
 
+import com.sososhopping.customer.common.types.PageableDto;
+import com.sososhopping.customer.common.types.SortDto;
 import com.sososhopping.customer.shop.model.ReviewModel;
 
 import java.util.ArrayList;
@@ -13,6 +15,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReviewListDto {
-    ArrayList<ReviewModel> results = new ArrayList<>();
+public class PageableReviewListDto {
+
+    ArrayList<ReviewModel> content = new ArrayList<>();
+    PageableDto pageable;
+    SortDto sort;
+
+    int numberOfElements;
 }

@@ -9,6 +9,7 @@ import com.sososhopping.customer.common.retrofit.ApiServiceFactory;
 import com.sososhopping.customer.mysoso.dto.OrderCancelDto;
 import com.sososhopping.customer.mysoso.dto.OrderDetailDto;
 import com.sososhopping.customer.mysoso.dto.OrderListDto;
+import com.sososhopping.customer.mysoso.dto.PageableOrderListDto;
 import com.sososhopping.customer.mysoso.service.MysosoService;
 
 import java.util.List;
@@ -32,6 +33,41 @@ public class MysosoOrderRepository {
             instance = new MysosoOrderRepository();
         }
         return instance;
+    }
+
+    public void requestMyOrderListsPage(String token,
+                                    String statuses,
+                                    Integer offset,
+                                    Consumer<PageableOrderListDto> onSuccess,
+                                    Runnable onLogInFailed,
+                                    Runnable onFailed,
+                                    Runnable onError){
+        mysosoService.requestMyOrdersPage(token, statuses, offset).enqueue(new Callback<PageableOrderListDto>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<PageableOrderListDto> call, Response<PageableOrderListDto> response) {
+                switch (response.code()){
+                    case 200:{
+                        onSuccess.accept(response.body());
+                        break;
+                    }
+
+                    case 403:{
+                        onLogInFailed.run();
+                        break;
+                    }
+
+                    default:
+                        onFailed.run();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PageableOrderListDto> call, Throwable t) {
+                onError.run();
+            }
+        });
     }
 
     public void requestMyOrderLists(String token,
