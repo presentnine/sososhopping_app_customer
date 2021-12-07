@@ -100,8 +100,11 @@ public class SearchRepository {
                 Log.d("log", response.raw().toString());
                 if (response.code() == 200) {
                     onSuccess.accept(response.body(),navigate);
-                } else {
-                    Log.d("log", response.raw().toString());
+                    for(ShopInfoShortModel s: response.body().getContent()){
+                        Log.e("search", s.getName() + " " + s.getDistance() +" "+ response.body().getPageable().getOffset() + " OFFSET : " +  offset);
+                    }
+                }
+                else {
                     onError.run();
                 }
             }
@@ -122,11 +125,13 @@ public class SearchRepository {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(Call<PageableShopListDto> call, Response<PageableShopListDto> response) {
+                Log.d("log", response.raw().toString());
                 if (response.code() == 200) {
                     onSuccess.accept(response.body(),navigate);
+                    for(ShopInfoShortModel s: response.body().getContent()){
+                        Log.e("categ", s.getName() + " " + s.getDistance());
+                    }
                 } else {
-                    Log.d("log", response.raw().toString());
-                    Log.d("log", response.errorBody().toString());
                     onError.run();
                 }
             }

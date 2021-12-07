@@ -1,6 +1,5 @@
 package com.sososhopping.customer.shop.dto;
 
-import com.google.gson.annotations.SerializedName;
 import com.sososhopping.customer.shop.model.CouponModel;
 
 import java.util.ArrayList;
@@ -15,6 +14,5 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CouponListDto {
-    @SerializedName("results")
-    ArrayList<CouponModel> couponModels = new ArrayList<>();
+    ArrayList<CouponModel> results = new ArrayList<>();
 }

@@ -43,9 +43,7 @@ public class LogInDialogFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        int width = getResources().getDimensionPixelSize(R.dimen.popup_width);
-        int height = getResources().getDimensionPixelSize(R.dimen.popup_height);
-        getDialog().getWindow().setLayout(width, height);
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
@@ -156,7 +154,6 @@ public class LogInDialogFragment extends DialogFragment {
         SharedPreferenceManager.setString(getContext(), Constant.SHARED_PREFERENCE_KEY_ID, id);
         SharedPreferenceManager.setString(getContext(), Constant.SHARED_PREFERENCE_KEY_PASSWORD, password);
         ((HomeActivity) getActivity()).setLoginToken(token);
-
         ((HomeActivity) getActivity()).afterLoginSuccessFirebaseInit(responseDto.getFirebaseToken());
 
         //로그인 처리 후 홈화면 이동

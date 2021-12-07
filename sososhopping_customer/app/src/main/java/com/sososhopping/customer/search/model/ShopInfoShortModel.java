@@ -16,6 +16,7 @@ import lombok.Setter;
 @Setter
 public class ShopInfoShortModel implements Parcelable {
     private int storeId;
+    private int ownerId;
     private String storeType;
     private String name;
     private String description;
@@ -36,17 +37,18 @@ public class ShopInfoShortModel implements Parcelable {
 
     protected ShopInfoShortModel(Parcel in) {
         storeId = in.readInt();
+        ownerId = in.readInt();
         storeType = in.readString();
         name = in.readString();
-        imgUrl = in.readString();
         description = in.readString();
+        phone = in.readString();
+        imgUrl = in.readString();
         businessStatus = in.readByte() != 0;
         localCurrencyStatus = in.readByte() != 0;
         pickupStatus = in.readByte() != 0;
         deliveryStatus = in.readByte() != 0;
-        distance = in.readInt();
+        distance = in.readFloat();
         score = in.readDouble();
-        phone = in.readString();
         isInterestStore = in.readByte() != 0;
     }
 
@@ -70,17 +72,18 @@ public class ShopInfoShortModel implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(storeId);
+        parcel.writeInt(ownerId);
         parcel.writeString(storeType);
         parcel.writeString(name);
-        parcel.writeString(imgUrl);
         parcel.writeString(description);
+        parcel.writeString(phone);
+        parcel.writeString(imgUrl);
         parcel.writeByte((byte) (businessStatus ? 1 : 0));
         parcel.writeByte((byte) (localCurrencyStatus ? 1 : 0));
         parcel.writeByte((byte) (pickupStatus ? 1 : 0));
         parcel.writeByte((byte) (deliveryStatus ? 1 : 0));
         parcel.writeFloat(distance);
         parcel.writeDouble(score);
-        parcel.writeString(phone);
         parcel.writeByte((byte) (isInterestStore ? 1 : 0));
     }
 }

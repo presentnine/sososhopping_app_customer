@@ -1,6 +1,7 @@
 package com.sososhopping.customer.shop.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.ShopReviewBinding;
-import com.sososhopping.customer.shop.dto.ReviewListDto;
+import com.sososhopping.customer.shop.dto.PageableReviewListDto;
 import com.sososhopping.customer.shop.view.adapter.ShopReviewAdapter;
 import com.sososhopping.customer.shop.viewmodel.ShopInfoViewModel;
 import com.sososhopping.customer.shop.viewmodel.ShopReviewViewModel;
@@ -49,6 +50,8 @@ public class ShopReviewFragment extends Fragment {
         binding.recyclerViewReview.setLayoutManager(layoutManager);
         binding.recyclerViewReview.setAdapter(shopReviewAdapter);
 
+        reviewViewModel.init();
+
         return binding.getRoot();
     }
 
@@ -57,18 +60,9 @@ public class ShopReviewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
 
-        binding.buttonAddReview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //리뷰 작성 Dialog
-                navController.navigate(ShopReviewFragmentDirections.actionShopReviewFragmentToShopReviewAddDialogFragment(storeId));
-            }
-        });
-    }
-
-    @Override
-    public void onResume() {
-        reviewViewModel.requestShopReviews(storeId,
+        //초기값
+        reviewViewModel.requestShopReviewsPage(storeId,
+                0,
                 this::onSuccess,
                 this::onFailed,
                 this::onNetworkError);
@@ -81,7 +75,40 @@ public class ShopReviewFragment extends Fragment {
                     this::onNetworkError);
         }
 
-        super.onResume();
+        binding.buttonAddReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //리뷰 작성 Dialog
+                navController.navigate(ShopReviewFragmentDirections.actionShopReviewFragmentToShopReviewAddDialogFragment(storeId));
+            }
+        });
+
+        binding.recyclerViewReview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if(!recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_DRAGGING){
+                    binding.progressCircular.setVisibility(View.VISIBLE);
+                }
+
+                else if (!recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_IDLE) {
+                    if(reviewViewModel.getNumberOfElement() > 0){
+                        binding.progressCircular.setVisibility(View.VISIBLE);
+                        reviewViewModel.requestShopReviewsPage(
+                                storeId,
+                                null,
+                                ShopReviewFragment.this::onSuccess,
+                                ShopReviewFragment.this::onFailed,
+                                ShopReviewFragment.this::onNetworkError
+                        );
+                    }
+                }
+                else{
+                    binding.progressCircular.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     @Override
@@ -89,12 +116,16 @@ public class ShopReviewFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-    private void onSuccess(ReviewListDto reviewModels){
-        if(reviewModels.getReviewModels() != null){
-            reviewViewModel.setReviewModels(reviewModels.getReviewModels());
+
+    private void onSuccess(PageableReviewListDto success){
+        binding.progressCircular.setVisibility(View.GONE);
+        if(success.getNumberOfElements() > 0){
+            reviewViewModel.getReviewModels().getValue().addAll(success.getContent());
+            shopReviewAdapter.setReviewModels(reviewViewModel.getReviewModels().getValue());
+            shopReviewAdapter.notifyItemRangeInserted(reviewViewModel.getOffset(), success.getNumberOfElements());
         }
-        shopReviewAdapter.setReviewModels(reviewViewModel.getReviewModels());
-        shopReviewAdapter.notifyDataSetChanged();
+        reviewViewModel.setNumberOfElement(success.getNumberOfElements());
+        reviewViewModel.setOffset(success.getPageable().getOffset() + success.getNumberOfElements());
     }
 
     private void onFailed() {

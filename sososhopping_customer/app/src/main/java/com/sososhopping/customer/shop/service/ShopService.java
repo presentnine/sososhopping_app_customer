@@ -5,6 +5,8 @@ import com.sososhopping.customer.shop.dto.AddCartDto;
 import com.sososhopping.customer.shop.dto.CouponListDto;
 import com.sososhopping.customer.shop.dto.EventItemListDto;
 import com.sososhopping.customer.shop.dto.ItemListDto;
+import com.sososhopping.customer.shop.dto.PageableReviewListDto;
+import com.sososhopping.customer.shop.dto.PageableWritingListDto;
 import com.sososhopping.customer.shop.dto.ReportInputDto;
 import com.sososhopping.customer.shop.dto.ReviewInputDto;
 import com.sososhopping.customer.shop.dto.ReviewListDto;
@@ -18,6 +20,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ShopService {
 
@@ -33,8 +36,15 @@ public interface ShopService {
     @GET("stores/{storeId}/writings")
     Call<EventItemListDto> requestWritings(@Path("storeId") int storeId);
 
+    @GET("stores/{storeId}/writings/page")
+    Call<PageableWritingListDto> requestWritingsPage(@Path("storeId") int storeId, @Query("offset") Integer offset);
+
     @GET("stores/{storeId}/writings/{writingId}")
     Call<EventDetailModel> requestWritingsDetail(@Path("storeId") int storeId, @Path("writingId") int writingId);
+
+    @GET("stores/{storeId}/reviews/page")
+    Call<PageableReviewListDto> requestReviewsPage(@Path("storeId") int storeId,
+                                                   @Query(value = "offset") Integer offset);
 
     @GET("stores/{storeId}/reviews")
     Call<ReviewListDto> requestReviews(@Path("storeId") int storeId);

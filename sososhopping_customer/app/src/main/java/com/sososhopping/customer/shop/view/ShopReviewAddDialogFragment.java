@@ -29,8 +29,7 @@ public class ShopReviewAddDialogFragment extends DialogFragment {
     @Override
     public void onStart(){
         super.onStart();
-        int width =  getResources().getDimensionPixelSize(R.dimen.popup_width);
-        getDialog().getWindow().setLayout(width,  ViewGroup.LayoutParams.WRAP_CONTENT);
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
@@ -88,5 +87,8 @@ public class ShopReviewAddDialogFragment extends DialogFragment {
 
     private void onNetworkError() {
         NavHostFragment.findNavController(getParentFragment().getParentFragment().getParentFragment()).navigate(R.id.action_global_networkErrorDialog);
+
+        //종료
+        dismiss();
     }
 }

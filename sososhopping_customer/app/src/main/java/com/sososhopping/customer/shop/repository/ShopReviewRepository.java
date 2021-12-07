@@ -1,10 +1,12 @@
 package com.sososhopping.customer.shop.repository;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
 import com.sososhopping.customer.common.retrofit.ApiServiceFactory;
+import com.sososhopping.customer.shop.dto.PageableReviewListDto;
 import com.sososhopping.customer.shop.dto.ReviewInputDto;
 import com.sososhopping.customer.shop.dto.ReviewListDto;
 import com.sososhopping.customer.shop.service.ShopService;
@@ -61,6 +63,38 @@ public class ShopReviewRepository {
         });
     }
 
+    public void requestShopReviewsPage(int storeId, Integer offset,
+                                       Consumer<PageableReviewListDto> reviewModel,
+                                   Runnable onFailed,
+                                   Runnable onError) {
+        shopService.requestReviewsPage(storeId,offset).enqueue(new Callback<PageableReviewListDto>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<PageableReviewListDto> call, Response<PageableReviewListDto> response) {
+                Log.e("page", response.raw().toString());
+                switch (response.code()) {
+                    case 200: {
+                        reviewModel.accept(response.body());
+                        break;
+                    }
+                    //검색 없음
+                    case 404: {
+                        onFailed.run();
+                        break;
+                    }
+                    default: {
+                        onError.run();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PageableReviewListDto> call, Throwable t) {
+                onError.run();
+            }
+        });
+    }
+
 
     public void inputReview(String token,
                             int storeId, ReviewInputDto reviewInputDto,
@@ -72,6 +106,7 @@ public class ShopReviewRepository {
         shopService.inputReviews(token, storeId, reviewInputDto).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.e("뭐지", response.raw().toString() + " " + storeId);
                 switch (response.code()) {
                     case 200:
                         //작성 성공

@@ -3,6 +3,7 @@ package com.sososhopping.customer.common.types.enumType;
 import com.google.gson.annotations.SerializedName;
 
 public enum WeekType {
+
     @SerializedName("월")
     Monday("월", 2),
     @SerializedName("화")

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.HomeActivity;
+import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.common.DateFormatMethod;
 import com.sososhopping.customer.common.types.enumType.OrderStatus;
@@ -87,10 +88,17 @@ public class MysosoOrderDetailFragment extends Fragment {
             }
         });
 
+        //TODO: 채팅방 생성 (주문상세조회)
         binding.buttonShopChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                long storeId = orderDetailViewModel.getOrderDetailDto().getValue().getStoreId();
+                long ownerId = orderDetailViewModel.getOrderDetailDto().getValue().getOwnerId();
+                String storeName = orderDetailViewModel.getOrderDetailDto().getValue().getStoreName();
 
+                navController.navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
+                        .setStoreId(storeId)
+                        .setOwnerId(ownerId));
             }
         });
     }

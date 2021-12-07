@@ -105,7 +105,7 @@ public class ShopItemListFragment extends Fragment {
     }
 
     private void onSuccess(ItemListDto itemListDto){
-        shopItemViewModel.getShopItem().setValue(itemListDto.getShopItemModels());
+        shopItemViewModel.getShopItem().setValue(itemListDto.getResults());
         shopItemAdapter.setShopItemModels(shopItemViewModel.getShopItem().getValue());
         shopItemAdapter.notifyDataSetChanged();
     }

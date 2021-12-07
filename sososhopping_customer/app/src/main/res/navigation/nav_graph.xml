@@ -45,6 +45,7 @@
         <action
             android:id="@+id/action_shopListFragment_to_shopMapFragment"
             app:destination="@id/shopMapFragment"
+            app:launchSingleTop="true"
             app:popUpTo="@id/shopListFragment"
             app:popUpToInclusive="false" />
         <action
@@ -78,11 +79,13 @@
             app:destination="@id/searchDialogFragment" />
         <action
             android:id="@+id/action_shopMapFragment_to_shop_graph"
-            app:destination="@id/shop_graph" />
+            app:destination="@id/shop_graph"
+            app:popUpTo="@id/shopMapFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_shopMapFragment_to_shopListFragment"
             app:destination="@id/shopListFragment"
-            app:popUpTo="@id/shopMapFragment"
+            app:popUpTo="@id/shopListFragment"
             app:popUpToInclusive="true" />
     </fragment>
 
@@ -183,6 +186,11 @@
         <action
             android:id="@+id/action_mysosoMainFragment_to_mysosoSettingFragment"
             app:destination="@id/mysosoSettingFragment" />
+        <action
+            android:id="@+id/action_mysosoMainFragment_to_shopMapFragment"
+            app:destination="@id/shopMapFragment"
+            app:popUpTo="@id/mysosoMainFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/mysosoPointFragment"
@@ -257,7 +265,7 @@
         <action
             android:id="@+id/action_purchaseFragment_to_purchaseSuccessFragment"
             app:destination="@id/purchaseSuccessFragment"
-            app:popUpTo="@id/purchaseFragment"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
     </fragment>
     <dialog
@@ -282,7 +290,9 @@
             app:argType="integer" />
         <action
             android:id="@+id/action_purchaseSuccessFragment_to_mysosoOrderListFragment"
-            app:destination="@id/mysosoOrderListFragment" />
+            app:destination="@id/mysosoOrderListFragment"
+            app:popUpTo="@id/purchaseSuccessFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/mysosoOrderListFragment"
@@ -321,16 +331,32 @@
         tools:layout="@layout/mysoso_setting"/>
     <fragment
         android:id="@+id/chatFragment"
-        android:name="com.sososhopping.customer.common.chat.view.ChatFragment"
+        android:name="com.sososhopping.customer.chat.view.ChatFragment"
         android:label="ChatFragment"
         tools:layout="@layout/chat_list">
         <action
             android:id="@+id/action_chatFragment_to_conversationFragment"
             app:destination="@id/conversationFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/conversationFragment"
-        android:name="com.sososhopping.customer.common.chat.view.ConversationFragment"
-        android:label="ConversationFragment" />
+        android:name="com.sososhopping.customer.chat.view.ConversationFragment"
+        android:label="ConversationFragment"
+        tools:layout="@layout/conversation">
+        <argument
+            android:name="storeName"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="storeId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+        <argument
+            android:name="ownerId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+    </fragment>
+    <action android:id="@+id/action_global_conversationFragment" app:destination="@id/conversationFragment" />
 
 </navigation>

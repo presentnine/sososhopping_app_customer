@@ -1,61 +1,50 @@
 package com.sososhopping.customer.shop.view;
 
-import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
-import com.sososhopping.customer.ShopGraphDirections;
-import com.sososhopping.customer.databinding.ShopReportBinding;
+import com.sososhopping.customer.databinding.ShopReportDialogBinding;
 import com.sososhopping.customer.shop.viewmodel.ShopInfoViewModel;
 
 import org.jetbrains.annotations.Nullable;
 
-public class ShopReportFragment extends Fragment {
+public class ShopReportDialogFragment extends DialogFragment {
 
-    private ShopReportBinding binding;
+    private ShopReportDialogBinding binding;
     private ShopInfoViewModel shopInfoViewModel;
-    private NavController navController;
 
-    public static ShopReportFragment newInstance() {return new ShopReportFragment();}
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //메뉴 변경 확인
-        setHasOptionsMenu(true);
-    }
-
+    int storeId;
+    public static ShopReportDialogFragment newInstance() {return new ShopReportDialogFragment();}
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-        super.onCreateOptionsMenu(menu,inflater);
-        menu.clear();
-        inflater.inflate(R.menu.menu_top_none, menu);
+    public void onStart(){
+        super.onStart();
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState){
         //binding 설정
-        binding = ShopReportBinding.inflate(inflater,container,false);
+        binding = ShopReportDialogBinding.inflate(inflater,container,false);
 
         //viewmodel 설정
-        shopInfoViewModel = new ViewModelProvider(getActivity()).get(ShopInfoViewModel.class);
+        shopInfoViewModel = new ShopInfoViewModel();
+        storeId = ShopReportDialogFragmentArgs.fromBundle(getArguments()).getStoreId();
 
         return binding.getRoot();
     }
@@ -64,39 +53,6 @@ public class ShopReportFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //Controller 설정
-        navController = NavHostFragment.findNavController(getParentFragment());
-
-        //위치
-        binding.buttonShopMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(shopInfoViewModel.getLocation().getValue() != null){
-                    navController.navigate(ShopGraphDirections.actionGlobalShopMapFragment(R.id.shopMainFragment)
-                            .setLat((float)shopInfoViewModel.getLocation().getValue().getLat())
-                            .setLng((float)shopInfoViewModel.getLocation().getValue().getLng()));
-                }
-            }
-        });
-
-
-        //전화하기
-        binding.buttonShopCall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(shopInfoViewModel.getPhone().getValue() != null){
-                    startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+shopInfoViewModel.getPhone().getValue())));
-                }
-            }
-        });
-
-        //채팅하기
-        binding.buttonShopChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
         //신고 전송
         binding.buttonReport.setOnClickListener(new View.OnClickListener() {
@@ -109,14 +65,13 @@ public class ShopReportFragment extends Fragment {
 
                 shopInfoViewModel.inputReport(
                         ((HomeActivity)getActivity()).getLoginToken(),
-                        shopInfoViewModel.getShopId().getValue(),
+                        storeId,
                         binding.editTextReportContent.getText().toString(),
-                        ShopReportFragment.this::onSuccess,
-                        ShopReportFragment.this::onFailedLogIn,
-                        ShopReportFragment.this::onFailed,
-                        ShopReportFragment.this::onNetworkError
+                        ShopReportDialogFragment.this::onSuccess,
+                        ShopReportDialogFragment.this::onFailedLogIn,
+                        ShopReportDialogFragment.this::onFailed,
+                        ShopReportDialogFragment.this::onNetworkError
                 );
-
             }
         });
     }
@@ -140,12 +95,15 @@ public class ShopReportFragment extends Fragment {
 
     public void onSuccess(){
         Toast.makeText(getContext(),getResources().getString(R.string.report_input), Toast.LENGTH_SHORT).show();
-        getActivity().onBackPressed();
+        //종료
+        dismiss();
     }
 
     private void onFailedLogIn(){
         NavHostFragment.findNavController(getParentFragment().getParentFragment())
                 .navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+        //종료
+        dismiss();
     }
 
     private void onFailed() {
@@ -154,6 +112,8 @@ public class ShopReportFragment extends Fragment {
 
     private void onNetworkError() {
         NavHostFragment.findNavController(getParentFragment().getParentFragment()).navigate(R.id.action_global_networkErrorDialog);
+        //종료
+        dismiss();
     }
 
 }
