@@ -7,7 +7,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".common.chat.view.ConversationFragment">
+        tools:context=".chat.view.ConversationFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/chatroom"
@@ -30,6 +30,7 @@
             app:layout_constraintVertical_weight="1"
             >
 
+
             <EditText
                 android:id="@+id/chatroomInputEditText"
                 android:layout_width="0dp"
@@ -38,6 +39,7 @@
                 android:ems="20"
                 android:textSize="15sp"
                 android:layout_margin="5dp"
+                android:singleLine="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

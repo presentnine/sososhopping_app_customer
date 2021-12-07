@@ -14,6 +14,7 @@ import lombok.Getter;
 @Getter
 public class ShopInfoViewModel extends ViewModel {
     MutableLiveData<Integer> shopId = new MutableLiveData<>();
+    MutableLiveData<Integer> ownerId = new MutableLiveData<>();
     MutableLiveData<String> shopName = new MutableLiveData<>();
     MutableLiveData<String> phone = new MutableLiveData<>();
     MutableLiveData<Location> location = new MutableLiveData<>();
@@ -38,6 +39,8 @@ public class ShopInfoViewModel extends ViewModel {
         this.location.setValue(location);
     }
 
+    public void setOwnerId(int i) {this.ownerId.setValue(i);}
+
     public void inputReport(String token, int shopId, String report,
                             Runnable onSuccess,
                             Runnable onLogInFailed,
@@ -54,6 +57,8 @@ public class ShopInfoViewModel extends ViewModel {
 
     public void setItems(ShopIntroduceModel item){
         setShopId(item.getStoreId());
+        setOwnerId(item.getOwnerId());
+
         setShopName(item.getName());
         setPhone(item.getPhone());
         setLocation(item.getLocation());

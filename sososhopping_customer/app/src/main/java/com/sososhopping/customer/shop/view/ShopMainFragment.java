@@ -25,6 +25,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.google.android.material.tabs.TabLayout;
 import com.sososhopping.customer.HomeActivity;
+import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.common.gps.CalculateDistance;
 import com.sososhopping.customer.common.gps.GPSTracker;
@@ -189,9 +190,22 @@ public class ShopMainFragment extends Fragment {
                         }
                         break;
                     }
-                    case R.id.menu_chat:{
-                        break;
 
+                    //TODO : 채팅방 생성 (상단바)
+                    case R.id.menu_chat:{
+                        if(shopInfoViewModel.getShopId().getValue() != null
+                                && shopInfoViewModel.getOwnerId().getValue() != null
+                                && shopInfoViewModel.getShopName().getValue() != null){
+
+                            long storeId = shopInfoViewModel.getShopId().getValue();
+                            long ownerId = shopInfoViewModel.getOwnerId().getValue();
+                            String storeName = shopInfoViewModel.getShopName().getValue();
+
+                            navController.navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
+                            .setStoreId(storeId)
+                            .setOwnerId(ownerId));
+                        }
+                        break;
                     }
                     case R.id.menu_report:{
                         if(shopInfoViewModel.getShopId().getValue() != null){

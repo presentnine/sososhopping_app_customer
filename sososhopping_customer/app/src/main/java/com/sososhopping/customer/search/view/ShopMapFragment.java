@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,7 +20,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.MutableLiveData;
@@ -47,6 +50,7 @@ import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.util.FusedLocationSource;
 import com.naver.maps.map.util.MarkerIcons;
 import com.sososhopping.customer.HomeActivity;
+import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.common.StringFormatMethod;
 import com.sososhopping.customer.common.types.Location;
@@ -262,36 +266,13 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void addMarkers(NaverMap naverMap){
-
         //기존 마커 해제
         int size = markers.size();
         for(int i=0; i<size; i++){
             markers.get(0).setMap(null);
             markers.remove(0);
         }
-
-        //백그라운드 스레드로 마커 생성
-        Executor executor = new Executor() {
-            @Override
-            public void execute(Runnable command) {
-                new Thread(command).start();
-            }
-        };
-
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                createMarkers(0);
-            }
-        });
-
-        //메인에서 마커 추가
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(() -> {
-           for(Marker m : markers){
-               m.setMap(naverMap);
-           }
-        });
+        addMarkersPage(naverMap,0);
     }
 
     //추가 된 경우
@@ -341,7 +322,6 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
             });
             markers.add(m);
         }
-        Log.e("생성 후 마커 (1)", markers.size()+"");
     }
 
 
@@ -369,10 +349,39 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+        //즐겨찾기 색상 설정
+        int drawableImage = 0;
+        if(s.isInterestStore()){
+            drawableImage = R.drawable.ic_baseline_favorite_24;
+        }
+        else{
+            drawableImage = R.drawable.ic_baseline_favorite_border_24;
+        }
+        //Draw New Heart
+        Drawable wrapped = DrawableCompat.wrap(AppCompatResources.getDrawable(binding.getRoot().getContext(), drawableImage));
+        DrawableCompat.setTint(wrapped, binding.getRoot().getResources().getColor(R.color.main_400));
+        binding.itemSearchMap.imageButtonFavorite.setImageDrawable(wrapped);
+
+        //TODO : 채팅방 생성 (지도)
         binding.itemSearchMap.buttonShopChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //채팅
+
+                long storeId = s.getStoreId();
+                long ownerId = s.getOwnerId();
+                String storeName = s.getName();
+
+                //이동할때 bundle 말고 이렇게 보내면
+                navController.navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
+                .setStoreId(storeId)
+                .setOwnerId(ownerId));
+
+                /***
+                 * 받을때 이렇게 받아서 쓸 수 있음
+                 ConversationFragmentArgs.fromBundle(getArguments()).getOwnerId();
+                 ConversationFragmentArgs.fromBundle(getArguments()).getStoreName();
+                 * */
             }
         });
 

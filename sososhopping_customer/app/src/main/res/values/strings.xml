@@ -95,6 +95,4 @@
     <string name="setting_logout_ask">정말 로그아웃 하시겠습니까?</string>
     <string name="setting_logout_failed">로그아웃에 실패하였습니다</string>
     <string name="setting_logout_success">성공적으로 로그아웃하였습니다</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

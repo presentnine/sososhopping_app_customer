@@ -1,4 +1,4 @@
-package com.sososhopping.customer.common.chat.view;
+package com.sososhopping.customer.chat.view;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,8 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
-import com.sososhopping.customer.common.chat.ChatroomInfor;
-import com.sososhopping.customer.common.chat.view.adapter.ChatroomAdapter;
+import com.sososhopping.customer.chat.ChatroomInfor;
+import com.sososhopping.customer.chat.view.adapter.ChatroomAdapter;
 import com.sososhopping.customer.databinding.ChatListBinding;
 
 import org.jetbrains.annotations.Nullable;
@@ -86,9 +86,7 @@ public class ChatFragment extends Fragment {
     public void onResume() {
         //상단바
         ((HomeActivity)getActivity()).showTopAppBar();
-        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitle("채팅");
-        ((HomeActivity)getActivity()).getBinding().topAppBar.setOnClickListener(null);
-        ((HomeActivity)getActivity()).setTopAppBarHome(false);
+        ((HomeActivity)getActivity()).setTopAppBarHome("채팅");
 
         //하단바
         ((HomeActivity)getActivity()).showBottomNavigation();

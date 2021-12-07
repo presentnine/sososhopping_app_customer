@@ -13,7 +13,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
@@ -83,6 +82,14 @@ MysosoMainFragment extends Fragment {
             public void onClick(View view) {
                 //하단바에 관심가게 클릭한 효과
                 ((HomeActivity) getActivity()).bottomItemClicked(R.id.menu_interest);
+            }
+        });
+
+        //채팅
+        binding.cardViewChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((HomeActivity) getActivity()).bottomItemClicked(R.id.menu_chat);
             }
         });
 
@@ -161,7 +168,7 @@ MysosoMainFragment extends Fragment {
         ((HomeActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso));
         ((HomeActivity)getActivity()).getBinding().topAppBar.setOnClickListener(null);
         ((HomeActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
-        ((HomeActivity)getActivity()).setTopAppBarHome(false);
+        ((HomeActivity)getActivity()).setTopAppBarNotHome(false);
 
         //하단바
         ((HomeActivity)getActivity()).showBottomNavigation();

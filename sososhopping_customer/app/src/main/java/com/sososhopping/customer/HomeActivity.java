@@ -228,6 +228,9 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
                 }
             }, 2000);
         }
+        else if(start == R.id.conversationFragment){
+            bottomItemClicked(R.id.menu_chat);
+        }
         else if(navHostFragment.getChildFragmentManager().getBackStackEntryCount() < 1){
             binding.bottomNavigation.setSelectedItemId(R.id.menu_home);
         }
@@ -254,8 +257,8 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
         //토큰
         setLoginToken(responseDto.getToken());
         this.setIsLogIn(true);
-        initLoginButton();
         afterLoginSuccessFirebaseInit(responseDto.getFirebaseToken());
+        initLoginButton();
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_success), Toast.LENGTH_SHORT).show();
     }
 
@@ -285,7 +288,13 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    public void setTopAppBarHome(boolean b){getSupportActionBar().setDisplayHomeAsUpEnabled(b);}
+    public void setTopAppBarHome(String title){
+        binding.topAppBar.setTitle(title);
+        binding.topAppBar.setOnClickListener(null);
+        binding.topAppBar.setTitleCentered(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+    }
+    public void setTopAppBarNotHome(boolean b){getSupportActionBar().setDisplayHomeAsUpEnabled(b);}
 
     public void hideTopAppBar() {
         binding.topAppBar.setVisibility(View.GONE);

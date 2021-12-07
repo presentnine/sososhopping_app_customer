@@ -154,7 +154,6 @@ public class LogInDialogFragment extends DialogFragment {
         SharedPreferenceManager.setString(getContext(), Constant.SHARED_PREFERENCE_KEY_ID, id);
         SharedPreferenceManager.setString(getContext(), Constant.SHARED_PREFERENCE_KEY_PASSWORD, password);
         ((HomeActivity) getActivity()).setLoginToken(token);
-
         ((HomeActivity) getActivity()).afterLoginSuccessFirebaseInit(responseDto.getFirebaseToken());
 
         //로그인 처리 후 홈화면 이동

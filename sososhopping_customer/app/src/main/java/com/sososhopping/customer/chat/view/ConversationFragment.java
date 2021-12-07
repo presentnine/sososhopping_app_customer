@@ -1,4 +1,4 @@
-package com.sososhopping.customer.common.chat.view;
+package com.sososhopping.customer.chat.view;
 
 import android.os.Bundle;
 
@@ -21,8 +21,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ServerValue;
 import com.sososhopping.customer.HomeActivity;
-import com.sososhopping.customer.common.chat.Chat;
-import com.sososhopping.customer.common.chat.view.adapter.ChatAdapter;
+import com.sososhopping.customer.chat.Chat;
+import com.sososhopping.customer.chat.view.adapter.ChatAdapter;
 import com.sososhopping.customer.databinding.ConversationBinding;
 
 import java.util.ArrayList;
@@ -71,6 +71,7 @@ public class ConversationFragment extends Fragment {
             storeName = getArguments().getString(STORENAME);
         }
 
+
         String[] split = chatroomId.split("@");
 
         storeId = split[0];
@@ -78,6 +79,7 @@ public class ConversationFragment extends Fragment {
         userUid = split[2];
 
         ref = ((HomeActivity)getActivity()).ref;
+
     }
 
     @Override
@@ -123,6 +125,17 @@ public class ConversationFragment extends Fragment {
         });
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        //상단바
+        ((HomeActivity)getActivity()).showTopAppBar();
+        ((HomeActivity)getActivity()).setTopAppBarHome("채팅");
+
+        //하단바 숨기기
+        ((HomeActivity)getActivity()).hideBottomNavigation();
+        super.onResume();
     }
 
     @Override

@@ -18,6 +18,8 @@ import lombok.ToString;
 @ToString
 public class ShopIntroduceModel {
     int storeId;
+    int ownerId;
+
     String storeType;
     String name;
     //대표이미지
