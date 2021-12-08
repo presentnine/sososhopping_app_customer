@@ -83,7 +83,7 @@ public class ShopIntroduceFragment extends Fragment {
                 long ownerId = shopIntroduceModel.getOwnerId();
                 String storeName = shopIntroduceModel.getName();
 
-                navController.navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
+                NavHostFragment.findNavController(getParentFragment().getParentFragment()).navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
                         .setStoreId(storeId)
                         .setOwnerId(ownerId));
             }

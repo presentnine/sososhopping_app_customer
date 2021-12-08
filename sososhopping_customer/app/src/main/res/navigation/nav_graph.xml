@@ -85,7 +85,7 @@
         <action
             android:id="@+id/action_shopMapFragment_to_shopListFragment"
             app:destination="@id/shopListFragment"
-            app:popUpTo="@id/shopListFragment"
+            app:popUpTo="@id/shopMapFragment"
             app:popUpToInclusive="true" />
     </fragment>
 
@@ -358,5 +358,10 @@
             android:defaultValue="-1L" />
     </fragment>
     <action android:id="@+id/action_global_conversationFragment" app:destination="@id/conversationFragment" />
+    <dialog
+        android:id="@+id/roadAddressSearchDialog"
+        android:name="com.sososhopping.customer.mysoso.view.RoadAddressSearchDialog"
+        android:label="RoadAddressSearchDialog"
+        tools:layout="@layout/roadaddress_web_dialog"/><action android:id="@+id/action_global_roadAddressSearchDialog" app:destination="@id/roadAddressSearchDialog"/>
 
 </navigation>

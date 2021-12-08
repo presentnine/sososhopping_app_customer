@@ -29,15 +29,12 @@ public class SearchDialogFragment extends DialogFragment {
     private SearchShopDialogBinding binding;
     private HomeViewModel homeViewModel;
 
-    private int navigateTo;
-
     public static SearchDialogFragment newInstance(){return newInstance();}
 
     @Override
     public void onStart(){
         super.onStart();
-        int width = getResources().getDimensionPixelSize(R.dimen.popup_width);
-        getDialog().getWindow().setLayout(width,  ViewGroup.LayoutParams.WRAP_CONTENT);
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,  ViewGroup.LayoutParams.WRAP_CONTENT);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
@@ -46,7 +43,6 @@ public class SearchDialogFragment extends DialogFragment {
                              Bundle savedInstanceState){
 
         binding = SearchShopDialogBinding.inflate(inflater,container,false);
-        navigateTo = SearchDialogFragmentArgs.fromBundle(getArguments()).getNavigateFrom();
         homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
 
         return binding.getRoot();

@@ -33,7 +33,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:clickable="true"
-                        app:cardBackgroundColor="#00FFFFFF"
+                        app:cardBackgroundColor="#80FFFFFF"
                         app:cardCornerRadius="27.5dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"

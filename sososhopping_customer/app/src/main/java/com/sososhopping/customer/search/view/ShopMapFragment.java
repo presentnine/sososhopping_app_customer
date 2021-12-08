@@ -63,6 +63,10 @@ import com.sososhopping.customer.shop.view.ShopMainFragment;
 import java.util.ArrayList;
 import java.util.concurrent.Executor;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
     private NavController navController;
     private SearchShopMapBinding binding;
@@ -302,6 +306,15 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void createMarkers(int startIdx){
+        InfoWindow infoWindow = new InfoWindow();
+        infoWindow.setAdapter(new InfoWindow.DefaultTextAdapter(getContext()) {
+            @NonNull
+            @Override
+            public CharSequence getText(@NonNull InfoWindow infoWindow) {
+                return ((CustomTag)infoWindow.getMarker().getTag()).getName();
+            }
+        });
+
         for(int i= startIdx; i<homeViewModel.getShopList().getValue().size(); i++){
             ShopInfoShortModel s = homeViewModel.getShopList().getValue().get(i);
 
@@ -310,20 +323,22 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
             m.setIcon(MarkerIcons.GREEN);
             m.setWidth(72);
             m.setHeight(108);
-            m.setTag(i);
+            m.setTag(new CustomTag(i, s.getName()));
 
             m.setOnClickListener(new Overlay.OnClickListener() {
                 @Override
                 public boolean onClick(@NonNull Overlay overlay) {
                     Marker marker = (Marker) overlay;
-                    focusedShop.postValue(homeViewModel.getShopList().getValue().get((Integer)marker.getTag()));
+                    int idx = ((CustomTag)marker.getTag()).getIdx();
+                    focusedShop.postValue(homeViewModel.getShopList().getValue().get(idx));
+                    infoWindow.open(marker);
                     return true;
                 }
             });
+
             markers.add(m);
         }
     }
-
 
     public void bindShopItem(ShopInfoShortModel s){
         binding.itemSearchMap.textViewShopName.setText(s.getName());
@@ -451,4 +466,13 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
     private void onNetworkError(){
         Snackbar.make(binding.getRoot(), "상점 정보를 더 불러오는데 실패했습니다", Snackbar.LENGTH_SHORT).show();
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    class CustomTag{
+        int idx;
+        String name;
+    }
+
 }

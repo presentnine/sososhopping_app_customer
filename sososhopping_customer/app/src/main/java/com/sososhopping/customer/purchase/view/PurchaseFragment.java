@@ -24,8 +24,11 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.HomeActivity;
+import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
+import com.sososhopping.customer.common.NetworkStatus;
 import com.sososhopping.customer.purchase.model.OrderRequestModel;
 import com.sososhopping.customer.purchase.viewmodel.PurchaseViewModel;
 import com.sososhopping.customer.common.types.enumType.OrderType;
@@ -141,6 +144,27 @@ public class PurchaseFragment extends Fragment {
         );
         purchaseFragment_visit.setVisitLayout(getParentFragmentManager(), getResources());
         purchaseFragment_visit.setDeliveryLayout(getResources());
+
+        //옵저버
+        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("roadAddress")
+                .observe(this, new Observer<Object>() {
+                    @Override
+                    public void onChanged(Object o) {
+                        binding.includeLayoutVisit.editTextRoadAddress.setText((CharSequence) o);
+                    }
+                });
+
+        binding.includeLayoutVisit.editTextRoadAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int status = NetworkStatus.getConnectivityStatus(getContext());
+                if(status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI) {
+                    navController.navigate(NavGraphDirections.actionGlobalRoadAddressSearchDialog());
+                }else {
+                    Snackbar.make(binding.getRoot(), "인터넷 연결을 확인해주세요.", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         //pointLayout
        purchaseFragment_point = new PurchaseFragment_Point(
