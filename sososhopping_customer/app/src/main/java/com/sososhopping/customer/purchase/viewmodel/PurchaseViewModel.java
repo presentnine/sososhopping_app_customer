@@ -128,10 +128,11 @@ public class PurchaseViewModel extends ViewModel {
 
     public void calPointMax(){
         if(getShopInfo().getValue() == null){
-            getMaxPoint().setValue(getTotalPrice().getValue() - getCouponDiscount().getValue());
+            getMaxPoint().setValue(0);
         }
         else{
-            getMaxPoint().setValue(Math.min(getShopInfo().getValue().getMyPoint(),
+            getMaxPoint().setValue(
+                    Math.min(getShopInfo().getValue().getMyPoint(),
                     getTotalPrice().getValue() - getCouponDiscount().getValue()));
         }
     }

@@ -42,13 +42,16 @@ import com.sososhopping.customer.chat.ChatroomUsers;
 import com.sososhopping.customer.common.Constant;
 import com.sososhopping.customer.common.sharedpreferences.SharedPreferenceManager;
 import com.sososhopping.customer.databinding.ActivityMainBinding;
+import com.sososhopping.customer.mysoso.model.MyInfoModel;
+import com.sososhopping.customer.mysoso.viemodel.MyInfoViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.function.Consumer;
 
-public class HomeActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback{
+public class HomeActivity extends AppCompatActivity {
 
     public NavController navController;
     private NavHostFragment navHostFragment;
@@ -57,10 +60,8 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
     //로그인용
     Boolean isLogIn = false;
     MutableLiveData<String> loginToken = new MutableLiveData<>();
+    MutableLiveData<String> nickName = new MutableLiveData<>();
 
-    //권한용
-    private static final int PERMISSIONS_REQUEST_CODE = 100;
-    String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
     //파이어베이스 기능
     public FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -81,19 +82,32 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
 
         //자동로그인 시도
         autoLogIn();
-
-        setTheme(R.style.Theme_Sososhopping_customer_NoActionBar);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         loginToken.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 initLoginButton();
+
+                if(s != null){
+                    //바로 닉네임 받아오기
+                    new MyInfoViewModel().requestMyInfo(
+                            s,
+                            new Consumer<MyInfoModel>() {
+                                @Override
+                                public void accept(MyInfoModel myInfoModel) {
+                                    HomeActivity.this.nickName.setValue(myInfoModel.getNickname());
+                                }
+                            },
+                            HomeActivity.this::onLoginFailed,
+                            HomeActivity.this::onLoginFailed,
+                            HomeActivity.this::onLoginFailed
+                    );
+                }
+
             }
         });
 
-        //권한 요청
-        getPermission();
 
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
@@ -118,9 +132,15 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
                         break;
                     }
                     case R.id.menu_chat: {
-                        getViewModelStore().clear();
-                        binding.bottomNavigation.getMenu().findItem(R.id.menu_chat).setChecked(true);
-                        navController.navigate(R.id.chatFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+
+                        if(user != null){
+                            getViewModelStore().clear();
+                            binding.bottomNavigation.getMenu().findItem(R.id.menu_chat).setChecked(true);
+                            navController.navigate(R.id.chatFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                        }
+                        else{
+                            Snackbar.make(findViewById(android.R.id.content), "채팅 서버 인증 중입니다.", Snackbar.LENGTH_SHORT).show();
+                        }
                         break;
                     }
 
@@ -160,8 +180,13 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
                         break;
                     }
                     case R.id.menu_chat: {
-                        getViewModelStore().clear();
-                        navController.navigate(R.id.chatFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                        if(user != null){
+                            getViewModelStore().clear();
+                            navController.navigate(R.id.chatFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                        }
+                        else{
+                            Snackbar.make(findViewById(android.R.id.content), "채팅 서버 인증 중입니다.", Snackbar.LENGTH_SHORT).show();
+                        }
                         break;
                     }
 
@@ -201,7 +226,6 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
 
         //getAppKeyHash();
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -255,6 +279,7 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
     private void onLoginFailed() {
     }
 
+
     private void onLoggedIn(LogInResponseDto responseDto) {
         //토큰
         setLoginToken(responseDto.getToken());
@@ -306,6 +331,13 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
         return loginToken.getValue();
     }
 
+    public String getNickname(){
+        if(nickName.getValue() != null){
+            return nickName.getValue();
+        }
+        return "";
+    }
+
     public void setLoginToken(String loginToken) {
         this.loginToken.setValue(loginToken);
     }
@@ -326,78 +358,13 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
         binding.bottomNavigation.setSelectedItemId(id);
     }
 
-    public void getPermission() {
-        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-        if (permissionCheck == PackageManager.PERMISSION_DENIED) { //포그라운드 위치 권한 확인
-            Snackbar.make(getBinding().getRoot(), "앱을 사용하기 위해서는 위치정보 접근 권한이 필요합니다.", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("확인", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            //위치 권한 요청
-                            ActivityCompat.requestPermissions(HomeActivity.this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE);
-                        }
-                    }).show();
+
+
+    public boolean isFirebaseSetted(){
+        if(user == null){
+            return false;
         }
-    }
-
-    //권한없으면 꺼버리기
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSIONS_REQUEST_CODE && grantResults.length == REQUIRED_PERMISSIONS.length) {
-            boolean check_result = true;
-
-            for(int result : grantResults){
-                if(result != PackageManager.PERMISSION_GRANTED){
-                    check_result = false;
-                    break;
-                }
-            }
-
-            if(check_result){
-                return;
-            }
-
-            for(String s : permissions){
-                //다시보지 않기
-                if(!ActivityCompat.shouldShowRequestPermissionRationale(this,s)){
-                    Snackbar.make(binding.getRoot(),"권한이 거부되었습니다.\n설정(앱 정보)에서 권한을 허용해야 합니다.", Snackbar.LENGTH_INDEFINITE)
-                            .setAction("확인", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    finish();
-                                }
-                            }).show();
-                }
-            }
-
-            Snackbar.make(binding.getRoot(),"권한이 거부되었습니다.\n앱을 다시 실행하여 권한을 허용해 주세요.", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("확인", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            finish();
-                        }
-                    }).show();
-
-        }
-    }
-
-    //해시 키 값 구하기
-    private void getAppKeyHash() {
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md;
-                md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                String something = new String(Base64.encode(md.digest(), 0));
-                Log.e("Hash key", something);
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.e("name not found", e.toString());
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+        return true;
     }
 
     //앱이 다시 켜지면 firebase 재인증

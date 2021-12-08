@@ -29,6 +29,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -381,23 +382,26 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
         binding.itemSearchMap.buttonShopChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //채팅
-                long storeId = s.getStoreId();
-                long ownerId = s.getOwnerId();
-                String storeName = s.getName();
-                String customerName = "";
+                if(((HomeActivity)getActivity()).getLoginToken() == null){
+                    Snackbar.make(binding.getRoot(), "로그인 후에 이용해 주시기 바랍니다.", Snackbar.LENGTH_SHORT).show();
+                }
+                else if(!((HomeActivity)getActivity()).isFirebaseSetted()){
+                    Snackbar.make(binding.getRoot(), "채팅 서버 인증 중입니다. 잠시만 기다려 주세요", Snackbar.LENGTH_SHORT).show();
+                }
+                else{
+                    //채팅
+                    long storeId = s.getStoreId();
+                    long ownerId = s.getOwnerId();
+                    String storeName = s.getName();
+                    String customerName = ((HomeActivity)getActivity()).getNickname();
 
-                String chatroomId = ((HomeActivity) getActivity()).makeChatroom(Long.toString(storeId), Long.toString(ownerId), storeName, customerName);
+                    String chatroomId = ((HomeActivity) getActivity()).makeChatroom(Long.toString(storeId), Long.toString(ownerId), storeName, customerName);
 
-                //이동할때 bundle 말고 이렇게 보내면
-                navController.navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
-                .setChatroomId(chatroomId));
+                    //이동할때 bundle 말고 이렇게 보내면
+                    navController.navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
+                            .setChatroomId(chatroomId));
+                }
 
-                /***
-                 * 받을때 이렇게 받아서 쓸 수 있음
-                 ConversationFragmentArgs.fromBundle(getArguments()).getOwnerId();
-                 ConversationFragmentArgs.fromBundle(getArguments()).getStoreName();
-                 * */
             }
         });
 

@@ -275,6 +275,7 @@ public class PurchaseFragment extends Fragment {
 
     private void onSuccess(ShopIntroduceModel shopIntroduceModel){
         purchaseViewModel.getShopInfo().setValue(shopIntroduceModel);
+        purchaseViewModel.calPointMax();
 
         //매장이름설정
         binding.includeLayoutItem.textViewStoreName.setText(shopIntroduceModel.getName());

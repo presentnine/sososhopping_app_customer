@@ -362,6 +362,6 @@
 
     <action
         android:id="@+id/action_global_conversationFragment"
-        app:destination="@id/conversationFragment" />
+        app:destination="@id/conversationFragment" /><action android:id="@+id/action_global_roadAddressSearchDialog" app:destination="@id/roadAddressSearchDialog"/>
 
 </navigation>

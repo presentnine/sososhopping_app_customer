@@ -16,6 +16,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
@@ -79,22 +80,26 @@ public class ShopIntroduceFragment extends Fragment {
         binding.buttonShopChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                long storeId = shopIntroduceModel.getStoreId();
-                long ownerId = shopIntroduceModel.getOwnerId();
-                String storeName = shopIntroduceModel.getName();
-                String customerName = "";
 
-<<<<<<< HEAD
-                NavHostFragment.findNavController(getParentFragment().getParentFragment()).navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
-                        .setStoreId(storeId)
-                        .setOwnerId(ownerId));
-=======
-                String chatroomId = ((HomeActivity) getActivity()).makeChatroom(Long.toString(storeId), Long.toString(ownerId), storeName, customerName);
+                if(((HomeActivity)getActivity()).getLoginToken() == null){
+                    Snackbar.make(binding.getRoot(), "로그인 후에 이용해 주시기 바랍니다.", Snackbar.LENGTH_SHORT).show();
+                }
+                else if(!((HomeActivity)getActivity()).isFirebaseSetted()){
+                    Snackbar.make(binding.getRoot(), "채팅 서버 인증 중입니다. 잠시만 기다려 주세요", Snackbar.LENGTH_SHORT).show();
+                }
+                else{
+                    long storeId = shopIntroduceModel.getStoreId();
+                    long ownerId = shopIntroduceModel.getOwnerId();
+                    String storeName = shopIntroduceModel.getName();
+                    String customerName = ((HomeActivity)getActivity()).getNickname();
 
-                NavHostFragment.findNavController(getParentFragment().getParentFragment())
-                        .navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
-                                .setChatroomId(chatroomId));
->>>>>>> 8c6b8bdad3e4698a8ece34b70809841ee3d15a40
+
+                    String chatroomId = ((HomeActivity) getActivity()).makeChatroom(Long.toString(storeId), Long.toString(ownerId), storeName, customerName);
+
+                    NavHostFragment.findNavController(getParentFragment().getParentFragment())
+                            .navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
+                                    .setChatroomId(chatroomId));
+                }
             }
         });
 

@@ -72,7 +72,7 @@ public class ShopEventBoardAdapter extends RecyclerView.Adapter<ShopEventBoardAd
         public void bindItem(EventItemModel eventItemModel) throws ParseException {
             binding.textViewEventTitle.setText(eventItemModel.getTitle());
             binding.textViewEventOrNews.setText(eventItemModel.getWritingType().getValue());
-            binding.textViewEventWriteDate.setText(DateFormatMethod.dateFormatMin(eventItemModel.getCreatedAt()));
+            binding.textViewEventWriteDate.setText(DateFormatMethod.dateFormatDay(eventItemModel.getCreatedAt()));
             if(eventItemModel.getDescription().length() >= 50){
                 binding.textViewEventDescription.setText(eventItemModel.getDescription().substring(0,49) + "...");
             }
