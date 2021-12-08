@@ -362,20 +362,21 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
         DrawableCompat.setTint(wrapped, binding.getRoot().getResources().getColor(R.color.main_400));
         binding.itemSearchMap.imageButtonFavorite.setImageDrawable(wrapped);
 
-        //TODO : 채팅방 생성 (지도)
+        //TODO : 채팅방 생성 (지도) -> 고객 닉네임 필요
         binding.itemSearchMap.buttonShopChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //채팅
-
                 long storeId = s.getStoreId();
                 long ownerId = s.getOwnerId();
                 String storeName = s.getName();
+                String customerName = "";
+
+                String chatroomId = ((HomeActivity) getActivity()).makeChatroom(Long.toString(storeId), Long.toString(ownerId), storeName, customerName);
 
                 //이동할때 bundle 말고 이렇게 보내면
                 navController.navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
-                .setStoreId(storeId)
-                .setOwnerId(ownerId));
+                .setChatroomId(chatroomId));
 
                 /***
                  * 받을때 이렇게 받아서 쓸 수 있음

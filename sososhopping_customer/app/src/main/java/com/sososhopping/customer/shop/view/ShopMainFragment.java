@@ -191,7 +191,7 @@ public class ShopMainFragment extends Fragment {
                         break;
                     }
 
-                    //TODO : 채팅방 생성 (상단바)
+                    //TODO : 채팅방 생성 (상단바) -> 고객 닉네임 필요
                     case R.id.menu_chat:{
                         if(shopInfoViewModel.getShopId().getValue() != null
                                 && shopInfoViewModel.getOwnerId().getValue() != null
@@ -200,10 +200,12 @@ public class ShopMainFragment extends Fragment {
                             long storeId = shopInfoViewModel.getShopId().getValue();
                             long ownerId = shopInfoViewModel.getOwnerId().getValue();
                             String storeName = shopInfoViewModel.getShopName().getValue();
+                            String customerName = "";
+
+                            String chatroomId = ((HomeActivity) getActivity()).makeChatroom(Long.toString(storeId), Long.toString(ownerId), storeName, customerName);
 
                             navController.navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
-                            .setStoreId(storeId)
-                            .setOwnerId(ownerId));
+                            .setChatroomId(chatroomId));
                         }
                         break;
                     }

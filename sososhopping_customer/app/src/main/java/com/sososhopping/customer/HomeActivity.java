@@ -37,6 +37,8 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.sososhopping.customer.account.dto.LogInResponseDto;
 import com.sososhopping.customer.account.viewmodel.LogInViewModel;
+import com.sososhopping.customer.chat.ChatroomInfor;
+import com.sososhopping.customer.chat.ChatroomUsers;
 import com.sososhopping.customer.common.Constant;
 import com.sososhopping.customer.common.sharedpreferences.SharedPreferenceManager;
 import com.sososhopping.customer.databinding.ActivityMainBinding;
@@ -475,5 +477,30 @@ public class HomeActivity extends AppCompatActivity implements ActivityCompat.On
                         });
             }
         }
+    }
+
+    //채팅방 생성 TODO : 추후 고객 닉네임 적용
+    public String makeChatroom(String storeId, String ownerId, String storeName, String customerName) {
+        String userUid = user.getUid();
+        String ownerUid = "O" + ownerId;
+        String chatRoomId = storeId + "@" + ownerUid + "@" + userUid;
+
+        ChatroomInfor chatRoomInfor = new ChatroomInfor(customerName, storeName, chatRoomId);
+        ref.child("ChatroomInfor")
+                .child(userUid)
+                .child(chatRoomId)
+                .setValue(chatRoomInfor);
+
+        ref.child("ChatroomInfor")
+                .child(storeId)
+                .child(chatRoomId)
+                .setValue(chatRoomInfor);
+
+        ChatroomUsers chatRoomUserInfor = new ChatroomUsers(userUid, ownerUid);
+        ref.child("ChatroomUsers")
+                .child(chatRoomId)
+                .setValue(chatRoomUserInfor);
+
+        return chatRoomId;
     }
 }
