@@ -67,10 +67,9 @@ public class ConversationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            chatroomId = getArguments().getString(CHATROOMID);
-            storeName = getArguments().getString(STORENAME);
+            chatroomId = ConversationFragmentArgs.fromBundle(getArguments()).getChatroomId();
+            storeName = ConversationFragmentArgs.fromBundle(getArguments()).getStoreName();
         }
-
 
         String[] split = chatroomId.split("@");
 
@@ -79,7 +78,6 @@ public class ConversationFragment extends Fragment {
         userUid = split[2];
 
         ref = ((HomeActivity)getActivity()).ref;
-
     }
 
     @Override

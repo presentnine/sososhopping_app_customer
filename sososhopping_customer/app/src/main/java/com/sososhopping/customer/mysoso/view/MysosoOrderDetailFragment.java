@@ -88,17 +88,20 @@ public class MysosoOrderDetailFragment extends Fragment {
             }
         });
 
-        //TODO: 채팅방 생성 (주문상세조회)
+        //TODO : 채팅방 생성 (주문상세조회) -> 고객 닉네임 필요
         binding.buttonShopChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 long storeId = orderDetailViewModel.getOrderDetailDto().getValue().getStoreId();
                 long ownerId = orderDetailViewModel.getOrderDetailDto().getValue().getOwnerId();
                 String storeName = orderDetailViewModel.getOrderDetailDto().getValue().getStoreName();
+                String customerName = "";
 
-                navController.navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
-                        .setStoreId(storeId)
-                        .setOwnerId(ownerId));
+                String chatroomId = ((HomeActivity) getActivity()).makeChatroom(Long.toString(storeId), Long.toString(ownerId), storeName, customerName);
+
+                navController
+                        .navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
+                        .setChatroomId(chatroomId));
             }
         });
     }

@@ -75,17 +75,26 @@ public class ShopIntroduceFragment extends Fragment {
             }
         });
 
-        //TODO : 채팅방 생성 (상점소개)
+        //TODO : 채팅방 생성 (상점소개) -> 고객 닉네임 필요
         binding.buttonShopChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 long storeId = shopIntroduceModel.getStoreId();
                 long ownerId = shopIntroduceModel.getOwnerId();
                 String storeName = shopIntroduceModel.getName();
+                String customerName = "";
 
+<<<<<<< HEAD
                 NavHostFragment.findNavController(getParentFragment().getParentFragment()).navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
                         .setStoreId(storeId)
                         .setOwnerId(ownerId));
+=======
+                String chatroomId = ((HomeActivity) getActivity()).makeChatroom(Long.toString(storeId), Long.toString(ownerId), storeName, customerName);
+
+                NavHostFragment.findNavController(getParentFragment().getParentFragment())
+                        .navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
+                                .setChatroomId(chatroomId));
+>>>>>>> 8c6b8bdad3e4698a8ece34b70809841ee3d15a40
             }
         });
 

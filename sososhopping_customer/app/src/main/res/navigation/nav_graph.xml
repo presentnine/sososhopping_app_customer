@@ -349,19 +349,19 @@
             app:argType="string"
             app:nullable="true" />
         <argument
-            android:name="storeId"
-            app:argType="long"
-            android:defaultValue="-1L" />
-        <argument
-            android:name="ownerId"
-            app:argType="long"
-            android:defaultValue="-1L" />
+            android:name="chatroomId"
+            app:argType="string"
+            android:defaultValue="" />
     </fragment>
-    <action android:id="@+id/action_global_conversationFragment" app:destination="@id/conversationFragment" />
+
     <dialog
         android:id="@+id/roadAddressSearchDialog"
         android:name="com.sososhopping.customer.mysoso.view.RoadAddressSearchDialog"
         android:label="RoadAddressSearchDialog"
-        tools:layout="@layout/roadaddress_web_dialog"/><action android:id="@+id/action_global_roadAddressSearchDialog" app:destination="@id/roadAddressSearchDialog"/>
+        tools:layout="@layout/roadaddress_web_dialog"/>
+
+    <action
+        android:id="@+id/action_global_conversationFragment"
+        app:destination="@id/conversationFragment" />
 
 </navigation>
