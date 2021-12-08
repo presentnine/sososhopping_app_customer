@@ -312,13 +312,15 @@ public class PurchaseFragment_Visit {
         //1시간 더한 날이랑 선택된 날이랑 같으면 시작시간 비교 필요
         if(sf.format(cal.getTime()).equals(date)){
             start = String.valueOf(compareStartTime(cal));
+            end = getEndTime(cal.get(Calendar.DAY_OF_WEEK));
         }
         else{
+            Date d = sf.parse(date);
+            cal.setTime(d);
+            end = getEndTime(cal.get(Calendar.DAY_OF_WEEK));
             start = getStartTime(cal.get(Calendar.DAY_OF_WEEK));
         }
-        end = getEndTime(cal.get(Calendar.DAY_OF_WEEK));
 
-        //에러 발생
         if(Integer.parseInt(start) >= Integer.parseInt(end)){
             throw new Exception();
         }

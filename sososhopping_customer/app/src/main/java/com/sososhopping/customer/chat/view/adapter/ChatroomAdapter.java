@@ -8,9 +8,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.chat.ChatroomInfor;
 import com.sososhopping.customer.chat.view.ChatFragmentDirections;
@@ -44,11 +46,15 @@ public class ChatroomAdapter extends RecyclerView.Adapter {
         ((ViewHolder)holder).chatroomStoreName.setText(chatroomInforList.get(position).storeName);
         ((ViewHolder)holder).chatroomItemContent.setText(chatroomInforList.get(position).lastMessage);
 
-        String timeStamp = chatroomInforList.get(position).lastMessageTimestamp.toString();
-        Long time = Long.parseLong(timeStamp);
-        Date date = new Date(time + 1000 * 60 * 60 * 9);
+        if (chatroomInforList.get(position).lastMessageTimestamp != null) {
+            String timeStamp = chatroomInforList.get(position).lastMessageTimestamp.toString();
+            Long time = Long.parseLong(timeStamp);
+            Date date = new Date(time + 1000 * 60 * 60 * 9);
 
-        ((ViewHolder)holder).chatroomItemTime.setText(simpleDateFormat.format(date));
+            ((ViewHolder) holder).chatroomItemTime.setText(simpleDateFormat.format(date));
+        } else {
+            ((ViewHolder) holder).chatroomItemTime.setText("");
+        }
     }
 
     @Override
@@ -74,15 +80,10 @@ public class ChatroomAdapter extends RecyclerView.Adapter {
                     if (pos != RecyclerView.NO_POSITION) {
                         ChatroomInfor chatroomInfor = chatroomInforList.get(pos);
 
-
-                        Bundle bundle = new Bundle();
-                        bundle.putString("chatroomId", chatroomInfor.chatroomId);
-                        bundle.putString("storeName", chatroomInfor.storeName);
-                        Navigation.findNavController(v).navigate(
-                                R.id.action_chatFragment_to_conversationFragment
-                        );
-
-
+                        Navigation.findNavController(v)
+                                .navigate(
+                                        NavGraphDirections.actionGlobalConversationFragment(chatroomInfor.storeName)
+                                        .setChatroomId(chatroomInfor.chatroomId));
                     }
                 }
             });

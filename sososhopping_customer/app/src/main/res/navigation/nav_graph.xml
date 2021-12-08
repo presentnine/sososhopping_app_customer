@@ -349,14 +349,12 @@
             app:argType="string"
             app:nullable="true" />
         <argument
-            android:name="storeId"
-            app:argType="long"
-            android:defaultValue="-1L" />
-        <argument
-            android:name="ownerId"
-            app:argType="long"
-            android:defaultValue="-1L" />
+            android:name="chatroomId"
+            app:argType="string"
+            android:defaultValue="" />
     </fragment>
-    <action android:id="@+id/action_global_conversationFragment" app:destination="@id/conversationFragment" />
+    <action
+        android:id="@+id/action_global_conversationFragment"
+        app:destination="@id/conversationFragment" />
 
 </navigation>
