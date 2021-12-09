@@ -152,7 +152,7 @@ MysosoMainFragment extends Fragment {
         binding.cardViewMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                navConroller.navigate(MysosoMainFragmentDirections.actionMysosoMainFragmentToShopMapFragment(R.id.mysosoMainFragment));
             }
         });
 

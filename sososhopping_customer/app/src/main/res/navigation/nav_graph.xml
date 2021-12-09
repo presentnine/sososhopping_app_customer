@@ -208,10 +208,8 @@
             android:name="storeId"
             app:argType="integer" />
         <action
-            android:id="@+id/action_mysosoPointDetailFragment_to_shopMapFragment"
-            app:destination="@id/shopMapFragment"
-            app:popUpTo="@id/home2"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_mysosoPointDetailFragment_to_shop_graph"
+            app:destination="@id/shop_graph" />
     </fragment>
     <fragment
         android:id="@+id/mysosoReviewFragment"

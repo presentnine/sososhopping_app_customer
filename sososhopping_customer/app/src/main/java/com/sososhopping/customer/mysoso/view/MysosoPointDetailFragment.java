@@ -128,18 +128,14 @@ public class MysosoPointDetailFragment extends Fragment {
             }
         });
 
-        binding.buttonShopMap.setOnClickListener(new View.OnClickListener() {
+        binding.buttonShop.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
-                if(pointDetailViewModel.getLocation().getValue() != null){
-                    navConroller.navigate(MysosoPointDetailFragmentDirections.actionMysosoPointDetailFragmentToShopMapFragment(
-                            R.id.mysosoPointDetailFragment)
-                            .setLat((float)pointDetailViewModel.getLocation().getValue().getLat())
-                            .setLng((float)pointDetailViewModel.getLocation().getValue().getLng()));
-                }
+            public void onClick(View view) {
+                navConroller.navigate(MysosoPointDetailFragmentDirections
+                        .actionMysosoPointDetailFragmentToShopGraph(pointDetailViewModel.getStoreId().getValue()));
             }
         });
+
 
         binding.buttonShopChat.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,11 +1,13 @@
 package com.sososhopping.customer;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
@@ -40,6 +42,7 @@ import com.sososhopping.customer.account.viewmodel.LogInViewModel;
 import com.sososhopping.customer.chat.ChatroomInfor;
 import com.sososhopping.customer.chat.ChatroomUsers;
 import com.sososhopping.customer.common.Constant;
+import com.sososhopping.customer.common.gps.GPSTracker;
 import com.sososhopping.customer.common.sharedpreferences.SharedPreferenceManager;
 import com.sososhopping.customer.databinding.ActivityMainBinding;
 import com.sososhopping.customer.mysoso.model.MyInfoModel;
@@ -79,6 +82,18 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        GPSTracker gpsTracker = GPSTracker.getInstance(getApplicationContext());
+        if(!gpsTracker.canGetLocation()){
+            Snackbar.make(findViewById(android.R.id.content),"앱을 사용하시기 위해서는, 위치 정보를 활성화 해야 합니다.", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("확인", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(intent);
+                        }
+                    }).show();
+        }
 
         //자동로그인 시도
         autoLogIn();
@@ -132,7 +147,6 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     }
                     case R.id.menu_chat: {
-
                         if(user != null){
                             getViewModelStore().clear();
                             binding.bottomNavigation.getMenu().findItem(R.id.menu_chat).setChecked(true);
@@ -145,7 +159,6 @@ public class HomeActivity extends AppCompatActivity {
                     }
 
                     case R.id.menu_interest: {
-                        getViewModelStore().clear();
                         binding.bottomNavigation.getMenu().findItem(R.id.menu_interest).setChecked(true);
                         navController.navigate(R.id.interestShopListFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
                         break;
@@ -193,8 +206,14 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
-        return navController.navigateUp() || super.onSupportNavigateUp();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     //뒤로가기

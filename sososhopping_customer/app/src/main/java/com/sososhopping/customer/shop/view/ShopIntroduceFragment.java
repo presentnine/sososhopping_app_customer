@@ -23,9 +23,13 @@ import com.sososhopping.customer.R;
 import com.sososhopping.customer.ShopGraphDirections;
 import com.sososhopping.customer.common.carousel.CarouselMethod;
 import com.sososhopping.customer.databinding.ShopIntroduceBinding;
+import com.sososhopping.customer.search.HomeViewModel;
+import com.sososhopping.customer.search.model.ShopInfoShortModel;
 import com.sososhopping.customer.shop.model.ShopIntroduceModel;
 import com.sososhopping.customer.shop.viewmodel.ShopInfoViewModel;
 import com.sososhopping.customer.shop.viewmodel.ShopIntroduceViewModel;
+
+import java.util.ArrayList;
 
 public class ShopIntroduceFragment extends Fragment {
     private NavController navController;
@@ -60,6 +64,29 @@ public class ShopIntroduceFragment extends Fragment {
         binding.buttonShopMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+                //homeView에 아무도 없으면 추가해줘야함
+                HomeViewModel homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
+
+                if(homeViewModel.getShopList().getValue() == null){
+                    homeViewModel.getShopList().postValue(new ArrayList<>());
+                }
+
+                int id = shopIntroduceModel.getStoreId();
+                boolean isContained = false;
+                for(ShopInfoShortModel s : homeViewModel.getShopList().getValue()){
+                    if(s.getStoreId() == id){
+                        isContained = true;
+                        break;
+                    }
+                }
+                if(!isContained){
+                    homeViewModel.getShopList().getValue().add(
+                            shopIntroduceViewModel.toShort(shopIntroduceModel, shopInfoViewModel.getDistance().getValue())
+                    );
+                }
+
                 NavHostFragment.findNavController(getParentFragment().getParentFragment().getParentFragment())
                         .navigate(ShopGraphDirections.actionGlobalShopMapFragment(R.id.shopMainFragment)
                                 .setLat((float)shopIntroduceModel.getLocation().getLat())
@@ -119,7 +146,6 @@ public class ShopIntroduceFragment extends Fragment {
 
     private void onSuccess(ShopIntroduceModel shopIntroduceModel){
         if(shopIntroduceModel != null){
-
             if(shopInfoViewModel.getShopIntroduceModel().getValue() == null){
                 ((ShopMainFragment)getParentFragment().getParentFragment()).initialSetting(shopIntroduceModel);
             }

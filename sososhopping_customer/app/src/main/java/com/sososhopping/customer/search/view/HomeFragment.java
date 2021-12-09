@@ -62,7 +62,7 @@ public class HomeFragment extends Fragment{
 
         //처음 searchType
         homeViewModel =  new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
-        homeViewModel.initHome();
+        //homeViewModel.initHome();
         return binding.getRoot();
     }
 

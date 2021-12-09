@@ -33,22 +33,20 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-
             <Button
-                android:id="@+id/button_shop_map"
+                android:id="@+id/button_shop"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp"
-                android:drawableLeft="@drawable/ic_baseline_location_on_24"
+                android:drawableLeft="@drawable/ic_baseline_store_24"
                 android:minWidth="0dp"
-                android:minHeight="0dp"
+                android:minHeight="48dp"
                 android:padding="0dp"
-                android:text="위치"
+                android:text="@string/order_store"
                 android:textColor="@color/text_400"
+                android:textSize="@dimen/normal"
                 android:textStyle="bold" />
 
             <Button

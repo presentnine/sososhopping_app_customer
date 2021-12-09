@@ -54,7 +54,9 @@ public class HomeViewModel extends ViewModel {
         category.setValue(s);
     }
 
-    public void initHome(){
+    public HomeViewModel(){
+        super();
+        this.askType.setValue(AskType.Search);
         this.shopList.setValue(new ArrayList<>());
         this.searchType.setValue(SearchType.STORE);
         this.radius.setValue(DEFAULT_RAD);
@@ -117,14 +119,12 @@ public class HomeViewModel extends ViewModel {
 
     public Location getLocation(Context context){
         GPSTracker gpsTracker = GPSTracker.getInstance(context);
-        Location location = null;
 
-        if(gpsTracker.canGetLocation()){
-            double latitude = gpsTracker.getLatitude();
-            double longitude = gpsTracker.getLongitude();
-            location = new Location(latitude, longitude);
-        }
-        gpsTracker.stopUsingGPS();
+        double latitude = gpsTracker.getLatitude();
+        double longitude = gpsTracker.getLongitude();
+
+        Location location = new Location(latitude, longitude);
+
         return location;
     }
 

@@ -58,6 +58,7 @@ import com.sososhopping.customer.common.types.Location;
 import com.sososhopping.customer.databinding.SearchShopMapBinding;
 import com.sososhopping.customer.search.HomeViewModel;
 import com.sososhopping.customer.search.dto.PageableShopListDto;
+import com.sososhopping.customer.search.dto.ShopListDto;
 import com.sososhopping.customer.search.model.ShopInfoShortModel;
 import com.sososhopping.customer.shop.view.ShopMainFragment;
 
@@ -97,6 +98,7 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
 
         FragmentManager fm = getChildFragmentManager();
         mapFragment = (MapFragment)fm.findFragmentById(R.id.map);
+
 
         if (mapFragment == null) {
             mapFragment = MapFragment.newInstance();
@@ -211,6 +213,7 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+
         //줌 + 한국으로 제한
         naverMap.setMinZoom(5.0);
         naverMap.setMaxZoom(18.0);
@@ -278,6 +281,7 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
             markers.get(0).setMap(null);
             markers.remove(0);
         }
+
         addMarkersPage(naverMap,0);
     }
 
@@ -317,29 +321,32 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        for(int i= startIdx; i<homeViewModel.getShopList().getValue().size(); i++){
-            ShopInfoShortModel s = homeViewModel.getShopList().getValue().get(i);
+        ArrayList<ShopInfoShortModel> models = homeViewModel.getShopList().getValue();
+        if(models != null){
+            for(int i= startIdx; i<models.size(); i++){
+                ShopInfoShortModel s = models.get(i);
 
-            Marker m = new Marker();
-            m.setPosition(new LatLng(s.getLocation().getLat(), s.getLocation().getLng()));
-            m.setIcon(MarkerIcons.GREEN);
-            m.setWidth(72);
-            m.setHeight(108);
-            m.setTag(new CustomTag(i, s.getName()));
+                Marker m = new Marker();
+                m.setPosition(new LatLng(s.getLocation().getLat(), s.getLocation().getLng()));
+                m.setIcon(MarkerIcons.GREEN);
+                m.setWidth(72);
+                m.setHeight(108);
+                m.setTag(new CustomTag(i, s.getName()));
 
-            m.setOnClickListener(new Overlay.OnClickListener() {
-                @Override
-                public boolean onClick(@NonNull Overlay overlay) {
-                    Marker marker = (Marker) overlay;
-                    int idx = ((CustomTag)marker.getTag()).getIdx();
-                    focusedShop.postValue(homeViewModel.getShopList().getValue().get(idx));
-                    infoWindow.open(marker);
-                    return true;
-                }
-            });
-
-            markers.add(m);
+                m.setOnClickListener(new Overlay.OnClickListener() {
+                    @Override
+                    public boolean onClick(@NonNull Overlay overlay) {
+                        Marker marker = (Marker) overlay;
+                        int idx = ((CustomTag)marker.getTag()).getIdx();
+                        focusedShop.postValue(models.get(idx));
+                        infoWindow.open(marker);
+                        return true;
+                    }
+                });
+                markers.add(m);
+            }
         }
+
     }
 
     public void bindShopItem(ShopInfoShortModel s){

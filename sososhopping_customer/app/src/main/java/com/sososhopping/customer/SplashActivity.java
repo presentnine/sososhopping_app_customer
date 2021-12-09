@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.sososhopping.customer.common.gps.GPSTracker;
 
 public class SplashActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback{
 
@@ -90,6 +93,8 @@ public class SplashActivity extends AppCompatActivity implements ActivityCompat.
                             finish();
                         }
                     }).show();
+
+
 
         }
     }
