@@ -43,6 +43,8 @@ public class HomeViewModel extends ViewModel {
 
     //검색결과
     private MutableLiveData<ArrayList<ShopInfoShortModel>> shopList= new MutableLiveData<>();
+    private MutableLiveData<Integer> radius = new MutableLiveData<>();
+
     int offset = 0;
     int numberOfElement = LIMIT_PAGE;
 
@@ -55,6 +57,7 @@ public class HomeViewModel extends ViewModel {
     public void initHome(){
         this.shopList.setValue(new ArrayList<>());
         this.searchType.setValue(SearchType.STORE);
+        this.radius.setValue(DEFAULT_RAD);
     }
 
     public void resetPage(){
@@ -75,8 +78,11 @@ public class HomeViewModel extends ViewModel {
                        BiConsumer<PageableShopListDto, Integer> onSuccess,
                        Runnable onError){
 
-        if(radius == null){
-            radius = DEFAULT_RAD;
+        if(radius != null){
+            this.getRadius().setValue(radius);
+        }
+        else{
+            radius = this.getRadius().getValue();
         }
 
         String type;
@@ -97,7 +103,15 @@ public class HomeViewModel extends ViewModel {
         //카테고리
         else if(askType.getValue().equals(AskType.Category)){
             type = this.getCategory().getValue().toString();
-            searchRepository.categoryByPage(token, type, lat, lng, radius, offset, navigate, onSuccess, onError);
+
+            //지역화폐면 다르게
+            if(type.equals(CategoryType.LOCALPAY.toString())){
+                searchRepository.localByPage(token,lat,lng,radius,offset,navigate,onSuccess,onError);
+            }
+            else{
+                searchRepository.categoryByPage(token, type, lat, lng, radius, offset, navigate, onSuccess, onError);
+            }
+
         }
     }
 

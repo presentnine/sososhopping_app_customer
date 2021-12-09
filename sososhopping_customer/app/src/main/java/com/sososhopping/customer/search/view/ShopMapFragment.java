@@ -161,6 +161,9 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
                             ShopMapFragment.this::onSearchSuccess,
                             ShopMapFragment.this::onNetworkError);
                 }
+                else {
+                    Snackbar.make(view, "전부 검색 완료하였습니다.", Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -202,7 +205,6 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
                         location.getLat(),
                         location.getLng()
                 );
-
                 //좌표설정
                 naverMap.moveCamera(CameraUpdate.scrollTo(currentLocation));
                 naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
@@ -239,7 +241,6 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
         }
         naverMap.moveCamera(CameraUpdate.zoomTo(16));
 
-        //TODO: 클릭시 INFO 추가
         naverMap.setOnMapClickListener(new NaverMap.OnMapClickListener() {
             @Override
             public void onMapClick(@NonNull PointF pointF, @NonNull LatLng latLng) {

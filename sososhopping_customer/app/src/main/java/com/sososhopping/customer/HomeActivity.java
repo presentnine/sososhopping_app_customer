@@ -169,45 +169,10 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        //아무것도 안하게
         binding.bottomNavigation.setOnItemReselectedListener(new NavigationBarView.OnItemReselectedListener() {
             @Override
             public void onNavigationItemReselected(@NonNull @NotNull MenuItem item) {
-
-                switch (item.getItemId()) {
-                    case R.id.menu_home: {
-                        getViewModelStore().clear();
-                        navController.navigate(R.id.home2, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
-                        break;
-                    }
-                    case R.id.menu_chat: {
-                        if(user != null){
-                            getViewModelStore().clear();
-                            navController.navigate(R.id.chatFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
-                        }
-                        else{
-                            Snackbar.make(findViewById(android.R.id.content), "채팅 서버 인증 중입니다.", Snackbar.LENGTH_SHORT).show();
-                        }
-                        break;
-                    }
-
-                    case R.id.menu_interest: {
-                        getViewModelStore().clear();
-                        navController.navigate(R.id.interestShopListFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
-                        break;
-                    }
-
-                    case R.id.menu_cart:{
-                        getViewModelStore().clear();
-                        navController.navigate(R.id.cartMainFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
-                        break;
-                    }
-
-                    case R.id.menu_mysoso: {
-                        getViewModelStore().clear();
-                        navController.navigate(R.id.mysosoMainFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
-                        break;
-                    }
-                }
             }
         });
 

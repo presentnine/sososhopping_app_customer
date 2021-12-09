@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/drawable-v21/drawable_bg_whilte_ripple.xml" value="0.38229166666666664" />
         <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/drawable-v24/drawable_round_background.xml" value="0.38229166666666664" />
+        <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2484375" />
         <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/drawable/bg_whilte_ripple.xml" value="0.38229166666666664" />
         <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/drawable/drawable_background_gray.xml" value="0.38229166666666664" />
         <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/drawable/drawable_background_toast.xml" value="0.38229166666666664" />
@@ -14,6 +15,7 @@
         <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/drawable/drawable_bg_whilte_ripple.xml" value="0.38229166666666664" />
         <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/drawable/drawable_round_background_250dp.xml" value="0.38229166666666664" />
         <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/drawable/drawable_round_background_5dp.xml" value="0.38229166666666664" />
+        <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/drawable/drawable_splash_screen.xml" value="0.38229166666666664" />
         <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/drawable/ic_baseline_add_shopping_cart_24.xml" value="0.378125" />
         <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/drawable/ic_baseline_check_circle_240.xml" value="0.378125" />
         <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.378125" />
@@ -29,6 +31,7 @@
         <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/drawable/ic_baseline_sync_24.xml" value="0.378125" />
         <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/drawable/ic_baseline_watch_later_24.xml" value="0.378125" />
         <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/drawable/ic_launcher_background.xml" value="0.378125" />
+        <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/drawable/ic_main_text_foreground.xml" value="0.2484375" />
         <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/layout/account_find_email.xml" value="0.28532608695652173" />
         <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/layout/account_find_password.xml" value="0.317481884057971" />
         <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/layout/account_log_in_dialog.xml" value="0.30570652173913043" />
@@ -97,6 +100,10 @@
         <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/menu/menu_bottom_nav.xml" value="0.36614583333333334" />
         <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/menu/menu_top_search.xml" value="0.36614583333333334" />
         <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/menu/menu_top_shop.xml" value="0.36614583333333334" />
+        <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.38229166666666664" />
+        <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.38229166666666664" />
+        <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/mipmap-anydpi-v26/ic_main.xml" value="0.38229166666666664" />
+        <entry key="..\:/Hyunsik/program/AndroidProgramming/sososhopping_app_customer/sososhopping_customer/app/src/main/res/mipmap-anydpi-v26/ic_main_white.xml" value="0.38229166666666664" />
         <entry key="..\:/Users/presentnine/Desktop/GitHub/sososhopping_app_customer/sososhopping_customer/app/src/main/res/layout/chat_list.xml" value="0.26197916666666665" />
         <entry key="..\:/Users/presentnine/Desktop/GitHub/sososhopping_app_customer/sososhopping_customer/app/src/main/res/layout/conversation.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/presentnine/Desktop/GitHub/sososhopping_app_customer/sososhopping_customer/app/src/main/res/layout/fragment_conversation.xml" value="0.26197916666666665" />

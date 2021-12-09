@@ -210,7 +210,6 @@ public class ShopMainFragment extends Fragment {
                                 long ownerId = shopInfoViewModel.getOwnerId().getValue();
                                 String storeName = shopInfoViewModel.getShopName().getValue();
                                 String customerName = ((HomeActivity)getActivity()).getNickname();
-
                                 String chatroomId = ((HomeActivity) getActivity()).makeChatroom(Long.toString(storeId), Long.toString(ownerId), storeName, customerName);
 
                                 navController.navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
