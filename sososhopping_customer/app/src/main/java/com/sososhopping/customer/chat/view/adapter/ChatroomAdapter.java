@@ -24,7 +24,7 @@ import java.util.Date;
 public class ChatroomAdapter extends RecyclerView.Adapter {
 
     Context context;
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 
     ArrayList<ChatroomInfor> chatroomInforList;
 
