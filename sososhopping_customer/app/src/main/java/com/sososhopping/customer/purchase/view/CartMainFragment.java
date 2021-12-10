@@ -18,6 +18,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
@@ -40,15 +41,18 @@ public class CartMainFragment extends Fragment {
     NavController navController;
     CartStoreAdapter cartStoreAdapter;
     CartViewModel cartViewModel;
-    public static CartMainFragment newInstance() {return new CartMainFragment();}
+
+    public static CartMainFragment newInstance() {
+        return new CartMainFragment();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //로그인 안되면 못하게
-        if(!((HomeActivity)getActivity()).getIsLogIn()){
-            ((HomeActivity)getActivity()).bottomItemClicked(R.id.home2);
+        if (!((HomeActivity) getActivity()).getIsLogIn()) {
+            ((HomeActivity) getActivity()).bottomItemClicked(R.id.home2);
             NavHostFragment.findNavController(this)
                     .navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_description));
         }
@@ -59,15 +63,15 @@ public class CartMainFragment extends Fragment {
 
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-        super.onCreateOptionsMenu(menu,inflater);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
         inflater.inflate(R.menu.menu_top_none, menu);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState){
+                             @Nullable Bundle savedInstanceState) {
         //binding 설정
         binding = CartMainBinding.inflate(inflater, container, false);
 
@@ -95,7 +99,7 @@ public class CartMainFragment extends Fragment {
             @Override
             public void itemDelete(int storePos, int itemPos, CartItemDto cartItemDto) {
                 int itemId = cartStoreAdapter.getCartstores().get(storePos).getCartItems().get(itemPos).getItemId();
-                cartViewModel.requestDelete(((HomeActivity)getActivity()).getLoginToken(), itemId, storePos, itemPos,
+                cartViewModel.requestDelete(((HomeActivity) getActivity()).getLoginToken(), itemId, storePos, itemPos,
                         CartMainFragment.this::onDeleteSuccess,
                         CartMainFragment.this::onFailed,
                         CartMainFragment.this::onNetworkError);
@@ -122,28 +126,27 @@ public class CartMainFragment extends Fragment {
     @Override
     public void onResume() {
         //상단바
-        ((HomeActivity)getActivity()).showTopAppBar();
-        ((HomeActivity)getActivity()).setTopAppBarHome("장바구니");
+        ((HomeActivity) getActivity()).showTopAppBar();
+        ((HomeActivity) getActivity()).setTopAppBarHome("장바구니");
 
-        cartViewModel.requestMyCart(((HomeActivity)getActivity()).getLoginToken(),
+        cartViewModel.requestMyCart(((HomeActivity) getActivity()).getLoginToken(),
                 this::onSuccess,
                 this::onFailedLogIn,
                 this::onNetworkError);
 
         //하단바
-        ((HomeActivity)getActivity()).showBottomNavigation();
+        ((HomeActivity) getActivity()).showBottomNavigation();
         super.onResume();
     }
 
     @Override
     public void onStop() {
-        super.onStop();
-
         //장바구니 목록 전부 보내주기 -> 업데이트용
         cartViewModel.updateItem(
-                ((HomeActivity)getActivity()).getLoginToken(),
+                ((HomeActivity) getActivity()).getLoginToken(),
                 cartViewModel.getCartList());
-        Log.i("보내기", cartViewModel.getCartList().toString());
+
+        super.onStop();
     }
 
     @Override
@@ -152,46 +155,64 @@ public class CartMainFragment extends Fragment {
         binding = null;
     }
 
-    private void onSuccess(CartDto cartDto){
+    private void onSuccess(CartDto cartDto) {
         cartViewModel.getStores().setValue(cartDto.getCartList());
         cartStoreAdapter.setCartstores(cartDto.getCartList());
-        cartStoreAdapter.notifyDataSetChanged();
 
-        binding.textViewTotalStore.setText(cartViewModel.calTotalStore()+"개 매장");
-        binding.textViewTotalStorePrice.setText(cartViewModel.calTotalPrice()+"원");
+        if (binding != null) {
+            cartStoreAdapter.notifyDataSetChanged();
+            binding.textViewTotalStore.setText(cartViewModel.calTotalStore() + "개 매장");
+            binding.textViewTotalStorePrice.setText(cartViewModel.calTotalPrice() + "원");
+        }
     }
 
 
-    private void onFailed(){
-        Toast.makeText(getContext(),getResources().getString(R.string.item_deleteCart_error), Toast.LENGTH_LONG).show();
+    private void onFailed() {
+        Snackbar.make(((HomeActivity) getActivity()).getMainView(), getResources().getString(R.string.item_deleteCart_error), Snackbar.LENGTH_SHORT).show();
     }
 
-    private void onFailedLogIn(){
-        NavHostFragment.findNavController(this)
-                .navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+    private void onFailedLogIn() {
+        if (binding != null) {
+            NavHostFragment.findNavController(this)
+                    .navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+
+        }
     }
 
     private void onNetworkError() {
-        getActivity().onBackPressed();
-        NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
+        if (binding != null) {
+            getActivity().onBackPressed();
+            NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
+
+        }
     }
 
 
-
-    public void onDeleteSuccess(int storepos, int itempos){
+    public void onDeleteSuccess(int storepos, int itempos) {
         CartStoreDto dto = cartViewModel.getStores().getValue().get(storepos);
         dto.getCartItems().remove(itempos);
 
-        if(cartViewModel.getStores().getValue().get(storepos).getCartItems().size() <= 0){
+        int size = cartViewModel.getStores().getValue().get(storepos).getCartItems().size();
+
+        if (size <= 0) {
             cartViewModel.getStores().getValue().remove(storepos);
-            cartStoreAdapter.notifyItemRemoved(storepos);
-            binding.textViewTotalStore.setText(cartViewModel.calTotalStore()+"개 매장");
+
+            if (binding != null) {
+                cartStoreAdapter.notifyItemRemoved(storepos);
+                binding.textViewTotalStore.setText(cartViewModel.calTotalStore() + "개 매장");
+                binding.textViewTotalStorePrice.setText(cartViewModel.calTotalPrice() + "원");
+
+            }
         }
-        else{
+        else {
             //금액계산도 다 다시
             cartViewModel.calTotalStorePrice(storepos);
-            cartStoreAdapter.notifyItemChanged(storepos);
+
+            if(binding != null){
+                cartStoreAdapter.notifyItemChanged(storepos);
+                binding.textViewTotalStorePrice.setText(cartViewModel.calTotalPrice() + "원");
+
+            }
         }
-        binding.textViewTotalStorePrice.setText(cartViewModel.calTotalPrice()+"원");
     }
 }

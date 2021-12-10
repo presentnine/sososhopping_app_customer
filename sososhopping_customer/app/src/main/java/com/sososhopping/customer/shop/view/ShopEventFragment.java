@@ -14,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
@@ -38,13 +39,15 @@ public class ShopEventFragment extends Fragment {
 
     private final int[] msgCode = {R.string.event_coupon_addSucc, R.string.event_coupon_addFail, R.string.event_coupon_addDup};
 
-    public static ShopEventFragment newInstance() { return new ShopEventFragment();   }
+    public static ShopEventFragment newInstance() {
+        return new ShopEventFragment();
+    }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = ShopEventBinding.inflate(inflater,container,false);
+        binding = ShopEventBinding.inflate(inflater, container, false);
 
 
         shopInfoViewModel = new ViewModelProvider(getParentFragment().getParentFragment()).get(ShopInfoViewModel.class);
@@ -96,12 +99,10 @@ public class ShopEventFragment extends Fragment {
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if(!recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_DRAGGING){
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     binding.progressCircular.setVisibility(View.VISIBLE);
-                }
-
-                else if (!recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_IDLE) {
-                    if(shopEventViewModel.getNumberOfElement() > 0){
+                } else if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (shopEventViewModel.getNumberOfElement() > 0) {
                         binding.progressCircular.setVisibility(View.VISIBLE);
                         shopEventViewModel.requestShopEvent(
                                 storeId,
@@ -111,8 +112,7 @@ public class ShopEventFragment extends Fragment {
                                 ShopEventFragment.this::onNetworkError
                         );
                     }
-                }
-                else{
+                } else {
                     binding.progressCircular.setVisibility(View.GONE);
                 }
             }
@@ -121,10 +121,10 @@ public class ShopEventFragment extends Fragment {
         shopEventCouponAdapter.setOnItemClickListener(new ShopEventCouponAdapter.OnItemClickListenerCoupon() {
             @Override
             public void onItemClick(CouponModel couponModel) {
-                String token = ((HomeActivity)getActivity()).getLoginToken();
-                if(token != null){
+                String token = ((HomeActivity) getActivity()).getLoginToken();
+                if (token != null) {
 
-                    int msgCode[]  = new int[3];
+                    int msgCode[] = new int[3];
                     msgCode[0] = R.string.event_coupon_addSucc;
                     msgCode[1] = R.string.event_coupon_addFail;
                     msgCode[2] = R.string.event_coupon_addDup;
@@ -134,10 +134,9 @@ public class ShopEventFragment extends Fragment {
                             ShopEventFragment.this::onResult,
                             ShopEventFragment.this::onFailedLogInCoupon,
                             ShopEventFragment.this::onNetworkError
-                            );
-                }
-                else{
-                    Toast.makeText(getContext(),getResources().getString(R.string.requireLogIn),Toast.LENGTH_SHORT).show();
+                    );
+                } else {
+                    Toast.makeText(getContext(), getResources().getString(R.string.requireLogIn), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -146,7 +145,7 @@ public class ShopEventFragment extends Fragment {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
     }
 
@@ -156,38 +155,47 @@ public class ShopEventFragment extends Fragment {
         binding = null;
     }
 
-    private void onSuccessCoupon(CouponListDto couponModels){
-        shopEventCouponAdapter.storeName = shopInfoViewModel.getShopName().getValue();
-        if(couponModels.getResults() != null){
-            shopEventViewModel.setCouponModels(couponModels.getResults());
+    private void onSuccessCoupon(CouponListDto couponModels) {
+        if (binding != null) {
+            shopEventCouponAdapter.storeName = shopInfoViewModel.getShopName().getValue();
+            if (couponModels.getResults() != null) {
+                shopEventViewModel.setCouponModels(couponModels.getResults());
+            }
+            shopEventCouponAdapter.setCouponModels(shopEventViewModel.getCouponModels());
+            shopEventCouponAdapter.notifyDataSetChanged();
         }
-        shopEventCouponAdapter.setCouponModels(shopEventViewModel.getCouponModels());
-        shopEventCouponAdapter.notifyDataSetChanged();
     }
 
-    private void onSuccessEvent(PageableWritingListDto success){
-        binding.progressCircular.setVisibility(View.GONE);
+    private void onSuccessEvent(PageableWritingListDto success) {
+        if (binding != null) {
+            binding.progressCircular.setVisibility(View.GONE);
 
-        if(success.getNumberOfElements() > 0){
-            shopEventViewModel.getEventItemModels().addAll(success.getContent());
-            shopEventBoardAdapter.setShopBoardItemModels(shopEventViewModel.getEventItemModels());
-            shopEventBoardAdapter.notifyItemRangeInserted(shopEventViewModel.getOffset(), success.getNumberOfElements());
+            if (success.getNumberOfElements() > 0) {
+                shopEventViewModel.getEventItemModels().addAll(success.getContent());
+                shopEventBoardAdapter.setShopBoardItemModels(shopEventViewModel.getEventItemModels());
+                shopEventBoardAdapter.notifyItemRangeInserted(shopEventViewModel.getOffset(), success.getNumberOfElements());
+            }
+            shopEventViewModel.setNumberOfElement(success.getNumberOfElements());
+            shopEventViewModel.setOffset(success.getPageable().getOffset() + success.getNumberOfElements());
         }
-        shopEventViewModel.setNumberOfElement(success.getNumberOfElements());
-        shopEventViewModel.setOffset(success.getPageable().getOffset() + success.getNumberOfElements());
     }
 
     private void onFailed() {
-        Toast.makeText(getContext(),getResources().getString(R.string.shop_error), Toast.LENGTH_LONG).show();
+        Snackbar.make(((HomeActivity) getActivity()).getMainView(),
+                getResources().getString(R.string.shop_error), Snackbar.LENGTH_SHORT).show();
     }
 
     private void onResult(int msgCode) {
-        Toast.makeText(getContext(),getResources().getString(msgCode), Toast.LENGTH_SHORT).show();
+        Snackbar.make(((HomeActivity) getActivity()).getMainView(),
+                getResources().getString(msgCode), Snackbar.LENGTH_SHORT).show();
     }
 
     private void onFailedLogInCoupon() {
-        NavHostFragment.findNavController(getParentFragment().getParentFragment())
-                .navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+        if (binding != null) {
+            NavHostFragment.findNavController(getParentFragment().getParentFragment())
+                    .navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+
+        }
     }
 
     private void onNetworkError() {
@@ -195,7 +203,7 @@ public class ShopEventFragment extends Fragment {
         getActivity().onBackPressed();
     }
 
-    private void setButtonArrows(){
+    private void setButtonArrows() {
         binding.imageButtonBoardArrowDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

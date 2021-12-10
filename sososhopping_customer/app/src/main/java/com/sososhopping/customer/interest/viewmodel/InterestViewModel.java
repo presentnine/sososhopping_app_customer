@@ -28,8 +28,7 @@ public class InterestViewModel extends ViewModel {
                                 Consumer<ShopListDto> onSuccess,
                                 Runnable onFailedLogIn,
                                 Runnable onError){
-
-        interestRepository.requestInterest(token,onSuccess,onFailedLogIn,onError);
+            interestRepository.requestInterest(token,onSuccess,onFailedLogIn,onError);
     }
 
     public void changeInterest(String token, int storeId,

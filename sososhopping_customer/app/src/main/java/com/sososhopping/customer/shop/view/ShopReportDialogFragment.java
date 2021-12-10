@@ -11,8 +11,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavGraph;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
@@ -94,24 +96,28 @@ public class ShopReportDialogFragment extends DialogFragment {
     }
 
     public void onSuccess(){
-        Toast.makeText(getContext(),getResources().getString(R.string.report_input), Toast.LENGTH_SHORT).show();
+        Snackbar.make(((HomeActivity)getActivity()).getMainView(),
+                getResources().getString(R.string.report_input), Snackbar.LENGTH_SHORT).show();
         //종료
         dismiss();
     }
 
     private void onFailedLogIn(){
-        NavHostFragment.findNavController(getParentFragment().getParentFragment())
-                .navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+        Snackbar.make(((HomeActivity)getActivity()).getMainView(),
+            getResources().getString(R.string.login_error_token), Snackbar.LENGTH_SHORT).show();
+        ((HomeActivity)getActivity()).setLoginToken(null);
         //종료
         dismiss();
     }
 
     private void onFailed() {
-        Toast.makeText(getContext(),getResources().getString(R.string.shop_error), Toast.LENGTH_LONG).show();
+        Snackbar.make(((HomeActivity)getActivity()).getMainView(),
+            getResources().getString(R.string.shop_error), Snackbar.LENGTH_SHORT).show();
     }
 
     private void onNetworkError() {
-        NavHostFragment.findNavController(getParentFragment().getParentFragment()).navigate(R.id.action_global_networkErrorDialog);
+        Snackbar.make(((HomeActivity)getActivity()).getMainView(),
+                getResources().getString(R.string.shop_error), Snackbar.LENGTH_SHORT).show();
         //종료
         dismiss();
     }

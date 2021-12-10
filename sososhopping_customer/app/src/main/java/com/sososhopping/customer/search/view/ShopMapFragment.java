@@ -465,10 +465,14 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void onSearchSuccess(PageableShopListDto success, Integer navigate){
-        if(success.getNumberOfElements() > 0){
-            homeViewModel.getShopList().getValue().addAll(success.getContent());
-            //추가된거 밑에
-            addMarkersPage(naverMap, homeViewModel.getOffset());
+
+        homeViewModel.getShopList().getValue().addAll(success.getContent());
+
+        if(binding != null){
+            if(success.getNumberOfElements() > 0){
+                //추가된거 밑에
+                addMarkersPage(naverMap, homeViewModel.getOffset());
+            }
         }
 
         //몇개 추가되었는지 갱신
@@ -477,7 +481,9 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void onNetworkError(){
-        Snackbar.make(binding.getRoot(), "상점 정보를 더 불러오는데 실패했습니다", Snackbar.LENGTH_SHORT).show();
+        if(binding != null){
+            Snackbar.make(binding.getRoot(), "상점 정보를 더 불러오는데 실패했습니다", Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     @Getter
