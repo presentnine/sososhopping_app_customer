@@ -33,6 +33,18 @@
                 app:layout_constraintTop_toTopOf="parent"
                 />
 
+            <ImageView
+                android:id="@+id/chatroomItemAlarm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_chat_alarm"
+                android:visibility="invisible"
+                android:layout_marginBottom="12.5dp"
+                android:layout_marginLeft="10dp"
+                app:layout_constraintBottom_toTopOf="@id/chatroomItemContent"
+                app:layout_constraintLeft_toRightOf="@id/chatroomItemStoreName"
+                />
+
             <TextView
                 android:id="@+id/chatroomItemTime"
                 android:layout_width="wrap_content"
@@ -63,5 +75,4 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
-
 </layout>

@@ -93,7 +93,7 @@ public class ConversationFragment extends Fragment {
 
         chatRecyclerView = binding.chatroom;
         chatRecyclerView.setLayoutManager(chatLayoutManager);
-        chatRecyclerView.scrollToPosition(0);
+        chatRecyclerView.scrollToPosition(chatList.size() - 1);
         chatRecyclerView.setAdapter(adapter);
 
         chatroomInputSendButton.setOnClickListener(new View.OnClickListener() {

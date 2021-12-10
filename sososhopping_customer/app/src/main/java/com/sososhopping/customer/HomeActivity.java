@@ -20,12 +20,14 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
@@ -59,12 +61,12 @@ public class HomeActivity extends AppCompatActivity {
 
     //파이어베이스 기능
     public FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    public FirebaseDatabase firebaseDatabase;
     public FirebaseUser user;
-    public FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     public DatabaseReference ref;
+    public Task<AuthResult> authResultTask;
     public String firebaseToken;
     public boolean afterLogin = false;
-    public boolean firebaseConnection = false;
 
     public ActivityMainBinding getBinding() {
         return binding;
@@ -391,7 +393,6 @@ public class HomeActivity extends AppCompatActivity {
             ref.child("User").child(this.user.getUid()).child("connection").setValue(false);
             ref.child("User").child(this.user.getUid()).child("lastOnline").setValue(ServerValue.TIMESTAMP);
             mAuth.signOut();
-            firebaseConnection = false;
         }
     }
 
@@ -400,35 +401,29 @@ public class HomeActivity extends AppCompatActivity {
         this.firebaseToken = firebaseToken;
 
         afterLogin = true;
-
-        mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithCustomToken(firebaseToken)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        authResultTask = mAuth.signInWithCustomToken(firebaseToken)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            user = mAuth.getCurrentUser();
-                            firebaseDatabase = FirebaseDatabase.getInstance();
-                            ref = firebaseDatabase.getReference();
+                    public void onSuccess(AuthResult authResult) {
+                        user = authResult.getUser();
+                        firebaseDatabase = FirebaseDatabase.getInstance();
+                        ref = firebaseDatabase.getReference();
 
-                            //FcmId 설정
-                            FirebaseMessaging.getInstance().getToken()
-                                    .addOnCompleteListener(new OnCompleteListener<String>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<String> task) {
-                                            if (!task.isSuccessful()) {
-                                                Log.w("TAG", "Fetching FCM registration token failed", task.getException());
-                                                return;
-                                            }
-
-                                            ref.child("FcmId").child(user.getUid()).setValue(task.getResult());
+                        //FcmId 설정
+                        FirebaseMessaging.getInstance().getToken()
+                                .addOnCompleteListener(new OnCompleteListener<String>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<String> task) {
+                                        if (!task.isSuccessful()) {
+                                            Log.w("TAG", "Fetching FCM registration token failed", task.getException());
+                                            return;
                                         }
-                                    });
 
-                            //온라인 설정
-                            ref.child("User").child(user.getUid()).child("connection").setValue(true);
-                            firebaseConnection = true;
-                        }
+                                        ref.child("FcmId").child(user.getUid()).setValue(task.getResult());
+                                    }
+                                });
+
+                        setOnline();
                     }
                 });
     }
@@ -438,19 +433,20 @@ public class HomeActivity extends AppCompatActivity {
         if (afterLogin == true) {
             user = mAuth.getCurrentUser();
             if (user == null) {
-                mAuth.signInWithCustomToken(firebaseToken)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                authResultTask = mAuth.signInWithCustomToken(firebaseToken)
+                        .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    user = mAuth.getCurrentUser();
-                                    ref.child("User").child(user.getUid()).child("connection").setValue(true);
-                                    firebaseConnection = true;
-                                }
+                            public void onSuccess(AuthResult authResult) {
+                                user = authResult.getUser();
+                                setOnline();
                             }
                         });
             }
         }
+    }
+
+    private void setOnline() {
+        ref.child("User").child(user.getUid()).child("connection").setValue(true);
     }
 
     //채팅방 생성 TODO : 추후 고객 닉네임 적용
@@ -459,21 +455,36 @@ public class HomeActivity extends AppCompatActivity {
         String ownerUid = "O" + ownerId;
         String chatRoomId = storeId + "@" + ownerUid + "@" + userUid;
 
-        ChatroomInfor chatRoomInfor = new ChatroomInfor(customerName, storeName, chatRoomId);
-        ref.child("ChatroomInfor")
-                .child(userUid)
-                .child(chatRoomId)
-                .setValue(chatRoomInfor);
+        ref.child("ChatroomUsers").child(chatRoomId).get()
+                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        ChatroomInfor chatRoomInfor = null;
 
-        ref.child("ChatroomInfor")
-                .child(storeId)
-                .child(chatRoomId)
-                .setValue(chatRoomInfor);
+                        if (task.isSuccessful()) {
+                            chatRoomInfor = task.getResult().getValue(ChatroomInfor.class);
+                        }
 
-        ChatroomUsers chatRoomUserInfor = new ChatroomUsers(userUid, ownerUid);
-        ref.child("ChatroomUsers")
-                .child(chatRoomId)
-                .setValue(chatRoomUserInfor);
+                        if (chatRoomInfor == null) {
+                            chatRoomInfor = new ChatroomInfor(customerName, storeName, chatRoomId);
+
+                            ref.child("ChatroomInfor")
+                                    .child(userUid)
+                                    .child(chatRoomId)
+                                    .setValue(chatRoomInfor);
+
+                            ref.child("ChatroomInfor")
+                                    .child(storeId)
+                                    .child(chatRoomId)
+                                    .setValue(chatRoomInfor);
+
+                            ChatroomUsers chatRoomUserInfor = new ChatroomUsers(userUid, ownerUid);
+                            ref.child("ChatroomUsers")
+                                    .child(chatRoomId)
+                                    .setValue(chatRoomUserInfor);
+                        }
+                    }
+                });
 
         return chatRoomId;
     }
