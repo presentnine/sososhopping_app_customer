@@ -233,10 +233,12 @@ public class ShopMainFragment extends Fragment {
     }
 
     public void changeFavoriteState(boolean isFavorite){
-        if(isFavorite){
-            binding.layoutFavorite.setVisibility(View.VISIBLE);
-        }else{
-            binding.layoutFavorite.setVisibility(View.GONE);
+        if(binding != null){
+            if(isFavorite){
+                binding.layoutFavorite.setVisibility(View.VISIBLE);
+            }else{
+                binding.layoutFavorite.setVisibility(View.GONE);
+            }
         }
     }
 

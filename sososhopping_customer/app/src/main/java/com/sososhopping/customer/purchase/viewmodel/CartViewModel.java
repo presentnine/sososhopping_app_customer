@@ -52,12 +52,16 @@ public class CartViewModel extends ViewModel {
 
     //전체 목록
     public ArrayList<CartUpdateDto> getCartList(){
-        ArrayList<CartUpdateDto> totalList = new ArrayList<>();
-        for(CartStoreDto c : stores.getValue()){
-            for(CartItemDto d : c.getCartItems()){
-                totalList.add(totalList.size(), new CartUpdateDto(d.getItemId(), d.getNum()));
+        ArrayList<CartUpdateDto> totalList = null;
+        if(stores.getValue() != null){
+         totalList = new ArrayList<>();
+            for(CartStoreDto c : stores.getValue()){
+                for(CartItemDto d : c.getCartItems()){
+                    totalList.add(totalList.size(), new CartUpdateDto(d.getItemId(), d.getNum()));
+                }
             }
         }
+
         return totalList;
     }
 
@@ -86,6 +90,8 @@ public class CartViewModel extends ViewModel {
     }
 
     public void updateItem(String token, ArrayList<CartUpdateDto> dtos){
-        cartRepository.updateItem(token,new CartUpdateListDto(dtos));
+        if(dtos != null){
+            cartRepository.updateItem(token,new CartUpdateListDto(dtos));
+        }
     }
 }

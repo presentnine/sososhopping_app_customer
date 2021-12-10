@@ -1,14 +1,9 @@
 package com.sososhopping.customer;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,8 +11,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -50,8 +43,6 @@ import com.sososhopping.customer.mysoso.viemodel.MyInfoViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.function.Consumer;
 
 public class HomeActivity extends AppCompatActivity {
@@ -84,8 +75,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         GPSTracker gpsTracker = GPSTracker.getInstance(getApplicationContext());
-        if(!gpsTracker.canGetLocation()){
-            Snackbar.make(findViewById(android.R.id.content),"앱을 사용하시기 위해서는, 위치 정보를 활성화 해야 합니다.", Snackbar.LENGTH_INDEFINITE)
+        if (!gpsTracker.canGetLocation()) {
+            Snackbar.make(findViewById(android.R.id.content), "앱을 사용하시기 위해서는, 위치 정보를 활성화 해야 합니다.", Snackbar.LENGTH_INDEFINITE)
                     .setAction("확인", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -104,7 +95,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onChanged(String s) {
                 initLoginButton();
 
-                if(s != null){
+                if (s != null) {
                     //바로 닉네임 받아오기
                     new MyInfoViewModel().requestMyInfo(
                             s,
@@ -112,6 +103,9 @@ public class HomeActivity extends AppCompatActivity {
                                 @Override
                                 public void accept(MyInfoModel myInfoModel) {
                                     HomeActivity.this.nickName.setValue(myInfoModel.getNickname());
+                                    Snackbar.make(binding.getRoot(),
+                                            getResources().getString(R.string.login_success) + " " + myInfoModel.getName() + "님",
+                                            Snackbar.LENGTH_SHORT).show();
                                 }
                             },
                             HomeActivity.this::onLoginFailed,
@@ -123,15 +117,9 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
-        loginToken.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                initLoginButton();
-            }
-        });
+
 
         //하단바 -> 그냥 커스텀으로 사용하기
         binding.bottomNavigation.getMenu().findItem(R.id.menu_home).setChecked(true);
@@ -147,12 +135,11 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     }
                     case R.id.menu_chat: {
-                        if(user != null){
-                            getViewModelStore().clear();
+                        getViewModelStore().clear();
+                        if (user != null) {
                             binding.bottomNavigation.getMenu().findItem(R.id.menu_chat).setChecked(true);
                             navController.navigate(R.id.chatFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
-                        }
-                        else{
+                        } else {
                             Snackbar.make(findViewById(android.R.id.content), "채팅 서버 인증 중입니다.", Snackbar.LENGTH_SHORT).show();
                         }
                         break;
@@ -164,7 +151,7 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     }
 
-                    case R.id.menu_cart:{
+                    case R.id.menu_cart: {
                         getViewModelStore().clear();
                         binding.bottomNavigation.getMenu().findItem(R.id.menu_cart).setChecked(true);
                         navController.navigate(R.id.cartMainFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
@@ -178,7 +165,7 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     }
                 }
-                return false;
+                return true;
             }
         });
 
@@ -186,6 +173,37 @@ public class HomeActivity extends AppCompatActivity {
         binding.bottomNavigation.setOnItemReselectedListener(new NavigationBarView.OnItemReselectedListener() {
             @Override
             public void onNavigationItemReselected(@NonNull @NotNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menu_home: {
+                        getViewModelStore().clear();
+                        navController.navigate(R.id.home2, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                        break;
+                    }
+                    case R.id.menu_chat: {
+                        getViewModelStore().clear();
+                        if (user != null) {
+                            navController.navigate(R.id.chatFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                        } else {
+                            Snackbar.make(findViewById(android.R.id.content), "채팅 서버 인증 중입니다.", Snackbar.LENGTH_SHORT).show();
+                        }
+                        break;
+                    }
+
+                    case R.id.menu_interest: {
+                        break;
+                    }
+
+                    //카트 필요 x
+                    case R.id.menu_cart: {
+                        break;
+                    }
+
+                    case R.id.menu_mysoso: {
+                        getViewModelStore().clear();
+                        navController.navigate(R.id.mysosoMainFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                        break;
+                    }
+                }
             }
         });
 
@@ -221,9 +239,9 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Log.e("BackStack 수", navHostFragment.getChildFragmentManager().getBackStackEntryCount() + "");
         int start = Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId();
-        if(start == R.id.home2){
+
+        if (start == R.id.home2) {
             if (doubleBackToExitPressedOnce) {
                 finish();
                 return;
@@ -237,14 +255,11 @@ public class HomeActivity extends AppCompatActivity {
                     doubleBackToExitPressedOnce = false;
                 }
             }, 2000);
-        }
-        else if(start == R.id.conversationFragment){
-            bottomItemClicked(R.id.menu_chat);
-        }
-        else if(navHostFragment.getChildFragmentManager().getBackStackEntryCount() < 1){
+        } else if (start == R.id.conversationFragment) {
+            binding.bottomNavigation.setSelectedItemId(R.id.menu_chat);
+        } else if (navHostFragment.getChildFragmentManager().getBackStackEntryCount() < 1) {
             binding.bottomNavigation.setSelectedItemId(R.id.menu_home);
-        }
-        else{
+        } else {
             super.onBackPressed();
         }
     }
@@ -270,7 +285,6 @@ public class HomeActivity extends AppCompatActivity {
         this.setIsLogIn(true);
         afterLoginSuccessFirebaseInit(responseDto.getFirebaseToken());
         initLoginButton();
-        Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_success), Toast.LENGTH_SHORT).show();
     }
 
     public void initLoginButton() {
@@ -282,6 +296,7 @@ public class HomeActivity extends AppCompatActivity {
             binding.bottomNavigation.setClickable(false);
         }
     }
+
     public void hideLoginButton() {
         binding.buttonAccountLogIn.setVisibility(View.GONE);
     }
@@ -299,13 +314,16 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    public void setTopAppBarHome(String title){
+    public void setTopAppBarHome(String title) {
         binding.topAppBar.setTitle(title);
         binding.topAppBar.setOnClickListener(null);
         binding.topAppBar.setTitleCentered(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
-    public void setTopAppBarNotHome(boolean b){getSupportActionBar().setDisplayHomeAsUpEnabled(b);}
+
+    public void setTopAppBarNotHome(boolean b) {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(b);
+    }
 
     public void hideTopAppBar() {
         binding.topAppBar.setVisibility(View.GONE);
@@ -315,8 +333,8 @@ public class HomeActivity extends AppCompatActivity {
         return loginToken.getValue();
     }
 
-    public String getNickname(){
-        if(nickName.getValue() != null){
+    public String getNickname() {
+        if (nickName.getValue() != null) {
             return nickName.getValue();
         }
         return "";
@@ -334,18 +352,23 @@ public class HomeActivity extends AppCompatActivity {
         return this.isLogIn;
     }
 
-    public void setTopAppBarTitle(String title){
+    public void setTopAppBarTitle(String title) {
         binding.topAppBar.setTitle(title);
     }
 
-    public void bottomItemClicked(int id){
+    public void bottomItemClicked(int id) {
         binding.bottomNavigation.setSelectedItemId(id);
     }
 
+    public View getMainView() {
+        if (binding != null) {
+            return binding.getRoot();
+        }
+        return null;
+    }
 
-
-    public boolean isFirebaseSetted(){
-        if(user == null){
+    public boolean isFirebaseSetted() {
+        if (user == null) {
             return false;
         }
         return true;

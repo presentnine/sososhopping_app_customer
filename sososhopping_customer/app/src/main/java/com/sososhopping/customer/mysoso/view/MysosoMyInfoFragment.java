@@ -43,18 +43,20 @@ public class MysosoMyInfoFragment extends Fragment {
     private Boolean dupChecked = false;
     private Boolean phoneChecked = false;
 
-    public static MysosoMyInfoFragment newInstance() {return new MysosoMyInfoFragment();}
+    public static MysosoMyInfoFragment newInstance() {
+        return new MysosoMyInfoFragment();
+    }
 
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState){
+                             @Nullable Bundle savedInstanceState) {
         //binding 설정
-        binding = MysosoMyinfoBinding.inflate(inflater,container,false);
+        binding = MysosoMyinfoBinding.inflate(inflater, container, false);
 
         //viewmodel 설정
         myInfoViewModel = new MyInfoViewModel();
-        myInfoViewModel.requestMyInfo(((HomeActivity)getActivity()).getLoginToken(),
+        myInfoViewModel.requestMyInfo(((HomeActivity) getActivity()).getLoginToken(),
                 this::onSuccess,
                 this::onFailedLogIn,
                 this::onFailed,
@@ -85,30 +87,30 @@ public class MysosoMyInfoFragment extends Fragment {
             public void onClick(View view) {
 
                 //정보수정 요청
-                if(!state){
+                if (!state) {
                     state = true;
                     setFocusable(true);
                     binding.buttonEdit.setText("수정완료");
-                    ((HomeActivity)getActivity()).getBinding().topAppBar.setTitle("내 정보 수정");
+                    ((HomeActivity) getActivity()).getBinding().topAppBar.setTitle("내 정보 수정");
                 }
 
                 //수정완료
-                else{
+                else {
                     checkLayoutEmpty();
 
                     //변경되었었으면 false로
-                    if(binding.textViewDupChecked.getVisibility() == View.INVISIBLE){
+                    if (binding.textViewDupChecked.getVisibility() == View.INVISIBLE) {
                         dupChecked = false;
                     }
 
-                    if(phoneChecked == false){
+                    if (phoneChecked == false) {
                         phoneChecked = myInfoViewModel.checkPastPhone(binding.editTextPhone.getText().toString());
                     }
-                    if(dupChecked == false){
+                    if (dupChecked == false) {
                         dupChecked = myInfoViewModel.checkPastNickname(binding.editTextNickname.getText().toString());
                     }
 
-                    if(!phoneChecked || !dupChecked ||
+                    if (!phoneChecked || !dupChecked ||
                             binding.textFieldPassword.getError() != null ||
                             binding.textFieldPasswordDup.getError() != null ||
                             binding.textFieldName.getError() != null ||
@@ -116,13 +118,13 @@ public class MysosoMyInfoFragment extends Fragment {
                             binding.textFieldNickname.getError() != null ||
                             binding.textFieldRoadAddress.getError() != null ||
                             binding.textFieldDetailAddress.getError() != null) {
-                        Toast.makeText(getContext(),getResources().getString(R.string.signup_error_process), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getResources().getString(R.string.signup_error_process), Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                    if(TextUtils.isEmpty(binding.editTextPassword.getText().toString())){
+                    if (TextUtils.isEmpty(binding.editTextPassword.getText().toString())) {
                         myInfoViewModel.setPassword(null);
-                    }else{
+                    } else {
                         myInfoViewModel.setPassword(binding.editTextPassword.getText().toString());
                     }
 
@@ -136,7 +138,7 @@ public class MysosoMyInfoFragment extends Fragment {
                     Log.e("edit", myInfoViewModel.toMyInfoEditDto().toString());
                     //정보 수정 절차 진행
                     myInfoViewModel.requestEditInfo(
-                            ((HomeActivity)getActivity()).getLoginToken(),
+                            ((HomeActivity) getActivity()).getLoginToken(),
                             MysosoMyInfoFragment.this::onEditSuccess,
                             MysosoMyInfoFragment.this::onNetworkError);
                 }
@@ -146,14 +148,14 @@ public class MysosoMyInfoFragment extends Fragment {
         binding.buttonDupCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(TextUtils.isEmpty(binding.editTextNickname.getText().toString())){
+                if (TextUtils.isEmpty(binding.editTextNickname.getText().toString())) {
                     binding.textFieldNickname.setError(getResources().getString(R.string.signup_error_nickname));
                 }
 
-                if(binding.editTextNickname.getError() != null) return;
+                if (binding.editTextNickname.getError() != null) return;
 
                 //현재 닉네임과 동일
-                if(myInfoViewModel.checkPastNickname(binding.editTextNickname.getText().toString())){
+                if (myInfoViewModel.checkPastNickname(binding.editTextNickname.getText().toString())) {
                     onNicknameNotDuplicated();
                     return;
                 }
@@ -170,14 +172,14 @@ public class MysosoMyInfoFragment extends Fragment {
         binding.buttonPhoneCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(TextUtils.isEmpty(binding.editTextPhone.getText().toString())){
+                if (TextUtils.isEmpty(binding.editTextPhone.getText().toString())) {
                     binding.textFieldPhone.setError(getResources().getString(R.string.signup_error_phone));
                 }
 
-                if(binding.editTextPhone.getError() != null) return;
+                if (binding.editTextPhone.getError() != null) return;
 
                 //현재 번호와 동일
-                if(myInfoViewModel.checkPastPhone(binding.editTextPhone.getText().toString())){
+                if (myInfoViewModel.checkPastPhone(binding.editTextPhone.getText().toString())) {
                     onPhoneNotDuplicated();
                     return;
                 }
@@ -196,9 +198,9 @@ public class MysosoMyInfoFragment extends Fragment {
     @Override
     public void onResume() {
         //상단바
-        ((HomeActivity)getActivity()).showTopAppBar();
+        ((HomeActivity) getActivity()).showTopAppBar();
         //하단바
-        ((HomeActivity)getActivity()).hideBottomNavigation();
+        ((HomeActivity) getActivity()).hideBottomNavigation();
         super.onResume();
     }
 
@@ -209,34 +211,44 @@ public class MysosoMyInfoFragment extends Fragment {
         binding = null;
     }
 
-    private void onSuccess(MyInfoModel myInfoModel){
-        myInfoViewModel.setMyInfo(myInfoModel);
+    private void onSuccess(MyInfoModel myInfoModel) {
+        if (binding != null) {
+            myInfoViewModel.setMyInfo(myInfoModel);
 
-        binding.editTextEmail.setText(myInfoModel.getEmail());
-        binding.editTextName.setText(myInfoModel.getName());
-        binding.editTextPhone.setText(myInfoModel.getPhone());
-        binding.editTextNickname.setText(myInfoModel.getNickname());
-        binding.editTextRoadAddress.setText(myInfoModel.getStreetAddress());
-        binding.editTextDetailAddress.setText(myInfoModel.getDetailedAddress());
+            binding.editTextEmail.setText(myInfoModel.getEmail());
+            binding.editTextName.setText(myInfoModel.getName());
+            binding.editTextPhone.setText(myInfoModel.getPhone());
+            binding.editTextNickname.setText(myInfoModel.getNickname());
+            binding.editTextRoadAddress.setText(myInfoModel.getStreetAddress());
+            binding.editTextDetailAddress.setText(myInfoModel.getDetailedAddress());
+
+        }
     }
 
-    private void onEditSuccess(){
-        Toast.makeText(getContext(),getResources().getString(R.string.mysoso_myInfo_editSuccess), Toast.LENGTH_LONG).show();
+    private void onEditSuccess() {
+        Toast.makeText(getContext(), getResources().getString(R.string.mysoso_myInfo_editSuccess), Toast.LENGTH_LONG).show();
         getActivity().onBackPressed();
     }
 
-    private void onFailedLogIn(){
-        NavHostFragment.findNavController(this)
-                .navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+    private void onFailedLogIn() {
+        if (binding != null) {
+            NavHostFragment.findNavController(this)
+                    .navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+        }
     }
 
     private void onFailed() {
-        Toast.makeText(getContext(),getResources().getString(R.string.shop_error), Toast.LENGTH_LONG).show();
+        if (binding != null) {
+            Toast.makeText(getContext(), getResources().getString(R.string.shop_error), Toast.LENGTH_LONG).show();
+        }
     }
 
     private void onNetworkError() {
-        getActivity().onBackPressed();
-        NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
+        if (binding != null) {
+            getActivity().onBackPressed();
+            NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
+
+        }
     }
 
     private void onNicknameDuplicated() {
@@ -245,18 +257,19 @@ public class MysosoMyInfoFragment extends Fragment {
         binding.textViewDupChecked.setVisibility(View.VISIBLE);
     }
 
-    private void onNicknameNotDuplicated(){
+    private void onNicknameNotDuplicated() {
         dupChecked = true;
         binding.textViewDupChecked.setText("사용 가능");
         binding.textViewDupChecked.setVisibility(View.VISIBLE);
     }
 
-    private void onPhoneDuplicated(){
+    private void onPhoneDuplicated() {
         phoneChecked = false;
         binding.textViewPhoneCheck.setText("이미 가입한 번호입니다");
         binding.textViewPhoneCheck.setVisibility(View.VISIBLE);
     }
-    private void onPhoneNotDuplicated(){
+
+    private void onPhoneNotDuplicated() {
         phoneChecked = true;
         binding.buttonPhoneCheck.setEnabled(false);
         binding.textFieldPhone.setEnabled(false);
@@ -264,7 +277,7 @@ public class MysosoMyInfoFragment extends Fragment {
         binding.textViewPhoneCheck.setVisibility(View.VISIBLE);
     }
 
-    private void initialSetting(){
+    private void initialSetting() {
 
         binding.textFieldPassword.getEditText()
                 .addTextChangedListener(new PasswordWatcher(binding.textFieldPassword, getResources().getString(R.string.signup_error_password)));
@@ -278,7 +291,7 @@ public class MysosoMyInfoFragment extends Fragment {
         /*binding.textFieldSignUpPhone.getEditText()
                 .addTextChangedListener(new PhoneNumberFormattingTextWatcher());*/
         binding.textFieldPhone.getEditText()
-                .addTextChangedListener(new PhoneWatcher(binding.textFieldPhone,getResources().getString(R.string.signup_error_phone)));
+                .addTextChangedListener(new PhoneWatcher(binding.textFieldPhone, getResources().getString(R.string.signup_error_phone)));
 
         binding.textFieldNickname.setCounterMaxLength(8);
         binding.textFieldNickname.getEditText()
@@ -289,9 +302,7 @@ public class MysosoMyInfoFragment extends Fragment {
         binding.textViewPhoneCheck.setVisibility(View.INVISIBLE);
     }
 
-    private void setFocusable(boolean state){
-        Toast.makeText(getContext(), "상태 : " + state , Toast.LENGTH_SHORT).show();
-
+    private void setFocusable(boolean state) {
         binding.textFieldName.setEnabled(state);
         binding.textFieldPhone.setEnabled(state);
         binding.textFieldNickname.setEnabled(state);
@@ -301,9 +312,9 @@ public class MysosoMyInfoFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 int status = NetworkStatus.getConnectivityStatus(getContext());
-                if(status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI) {
+                if (status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI) {
                     navController.navigate(NavGraphDirections.actionGlobalRoadAddressSearchDialog());
-                }else {
+                } else {
                     Snackbar.make(binding.getRoot(), "인터넷 연결을 확인해주세요.", Snackbar.LENGTH_SHORT).show();
                 }
             }
@@ -317,20 +328,20 @@ public class MysosoMyInfoFragment extends Fragment {
         binding.buttonDupCheck.setEnabled(state);
     }
 
-    public void checkLayoutEmpty(){
-        if(TextUtils.isEmpty(binding.editTextName.getText().toString())){
+    public void checkLayoutEmpty() {
+        if (TextUtils.isEmpty(binding.editTextName.getText().toString())) {
             binding.textFieldName.setError(getResources().getString(R.string.signup_error_name));
         }
-        if(TextUtils.isEmpty(binding.editTextPhone.getText().toString())){
+        if (TextUtils.isEmpty(binding.editTextPhone.getText().toString())) {
             binding.textFieldPhone.setError(getResources().getString(R.string.signup_error_phone));
         }
-        if(TextUtils.isEmpty(binding.editTextNickname.getText().toString())){
+        if (TextUtils.isEmpty(binding.editTextNickname.getText().toString())) {
             binding.textFieldNickname.setError(getResources().getString(R.string.signup_error_nickname));
         }
-        if(TextUtils.isEmpty(binding.editTextRoadAddress.getText().toString())){
+        if (TextUtils.isEmpty(binding.editTextRoadAddress.getText().toString())) {
             binding.textFieldRoadAddress.setError(getResources().getString(R.string.signup_error_roadAddress));
         }
-        if(TextUtils.isEmpty(binding.editTextDetailAddress.getText().toString())){
+        if (TextUtils.isEmpty(binding.editTextDetailAddress.getText().toString())) {
             binding.textFieldDetailAddress.setError(getResources().getString(R.string.signup_error_detailAddress));
         }
     }

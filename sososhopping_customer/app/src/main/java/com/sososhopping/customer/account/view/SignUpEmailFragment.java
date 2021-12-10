@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.account.viewmodel.SignUpViewModel;
 import com.sososhopping.customer.common.textValidate.EmailWatcher;
@@ -96,7 +97,7 @@ public class SignUpEmailFragment extends Fragment {
                         binding.textFieldSignUpEmail.getError() != null ||
                         binding.textFieldSignUpPassword.getError() != null ||
                         binding.textFieldSignUpPasswordDup.getError() != null){
-                    Toast.makeText(getContext(),getResources().getString(R.string.signup_error_process),Toast.LENGTH_SHORT).show();
+                    Snackbar.make(binding.getRoot(),getResources().getString(R.string.signup_error_process),Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -128,17 +129,21 @@ public class SignUpEmailFragment extends Fragment {
     }
 
     private void onEmailDuplicated() {
-        dupChecked = false;
-        signUpViewModel.getEmailDupChecked().setValue(dupChecked);
-        binding.textViewDupChecked.setText("사용이 불가능합니다.");
-        binding.textViewDupChecked.setVisibility(View.VISIBLE);
+        if(binding != null){
+            dupChecked = false;
+            signUpViewModel.getEmailDupChecked().setValue(dupChecked);
+            binding.textViewDupChecked.setText("사용이 불가능합니다.");
+            binding.textViewDupChecked.setVisibility(View.VISIBLE);
+        }
     }
 
     private void onEmailNotDuplicated(){
-        dupChecked = true;
-        signUpViewModel.getEmailDupChecked().setValue(dupChecked);
-        binding.textViewDupChecked.setText("사용 가능");
-        binding.textViewDupChecked.setVisibility(View.VISIBLE);
+        if(binding != null){
+            dupChecked = true;
+            signUpViewModel.getEmailDupChecked().setValue(dupChecked);
+            binding.textViewDupChecked.setText("사용 가능");
+            binding.textViewDupChecked.setVisibility(View.VISIBLE);
+        }
     }
 
     private void onNetworkError() {

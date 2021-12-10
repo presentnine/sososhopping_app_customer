@@ -159,7 +159,8 @@ public class SignUpInfoFragment extends Fragment {
                         binding.textFieldSignUpNickname.getError() != null ||
                         binding.textFieldSignUpRoadAddress.getError() != null ||
                         binding.textFieldSignUpDetailAddress.getError() != null) {
-                    Toast.makeText(getContext(),getResources().getString(R.string.signup_error_process), Toast.LENGTH_SHORT).show();
+
+                    Snackbar.make(binding.getRoot(),getResources().getString(R.string.signup_error_process), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
