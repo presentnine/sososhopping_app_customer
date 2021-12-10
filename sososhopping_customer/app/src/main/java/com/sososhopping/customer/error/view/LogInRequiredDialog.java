@@ -17,31 +17,33 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.ErrorAskLogInDialogBinding;
 
-public class LogInRequiredDialog  extends DialogFragment {
+public class LogInRequiredDialog extends DialogFragment {
     ErrorAskLogInDialogBinding binding;
 
 
-    public LogInRequiredDialog(){
+    public LogInRequiredDialog() {
 
     }
-    public static LogInRequiredDialog newInstance(){return new LogInRequiredDialog();}
+
+    public static LogInRequiredDialog newInstance() {
+        return new LogInRequiredDialog();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //다른 메세지 있으면 그걸로
-        int errorDescription = LogInRequiredDialogArgs.fromBundle(getArguments()).getErrorMsgId();
-        if(errorDescription != -1){
-            binding.description.setText(getResources().getString(errorDescription));
-        }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.error_ask_log_in_dialog, container, false);
-
+        //다른 메세지 있으면 그걸로
+        int errorDescription = LogInRequiredDialogArgs.fromBundle(getArguments()).getErrorMsgId();
+        if (errorDescription != -1) {
+            binding.description.setText(getResources().getString(errorDescription));
+        }
         binding.okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

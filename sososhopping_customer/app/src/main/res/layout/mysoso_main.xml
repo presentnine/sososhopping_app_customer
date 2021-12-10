@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingRight="10dp"
         android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:paddingBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,7 +57,7 @@
                         android:gravity="center_vertical"
                         android:paddingLeft="20dp"
                         android:text="@string/mysoso_myInfo"
-                        android:textSize="@dimen/normal"
+                        android:textSize="@dimen/normal_plus"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/imageView_myInfoIcon"
@@ -67,217 +67,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.card.MaterialCardView>
-
-            <TableLayout
-                android:id="@+id/tableLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:padding="15dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout_myinfo">
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/cardView_shoppingBag"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:clickable="true"
-                        app:cardElevation="0dp"
-                        app:rippleColor="@color/main_0">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:paddingLeft="30dp"
-                                android:paddingRight="30dp"
-                                android:src="@drawable/icon_app_food_basket" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="@string/mysoso_shoppingBag" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/cardView_payHistory"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:clickable="true"
-                        app:cardElevation="0dp"
-                        app:rippleColor="@color/main_0">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:paddingLeft="30dp"
-                                android:paddingRight="30dp"
-                                android:src="@drawable/icon_app_point_of_sale" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="@string/mysoso_payHistory" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/cardView_myRating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:clickable="true"
-                        app:cardElevation="0dp"
-                        app:rippleColor="@color/main_0">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:paddingLeft="30dp"
-                                android:paddingRight="30dp"
-                                android:src="@drawable/icon_app_rating" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="@string/mysoso_myRating" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/cardView_myPoint"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:clickable="true"
-                        app:cardElevation="0dp"
-                        app:rippleColor="@color/main_0">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:paddingLeft="30dp"
-                                android:paddingRight="30dp"
-                                android:src="@drawable/icon_app_points" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="@string/mysoso_point" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/cardView_myCoupon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:clickable="true"
-                        app:cardElevation="0dp"
-                        app:rippleColor="@color/main_0">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:paddingLeft="30dp"
-                                android:paddingRight="30dp"
-                                android:src="@drawable/icon_app_coupon" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="@string/mysoso_coupon" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/cardView_map"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:clickable="true"
-                        app:cardElevation="0dp"
-                        app:rippleColor="@color/main_0">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:paddingLeft="30dp"
-                                android:paddingRight="30dp"
-                                android:src="@drawable/icon_app_map" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="@string/mysoso_map" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                </TableRow>
-            </TableLayout>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardView_interest"
@@ -298,7 +87,7 @@
                     android:padding="10dp">
 
                     <ImageView
-                        android:id="@+id/imageView_interestIcon"
+                        android:id="@+id/imageView_interest"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:padding="7dp"
@@ -316,7 +105,264 @@
                         android:textSize="16dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/imageView_interestIcon"
+                        app:layout_constraintStart_toEndOf="@+id/imageView_interest"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView_shoppingBag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:clickable="true"
+                app:cardElevation="0dp"
+                app:rippleColor="@color/main_0">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/drawable_background_understroke"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/imageView_cart"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="7dp"
+                        android:src="@drawable/icon_app_food_basket"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="20dp"
+                        android:text="@string/mysoso_shoppingBag"
+                        android:textSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView_cart"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView_payHistory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:clickable="true"
+                app:cardElevation="0dp"
+                app:rippleColor="@color/main_0">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/drawable_background_understroke"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/imageView_payHistory"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="7dp"
+                        android:src="@drawable/icon_app_point_of_sale"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="20dp"
+                        android:text="@string/mysoso_payHistory"
+                        android:textSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView_payHistory"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView_myRating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:clickable="true"
+                app:cardElevation="0dp"
+                app:rippleColor="@color/main_0">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/drawable_background_understroke"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/imageView_myRating"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="7dp"
+                        android:src="@drawable/icon_app_rating"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="20dp"
+                        android:text="@string/mysoso_myRating"
+                        android:textSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView_myRating"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView_myPoint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:clickable="true"
+                app:cardElevation="0dp"
+                app:rippleColor="@color/main_0">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/drawable_background_understroke"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/imageView_points"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="7dp"
+                        android:src="@drawable/icon_app_points"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="20dp"
+                        android:text="@string/mysoso_point"
+                        android:textSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView_points"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView_myCoupon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:clickable="true"
+                app:cardElevation="0dp"
+                app:rippleColor="@color/main_0">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/drawable_background_understroke"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/imageView_coupon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="7dp"
+                        android:src="@drawable/icon_app_coupon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="20dp"
+                        android:text="@string/mysoso_coupon"
+                        android:textSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView_coupon"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView_map"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:clickable="true"
+                app:cardElevation="0dp"
+                app:rippleColor="@color/main_0">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/drawable_background_understroke"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/imageView_map"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="7dp"
+                        android:src="@drawable/icon_app_map"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="20dp"
+                        android:text="@string/mysoso_map"
+                        android:textSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView_map"
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -412,7 +458,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
-
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardView_setting"
                 android:layout_width="match_parent"
@@ -458,8 +503,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
-
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

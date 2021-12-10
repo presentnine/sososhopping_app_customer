@@ -106,7 +106,7 @@ public class HomeActivity extends AppCompatActivity {
                                 public void accept(MyInfoModel myInfoModel) {
                                     HomeActivity.this.nickName.setValue(myInfoModel.getNickname());
                                     Snackbar.make(binding.getRoot(),
-                                            getResources().getString(R.string.login_success) + " " + myInfoModel.getName() + "님",
+                                            getResources().getString(R.string.login_success) + " " + myInfoModel.getNickname() + "님",
                                             Snackbar.LENGTH_SHORT).show();
                                 }
                             },
@@ -236,32 +236,26 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    //뒤로가기
-    private boolean doubleBackToExitPressedOnce = false;
-
     @Override
     public void onBackPressed() {
         int start = Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId();
 
         if (start == R.id.home2) {
-            if (doubleBackToExitPressedOnce) {
-                finish();
-                return;
-            }
-            this.doubleBackToExitPressedOnce = true;
-            Toast.makeText(HomeActivity.this, "종료하시려면 한번 더 눌러주세요", Toast.LENGTH_SHORT).show();
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    doubleBackToExitPressedOnce = false;
-                }
-            }, 2000);
-        } else if (start == R.id.conversationFragment) {
+            Snackbar.make(binding.getRoot(), "종료하시겠습니까?", Snackbar.LENGTH_SHORT)
+                    .setAction("예", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            finish();
+                        }
+                    }).show();
+        }
+        else if (start == R.id.conversationFragment) {
             binding.bottomNavigation.setSelectedItemId(R.id.menu_chat);
-        } else if (navHostFragment.getChildFragmentManager().getBackStackEntryCount() < 1) {
+        }
+        else if (navHostFragment.getChildFragmentManager().getBackStackEntryCount() < 1) {
             binding.bottomNavigation.setSelectedItemId(R.id.menu_home);
-        } else {
+        }
+        else {
             super.onBackPressed();
         }
     }
