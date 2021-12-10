@@ -82,7 +82,7 @@ public class FindEmailFragment extends Fragment {
                 if(!phoneChecked ||
                 binding.textFieldFindEmailName.getError() != null ||
                 binding.textFieldFindEmailPhone.getError() != null){
-                    Toast.makeText(getContext(),getResources().getString(R.string.signup_error_process), Toast.LENGTH_SHORT).show();
+                    Snackbar.make(binding.getRoot(),getResources().getString(R.string.signup_error_process), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -130,17 +130,18 @@ public class FindEmailFragment extends Fragment {
     }
 
     public void onSuccess(String email){
-        if(email != null){
+        if(binding != null){
             binding.editTextFindEmail.setText(email);
+            binding.textFieldFindEmailName.setEnabled(false);
+            binding.buttonInfoCheck.setClickable(false);
+            binding.editTextFindEmail.setFocusable(false);
         }
-        binding.textFieldFindEmailName.setEnabled(false);
-        binding.buttonInfoCheck.setClickable(false);
-
-        binding.editTextFindEmail.setFocusable(false);
     }
 
     public void onNotFound(){
-        Snackbar.make(binding.getRoot(), getResources().getString(R.string.find_error), Snackbar.LENGTH_SHORT).show();
+        if(binding != null){
+            Snackbar.make(binding.getRoot(), getResources().getString(R.string.find_error), Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     private void onNetworkError() {

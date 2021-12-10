@@ -195,21 +195,28 @@ public class ShopListFragment extends Fragment {
 
 
     private void onSearchSuccess(PageableShopListDto success, Integer navigate){
-        binding.progressCircular.setVisibility(View.GONE);
-        if(success.getNumberOfElements() > 0){
-            homeViewModel.getShopList().getValue().addAll(success.getContent());
-            //추가된거 밑에 추가
-            shopListAdapter.setShopLists(homeViewModel.getShopList().getValue());
-            shopListAdapter.notifyItemRangeInserted(homeViewModel.getOffset(), success.getNumberOfElements());
+        //몇개 추가되었는지
+        homeViewModel.getShopList().getValue().addAll(success.getContent());
+
+        if(binding != null){
+            binding.progressCircular.setVisibility(View.GONE);
+
+            if(success.getNumberOfElements() > 0){
+                //추가된거 밑에 추가
+                shopListAdapter.setShopLists(homeViewModel.getShopList().getValue());
+                shopListAdapter.notifyItemRangeInserted(homeViewModel.getOffset(), success.getNumberOfElements());
+            }
         }
 
-        //몇개 추가되었는지
         homeViewModel.setNumberOfElement(success.getNumberOfElements());
         homeViewModel.setOffset(success.getPageable().getOffset() + success.getNumberOfElements());
     }
 
     private void onNetworkError(){
-        Snackbar.make(binding.getRoot(), "상점 정보를 더 불러오는데 실패했습니다", Snackbar.LENGTH_SHORT).show();
-        binding.progressCircular.setVisibility(View.GONE);
+        if(binding != null){
+            Snackbar.make(binding.getRoot(), "상점 정보를 더 불러오는데 실패했습니다", Snackbar.LENGTH_SHORT).show();
+            binding.progressCircular.setVisibility(View.GONE);
+        }
+
     }
 }

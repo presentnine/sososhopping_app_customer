@@ -129,7 +129,8 @@ public class ConversationFragment extends Fragment {
     public void onResume() {
         //상단바
         ((HomeActivity)getActivity()).showTopAppBar();
-        ((HomeActivity)getActivity()).setTopAppBarHome("채팅");
+        ((HomeActivity)getActivity()).setTopAppBarHome(storeName);
+        ((HomeActivity)getActivity()).setTopAppBarNotHome(true);
 
         //하단바 숨기기
         ((HomeActivity)getActivity()).hideBottomNavigation();
@@ -139,8 +140,8 @@ public class ConversationFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         ref.child(CHATROOMINFOR).child(userUid).child(chatroomId).child("leaveChatroomTimestamp").setValue(ServerValue.TIMESTAMP);
+        binding = null;
     }
 
     private void setChatList() {

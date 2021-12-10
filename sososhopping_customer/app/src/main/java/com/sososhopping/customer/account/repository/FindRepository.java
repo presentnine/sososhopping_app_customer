@@ -19,7 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FindRepository{
+public class FindRepository {
     private static FindRepository instance;
     private final LogInService loginService;
 
@@ -28,7 +28,7 @@ public class FindRepository{
     }
 
     public static synchronized FindRepository getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new FindRepository();
         }
 
@@ -38,13 +38,13 @@ public class FindRepository{
     public void requestEmail(FindEmailDto dto,
                              Consumer<String> onSuccess,
                              Runnable onNotFound,
-                             Runnable onError){
+                             Runnable onError) {
         loginService.requestEmail(dto).enqueue(new Callback<ResponseBody>() {
             @SneakyThrows
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                switch (response.code()){
+                switch (response.code()) {
                     case 200:
                         onSuccess.accept(response.body().string());
                         break;
@@ -90,12 +90,12 @@ public class FindRepository{
     public void changePassword(ChangePasswordDto dto,
                                Runnable onSuccess,
                                Runnable onFailed,
-                               Runnable onError){
+                               Runnable onError) {
         loginService.changePassword(dto).enqueue(new Callback<Void>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Log.e("d",response.raw().toString());
+                Log.e("d", response.raw().toString());
                 switch (response.code()) {
                     case 200:
                         onSuccess.run();
@@ -105,6 +105,7 @@ public class FindRepository{
                         onFailed.run();
                 }
             }
+
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 onError.run();

@@ -147,11 +147,11 @@ public class MysosoSettingFragment extends Fragment {
     }
 
     public void onSuccess(){
-        Snackbar.make(binding.getRoot(),"회원탈퇴에 성공하였습니다.", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(((HomeActivity)getActivity()).getMainView(),"회원탈퇴에 성공하였습니다.", Snackbar.LENGTH_SHORT).show();
         logOut();
     }
 
     public void onFailed(){
-        Snackbar.make(binding.getRoot(),"회원탈퇴에 실패하였습니다\n잠시 후 다시 시도해주세요.", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(((HomeActivity)getActivity()).getMainView(),"회원탈퇴에 실패하였습니다\n잠시 후 다시 시도해주세요.", Snackbar.LENGTH_SHORT).show();
     }
 }

@@ -16,6 +16,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
@@ -139,46 +140,53 @@ public class InterestShopListFragment extends Fragment {
     }
 
     private void onSearchSuccessed(ShopListDto success){
-        interestViewModel.getFavoriteList().setValue(success.getResults());
+        if(binding != null){
+            interestViewModel.getFavoriteList().setValue(success.getResults());
+            GPSTracker gpsTracker = GPSTracker.getInstance(getContext());
+            Location me = new Location(gpsTracker.getLatitude(), gpsTracker.getLongitude());
 
-        GPSTracker gpsTracker = GPSTracker.getInstance(getContext());
-        Location me = new Location(gpsTracker.getLatitude(), gpsTracker.getLongitude());
-
-        for(ShopInfoShortModel s : success.getResults()){
-            if(s.getLocation().getLat() == 0 && s.getLocation().getLng() == 0){
-                s.setDistance(-1);
+            for(ShopInfoShortModel s : success.getResults()){
+                if(s.getLocation().getLat() == 0 && s.getLocation().getLng() == 0){
+                    s.setDistance(-1);
+                }
+                else{
+                    s.setDistance(CalculateDistance.distance(me,s.getLocation()));
+                }
             }
-            else{
-                s.setDistance(CalculateDistance.distance(me,s.getLocation()));
-            }
+            shopListAdapter.setShopLists(success.getResults());
+            shopListAdapter.notifyDataSetChanged();
         }
-
-
-        shopListAdapter.setShopLists(success.getResults());
-        shopListAdapter.notifyDataSetChanged();
     }
 
     private void onFailedLogIn(){
-        navController.navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+        if(binding != null){
+            navController.navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+        }
     }
 
     private void onNetworkError() {
-        navController.navigate(R.id.action_global_networkErrorDialog);
+        if(binding != null){
+            navController.navigate(R.id.action_global_networkErrorDialog);
+        }
     }
 
 
     private void onSuccessFavoriteChange(){
-        if(clickedPos != -1){
-            //화면상의 표시 변경
-            ShopInfoShortModel shopInfoShortModel = shopListAdapter.getShopLists().get(clickedPos);
-            shopInfoShortModel.setInterestStore(!shopInfoShortModel.isInterestStore());
-            shopListAdapter.notifyItemChanged(clickedPos);
+        if(binding != null){
+            if(clickedPos != -1){
+                //화면상의 표시 변경
+                ShopInfoShortModel shopInfoShortModel = shopListAdapter.getShopLists().get(clickedPos);
+                shopInfoShortModel.setInterestStore(!shopInfoShortModel.isInterestStore());
+                shopListAdapter.notifyItemChanged(clickedPos);
+            }
         }
     }
 
     private void onFailed() {
-        clickedPos = -1;
-        Toast.makeText(getContext(),getResources().getString(R.string.shop_error), Toast.LENGTH_LONG).show();
+        if(binding != null){
+            clickedPos = -1;
+            Snackbar.make(binding.getRoot(),getResources().getString(R.string.shop_error), Toast.LENGTH_LONG).show();
+        }
     }
 
 }

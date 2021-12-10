@@ -20,6 +20,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
@@ -269,37 +270,46 @@ public class MysosoOrderListFragment extends Fragment {
 
     //재검색 결과 / 스크롤 결과 구분해야함
     public void onSuccess(PageableOrderListDto success){
-        binding.progressCircular.setVisibility(View.GONE);
+        if(binding != null){
+            binding.progressCircular.setVisibility(View.GONE);
 
-        //최초
-        if(orderListViewModel.getOffset() == 0){
-            orderListViewModel.getOrderList().getValue().clear();
-            orderListViewModel.getOrderList().setValue(success.getContent());
-        }
-        //스크롤
-        else{
-            if(success.getNumberOfElements() > 0){
-                orderListViewModel.getOrderList().getValue().addAll(success.getContent());
-                orderListAdapter.setItems(orderListViewModel.getOrderList().getValue());
-                orderListAdapter.notifyItemRangeInserted(orderListViewModel.getOffset(), success.getNumberOfElements());
+            //최초
+            if(orderListViewModel.getOffset() == 0){
+                orderListViewModel.getOrderList().getValue().clear();
+                orderListViewModel.getOrderList().setValue(success.getContent());
             }
+            //스크롤
+            else{
+                if(success.getNumberOfElements() > 0){
+                    orderListViewModel.getOrderList().getValue().addAll(success.getContent());
+                    orderListAdapter.setItems(orderListViewModel.getOrderList().getValue());
+                    orderListAdapter.notifyItemRangeInserted(orderListViewModel.getOffset(), success.getNumberOfElements());
+                }
+            }
+            orderListViewModel.setNumberOfElement(success.getNumberOfElements());
+            orderListViewModel.setOffset(success.getPageable().getOffset() + success.getNumberOfElements());
         }
-        orderListViewModel.setNumberOfElement(success.getNumberOfElements());
-        orderListViewModel.setOffset(success.getPageable().getOffset() + success.getNumberOfElements());
     }
 
     private void onFailedLogIn(){
-        NavHostFragment.findNavController(this)
-                .navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+        if(binding != null){
+            NavHostFragment.findNavController(this)
+                    .navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+        }
     }
 
     private void onFailed() {
-        Toast.makeText(getContext(),getResources().getString(R.string.mysoso_myRating_delte_error), Toast.LENGTH_LONG).show();
+        if(binding != null){
+            Snackbar.make(((HomeActivity)getActivity()).getMainView(),
+                    getResources().getString(R.string.mysoso_myRating_delte_error), Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     private void onNetworkError() {
-        NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
-        getActivity().onBackPressed();
+        if(binding != null){
+            NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
+            getActivity().onBackPressed();
+        }
     }
 
 

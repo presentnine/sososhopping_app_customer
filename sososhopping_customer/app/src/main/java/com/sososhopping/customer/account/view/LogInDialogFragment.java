@@ -17,6 +17,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.account.dto.LogInRequestDto;
@@ -114,7 +115,7 @@ public class LogInDialogFragment extends DialogFragment {
 
                 if(binding.textFieldLogInEmail.getError() != null ||
                         binding.textFieldLogInEmail.getError() != null){
-                    Toast.makeText(getContext(),getResources().getString(R.string.signup_error_process), Toast.LENGTH_SHORT).show();
+                    Snackbar.make(binding.getRoot(),getResources().getString(R.string.signup_error_process), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -143,7 +144,10 @@ public class LogInDialogFragment extends DialogFragment {
     }
 
     private void onLoginFailed() {
-        Toast.makeText(getContext(),getResources().getString(R.string.login_failed),Toast.LENGTH_LONG).show();
+        if(binding != null){
+            Snackbar.make(binding.getRoot(),getResources().getString(R.string.login_failed),Snackbar.LENGTH_LONG).show();
+        }
+
     }
 
     private void onLoggedIn(LogInRequestDto requestDto, LogInResponseDto responseDto) {
@@ -159,7 +163,6 @@ public class LogInDialogFragment extends DialogFragment {
         //로그인 처리 후 홈화면 이동
         ((HomeActivity) getActivity()).setIsLogIn(true);
         ((HomeActivity) getActivity()).initLoginButton();
-        Toast.makeText(getContext(),getResources().getString(R.string.login_success),Toast.LENGTH_SHORT).show();
         navController.navigate(R.id.action_global_home2);
     }
 

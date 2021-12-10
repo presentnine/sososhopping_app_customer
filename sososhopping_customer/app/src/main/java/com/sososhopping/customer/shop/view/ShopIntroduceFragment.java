@@ -38,7 +38,9 @@ public class ShopIntroduceFragment extends Fragment {
     private ShopIntroduceViewModel shopIntroduceViewModel = new ShopIntroduceViewModel();
     private ShopInfoViewModel shopInfoViewModel;
 
-    public static ShopIntroduceFragment newInstance(){return new ShopIntroduceFragment();}
+    public static ShopIntroduceFragment newInstance() {
+        return new ShopIntroduceFragment();
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -47,7 +49,7 @@ public class ShopIntroduceFragment extends Fragment {
         shopInfoViewModel = new ViewModelProvider(getParentFragment().getParentFragment()).get(ShopInfoViewModel.class);
         shopIntroduceViewModel.setStoreId(shopInfoViewModel.getShopId().getValue());
         shopIntroduceViewModel.requestShopIntroduce(
-                ((HomeActivity)getActivity()).getLoginToken(),
+                ((HomeActivity) getActivity()).getLoginToken(),
                 ShopIntroduceFragment.this::onSuccess,
                 ShopIntroduceFragment.this::onFailed,
                 ShopIntroduceFragment.this::onNetworkError);
@@ -69,36 +71,38 @@ public class ShopIntroduceFragment extends Fragment {
                 //homeView에 아무도 없으면 추가해줘야함
                 HomeViewModel homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
 
-                if(homeViewModel.getShopList().getValue() == null){
+                if (homeViewModel.getShopList().getValue() == null) {
                     homeViewModel.getShopList().postValue(new ArrayList<>());
                 }
 
                 int id = shopIntroduceModel.getStoreId();
                 boolean isContained = false;
-                for(ShopInfoShortModel s : homeViewModel.getShopList().getValue()){
-                    if(s.getStoreId() == id){
+                for (ShopInfoShortModel s : homeViewModel.getShopList().getValue()) {
+                    if (s.getStoreId() == id) {
                         isContained = true;
                         break;
                     }
                 }
-                if(!isContained){
+                if (!isContained) {
                     homeViewModel.getShopList().getValue().add(
                             shopIntroduceViewModel.toShort(shopIntroduceModel, shopInfoViewModel.getDistance().getValue())
                     );
                 }
 
+                homeViewModel.setNumberOfElement(0);
+
                 NavHostFragment.findNavController(getParentFragment().getParentFragment().getParentFragment())
                         .navigate(ShopGraphDirections.actionGlobalShopMapFragment(R.id.shopMainFragment)
-                                .setLat((float)shopIntroduceModel.getLocation().getLat())
-                                .setLng((float)shopIntroduceModel.getLocation().getLng()));
+                                .setLat((float) shopIntroduceModel.getLocation().getLat())
+                                .setLng((float) shopIntroduceModel.getLocation().getLng()));
             }
         });
 
         binding.buttonShopCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(shopIntroduceModel.getPhone() != null){
-                    startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+shopIntroduceModel.getPhone())));
+                if (shopIntroduceModel.getPhone() != null) {
+                    startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + shopIntroduceModel.getPhone())));
                 }
             }
         });
@@ -108,17 +112,15 @@ public class ShopIntroduceFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(((HomeActivity)getActivity()).getLoginToken() == null){
+                if (((HomeActivity) getActivity()).getLoginToken() == null) {
                     Snackbar.make(binding.getRoot(), "로그인 후에 이용해 주시기 바랍니다.", Snackbar.LENGTH_SHORT).show();
-                }
-                else if(!((HomeActivity)getActivity()).isFirebaseSetted()){
+                } else if (!((HomeActivity) getActivity()).isFirebaseSetted()) {
                     Snackbar.make(binding.getRoot(), "채팅 서버 인증 중입니다. 잠시만 기다려 주세요", Snackbar.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                     long storeId = shopIntroduceModel.getStoreId();
                     long ownerId = shopIntroduceModel.getOwnerId();
                     String storeName = shopIntroduceModel.getName();
-                    String customerName = ((HomeActivity)getActivity()).getNickname();
+                    String customerName = ((HomeActivity) getActivity()).getNickname();
 
 
                     String chatroomId = ((HomeActivity) getActivity()).makeChatroom(Long.toString(storeId), Long.toString(ownerId), storeName, customerName);
@@ -135,7 +137,7 @@ public class ShopIntroduceFragment extends Fragment {
             public void onClick(View v) {
                 //관심가게 여부 변경 api
                 shopIntroduceViewModel.requestShopFavoriteChange(
-                        ((HomeActivity)getActivity()).getLoginToken(),
+                        ((HomeActivity) getActivity()).getLoginToken(),
                         ShopIntroduceFragment.this::onSuccessFavoriteChange,
                         ShopIntroduceFragment.this::onFailedLogIn,
                         ShopIntroduceFragment.this::onFailed,
@@ -144,82 +146,88 @@ public class ShopIntroduceFragment extends Fragment {
         });
     }
 
-    private void onSuccess(ShopIntroduceModel shopIntroduceModel){
-        if(shopIntroduceModel != null){
-            if(shopInfoViewModel.getShopIntroduceModel().getValue() == null){
-                ((ShopMainFragment)getParentFragment().getParentFragment()).initialSetting(shopIntroduceModel);
+    private void onSuccess(ShopIntroduceModel shopIntroduceModel) {
+        if (shopIntroduceModel != null) {
+            if (shopInfoViewModel.getShopIntroduceModel().getValue() == null) {
+                ((ShopMainFragment) getParentFragment().getParentFragment()).initialSetting(shopIntroduceModel);
             }
-
             this.shopIntroduceModel = shopIntroduceModel;
 
-            binding.textViewShopLocation.setText(shopIntroduceViewModel.getAddress(shopIntroduceModel));
+            if (binding != null) {
+                binding.textViewShopLocation.setText(shopIntroduceViewModel.getAddress(shopIntroduceModel));
+                //영업일 계산
+                try {
+                    binding.textViewShopOpen.setText(shopIntroduceViewModel.getBusinessDay(shopIntroduceModel));
+                    binding.textViewShopOpenDetail.setText(shopIntroduceModel.getExtraBusinessDay());
 
-            //영업일 계산
-            try {
-                binding.textViewShopOpen.setText(shopIntroduceViewModel.getBusinessDay(shopIntroduceModel));
+                    //제한
+                    if (shopIntroduceModel.getMinimumOrderPrice() != null) {
+                        binding.textViewShopRestrict.setText(shopIntroduceViewModel.getMinimum(shopIntroduceModel));
+                        binding.textViewShopRestrict.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.textViewShopRestrict.setVisibility(View.GONE);
+                    }
 
+                    //설명
+                    binding.textViewShopIntroduce.setText(shopIntroduceModel.getDescription());
 
-            binding.textViewShopOpenDetail.setText(shopIntroduceModel.getExtraBusinessDay());
+                    //포인트
+                    if (shopIntroduceModel.getSaveRate() != null) {
+                        binding.textViewShopPoint.setText(shopIntroduceViewModel.getSaveRate(shopIntroduceModel));
+                    }
 
-            //제한
-            if(shopIntroduceModel.getMinimumOrderPrice() != null){
-                binding.textViewShopRestrict.setText(shopIntroduceViewModel.getMinimum(shopIntroduceModel));
-                binding.textViewShopRestrict.setVisibility(View.VISIBLE);
-            }else{
-                binding.textViewShopRestrict.setVisibility(View.GONE);
+                    //번호
+                    if (shopIntroduceModel.getPhone() != null) {
+                        binding.textViewShopPhone.setText(shopIntroduceModel.getPhone());
+                    }
+                    changeFavoriteState(shopIntroduceModel.isInterestStore());
+                    //이미지
+                    CarouselMethod carouselMethod = new CarouselMethod(binding.layoutIndicators, binding.viewpagerIntroduce, getContext());
+                    carouselMethod.setCarousel(shopIntroduceModel.getStoreImages());
+
+                } catch (Exception e) {
+                    //View에서는 혹시 에러 터져도 진행되게
+                    e.printStackTrace();
+                }
             }
 
-            //설명
-            binding.textViewShopIntroduce.setText(shopIntroduceModel.getDescription());
-
-            //포인트
-            if(shopIntroduceModel.getSaveRate() != null){
-                binding.textViewShopPoint.setText(shopIntroduceViewModel.getSaveRate(shopIntroduceModel));
-            }
-
-            //번호
-            if(shopIntroduceModel.getPhone() != null){
-                binding.textViewShopPhone.setText(shopIntroduceModel.getPhone());
-            }
-            changeFavoriteState(shopIntroduceModel.isInterestStore());
-
-            //이미지
-            CarouselMethod carouselMethod = new CarouselMethod(binding.layoutIndicators, binding.viewpagerIntroduce, getContext());
-            carouselMethod.setCarousel(shopIntroduceModel.getStoreImages());
-
-            }catch (Exception e){
-                //View에서는 혹시 에러 터져도 진행되게
-                e.printStackTrace();
-            }
         }
     }
 
-    public void changeFavoriteState(boolean status){
-        if(!status){
+    public void changeFavoriteState(boolean status) {
+        if (!status) {
             binding.buttonShopFavorite.setText(getResources().getString(R.string.introduce_button_favorite));
-        }else{
+        } else {
             binding.buttonShopFavorite.setText(getResources().getString(R.string.introduce_button_favorite_not));
         }
     }
 
-    private void onSuccessFavoriteChange(){
+    private void onSuccessFavoriteChange() {
         //관심여부 변경 (View단)
         boolean status = !shopIntroduceModel.isInterestStore();
         shopIntroduceModel.setInterestStore(status);
-        changeFavoriteState(status);
         ((ShopMainFragment) getParentFragment().getParentFragment()).changeFavoriteState(status);
+
+        if (binding != null) {
+            changeFavoriteState(status);
+        }
     }
 
-    private void onFailedLogIn(){
-        NavHostFragment.findNavController(getParentFragment().getParentFragment()).navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+    private void onFailedLogIn() {
+        if (binding != null) {
+            NavHostFragment.findNavController(getParentFragment().getParentFragment()).navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+        }
     }
 
     private void onFailed() {
-        Toast.makeText(getContext(),getResources().getString(R.string.shop_error), Toast.LENGTH_LONG).show();
+        if (binding != null) {
+            Snackbar.make(binding.getRoot(), getResources().getString(R.string.shop_error), Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     private void onNetworkError() {
         NavHostFragment.findNavController(getParentFragment().getParentFragment()).navigate(R.id.action_global_networkErrorDialog);
+        getActivity().onBackPressed();
     }
 
 }

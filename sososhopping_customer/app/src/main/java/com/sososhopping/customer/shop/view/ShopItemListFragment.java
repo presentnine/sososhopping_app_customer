@@ -17,6 +17,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.ShopItemListBinding;
@@ -32,7 +33,9 @@ public class ShopItemListFragment extends Fragment {
     private ShopItemViewModel shopItemViewModel;
     private ShopItemListBinding binding;
 
-    public static ShopItemListFragment newInstance(){return new ShopItemListFragment();}
+    public static ShopItemListFragment newInstance() {
+        return new ShopItemListFragment();
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -68,13 +71,14 @@ public class ShopItemListFragment extends Fragment {
             public void onItemClick(View v, int pos) {
                 //해당 물품의 상세정보 확인
             }
+
             @Override
             public void onItemAdd(View v, int pos, int num) {
 
                 int itemId = shopItemAdapter.getShopItemModelLists().get(pos).getItemId();
 
                 //장바구니 담기 API
-                shopItemViewModel.addCart(((HomeActivity)getActivity()).getLoginToken(),
+                shopItemViewModel.addCart(((HomeActivity) getActivity()).getLoginToken(),
                         itemId, num,
                         ShopItemListFragment.this::onSuccessAdd,
                         ShopItemListFragment.this::onDupAdd,
@@ -87,15 +91,17 @@ public class ShopItemListFragment extends Fragment {
         binding.buttonToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((HomeActivity)getActivity()).getBinding().bottomNavigation.setSelectedItemId(R.id.menu_cart);
+                ((HomeActivity) getActivity()).getBinding().bottomNavigation.setSelectedItemId(R.id.menu_cart);
             }
         });
     }
 
     @Override
     public void onResume() {
-        shopItemAdapter.notifyDataSetChanged();
         super.onResume();
+        if (binding != null) {
+            shopItemAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -104,27 +110,28 @@ public class ShopItemListFragment extends Fragment {
         binding = null;
     }
 
-    private void onSuccess(ItemListDto itemListDto){
+    private void onSuccess(ItemListDto itemListDto) {
         shopItemViewModel.getShopItem().setValue(itemListDto.getResults());
-        shopItemAdapter.setShopItemModels(shopItemViewModel.getShopItem().getValue());
-        shopItemAdapter.notifyDataSetChanged();
+        if (binding != null) {
+            shopItemAdapter.setShopItemModels(shopItemViewModel.getShopItem().getValue());
+            shopItemAdapter.notifyDataSetChanged();
+        }
     }
 
-    private void onSuccessAdd(){
-        Log.e("왜 아무일도 안생김?", "담기 시작");
-        Toast.makeText(getContext(), getResources().getString(R.string.item_addCart_succ), Toast.LENGTH_SHORT).show();
+    private void onSuccessAdd() {
+        Snackbar.make(((HomeActivity) getActivity()).getMainView(), getResources().getString(R.string.item_addCart_succ), Snackbar.LENGTH_SHORT).show();
     }
 
-    private void onDupAdd(){
-        Toast.makeText(getContext(), getResources().getString(R.string.item_addCart_dup), Toast.LENGTH_SHORT).show();
+    private void onDupAdd() {
+        Snackbar.make(((HomeActivity) getActivity()).getMainView(), getResources().getString(R.string.item_addCart_dup), Snackbar.LENGTH_SHORT).show();
     }
 
     private void onFailed() {
-        Toast.makeText(getContext(),getResources().getString(R.string.shop_error), Toast.LENGTH_SHORT).show();
+        Snackbar.make(((HomeActivity) getActivity()).getMainView(), getResources().getString(R.string.shop_error), Snackbar.LENGTH_SHORT).show();
     }
 
     private void onNetworkError() {
-        getActivity().onBackPressed();
         NavHostFragment.findNavController(getParentFragment().getParentFragment()).navigate(R.id.action_global_networkErrorDialog);
+        getActivity().onBackPressed();
     }
 }

@@ -28,7 +28,6 @@ public class SignUpStartFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = AccountSignUpStartBinding.inflate(inflater, container, false);
-
         return binding.getRoot();
     }
 
