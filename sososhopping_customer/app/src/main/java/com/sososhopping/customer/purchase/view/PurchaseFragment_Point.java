@@ -90,7 +90,6 @@ public class PurchaseFragment_Point {
         });
 
         binding.includeLayoutPoint.textFieldUsePoint.setEndIconOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View view) {
 

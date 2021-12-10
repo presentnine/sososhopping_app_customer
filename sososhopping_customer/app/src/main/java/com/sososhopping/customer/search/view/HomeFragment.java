@@ -57,30 +57,12 @@ public class HomeFragment extends Fragment{
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),5);
         binding.recyclerViewCategory.setLayoutManager(gridLayoutManager);
-        categoryAdapter.setCategory(getCategoryDetail(), getCategoryIconId());
         binding.recyclerViewCategory.setAdapter(categoryAdapter);
 
 
         //처음 searchType
         homeViewModel =  new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
-        homeViewModel.initHome();
-
-        binding.switchShopOrItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    //검색조건 : 상품
-                    binding.textViewShop.setTextColor(getResources().getColor(R.color.text_0));
-                    binding.textViewItem.setTextColor(getResources().getColor(R.color.text_400));
-                }
-                else{
-                    //검색조건 : 상점
-                    binding.textViewItem.setTextColor(getResources().getColor(R.color.text_0));
-                    binding.textViewShop.setTextColor(getResources().getColor(R.color.text_400));
-                }
-                homeViewModel.setSearchType(isChecked);
-            }
-        });
+        //homeViewModel.initHome();
         return binding.getRoot();
     }
 
@@ -100,7 +82,6 @@ public class HomeFragment extends Fragment{
                 if(category.equals(CategoryType.MAP.toString())){
                     //전체검색으로 넘어가게
                     homeViewModel.getAskType().setValue(AskType.Search);
-                    homeViewModel.setSearchType(binding.switchShopOrItem.isChecked());
                     homeViewModel.setSearchContent(binding.editTextSearch.getText().toString());
                     navigate = R.id.shopMapFragment;
                 }
@@ -124,24 +105,11 @@ public class HomeFragment extends Fragment{
             }
         });
 
-        binding.textFieldSearch.setEndIconOnClickListener(new View.OnClickListener() {
+        binding.editTextSearch.setFocusable(false);
+        binding.editTextSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                homeViewModel.getAskType().setValue(AskType.Search);
-                homeViewModel.setSearchType(binding.switchShopOrItem.isChecked());
-                homeViewModel.setSearchContent(binding.editTextSearch.getText().toString());
-
-                homeViewModel.resetPage();
-
-                //검색
-                homeViewModel.search(
-                        ((HomeActivity)getActivity()).getLoginToken(),
-                        homeViewModel.getLocation(getContext()),
-                        null,
-                        0,
-                        null,
-                        HomeFragment.this::onSearchSuccess,
-                        HomeFragment.this::onNetworkError);
+                navController.navigate(HomeFragmentDirections.actionHome2ToSearchDialogFragment2(R.id.home2));
             }
         });
     }
@@ -173,24 +141,5 @@ public class HomeFragment extends Fragment{
     }
     private void onNetworkError() {
         navController.navigate(R.id.action_global_networkErrorDialog);
-    }
-
-
-    public ArrayList<Integer> getCategoryIconId(){
-        ArrayList<Integer> iconId = new ArrayList<>();
-        ArrayList<String> iconResName = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.category_icon_detail)));
-        //지도까지 추가
-        iconResName.add(getResources().getString(R.string.icon_map));
-        String packName = this.getContext().getPackageName();
-
-        for(String s : iconResName){
-            iconId.add(getResources().getIdentifier(s,"drawable",packName));
-        }
-        return iconId;
-    }
-
-    public ArrayList<CategoryType> getCategoryDetail(){
-        ArrayList<CategoryType> iconDetail = new ArrayList<>(Arrays.asList(CategoryType.values()));
-        return iconDetail;
     }
 }

@@ -45,4 +45,11 @@ public interface SearchService {
                                                  @Query(value = "lng") Double lng,
                                                  @Query(value = "radius") Integer radius,
                                                  @Query(value = "offset") Integer offset);
+
+    @GET("stores/local")
+    Call<PageableShopListDto> searchLocalPage(@Header ("token") String token,
+                                                   @Query(value = "lat") Double lat,
+                                                   @Query(value = "lng") Double lng,
+                                                   @Query(value = "radius") Integer radius,
+                                                   @Query(value = "offset") Integer offset);
 }

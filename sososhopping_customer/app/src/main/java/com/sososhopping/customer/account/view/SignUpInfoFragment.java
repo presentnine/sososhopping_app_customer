@@ -13,12 +13,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.account.viewmodel.SignUpViewModel;
+import com.sososhopping.customer.common.NetworkStatus;
 import com.sososhopping.customer.common.textValidate.NameWatcher;
 import com.sososhopping.customer.common.textValidate.NickNameWatcher;
 import com.sososhopping.customer.common.textValidate.PhoneWatcher;
@@ -106,6 +110,18 @@ public class SignUpInfoFragment extends Fragment {
             }
         });
 
+        binding.editTextSignUpRoadAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int status = NetworkStatus.getConnectivityStatus(getContext());
+                if(status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI) {
+                    navController.navigate(NavGraphDirections.actionGlobalRoadAddressSearchDialog());
+                }else {
+                    Snackbar.make(binding.getRoot(), "인터넷 연결을 확인해주세요.", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
         return binding.getRoot();
     }
@@ -115,6 +131,14 @@ public class SignUpInfoFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         navController = Navigation.findNavController(view);
+        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("roadAddress")
+                .observe(this, new Observer<Object>() {
+                    @Override
+                    public void onChanged(Object o) {
+                        binding.editTextSignUpRoadAddress.setText((CharSequence) o);
+                    }
+                });
+
         signUpViewModel = new ViewModelProvider(requireParentFragment()).get(SignUpViewModel.class);
 
         //다음화면으로

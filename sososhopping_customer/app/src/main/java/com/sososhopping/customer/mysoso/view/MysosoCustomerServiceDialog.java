@@ -49,7 +49,7 @@ public class MysosoCustomerServiceDialog extends DialogFragment {
         Dialog dialog = getDialog();
         if (dialog != null) {
             dialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.drawable_round_background));
-            dialog.getWindow().setLayout(getResources().getDimensionPixelSize(R.dimen.popup_width), ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
     }
 
