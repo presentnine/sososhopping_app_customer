@@ -274,38 +274,43 @@ public class PurchaseFragment extends Fragment {
     }
 
     private void onSuccess(ShopIntroduceModel shopIntroduceModel){
-        purchaseViewModel.getShopInfo().setValue(shopIntroduceModel);
-        purchaseViewModel.calPointMax();
+        if(binding != null){
+            purchaseViewModel.getShopInfo().setValue(shopIntroduceModel);
+            purchaseViewModel.calPointMax();
 
-        //매장이름설정
-        binding.includeLayoutItem.textViewStoreName.setText(shopIntroduceModel.getName());
+            //매장이름설정
+            binding.includeLayoutItem.textViewStoreName.setText(shopIntroduceModel.getName());
 
-        //배송불가설정
-        if(!shopIntroduceModel.isDeliveryStatus()){
-            binding.includeLayoutVisit.buttonDelivery.setEnabled(false);
-        }
-        //영업하지 않는 매장
-        if(!shopIntroduceModel.isBusinessStatus()){
-            Toast.makeText(getContext(), "현재 영업하지 않는 매장입니다", Toast.LENGTH_LONG).show();
-            getActivity().onBackPressed();
-        }
+            //배송불가설정
+            if(!shopIntroduceModel.isDeliveryStatus()){
+                binding.includeLayoutVisit.buttonDelivery.setEnabled(false);
+            }
+            //영업하지 않는 매장
+            if(!shopIntroduceModel.isBusinessStatus()){
+                Toast.makeText(getContext(), "현재 영업하지 않는 매장입니다", Toast.LENGTH_LONG).show();
+                getActivity().onBackPressed();
+            }
 
-        //지역화폐 불가
-        if(!shopIntroduceModel.isLocalCurrencyStatus()){
-            binding.includeLayoutPurchase.radioLocalPay.setEnabled(false);
+            //지역화폐 불가
+            if(!shopIntroduceModel.isLocalCurrencyStatus()){
+                binding.includeLayoutPurchase.radioLocalPay.setEnabled(false);
+            }
         }
     }
 
     private void onNetworkError() {
-        NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
+        if(binding != null){
+            NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
+        }
     }
 
     //내 정보 가져오기 실패 -> 실패해도 실행되게
     private void onFailedMyInfo(){
     }
     private void onSuccessMyInfo(MyInfoModel myInfo){
-
-        purchaseViewModel.getMyInfo().setValue(myInfo);
+        if(binding != null){
+            purchaseViewModel.getMyInfo().setValue(myInfo);
+        }
     }
 
     private void onSuccessOrder(){
@@ -314,8 +319,7 @@ public class PurchaseFragment extends Fragment {
         ));
     }
     private void onFailedOrder(){
-        Toast.makeText(getContext(), getResources().getString(R.string.order_error), Toast.LENGTH_LONG).show();
-        //Toast.makeText(getContext(), getResources().getString(R.string.order_success), Toast.LENGTH_LONG).show();
+        Snackbar.make(((HomeActivity)getActivity()).getMainView(), getResources().getString(R.string.order_error), Snackbar.LENGTH_SHORT).show();
     }
 
     public void observing(){

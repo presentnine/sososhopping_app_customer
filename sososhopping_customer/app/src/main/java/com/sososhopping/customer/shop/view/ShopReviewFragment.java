@@ -17,6 +17,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.ShopReviewBinding;
@@ -36,14 +37,16 @@ public class ShopReviewFragment extends Fragment {
 
     int storeId = -1;
 
-    public static ShopReviewFragment newInstance(){return new ShopReviewFragment();}
+    public static ShopReviewFragment newInstance() {
+        return new ShopReviewFragment();
+    }
 
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater,
                              @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        binding = ShopReviewBinding.inflate(inflater, container,false);
+        binding = ShopReviewBinding.inflate(inflater, container, false);
         storeId = new ViewModelProvider(getParentFragment().getParentFragment()).get(ShopInfoViewModel.class).getShopId().getValue();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
@@ -67,8 +70,8 @@ public class ShopReviewFragment extends Fragment {
                 this::onFailed,
                 this::onNetworkError);
 
-        String token = ((HomeActivity)getActivity()).getLoginToken();
-        if(token != null){
+        String token = ((HomeActivity) getActivity()).getLoginToken();
+        if (token != null) {
             reviewViewModel.checkShopReview(token, storeId,
                     this::onDup,
                     this::onFailed,
@@ -88,12 +91,10 @@ public class ShopReviewFragment extends Fragment {
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if(!recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_DRAGGING){
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     binding.progressCircular.setVisibility(View.VISIBLE);
-                }
-
-                else if (!recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_IDLE) {
-                    if(reviewViewModel.getNumberOfElement() > 0){
+                } else if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (reviewViewModel.getNumberOfElement() > 0) {
                         binding.progressCircular.setVisibility(View.VISIBLE);
                         reviewViewModel.requestShopReviewsPage(
                                 storeId,
@@ -103,8 +104,7 @@ public class ShopReviewFragment extends Fragment {
                                 ShopReviewFragment.this::onNetworkError
                         );
                     }
-                }
-                else{
+                } else {
                     binding.progressCircular.setVisibility(View.GONE);
                 }
             }
@@ -117,26 +117,29 @@ public class ShopReviewFragment extends Fragment {
         binding = null;
     }
 
-    private void onSuccess(PageableReviewListDto success){
-        binding.progressCircular.setVisibility(View.GONE);
-        if(success.getNumberOfElements() > 0){
-            reviewViewModel.getReviewModels().getValue().addAll(success.getContent());
-            shopReviewAdapter.setReviewModels(reviewViewModel.getReviewModels().getValue());
-            shopReviewAdapter.notifyItemRangeInserted(reviewViewModel.getOffset(), success.getNumberOfElements());
+    private void onSuccess(PageableReviewListDto success) {
+        if (binding != null) {
+            binding.progressCircular.setVisibility(View.GONE);
+            if (success.getNumberOfElements() > 0) {
+                reviewViewModel.getReviewModels().getValue().addAll(success.getContent());
+                shopReviewAdapter.setReviewModels(reviewViewModel.getReviewModels().getValue());
+                shopReviewAdapter.notifyItemRangeInserted(reviewViewModel.getOffset(), success.getNumberOfElements());
+            }
+            reviewViewModel.setNumberOfElement(success.getNumberOfElements());
+            reviewViewModel.setOffset(success.getPageable().getOffset() + success.getNumberOfElements());
         }
-        reviewViewModel.setNumberOfElement(success.getNumberOfElements());
-        reviewViewModel.setOffset(success.getPageable().getOffset() + success.getNumberOfElements());
     }
 
     private void onFailed() {
-        Toast.makeText(getContext(),getResources().getString(R.string.shop_error), Toast.LENGTH_LONG).show();
+        Snackbar.make(((HomeActivity) getActivity()).getMainView(),
+                getResources().getString(R.string.shop_error), Snackbar.LENGTH_SHORT).show();
     }
 
     private void onNetworkError() {
         NavHostFragment.findNavController(getParentFragment().getParentFragment()).navigate(R.id.action_global_networkErrorDialog);
     }
 
-    private void onDup(){
+    private void onDup() {
         binding.buttonAddReview.setVisibility(View.GONE);
     }
 }

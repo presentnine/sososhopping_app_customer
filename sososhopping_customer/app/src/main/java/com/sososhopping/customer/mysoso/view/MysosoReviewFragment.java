@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
@@ -38,7 +39,9 @@ public class MysosoReviewFragment extends Fragment {
     private MysosoReviewAdapter mysosoReviewAdapter = new MysosoReviewAdapter();
     private MyReviewViewModel myReviewViewModel;
 
-    public static MysosoReviewFragment newInstance() {return new MysosoReviewFragment();}
+    public static MysosoReviewFragment newInstance() {
+        return new MysosoReviewFragment();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,22 +52,22 @@ public class MysosoReviewFragment extends Fragment {
 
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-        super.onCreateOptionsMenu(menu,inflater);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
         inflater.inflate(R.menu.menu_top_none, menu);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState){
+                             @Nullable Bundle savedInstanceState) {
         //binding 설정
-        binding = MysosoMyreviewBinding.inflate(inflater,container,false);
+        binding = MysosoMyreviewBinding.inflate(inflater, container, false);
         setupRecyclerView();
 
         //viewmodel 설정
         myReviewViewModel = new MyReviewViewModel();
-        myReviewViewModel.requestMyReview(((HomeActivity)getActivity()).getLoginToken(),
+        myReviewViewModel.requestMyReview(((HomeActivity) getActivity()).getLoginToken(),
                 this::onSuccess,
                 this::onFailedLogIn,
                 this::onFailed,
@@ -82,16 +85,15 @@ public class MysosoReviewFragment extends Fragment {
     }
 
 
-
     @Override
     public void onResume() {
         //상단바
-        ((HomeActivity)getActivity()).showTopAppBar();
-        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_myRating));
+        ((HomeActivity) getActivity()).showTopAppBar();
+        ((HomeActivity) getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_myRating));
 
-        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
+        ((HomeActivity) getActivity()).getBinding().topAppBar.setTitleCentered(true);
         //하단바
-        ((HomeActivity)getActivity()).showBottomNavigation();
+        ((HomeActivity) getActivity()).showBottomNavigation();
         super.onResume();
     }
 
@@ -101,41 +103,58 @@ public class MysosoReviewFragment extends Fragment {
         binding = null;
     }
 
-    public void onSuccess(MyReviewsDto dto){
-        if(dto != null){
-            mysosoReviewAdapter.setReviewModels(dto.getMyreviews());
-            mysosoReviewAdapter.notifyDataSetChanged();
+    public void onSuccess(MyReviewsDto dto) {
+        if (binding != null) {
+            if (dto != null) {
+                mysosoReviewAdapter.setReviewModels(dto.getMyreviews());
+                mysosoReviewAdapter.notifyDataSetChanged();
+            }
         }
     }
 
-    private void onFailedLogIn(){
-        NavHostFragment.findNavController(this)
-                .navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+    private void onFailedLogIn() {
+        if (binding != null) {
+            NavHostFragment.findNavController(this)
+                    .navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+        }
     }
 
     private void onFailed() {
-        Toast.makeText(getContext(),getResources().getString(R.string.mysoso_myRating_delte_error), Toast.LENGTH_LONG).show();
-    }
-
-    private void onNetworkError() {
-        NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
-        getActivity().onBackPressed();
-    }
-
-    public void onSuccess(int pos){
-        if(pos != RecyclerView.NO_POSITION){
-            mysosoReviewAdapter.getReviewModels().remove(pos);
-            mysosoReviewAdapter.notifyItemRemoved(pos);
-            Toast.makeText(getContext(),getResources().getString(R.string.mysoso_myRating_delte_success), Toast.LENGTH_LONG).show();
+        if (binding != null) {
+            Snackbar.make(((HomeActivity) getActivity()).getMainView(),
+                    getResources().getString(R.string.mysoso_myRating_delte_error), Snackbar.LENGTH_SHORT).show();
         }
     }
 
+    private void onNetworkError() {
+        if (binding != null) {
+            NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
+            getActivity().onBackPressed();
+
+        }
+    }
+
+    public void onSuccess(int pos) {
+        if (binding != null) {
+            if (pos != RecyclerView.NO_POSITION) {
+                mysosoReviewAdapter.getReviewModels().remove(pos);
+                mysosoReviewAdapter.notifyItemRemoved(pos);
+            }
+        }
+        Snackbar.make(((HomeActivity)getActivity()).getMainView()
+                , getResources().getString(R.string.mysoso_myRating_delte_success),Snackbar.LENGTH_SHORT).show();
+
+    }
+
     private void onFailedDelete() {
-        Toast.makeText(getContext(),getResources().getString(R.string.shop_error), Toast.LENGTH_LONG).show();
+        Snackbar.make(((HomeActivity)getActivity()).getMainView(), getResources().getString(R.string.shop_error),
+                Snackbar.LENGTH_SHORT).show();
     }
 
     private void onNetworkErrorDelete() {
-        NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
+        if(binding != null){
+            NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
+        }
     }
 
     private void setupRecyclerView() {
@@ -163,7 +182,7 @@ public class MysosoReviewFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 myReviewViewModel.deleteMyReview(
-                                        ((HomeActivity)getActivity()).getLoginToken(),
+                                        ((HomeActivity) getActivity()).getLoginToken(),
                                         mysosoReviewAdapter.getReviewModels().get(pos).getStoreId(),
                                         pos,
                                         MysosoReviewFragment.this::onSuccess,

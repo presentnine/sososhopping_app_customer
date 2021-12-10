@@ -16,6 +16,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.common.carousel.CarouselMethod;
@@ -83,29 +84,34 @@ public class ShopEventDetailFragment extends DialogFragment {
     }
 
     private void onSuccess(EventDetailModel eventDetailModel){
-        //setting Info
-        setShopInfo(eventDetailModel);
+        if(binding != null){
+            //setting Info
+            setShopInfo(eventDetailModel);
 
-        //이미지 세팅
-        if(eventDetailModel.getImgUrl() == null){
-            binding.viewpagerEventDetail.setVisibility(View.GONE);
-            binding.layoutIndicators.setVisibility(View.GONE);
-        }
-        else if(eventDetailModel.getImgUrl().size() <= 0){
-            binding.viewpagerEventDetail.setVisibility(View.GONE);
-            binding.layoutIndicators.setVisibility(View.GONE);
-        }else{
-            CarouselMethod carouselMethod = new CarouselMethod(binding.layoutIndicators, binding.viewpagerEventDetail, getContext());
-            carouselMethod.setCarousel(eventDetailModel.getImgUrl());
+            //이미지 세팅
+            if(eventDetailModel.getImgUrl() == null){
+                binding.viewpagerEventDetail.setVisibility(View.GONE);
+                binding.layoutIndicators.setVisibility(View.GONE);
+            }
+            else if(eventDetailModel.getImgUrl().size() <= 0){
+                binding.viewpagerEventDetail.setVisibility(View.GONE);
+                binding.layoutIndicators.setVisibility(View.GONE);
+            }else{
+                CarouselMethod carouselMethod = new CarouselMethod(binding.layoutIndicators, binding.viewpagerEventDetail, getContext());
+                carouselMethod.setCarousel(eventDetailModel.getImgUrl());
+            }
         }
     }
 
     private void onFailed() {
-        Toast.makeText(getContext(),getResources().getString(R.string.shop_error), Toast.LENGTH_LONG).show();
+        Snackbar.make(((HomeActivity)getActivity()).getMainView(),
+                getResources().getString(R.string.shop_error), Snackbar.LENGTH_SHORT).show();
     }
 
     private void onNetworkError() {
-        NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
+        Snackbar.make(((HomeActivity)getActivity()).getMainView(),
+                getResources().getString(R.string.shop_error), Snackbar.LENGTH_SHORT).show();
+        dismiss();
     }
 
 }

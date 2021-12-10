@@ -169,29 +169,37 @@ public class FindPasswordFragment extends Fragment {
     }
 
     public void onSuccessFound(){
-        binding.editTextFindPassName.setEnabled(false);
-        binding.editTextFindPassEmail.setEnabled(false);
-        binding.buttonInfoCheck.setEnabled(false);
+        if(binding != null){
+            binding.editTextFindPassName.setEnabled(false);
+            binding.editTextFindPassEmail.setEnabled(false);
+            binding.buttonInfoCheck.setEnabled(false);
 
-        binding.textFieldFindPassPassword.setEnabled(true);
-        binding.textFieldFindPassPasswordDup.setEnabled(true);
-        binding.buttonToMain.setEnabled(true);
-        binding.textViewInfoCheck.setText(getResources().getString(R.string.find_infoOk));
+            binding.textFieldFindPassPassword.setEnabled(true);
+            binding.textFieldFindPassPasswordDup.setEnabled(true);
+            binding.buttonToMain.setEnabled(true);
+            binding.textViewInfoCheck.setText(getResources().getString(R.string.find_infoOk));
+        }
     }
 
     public void onNotFound(){
-        binding.textViewInfoCheck.setText(getResources().getString(R.string.find_error));
+        if(binding != null){
+            binding.textViewInfoCheck.setText(getResources().getString(R.string.find_error));
+        }
     }
 
     public void onSuccessChange(){
-        Snackbar.make(binding.getRoot(), getResources().getString(R.string.find_change_success), Snackbar.LENGTH_SHORT).show();
-        getActivity().onBackPressed();
+        if(binding != null){
+            Snackbar.make(binding.getRoot(), getResources().getString(R.string.find_change_success), Snackbar.LENGTH_SHORT).show();
+            getActivity().onBackPressed();
+        }
     }
 
 
     public void onFailedChange(){
-        Snackbar.make(binding.getRoot(), getResources().getString(R.string.find_change_failed), Snackbar.LENGTH_SHORT).show();
-        getActivity().onBackPressed();
+        if(binding != null){
+            Snackbar.make(binding.getRoot(), getResources().getString(R.string.find_change_failed), Snackbar.LENGTH_SHORT).show();
+            getActivity().onBackPressed();
+        }
     }
 
     private void onNetworkError() {

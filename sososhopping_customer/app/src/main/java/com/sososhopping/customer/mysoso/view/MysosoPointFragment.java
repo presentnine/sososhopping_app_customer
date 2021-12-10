@@ -17,6 +17,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
@@ -34,7 +35,9 @@ public class MysosoPointFragment extends Fragment {
     private MysosoPointAdapter adapterFavorite = new MysosoPointAdapter();
     private MysosoPointAdapter adapterNotFavorite = new MysosoPointAdapter();
 
-    public static MysosoPointFragment newInstance() {return new MysosoPointFragment();}
+    public static MysosoPointFragment newInstance() {
+        return new MysosoPointFragment();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,21 +47,21 @@ public class MysosoPointFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-        super.onCreateOptionsMenu(menu,inflater);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
         inflater.inflate(R.menu.menu_top_none, menu);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState){
+                             @Nullable Bundle savedInstanceState) {
         //binding 설정
-        binding = MysosoPointBinding.inflate(inflater,container,false);
+        binding = MysosoPointBinding.inflate(inflater, container, false);
 
         //viewmodel 설정
         pointInfoViewModel = new PointInfoViewModel();
-        pointInfoViewModel.requestPointList(((HomeActivity)getActivity()).getLoginToken(),
+        pointInfoViewModel.requestPointList(((HomeActivity) getActivity()).getLoginToken(),
                 this::onSuccess,
                 this::onFailedLogIn,
                 this::onFailed,
@@ -143,11 +146,11 @@ public class MysosoPointFragment extends Fragment {
     @Override
     public void onResume() {
         //상단바
-        ((HomeActivity)getActivity()).showTopAppBar();
-        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_point));
-        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
+        ((HomeActivity) getActivity()).showTopAppBar();
+        ((HomeActivity) getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_point));
+        ((HomeActivity) getActivity()).getBinding().topAppBar.setTitleCentered(true);
         //하단바
-        ((HomeActivity)getActivity()).showBottomNavigation();
+        ((HomeActivity) getActivity()).showBottomNavigation();
         super.onResume();
     }
 
@@ -157,27 +160,36 @@ public class MysosoPointFragment extends Fragment {
         binding = null;
     }
 
-    public void onSuccess(PointListDto dto){
-        if(dto != null){
-            adapterFavorite.setItems(dto.getPointListFavorite());
-            adapterNotFavorite.setItems(dto.getPointListNotFavorite());
+    public void onSuccess(PointListDto dto) {
+        if (binding != null) {
+            if (dto != null) {
+                adapterFavorite.setItems(dto.getPointListFavorite());
+                adapterNotFavorite.setItems(dto.getPointListNotFavorite());
 
-            adapterFavorite.notifyDataSetChanged();
-            adapterNotFavorite.notifyDataSetChanged();
+                adapterFavorite.notifyDataSetChanged();
+                adapterNotFavorite.notifyDataSetChanged();
+            }
         }
     }
 
-    private void onFailedLogIn(){
-        NavHostFragment.findNavController(this)
-                .navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+    private void onFailedLogIn() {
+        if (binding != null) {
+            NavHostFragment.findNavController(this)
+                    .navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+
+        }
     }
 
     private void onFailed() {
-        Toast.makeText(getContext(),getResources().getString(R.string.shop_error), Toast.LENGTH_LONG).show();
+        if(binding != null){
+            Snackbar.make(((HomeActivity)getActivity()).getMainView(), getResources().getString(R.string.shop_error), Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     private void onNetworkError() {
-        NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
+        if(binding != null){
+            NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
+        }
     }
 
 }

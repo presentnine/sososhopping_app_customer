@@ -36,13 +36,15 @@ public class MysosoOrderDetailFragment extends Fragment {
     private NavController navController;
     private OrderDetailViewModel orderDetailViewModel;
 
-    public static MysosoOrderDetailFragment newInstance() {return new MysosoOrderDetailFragment();}
+    public static MysosoOrderDetailFragment newInstance() {
+        return new MysosoOrderDetailFragment();
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState){
+                             @Nullable Bundle savedInstanceState) {
         //binding 설정
-        binding = MysosoOrderDetailBinding.inflate(inflater, container,false);
+        binding = MysosoOrderDetailBinding.inflate(inflater, container, false);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         adapter = new MysosoOrderDetailAdapter();
         binding.recyclerView.setAdapter(adapter);
@@ -82,8 +84,8 @@ public class MysosoOrderDetailFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String phone = orderDetailViewModel.getOrderDetailDto().getValue().getStorePhone();
-                if(phone != null){
-                    startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+ phone)));
+                if (phone != null) {
+                    startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone)));
                 }
             }
         });
@@ -93,14 +95,13 @@ public class MysosoOrderDetailFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(!((HomeActivity)getActivity()).isFirebaseSetted()){
+                if (!((HomeActivity) getActivity()).isFirebaseSetted()) {
                     Snackbar.make(binding.getRoot(), "채팅 서버 인증 중입니다. 잠시만 기다려 주세요", Snackbar.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                     long storeId = orderDetailViewModel.getOrderDetailDto().getValue().getStoreId();
                     long ownerId = orderDetailViewModel.getOrderDetailDto().getValue().getOwnerId();
                     String storeName = orderDetailViewModel.getOrderDetailDto().getValue().getStoreName();
-                    String customerName = ((HomeActivity)getActivity()).getNickname();
+                    String customerName = ((HomeActivity) getActivity()).getNickname();
 
                     String chatroomId = ((HomeActivity) getActivity()).makeChatroom(Long.toString(storeId), Long.toString(ownerId), storeName, customerName);
 
@@ -115,10 +116,10 @@ public class MysosoOrderDetailFragment extends Fragment {
     @Override
     public void onResume() {
         //상단바
-        ((HomeActivity)getActivity()).showTopAppBar();
+        ((HomeActivity) getActivity()).showTopAppBar();
 
         //하단바
-        ((HomeActivity)getActivity()).hideBottomNavigation();
+        ((HomeActivity) getActivity()).hideBottomNavigation();
         super.onResume();
     }
 
@@ -128,87 +129,94 @@ public class MysosoOrderDetailFragment extends Fragment {
         binding = null;
     }
 
-    public void onSuccess(OrderDetailDto orderDetailDto){
-        //set
-        orderDetailViewModel.getOrderDetailDto().setValue(orderDetailDto);
+    public void onSuccess(OrderDetailDto orderDetailDto) {
+        if (binding != null) {
+            //set
+            orderDetailViewModel.getOrderDetailDto().setValue(orderDetailDto);
 
-        //제목
-        binding.textViewShopname.setText(orderDetailDto.getStoreName());
-        adapter.setItems(orderDetailDto.getOrderItems());
-        adapter.notifyDataSetChanged();
-        binding.textViewTotalItemPrice.setText(orderDetailDto.getOrderPrice()+"원");
+            //제목
+            binding.textViewShopname.setText(orderDetailDto.getStoreName());
+            adapter.setItems(orderDetailDto.getOrderItems());
+            adapter.notifyDataSetChanged();
+            binding.textViewTotalItemPrice.setText(orderDetailDto.getOrderPrice() + "원");
 
-        binding.textViewVisitName.setText(orderDetailDto.getOrdererName());
-        binding.textViewVisitPhone.setText(orderDetailDto.getOrdererPhone());
+            binding.textViewVisitName.setText(orderDetailDto.getOrdererName());
+            binding.textViewVisitPhone.setText(orderDetailDto.getOrdererPhone());
 
 
-        if(orderDetailDto.getOrderType().equals(OrderType.ONSITE)){
-            binding.textViewVisitOrDeliveryInfo.setText(getResources().getString(R.string.visit_info));
-            binding.textViewVisitDate.setText(DateFormatMethod.dateFormatToKorean(orderDetailDto.getVisitDate()));
-            binding.layoutAddress.setVisibility(View.GONE);
-            binding.layoutVisit.setVisibility(View.VISIBLE);
-        }else{
-            binding.textViewVisitOrDeliveryInfo.setText(getResources().getString(R.string.delivery_info));
-            binding.textViewDeliveryAddress.setText(
-                    orderDetailDto.getDeliveryStreetAddress() + " " + orderDetailDto.getDeliveryDetailedAddress()
-            );
+            if (orderDetailDto.getOrderType().equals(OrderType.ONSITE)) {
+                binding.textViewVisitOrDeliveryInfo.setText(getResources().getString(R.string.visit_info));
+                binding.textViewVisitDate.setText(DateFormatMethod.dateFormatToKorean(orderDetailDto.getVisitDate()));
+                binding.layoutAddress.setVisibility(View.GONE);
+                binding.layoutVisit.setVisibility(View.VISIBLE);
+            } else {
+                binding.textViewVisitOrDeliveryInfo.setText(getResources().getString(R.string.delivery_info));
+                binding.textViewDeliveryAddress.setText(
+                        orderDetailDto.getDeliveryStreetAddress() + " " + orderDetailDto.getDeliveryDetailedAddress()
+                );
 
-            binding.layoutAddress.setVisibility(View.VISIBLE);
-            binding.layoutVisit.setVisibility(View.GONE);
-        }
+                binding.layoutAddress.setVisibility(View.VISIBLE);
+                binding.layoutVisit.setVisibility(View.GONE);
+            }
 
-        binding.textViewPurchaseType.setText(orderDetailDto.getPaymentType().getValue());
-        binding.textViewPurchaseDate.setText(DateFormatMethod.dateFormatToKorean(orderDetailDto.getCreatedAt()));
+            binding.textViewPurchaseType.setText(orderDetailDto.getPaymentType().getValue());
+            binding.textViewPurchaseDate.setText(DateFormatMethod.dateFormatToKorean(orderDetailDto.getCreatedAt()));
 
-        //금액
-        binding.textViewTotalPayTotalPrice.setText(orderDetailDto.getOrderPrice()+"원");
-        binding.textViewTotalPayPoint.setText(orderDetailDto.getUsedPoint()+"원");
-        binding.textViewTotalPayCoupon.setText(orderDetailDto.getCouponDiscountPrice()+"원");
-        binding.textViewTotalPayDelivery.setText(orderDetailDto.getDeliveryCharge()+"원");
-        binding.textviewTotalPrice.setText(orderDetailDto.getFinalPrice()+"원");
+            //금액
+            binding.textViewTotalPayTotalPrice.setText(orderDetailDto.getOrderPrice() + "원");
+            binding.textViewTotalPayPoint.setText(orderDetailDto.getUsedPoint() + "원");
+            binding.textViewTotalPayCoupon.setText(orderDetailDto.getCouponDiscountPrice() + "원");
+            binding.textViewTotalPayDelivery.setText(orderDetailDto.getDeliveryCharge() + "원");
+            binding.textviewTotalPrice.setText(orderDetailDto.getFinalPrice() + "원");
 
-        //최종상태
-        binding.buttonFinalPurchase.setText(orderDetailDto.getOrderStatus().getValue());
+            //최종상태
+            binding.buttonFinalPurchase.setText(orderDetailDto.getOrderStatus().getValue());
 
-        //주문취소
-        if(orderDetailDto.getOrderStatus() != OrderStatus.PENDING){
-            binding.buttonFinalPurchaseCancel.setVisibility(View.GONE);
-        }
-        else{
-            binding.buttonFinalPurchaseCancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    orderDetailViewModel.requestMyOrderCancel(
-                            ((HomeActivity)getActivity()).getLoginToken(),
-                            orderDetailDto.getOrderId(),
-                            MysosoOrderDetailFragment.this::onSuccessCancel,
-                            MysosoOrderDetailFragment.this::onFailedCancel,
-                            MysosoOrderDetailFragment.this::onNetworkError
-                    );
-                }
-            });
+            //주문취소
+            if (orderDetailDto.getOrderStatus() != OrderStatus.PENDING) {
+                binding.buttonFinalPurchaseCancel.setVisibility(View.GONE);
+            } else {
+                binding.buttonFinalPurchaseCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        orderDetailViewModel.requestMyOrderCancel(
+                                ((HomeActivity) getActivity()).getLoginToken(),
+                                orderDetailDto.getOrderId(),
+                                MysosoOrderDetailFragment.this::onSuccessCancel,
+                                MysosoOrderDetailFragment.this::onFailedCancel,
+                                MysosoOrderDetailFragment.this::onNetworkError
+                        );
+                    }
+                });
+            }
         }
     }
 
-    private void onSuccessCancel(){
-        Snackbar.make(binding.getRoot(),getResources().getString(R.string.order_cancel_success), Snackbar.LENGTH_SHORT).show();
+    private void onSuccessCancel() {
+        Snackbar.make(((HomeActivity) getActivity()).getMainView(), getResources().getString(R.string.order_cancel_success), Snackbar.LENGTH_SHORT).show();
         getActivity().onBackPressed();
     }
 
-    private void onFailedCancel(){
-        Snackbar.make(binding.getRoot(),getResources().getString(R.string.order_cancel_failed), Snackbar.LENGTH_SHORT).show();
+    private void onFailedCancel() {
+        Snackbar.make(((HomeActivity) getActivity()).getMainView(), getResources().getString(R.string.order_cancel_failed), Snackbar.LENGTH_SHORT).show();
         navController.navigate(MysosoOrderDetailFragmentDirections.actionMysosoOrderDetailFragmentSelf(
                 orderDetailViewModel.getOrderDetailDto().getValue().getOrderId()
         ));
     }
 
     private void onFailed() {
-        Snackbar.make(binding.getRoot(),getResources().getString(R.string.shop_error), Snackbar.LENGTH_SHORT).show();
-        getActivity().onBackPressed();
+        if (binding != null) {
+            Snackbar.make(((HomeActivity) getActivity()).getMainView(), getResources().getString(R.string.shop_error), Snackbar.LENGTH_SHORT).show();
+            getActivity().onBackPressed();
+
+        }
     }
 
     private void onNetworkError() {
-        NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
-        getActivity().onBackPressed();
+        if (binding != null) {
+            NavHostFragment.findNavController(this).navigate(R.id.action_global_networkErrorDialog);
+            getActivity().onBackPressed();
+
+        }
     }
 }
