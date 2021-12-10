@@ -123,10 +123,7 @@ public class CartMainFragment extends Fragment {
     public void onResume() {
         //상단바
         ((HomeActivity)getActivity()).showTopAppBar();
-        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitle(getResources().getString(R.string.mysoso_shoppingBag));
-        ((HomeActivity)getActivity()).getBinding().topAppBar.setTitleCentered(true);
-        ((HomeActivity)getActivity()).getBinding().topAppBar.setOnClickListener(null);
-        ((HomeActivity)getActivity()).setTopAppBarNotHome(false);
+        ((HomeActivity)getActivity()).setTopAppBarHome("장바구니");
 
         cartViewModel.requestMyCart(((HomeActivity)getActivity()).getLoginToken(),
                 this::onSuccess,
@@ -134,6 +131,7 @@ public class CartMainFragment extends Fragment {
                 this::onNetworkError);
 
         //하단바
+        ((HomeActivity)getActivity()).showBottomNavigation();
         super.onResume();
     }
 

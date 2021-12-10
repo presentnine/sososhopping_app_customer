@@ -92,16 +92,22 @@ public class MysosoOrderDetailFragment extends Fragment {
         binding.buttonShopChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                long storeId = orderDetailViewModel.getOrderDetailDto().getValue().getStoreId();
-                long ownerId = orderDetailViewModel.getOrderDetailDto().getValue().getOwnerId();
-                String storeName = orderDetailViewModel.getOrderDetailDto().getValue().getStoreName();
-                String customerName = "";
 
-                String chatroomId = ((HomeActivity) getActivity()).makeChatroom(Long.toString(storeId), Long.toString(ownerId), storeName, customerName);
+                if(!((HomeActivity)getActivity()).isFirebaseSetted()){
+                    Snackbar.make(binding.getRoot(), "채팅 서버 인증 중입니다. 잠시만 기다려 주세요", Snackbar.LENGTH_SHORT).show();
+                }
+                else{
+                    long storeId = orderDetailViewModel.getOrderDetailDto().getValue().getStoreId();
+                    long ownerId = orderDetailViewModel.getOrderDetailDto().getValue().getOwnerId();
+                    String storeName = orderDetailViewModel.getOrderDetailDto().getValue().getStoreName();
+                    String customerName = ((HomeActivity)getActivity()).getNickname();
 
-                navController
-                        .navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
-                        .setChatroomId(chatroomId));
+                    String chatroomId = ((HomeActivity) getActivity()).makeChatroom(Long.toString(storeId), Long.toString(ownerId), storeName, customerName);
+
+                    navController
+                            .navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
+                                    .setChatroomId(chatroomId));
+                }
             }
         });
     }

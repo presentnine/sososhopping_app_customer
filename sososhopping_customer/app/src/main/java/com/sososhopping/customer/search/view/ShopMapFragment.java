@@ -29,6 +29,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -57,11 +58,16 @@ import com.sososhopping.customer.common.types.Location;
 import com.sososhopping.customer.databinding.SearchShopMapBinding;
 import com.sososhopping.customer.search.HomeViewModel;
 import com.sososhopping.customer.search.dto.PageableShopListDto;
+import com.sososhopping.customer.search.dto.ShopListDto;
 import com.sososhopping.customer.search.model.ShopInfoShortModel;
 import com.sososhopping.customer.shop.view.ShopMainFragment;
 
 import java.util.ArrayList;
 import java.util.concurrent.Executor;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
     private NavController navController;
@@ -92,6 +98,7 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
 
         FragmentManager fm = getChildFragmentManager();
         mapFragment = (MapFragment)fm.findFragmentById(R.id.map);
+
 
         if (mapFragment == null) {
             mapFragment = MapFragment.newInstance();
@@ -156,6 +163,9 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
                             ShopMapFragment.this::onSearchSuccess,
                             ShopMapFragment.this::onNetworkError);
                 }
+                else {
+                    Snackbar.make(view, "전부 검색 완료하였습니다.", Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -197,12 +207,12 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
                         location.getLat(),
                         location.getLng()
                 );
-
                 //좌표설정
                 naverMap.moveCamera(CameraUpdate.scrollTo(currentLocation));
                 naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
             }
         });
+
 
         //줌 + 한국으로 제한
         naverMap.setMinZoom(5.0);
@@ -234,7 +244,6 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
         }
         naverMap.moveCamera(CameraUpdate.zoomTo(16));
 
-        //TODO: 클릭시 INFO 추가
         naverMap.setOnMapClickListener(new NaverMap.OnMapClickListener() {
             @Override
             public void onMapClick(@NonNull PointF pointF, @NonNull LatLng latLng) {
@@ -272,6 +281,7 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
             markers.get(0).setMap(null);
             markers.remove(0);
         }
+
         addMarkersPage(naverMap,0);
     }
 
@@ -302,28 +312,42 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void createMarkers(int startIdx){
-        for(int i= startIdx; i<homeViewModel.getShopList().getValue().size(); i++){
-            ShopInfoShortModel s = homeViewModel.getShopList().getValue().get(i);
+        InfoWindow infoWindow = new InfoWindow();
+        infoWindow.setAdapter(new InfoWindow.DefaultTextAdapter(getContext()) {
+            @NonNull
+            @Override
+            public CharSequence getText(@NonNull InfoWindow infoWindow) {
+                return ((CustomTag)infoWindow.getMarker().getTag()).getName();
+            }
+        });
 
-            Marker m = new Marker();
-            m.setPosition(new LatLng(s.getLocation().getLat(), s.getLocation().getLng()));
-            m.setIcon(MarkerIcons.GREEN);
-            m.setWidth(72);
-            m.setHeight(108);
-            m.setTag(i);
+        ArrayList<ShopInfoShortModel> models = homeViewModel.getShopList().getValue();
+        if(models != null){
+            for(int i= startIdx; i<models.size(); i++){
+                ShopInfoShortModel s = models.get(i);
 
-            m.setOnClickListener(new Overlay.OnClickListener() {
-                @Override
-                public boolean onClick(@NonNull Overlay overlay) {
-                    Marker marker = (Marker) overlay;
-                    focusedShop.postValue(homeViewModel.getShopList().getValue().get((Integer)marker.getTag()));
-                    return true;
-                }
-            });
-            markers.add(m);
+                Marker m = new Marker();
+                m.setPosition(new LatLng(s.getLocation().getLat(), s.getLocation().getLng()));
+                m.setIcon(MarkerIcons.GREEN);
+                m.setWidth(72);
+                m.setHeight(108);
+                m.setTag(new CustomTag(i, s.getName()));
+
+                m.setOnClickListener(new Overlay.OnClickListener() {
+                    @Override
+                    public boolean onClick(@NonNull Overlay overlay) {
+                        Marker marker = (Marker) overlay;
+                        int idx = ((CustomTag)marker.getTag()).getIdx();
+                        focusedShop.postValue(models.get(idx));
+                        infoWindow.open(marker);
+                        return true;
+                    }
+                });
+                markers.add(m);
+            }
         }
-    }
 
+    }
 
     public void bindShopItem(ShopInfoShortModel s){
         binding.itemSearchMap.textViewShopName.setText(s.getName());
@@ -366,23 +390,26 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
         binding.itemSearchMap.buttonShopChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //채팅
-                long storeId = s.getStoreId();
-                long ownerId = s.getOwnerId();
-                String storeName = s.getName();
-                String customerName = "";
+                if(((HomeActivity)getActivity()).getLoginToken() == null){
+                    Snackbar.make(binding.getRoot(), "로그인 후에 이용해 주시기 바랍니다.", Snackbar.LENGTH_SHORT).show();
+                }
+                else if(!((HomeActivity)getActivity()).isFirebaseSetted()){
+                    Snackbar.make(binding.getRoot(), "채팅 서버 인증 중입니다. 잠시만 기다려 주세요", Snackbar.LENGTH_SHORT).show();
+                }
+                else{
+                    //채팅
+                    long storeId = s.getStoreId();
+                    long ownerId = s.getOwnerId();
+                    String storeName = s.getName();
+                    String customerName = ((HomeActivity)getActivity()).getNickname();
 
-                String chatroomId = ((HomeActivity) getActivity()).makeChatroom(Long.toString(storeId), Long.toString(ownerId), storeName, customerName);
+                    String chatroomId = ((HomeActivity) getActivity()).makeChatroom(Long.toString(storeId), Long.toString(ownerId), storeName, customerName);
 
-                //이동할때 bundle 말고 이렇게 보내면
-                navController.navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
-                .setChatroomId(chatroomId));
+                    //이동할때 bundle 말고 이렇게 보내면
+                    navController.navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
+                            .setChatroomId(chatroomId));
+                }
 
-                /***
-                 * 받을때 이렇게 받아서 쓸 수 있음
-                 ConversationFragmentArgs.fromBundle(getArguments()).getOwnerId();
-                 ConversationFragmentArgs.fromBundle(getArguments()).getStoreName();
-                 * */
             }
         });
 
@@ -452,4 +479,13 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
     private void onNetworkError(){
         Snackbar.make(binding.getRoot(), "상점 정보를 더 불러오는데 실패했습니다", Snackbar.LENGTH_SHORT).show();
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    class CustomTag{
+        int idx;
+        String name;
+    }
+
 }

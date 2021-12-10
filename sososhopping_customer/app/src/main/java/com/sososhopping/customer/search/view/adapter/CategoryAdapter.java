@@ -18,8 +18,7 @@ import java.util.ArrayList;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
 
-    ArrayList<CategoryType> categoryName = new ArrayList<>();
-    ArrayList<Integer> categoryIcon = new ArrayList<>();
+    CategoryType[] category = CategoryType.values();
     private OnItemClickListener itemClickListener;
     ItemHomeCategoryBinding binding;
 
@@ -34,21 +33,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-        holder.bindItem(categoryName.get(position).getValue(), categoryIcon.get(position));
-    }
-
-    public void setCategory(ArrayList<CategoryType> name, ArrayList<Integer> iconId){
-        this.categoryName = name;
-        this.categoryIcon = iconId;
+        holder.bindItem(category[position]);
     }
 
     @Override
     public int getItemCount() {
-        return categoryName.size();
+        return category.length;
     }
 
     public String getCategoryName(int position){
-        return categoryName.get(position).toString();
+        return category[position].toString();
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
@@ -81,9 +75,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             });
         }
 
-        public void bindItem(String text, int icon){
-            binding.textViewCategory.setText(text);
-            binding.imageButtonCategory.setImageResource(icon);
+        public void bindItem(CategoryType categoryType){
+            binding.textViewCategory.setText(categoryType.getValue());
+            binding.imageButtonCategory.setImageResource(categoryType.getIconId());
         }
     }
 }

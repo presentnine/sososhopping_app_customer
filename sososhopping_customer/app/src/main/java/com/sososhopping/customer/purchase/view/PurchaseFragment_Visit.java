@@ -13,10 +13,15 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
+import androidx.navigation.NavController;
 
 import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
+import com.sososhopping.customer.common.NetworkStatus;
 import com.sososhopping.customer.common.textValidate.NameWatcher;
 import com.sososhopping.customer.common.textValidate.PhoneWatcher;
 import com.sososhopping.customer.purchase.viewmodel.PurchaseViewModel;
@@ -223,6 +228,7 @@ public class PurchaseFragment_Visit {
     }
 
     protected void setDeliveryLayout(Resources rs){
+
         //배달예약 입력 검증
         binding.includeLayoutVisit.editTextDeliveryName.addTextChangedListener(
                 new NameWatcher(binding.includeLayoutVisit.textFieldDeliveryName, rs.getString(R.string.signup_error_name))

@@ -144,7 +144,9 @@ public class ShopListFragment extends Fragment {
     public void onResume() {
         ((HomeActivity)getActivity()).showTopAppBar();
         setAppBar(homeViewModel);
+
         ((HomeActivity)getActivity()).showBottomNavigation();
+        ((HomeActivity)getActivity()).getBinding().bottomNavigation.getMenu().findItem(R.id.menu_home).setChecked(true);
         super.onResume();
     }
 
