@@ -11,13 +11,16 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
+import com.sososhopping.customer.common.NetworkStatus;
 import com.sososhopping.customer.common.textValidate.NameWatcher;
 import com.sososhopping.customer.common.textValidate.NickNameWatcher;
 import com.sososhopping.customer.common.textValidate.PasswordDupWatcher;
@@ -69,6 +72,13 @@ public class MysosoMyInfoFragment extends Fragment {
 
         //Controller 설정
         navController = Navigation.findNavController(view);
+        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("roadAddress")
+                .observe(this, new Observer<Object>() {
+                    @Override
+                    public void onChanged(Object o) {
+                        binding.editTextRoadAddress.setText((CharSequence) o);
+                    }
+                });
 
         binding.buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -285,7 +295,20 @@ public class MysosoMyInfoFragment extends Fragment {
         binding.textFieldName.setEnabled(state);
         binding.textFieldPhone.setEnabled(state);
         binding.textFieldNickname.setEnabled(state);
+
         binding.textFieldRoadAddress.setEnabled(state);
+        binding.editTextRoadAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int status = NetworkStatus.getConnectivityStatus(getContext());
+                if(status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI) {
+                    navController.navigate(NavGraphDirections.actionGlobalRoadAddressSearchDialog());
+                }else {
+                    Snackbar.make(binding.getRoot(), "인터넷 연결을 확인해주세요.", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         binding.textFieldDetailAddress.setEnabled(state);
         binding.textFieldPassword.setEnabled(state);
         binding.textFieldPasswordDup.setEnabled(state);

@@ -28,7 +28,6 @@
             android:padding="10dp"
             app:cardBackgroundColor="#D9FFFFFF"
             app:cardCornerRadius="15dp"
-            app:cardElevation="10dp"
             app:rippleColor="@color/white">
 
             <TextView
@@ -47,7 +46,6 @@
             android:clickable="true"
             app:cardBackgroundColor="#D9FFFFFF"
             app:cardCornerRadius="27.5dp"
-            app:cardElevation="10dp"
             app:rippleColor="@color/white">
 
             <ImageView

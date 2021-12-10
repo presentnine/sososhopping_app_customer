@@ -1,5 +1,6 @@
 package com.sososhopping.customer.shop.viewmodel;
 
+import com.sososhopping.customer.search.model.ShopInfoShortModel;
 import com.sososhopping.customer.shop.model.ShopIntroduceModel;
 import com.sososhopping.customer.shop.repository.ShopRepository;
 
@@ -108,5 +109,25 @@ public class ShopIntroduceViewModel {
 
     public int getStoreId() {
         return storeId;
+    }
+
+    public ShopInfoShortModel toShort(ShopIntroduceModel s, float distance){
+        return new ShopInfoShortModel(
+                s.getStoreId(),
+                s.getOwnerId(),
+                s.getStoreType(),
+                s.getName(),
+                s.getDescription(),
+                s.getPhone(),
+                s.getImgUrl(),
+                s.isBusinessStatus(),
+                s.isLocalCurrencyStatus(),
+                s.isPickupStatus(),
+                s.isDeliveryStatus(),
+                s.getLocation(),
+                distance,
+                s.getScore(),
+                s.isInterestStore()
+        );
     }
 }

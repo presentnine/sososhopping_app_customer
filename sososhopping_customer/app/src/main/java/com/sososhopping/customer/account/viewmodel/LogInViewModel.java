@@ -25,4 +25,5 @@ public class LogInViewModel {
                           Runnable onFailed){
         loginRepository.autoLogin(new LogInRequestDto(id, password),onSuccess, onFailed);
     }
+
 }

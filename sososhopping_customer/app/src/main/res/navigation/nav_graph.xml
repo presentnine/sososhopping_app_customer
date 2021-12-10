@@ -18,10 +18,8 @@
             android:id="@+id/action_home2_to_shopMapFragment"
             app:destination="@id/shopMapFragment" />
         <action
-            android:id="@+id/action_home2_to_shop_graph"
-            app:destination="@id/shop_graph"
-            app:popUpTo="@id/home2"
-            app:popUpToInclusive="false"/>
+            android:id="@+id/action_home2_to_searchDialogFragment2"
+            app:destination="@id/searchDialogFragment" />
     </fragment>
 
     <fragment
@@ -85,7 +83,7 @@
         <action
             android:id="@+id/action_shopMapFragment_to_shopListFragment"
             app:destination="@id/shopListFragment"
-            app:popUpTo="@id/shopListFragment"
+            app:popUpTo="@id/shopMapFragment"
             app:popUpToInclusive="true" />
     </fragment>
 
@@ -97,13 +95,13 @@
         <action
             android:id="@+id/action_searchDialogFragment_to_shopListFragment"
             app:destination="@id/shopListFragment"
-            app:popUpTo="@id/shopListFragment"
+            app:popUpTo="@id/searchDialogFragment"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_searchDialogFragment_to_shopMapFragment"
             app:destination="@id/shopMapFragment"
             app:launchSingleTop="false"
-            app:popUpTo="@id/shopMapFragment"
+            app:popUpTo="@id/searchDialogFragment"
             app:popUpToInclusive="true" />
         <argument
             android:name="navigateFrom"
@@ -210,10 +208,8 @@
             android:name="storeId"
             app:argType="integer" />
         <action
-            android:id="@+id/action_mysosoPointDetailFragment_to_shopMapFragment"
-            app:destination="@id/shopMapFragment"
-            app:popUpTo="@id/home2"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_mysosoPointDetailFragment_to_shop_graph"
+            app:destination="@id/shop_graph" />
     </fragment>
     <fragment
         android:id="@+id/mysosoReviewFragment"
@@ -353,8 +349,15 @@
             app:argType="string"
             android:defaultValue="" />
     </fragment>
+
+    <dialog
+        android:id="@+id/roadAddressSearchDialog"
+        android:name="com.sososhopping.customer.mysoso.view.RoadAddressSearchDialog"
+        android:label="RoadAddressSearchDialog"
+        tools:layout="@layout/roadaddress_web_dialog"/>
+
     <action
         android:id="@+id/action_global_conversationFragment"
-        app:destination="@id/conversationFragment" />
+        app:destination="@id/conversationFragment" /><action android:id="@+id/action_global_roadAddressSearchDialog" app:destination="@id/roadAddressSearchDialog"/>
 
 </navigation>

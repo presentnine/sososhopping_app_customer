@@ -23,6 +23,7 @@ import androidx.navigation.Navigation;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
@@ -193,19 +194,27 @@ public class ShopMainFragment extends Fragment {
 
                     //TODO : 채팅방 생성 (상단바) -> 고객 닉네임 필요
                     case R.id.menu_chat:{
-                        if(shopInfoViewModel.getShopId().getValue() != null
-                                && shopInfoViewModel.getOwnerId().getValue() != null
-                                && shopInfoViewModel.getShopName().getValue() != null){
 
-                            long storeId = shopInfoViewModel.getShopId().getValue();
-                            long ownerId = shopInfoViewModel.getOwnerId().getValue();
-                            String storeName = shopInfoViewModel.getShopName().getValue();
-                            String customerName = "";
+                        if(((HomeActivity)getActivity()).getLoginToken() == null){
+                            Snackbar.make(binding.getRoot(), "로그인 후에 이용해 주시기 바랍니다.", Snackbar.LENGTH_SHORT).show();
+                        }
+                        else if(!((HomeActivity)getActivity()).isFirebaseSetted()){
+                            Snackbar.make(binding.getRoot(), "채팅 서버 인증 중입니다. 잠시만 기다려 주세요", Snackbar.LENGTH_SHORT).show();
+                        }
+                        else{
+                            if(shopInfoViewModel.getShopId().getValue() != null
+                                    && shopInfoViewModel.getOwnerId().getValue() != null
+                                    && shopInfoViewModel.getShopName().getValue() != null){
 
-                            String chatroomId = ((HomeActivity) getActivity()).makeChatroom(Long.toString(storeId), Long.toString(ownerId), storeName, customerName);
+                                long storeId = shopInfoViewModel.getShopId().getValue();
+                                long ownerId = shopInfoViewModel.getOwnerId().getValue();
+                                String storeName = shopInfoViewModel.getShopName().getValue();
+                                String customerName = ((HomeActivity)getActivity()).getNickname();
+                                String chatroomId = ((HomeActivity) getActivity()).makeChatroom(Long.toString(storeId), Long.toString(ownerId), storeName, customerName);
 
-                            navController.navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
-                            .setChatroomId(chatroomId));
+                                navController.navigate(NavGraphDirections.actionGlobalConversationFragment(storeName)
+                                        .setChatroomId(chatroomId));
+                            }
                         }
                         break;
                     }
