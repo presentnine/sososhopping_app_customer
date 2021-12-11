@@ -110,10 +110,10 @@ public class ShopReviewRepository {
                 switch (response.code()) {
                     case 200:
                         //작성 성공
-                    case 201:{
+                    case 201:
                         onSuccess.run();
                         break;
-                    }
+
 
                     //내용 오류
                     case 400:
@@ -160,6 +160,34 @@ public class ShopReviewRepository {
                         break;
 
                     case 404:
+                        onFailed.run();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                onError.run();
+            }
+        });
+    }
+
+    public void deleteMyReview(String token,
+                               int storeId,
+                               Runnable onSuccess,
+                               Runnable onFailed,
+                               Runnable onError){
+        shopService.deleteMyReview(token, storeId).enqueue(new Callback<Void>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                switch (response.code()) {
+                    case 200: {
+                        onSuccess.run();
+                        break;
+                    }
+                    case 404:
+                    default:
                         onFailed.run();
                         break;
                 }

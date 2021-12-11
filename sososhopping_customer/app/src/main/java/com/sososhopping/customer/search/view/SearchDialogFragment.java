@@ -26,6 +26,7 @@ import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.R;
+import com.sososhopping.customer.common.types.Location;
 import com.sososhopping.customer.common.types.enumType.AskType;
 import com.sososhopping.customer.common.types.enumType.CategoryType;
 import com.sososhopping.customer.common.types.enumType.SearchType;
@@ -107,7 +108,6 @@ public class SearchDialogFragment extends DialogFragment {
 
                 //검색모드
                 homeViewModel.setSearchContent(binding.editTextSearch.getText().toString());
-                homeViewModel.setSearchType(isChecked);
 
                 //offset 초기화
                 homeViewModel.resetPage();
@@ -137,6 +137,7 @@ public class SearchDialogFragment extends DialogFragment {
             binding.textViewItem.setTextColor(getResources().getColor(R.color.text_0));
             binding.textViewShop.setTextColor(getResources().getColor(R.color.text_400));
         }
+        homeViewModel.setSearchType(isChecked);
     }
 
     public void createChips(){
@@ -176,6 +177,7 @@ public class SearchDialogFragment extends DialogFragment {
     }
 
     private void onSearchSuccessedPage(PageableShopListDto success, Integer navigate){
+        Log.e("성공여부", success.getNumberOfElements()+"");
         homeViewModel.getShopList().setValue(success.getContent());
         homeViewModel.setOffset(success.getPageable().getOffset() + success.getNumberOfElements());
 

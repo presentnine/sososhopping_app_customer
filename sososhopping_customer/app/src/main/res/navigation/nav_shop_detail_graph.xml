@@ -82,6 +82,11 @@
         <action
             android:id="@+id/action_shopReviewFragment_to_shopReviewAddDialogFragment"
             app:destination="@id/shopReviewAddDialogFragment" />
+        <action
+            android:id="@+id/action_shopReviewFragment_self"
+            app:destination="@id/shopReviewFragment"
+            app:popUpTo="@id/shopReviewFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <dialog
         android:id="@+id/shopReviewAddDialogFragment"
@@ -91,6 +96,9 @@
         <argument
             android:name="storeId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_shopReviewAddDialogFragment_to_shopReviewFragment"
+            app:destination="@id/shopReviewFragment" />
     </dialog>
 
 </navigation>

@@ -30,7 +30,7 @@ public class FindEmailFragment extends Fragment {
     private NavController navController;
     private AccountFindEmailBinding binding;
     private Boolean phoneChecked = false;
-    private FindEmailViewModel findEmailViewModel = new FindEmailViewModel();
+    private final FindEmailViewModel findEmailViewModel = new FindEmailViewModel();
 
     public static FindEmailFragment newInstance() {
         return new FindEmailFragment();

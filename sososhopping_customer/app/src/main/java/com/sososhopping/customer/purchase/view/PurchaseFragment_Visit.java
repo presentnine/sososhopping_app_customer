@@ -131,7 +131,7 @@ public class PurchaseFragment_Visit {
                             binding.includeLayoutVisit.layoutDelivery.setVisibility(View.VISIBLE);
 
                             //배달비 추가
-                            purchaseViewModel.getDeliveryPrice().setValue(2500);
+                            purchaseViewModel.getDeliveryPrice().setValue(purchaseViewModel.getDeliveryPrice().getValue());
                             purchaseViewModel.setOrderType(OrderType.DELIVERY);
                         }
                         break;

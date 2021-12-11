@@ -29,7 +29,7 @@ import java.util.Arrays;
 public class HomeFragment extends Fragment {
 
     private NavController navController;
-    private CategoryAdapter categoryAdapter = new CategoryAdapter();
+    private final CategoryAdapter categoryAdapter = new CategoryAdapter();
     private HomeViewModel homeViewModel;
     HomeBinding binding;
 

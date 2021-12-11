@@ -252,6 +252,9 @@ public class HomeActivity extends AppCompatActivity {
         else if (start == R.id.conversationFragment) {
             binding.bottomNavigation.setSelectedItemId(R.id.menu_chat);
         }
+        else if (start == R.id.shopListFragment){
+            binding.bottomNavigation.setSelectedItemId(R.id.menu_home);
+        }
         else if (navHostFragment.getChildFragmentManager().getBackStackEntryCount() < 1) {
             binding.bottomNavigation.setSelectedItemId(R.id.menu_home);
         }
@@ -272,6 +275,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void onLoginFailed() {
+        SharedPreferenceManager.deleteString(getApplicationContext(), Constant.SHARED_PREFERENCE_KEY_ID);
+        SharedPreferenceManager.deleteString(getApplicationContext(), Constant.SHARED_PREFERENCE_KEY_PASSWORD);
     }
 
 
@@ -364,10 +369,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public boolean isFirebaseSetted() {
-        if (user == null) {
-            return false;
-        }
-        return true;
+        return user != null;
     }
 
     //앱이 다시 켜지면 firebase 재인증

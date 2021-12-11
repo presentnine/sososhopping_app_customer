@@ -43,7 +43,6 @@ public class MysosoCouponAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        Log.d("checkLog", viewType + " ");
 
         switch (viewType){
             case HEADER:{
@@ -61,8 +60,6 @@ public class MysosoCouponAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
         final ExpandableCouponData item = items.get(position);
-        Log.d("checkLog", item.getDataType() + " " + position);
-
         switch (item.getDataType()){
             case HEADER:{
                  ((HeaderViewHolder) holder).bindItem(items.get(position), position);
@@ -207,12 +204,7 @@ public class MysosoCouponAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             binding.textViewCouponName.setText(couponModel.getCouponName());
 
             //제한조건
-            if(couponModel.getMinimumOrderPrice() != 0){
-                binding.textViewMinimum.setText(Integer.toString(couponModel.getMinimumOrderPrice()));
-            }
-            else{
-                binding.linerlayoutMinimum.setVisibility(View.GONE);
-            }
+            binding.textViewMinimum.setText(Integer.toString(couponModel.getMinimumOrderPrice()));
 
             if(couponModel.getExpiryDate() != null){
                 binding.textViewCouponExpire.setText("저장 후 "+DateFormatMethod.dateFormatDay(couponModel.getExpiryDate())+"까지 사용가능");

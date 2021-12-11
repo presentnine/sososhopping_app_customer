@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="icon_map">icon_app_map</string>
     <string name="icon_map_explain">지도</string>
     <string name="icon_list">목록</string>
 

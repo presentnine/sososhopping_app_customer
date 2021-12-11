@@ -23,6 +23,7 @@ import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.account.viewmodel.SignUpViewModel;
 import com.sososhopping.customer.common.NetworkStatus;
+import com.sososhopping.customer.common.textValidate.AddressWatcher;
 import com.sososhopping.customer.common.textValidate.NameWatcher;
 import com.sososhopping.customer.common.textValidate.NickNameWatcher;
 import com.sososhopping.customer.common.textValidate.PhoneWatcher;
@@ -64,6 +65,12 @@ public class SignUpInfoFragment extends Fragment {
         binding.textFieldSignUpNickname.getEditText()
                 .addTextChangedListener(new NickNameWatcher(binding.textFieldSignUpNickname,
                         binding.textViewDupChecked, getResources().getString(R.string.signup_error_nickname)));
+
+        //주소 검증
+        binding.textFieldSignUpRoadAddress.getEditText().addTextChangedListener(new AddressWatcher(binding.textFieldSignUpRoadAddress,
+                getResources().getString(R.string.signup_error_roadAddress)));
+        binding.textFieldSignUpDetailAddress.getEditText().addTextChangedListener(new AddressWatcher(binding.textFieldSignUpDetailAddress,
+                getResources().getString(R.string.signup_error_detailAddress)));
 
         binding.textViewDupChecked.setVisibility(View.INVISIBLE);
         binding.textViewPhoneCheck.setVisibility(View.INVISIBLE);

@@ -6,7 +6,7 @@ import com.sososhopping.customer.mysoso.repository.MysosoMyReviewsRepository;
 import java.util.function.Consumer;
 
 public class MyReviewViewModel {
-    private MysosoMyReviewsRepository myReviewsRepository = MysosoMyReviewsRepository.getInstance();
+    private final MysosoMyReviewsRepository myReviewsRepository = MysosoMyReviewsRepository.getInstance();
 
     public void requestMyReview(String token,
                                 Consumer<MyReviewsDto> onSuccess,

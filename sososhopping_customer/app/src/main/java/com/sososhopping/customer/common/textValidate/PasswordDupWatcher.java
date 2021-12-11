@@ -7,9 +7,9 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class PasswordDupWatcher implements TextWatcher {
 
-    private TextInputLayout passwordDupTextLayout;
-    private TextInputLayout passwordTextLayout;
-    private String errorMsg;
+    private final TextInputLayout passwordDupTextLayout;
+    private final TextInputLayout passwordTextLayout;
+    private final String errorMsg;
 
     public PasswordDupWatcher(TextInputLayout passwordTextLayout, TextInputLayout passwordDupTextLayout, String errorMsg) {
         this.passwordTextLayout = passwordTextLayout;

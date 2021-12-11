@@ -8,7 +8,7 @@ import com.sososhopping.customer.account.repository.FindRepository;
 import java.util.function.Consumer;
 
 public class FindEmailViewModel extends ViewModel {
-    private FindRepository findRepository = FindRepository.getInstance();
+    private final FindRepository findRepository = FindRepository.getInstance();
 
     public void requestEmail(FindEmailDto dto,
                              Consumer<String> onSuccess,

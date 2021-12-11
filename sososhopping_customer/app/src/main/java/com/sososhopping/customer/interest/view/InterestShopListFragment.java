@@ -43,7 +43,7 @@ public class InterestShopListFragment extends Fragment {
 
 
     //shoplist와 동일 사용
-    private ShopListAdapter shopListAdapter = new ShopListAdapter();
+    private final ShopListAdapter shopListAdapter = new ShopListAdapter();
 
     public static InterestShopListFragment newInstance() {return new InterestShopListFragment();}
 
@@ -185,7 +185,7 @@ public class InterestShopListFragment extends Fragment {
     private void onFailed() {
         if(binding != null){
             clickedPos = -1;
-            Snackbar.make(binding.getRoot(),getResources().getString(R.string.shop_error), Toast.LENGTH_LONG).show();
+            Snackbar.make(binding.getRoot(),getResources().getString(R.string.shop_error), Snackbar.LENGTH_SHORT).show();
         }
     }
 

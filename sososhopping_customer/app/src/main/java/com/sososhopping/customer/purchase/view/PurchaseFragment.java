@@ -276,6 +276,7 @@ public class PurchaseFragment extends Fragment {
     private void onSuccess(ShopIntroduceModel shopIntroduceModel){
         if(binding != null){
             purchaseViewModel.getShopInfo().setValue(shopIntroduceModel);
+            purchaseViewModel.getDeliveryPrice().setValue(shopIntroduceModel.getDeliveryCharge());
             purchaseViewModel.calPointMax();
 
             //매장이름설정

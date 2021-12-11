@@ -87,7 +87,7 @@ public class PurchaseCouponDialogFragment extends DialogFragment {
                     return;
                 }
 
-                int msgCode[]  = new int[2];
+                int[] msgCode = new int[2];
                 msgCode[0] = R.string.event_coupon_addSucc;
                 msgCode[1] = R.string.event_coupon_addFail;
 
