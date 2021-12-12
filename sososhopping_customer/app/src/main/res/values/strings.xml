@@ -20,7 +20,6 @@
     <string name="introduce_button_favorite_not">관심해제</string>
 
     <!--장바구니-->
-    <string name="item_addCart_error">현재 판매하지 않는 물건입니다</string>
     <string name="item_addCart_succ">장바구니에 담는데 성공하였습니다.</string>
     <string name="item_addCart_dup">이미 장바구니에 담긴 물건입니다</string>
     <string name="item_deleteCart_error">장바구니 물건 삭제에 실패했습니다</string>
@@ -29,18 +28,16 @@
     <string name="event_couponList">오늘의 쿠폰</string>
     <string name="event_coupon_addFail">쿠폰 저장에 실패하였습니다</string>
     <string name="event_coupon_addSucc">쿠폰 저장에 성공하였습니다</string>
+    <string name="event_coupon_deleteSucc">쿠폰 삭제에 성공하였습니다</string>
+    <string name="event_coupon_deleteFail">쿠폰 삭제에 실패하였습니다. 존재하지 않는 쿠폰입니다.</string>
     <string name="event_coupon_addDup">이미 저장한 쿠폰입니다</string>
     <string name="event_coupon_shortLength">올바르지 않은 쿠폰 코드 길이입니다.</string>
     <string name="event_boardList">소식</string>
-    <string name="news">소식</string>
-    <string name="event">이벤트</string>
 
     <!--리뷰-->
     <string name="review_input">리뷰를 작성했습니다</string>
 
     <!--메뉴 다이얼로그-->
-    <string name="menu_delete">삭제</string>
-    <string name="menu_navigate">매장이동</string>
 
     <!--신고-->
     <string name="report_title">신고하기</string>
@@ -66,10 +63,10 @@
     <string name="mysoso_point_all">전체</string>
 
     <!--My소소 포인트-->
-    <string name="mysoso_point_error">포인트 목록 조회에 실패했습니다.</string>
     <string name="mysoso_point_detail">포인트 내역</string>
 
     <!--리뷰-->
+    <string name="mysoso_myRating_get_error">리뷰를 불러오는데 실패하였습니다</string>
     <string name="mysoso_myRating_delte_error">리뷰 삭제에 실패하였습니다</string>
     <string name="mysoso_myRating_delte_success">리뷰 삭제에 성공하였습니다</string>
 
@@ -82,7 +79,7 @@
     <string name="nickName">별명</string>
     <string name="roadAddress">도로명주소</string>
     <string name="detailAddress">상세주소</string>
-    <string name="mysoso_myInfo_editSuccess">내정보 수정에 성공하였습니다</string>
+    <string name="mysoso_myInfo_editSuccess">내정보 수정에 성공하였습니다. 다시 로그인해 주세요</string>
 
     <!--세팅-->
     <string name="setting">설정</string>

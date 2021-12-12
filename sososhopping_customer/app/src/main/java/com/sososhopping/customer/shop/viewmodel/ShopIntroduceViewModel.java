@@ -68,7 +68,7 @@ public class ShopIntroduceViewModel {
     }
 
     public String getAddress(ShopIntroduceModel shopIntroduceModel){
-        String addressText = new String();
+        String addressText = "";
 
         if(shopIntroduceModel.getStreetAddress() != null){
             addressText = addressText.concat(shopIntroduceModel.getStreetAddress());

@@ -45,6 +45,9 @@ public interface MysosoService {
     @POST("my/coupons")
     Call<Void> addCoupons(@Header("token") String token, @Body AddCouponDto addCouponDto);
 
+    @DELETE("my/coupons/{couponId}")
+    Call<Void> deleteCoupons(@Header("token") String token, @Path("couponId") long couponId);
+
     @GET("info")
     Call<MyInfoModel> requestMyInfo(@Header("token") String token);
 
@@ -64,6 +67,6 @@ public interface MysosoService {
     Call<OrderDetailDto> requestMyOrdersCancel(@Header("token") String token, @Path("orderId") long orderId, @Body OrderCancelDto action);
 
     //탈퇴
-    @DELETE("users")
+    @DELETE("quit")
     Call<Void> requestQuit(@Header("token") String token);
 }

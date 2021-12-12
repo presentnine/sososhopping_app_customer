@@ -211,6 +211,30 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_delivery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="10dp"
+                    android:text="배달비"
+                    android:textSize="@dimen/normal_plus"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/textView_shop_delivery"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/introduce_point"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"

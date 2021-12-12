@@ -137,7 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:text="사용가능 : "
+                android:text="최대사용가능 : "
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/textView_available_point"
                 app:layout_constraintTop_toTopOf="parent" />

@@ -28,7 +28,7 @@ import com.sososhopping.customer.shop.viewmodel.ShopItemViewModel;
 
 public class ShopItemListFragment extends Fragment {
     private NavController navController;
-    private ShopItemAdapter shopItemAdapter = new ShopItemAdapter();
+    private final ShopItemAdapter shopItemAdapter = new ShopItemAdapter();
     private ShopInfoViewModel shopInfoViewModel;
     private ShopItemViewModel shopItemViewModel;
     private ShopItemListBinding binding;

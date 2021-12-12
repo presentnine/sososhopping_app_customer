@@ -11,7 +11,7 @@ import lombok.Getter;
 
 @Getter
 public class FindPasswordViewModel extends ViewModel {
-    private FindRepository findRepository = FindRepository.getInstance();
+    private final FindRepository findRepository = FindRepository.getInstance();
 
     MutableLiveData<FindInfoDto> dto = new MutableLiveData<>();
 

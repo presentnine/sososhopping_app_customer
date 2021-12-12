@@ -145,7 +145,7 @@ public class LogInDialogFragment extends DialogFragment {
 
     private void onLoginFailed() {
         if(binding != null){
-            Snackbar.make(binding.getRoot(),getResources().getString(R.string.login_failed),Snackbar.LENGTH_LONG).show();
+            Snackbar.make(binding.getRoot(),getResources().getString(R.string.login_failed),Snackbar.LENGTH_SHORT).show();
         }
 
     }

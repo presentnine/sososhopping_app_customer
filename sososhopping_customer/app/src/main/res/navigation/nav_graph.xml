@@ -268,7 +268,13 @@
         android:id="@+id/purchaseCouponDialogFragment"
         android:name="com.sososhopping.customer.purchase.view.PurchaseCouponDialogFragment"
         android:label="PurchaseCouponDialogFragment"
-        tools:layout="@layout/purchase_coupon"/>
+        tools:layout="@layout/purchase_coupon">
+        <argument
+            android:name="storeId"
+            app:argType="integer" />
+        <argument android:name="currentPrice"
+            app:argType="integer" />
+    </dialog>
 
     <fragment
         android:id="@+id/purchaseSuccessFragment"
@@ -324,7 +330,13 @@
         android:id="@+id/mysosoSettingFragment"
         android:name="com.sososhopping.customer.mysoso.view.MysosoSettingFragment"
         android:label="MysosoSettingFragment"
-        tools:layout="@layout/mysoso_setting"/>
+        tools:layout="@layout/mysoso_setting">
+        <action
+            android:id="@+id/action_mysosoSettingFragment_to_mysosoOrderListFragment"
+            app:destination="@id/mysosoOrderListFragment"
+            app:popUpTo="@id/mysosoSettingFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/chatFragment"
         android:name="com.sososhopping.customer.chat.view.ChatFragment"

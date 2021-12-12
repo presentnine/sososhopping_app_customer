@@ -29,7 +29,6 @@
         <activity android:name=".HomeActivity"
             android:theme="@style/Theme.Sososhopping_customer.NoActionBar"
             android:hardwareAccelerated="true">
-
         </activity>
 
         <meta-data android:name="com.naver.maps.map.CLIENT_ID" android:value="${NAVER_API_KEY}"/>

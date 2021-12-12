@@ -61,6 +61,9 @@ public class PurchaseFragment_Item {
                 purchaseViewModel.getPurchaseList().getValue().setCartItems(
                         cartItemAdapter.getItems()
                 );
+
+                //쿠폰, 포인트 갱신
+                purchaseViewModel.getUseCoupon().setValue(null);
             }
 
             @Override
@@ -69,6 +72,9 @@ public class PurchaseFragment_Item {
                 purchaseViewModel.getTotalPrice().setValue(
                         purchaseViewModel.getTotalPrice().getValue() + changedVal
                 );
+
+                //쿠폰, 포인트 갱신
+                purchaseViewModel.getUseCoupon().setValue(null);
             }
         });
     }

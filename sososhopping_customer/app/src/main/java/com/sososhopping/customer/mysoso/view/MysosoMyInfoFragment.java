@@ -20,7 +20,9 @@ import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
+import com.sososhopping.customer.common.Constant;
 import com.sososhopping.customer.common.NetworkStatus;
+import com.sososhopping.customer.common.sharedpreferences.SharedPreferenceManager;
 import com.sososhopping.customer.common.textValidate.NameWatcher;
 import com.sososhopping.customer.common.textValidate.NickNameWatcher;
 import com.sososhopping.customer.common.textValidate.PasswordDupWatcher;
@@ -226,8 +228,9 @@ public class MysosoMyInfoFragment extends Fragment {
     }
 
     private void onEditSuccess() {
-        Toast.makeText(getContext(), getResources().getString(R.string.mysoso_myInfo_editSuccess), Toast.LENGTH_LONG).show();
-        getActivity().onBackPressed();
+        Snackbar.make(
+                ((HomeActivity)getActivity()).getMainView(), getResources().getString(R.string.mysoso_myInfo_editSuccess), Snackbar.LENGTH_SHORT).show();
+        logOut();
     }
 
     private void onFailedLogIn() {
@@ -344,5 +347,14 @@ public class MysosoMyInfoFragment extends Fragment {
         if (TextUtils.isEmpty(binding.editTextDetailAddress.getText().toString())) {
             binding.textFieldDetailAddress.setError(getResources().getString(R.string.signup_error_detailAddress));
         }
+    }
+
+    public void logOut(){
+        SharedPreferenceManager.deleteString(getContext(), Constant.SHARED_PREFERENCE_KEY_ID);
+        SharedPreferenceManager.deleteString(getContext(), Constant.SHARED_PREFERENCE_KEY_PASSWORD);
+        ((HomeActivity)getActivity()).setLoginToken(null);
+        ((HomeActivity)getActivity()).setIsLogIn(false);
+
+        ((HomeActivity) getActivity()).bottomItemClicked(R.id.menu_home);
     }
 }

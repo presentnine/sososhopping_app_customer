@@ -164,13 +164,39 @@ public class MysosoOrderDetailFragment extends Fragment {
 
             //금액
             binding.textViewTotalPayTotalPrice.setText(orderDetailDto.getOrderPrice() + "원");
-            binding.textViewTotalPayPoint.setText(orderDetailDto.getUsedPoint() + "원");
-            binding.textViewTotalPayCoupon.setText(orderDetailDto.getCouponDiscountPrice() + "원");
+            binding.textViewTotalPayPoint.setText("- "+orderDetailDto.getUsedPoint() + "원");
+            binding.textViewTotalPayCoupon.setText("- "+orderDetailDto.getCouponDiscountPrice() + "원");
             binding.textViewTotalPayDelivery.setText(orderDetailDto.getDeliveryCharge() + "원");
             binding.textviewTotalPrice.setText(orderDetailDto.getFinalPrice() + "원");
 
             //최종상태
             binding.buttonFinalPurchase.setText(orderDetailDto.getOrderStatus().getValue());
+            //최종확인
+            if(orderDetailDto.getOrderStatus() == OrderStatus.READY){
+
+                if(orderDetailDto.getOrderType() == OrderType.DELIVERY){
+                    binding.buttonFinalPurchase.setText("배송완료");
+                }
+                else if(orderDetailDto.getOrderType() == OrderType.ONSITE){
+                    binding.buttonFinalPurchase.setText("픽업완료");
+                }
+
+                binding.buttonFinalPurchase.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        orderDetailViewModel.requestMyOrderDone(
+                                ((HomeActivity) getActivity()).getLoginToken(),
+                                orderDetailDto.getOrderId(),
+                                MysosoOrderDetailFragment.this::onSuccessDone,
+                                MysosoOrderDetailFragment.this::onFailedCancel,
+                                MysosoOrderDetailFragment.this::onNetworkError
+                        );
+                    }
+                });
+            }else{
+                binding.buttonFinalPurchase.setText(orderDetailDto.getOrderStatus().getValue());
+                binding.buttonFinalPurchase.setEnabled(false);
+            }
 
             //주문취소
             if (orderDetailDto.getOrderStatus() != OrderStatus.PENDING) {
@@ -189,7 +215,14 @@ public class MysosoOrderDetailFragment extends Fragment {
                     }
                 });
             }
+
+
         }
+    }
+
+    private void onSuccessDone() {
+        Snackbar.make(((HomeActivity) getActivity()).getMainView(), "물품 수령을 완료하였습니다", Snackbar.LENGTH_SHORT).show();
+        getActivity().onBackPressed();
     }
 
     private void onSuccessCancel() {

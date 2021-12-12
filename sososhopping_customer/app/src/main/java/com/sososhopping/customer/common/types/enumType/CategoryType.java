@@ -15,7 +15,7 @@ public enum CategoryType {
     ACADEMY("학원", R.drawable.icon_category_academy),
     PHOTO("사진관", R.drawable.icon_category_camera),
     FLOWER("꽃집", R.drawable.icon_category_flowers),
-    CLOTHE("의류", R.drawable.icon_category_dress_shop),
+    CLOTH("의류", R.drawable.icon_category_dress_shop),
     LOCALPAY("지역화폐", R.drawable.icon_local_pay),
     MAP("지도", R.drawable.icon_app_map);
 

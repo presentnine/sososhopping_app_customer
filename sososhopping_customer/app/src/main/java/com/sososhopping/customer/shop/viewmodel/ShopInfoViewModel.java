@@ -21,7 +21,7 @@ public class ShopInfoViewModel extends ViewModel {
     MutableLiveData<ShopIntroduceModel> shopIntroduceModel = new MutableLiveData<>();
     MutableLiveData<Float> distance = new MutableLiveData<>();
 
-    private ShopRepository shopRepository = ShopRepository.getInstance();
+    private final ShopRepository shopRepository = ShopRepository.getInstance();
 
     public void setShopId(int i){
         this.shopId.setValue(i);

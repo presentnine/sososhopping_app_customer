@@ -41,7 +41,9 @@ public class PurchaseFragment_Point {
         binding.includeLayoutPoint.buttonCouponUse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navController.navigate(R.id.action_purchaseFragment_to_purchaseCouponDialogFragment);
+                navController.navigate(PurchaseFragmentDirections
+                        .actionPurchaseFragmentToPurchaseCouponDialogFragment(purchaseViewModel.getShopInfo().getValue().getStoreId(),
+                                purchaseViewModel.getTotalPrice().getValue()));
             }
         });
 
@@ -72,8 +74,6 @@ public class PurchaseFragment_Point {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
-                purchaseViewModel.calPointMax();
 
                 if(editable.length() > 0){
                     int usePoint = Integer.parseInt(editable.toString());

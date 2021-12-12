@@ -104,7 +104,7 @@ public class HomeViewModel extends ViewModel {
 
         //카테고리
         else if(askType.getValue().equals(AskType.Category)){
-            type = this.getCategory().getValue().toString();
+            type = this.getCategory().getValue();
 
             //지역화폐면 다르게
             if(type.equals(CategoryType.LOCALPAY.toString())){

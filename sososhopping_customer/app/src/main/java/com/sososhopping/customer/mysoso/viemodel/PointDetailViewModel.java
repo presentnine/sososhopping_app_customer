@@ -27,7 +27,7 @@ import lombok.Getter;
 
 @Getter
 public class PointDetailViewModel extends ViewModel {
-    private MysosoPointRepository mysosoPointRepository = MysosoPointRepository.getInstance();
+    private final MysosoPointRepository mysosoPointRepository = MysosoPointRepository.getInstance();
     //0 1 2 시작
     MutableLiveData<Date>[] curDate = new MutableLiveData[3];
     MutableLiveData<ArrayList<PointDetailModel>>[] detailList = new MutableLiveData[3];
@@ -49,7 +49,7 @@ public class PointDetailViewModel extends ViewModel {
             //set first day of month
             cal.setTime(new Date());
             cal.set(Calendar.DAY_OF_MONTH,1);
-            curDate[i].setValue(cal.getTime());;
+            curDate[i].setValue(cal.getTime());
         }
 
         changeMonth(false, 0,1);

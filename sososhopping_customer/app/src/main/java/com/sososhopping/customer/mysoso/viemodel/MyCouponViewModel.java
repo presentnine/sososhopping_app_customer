@@ -19,7 +19,7 @@ import lombok.Getter;
 
 @Getter
 public class MyCouponViewModel extends ViewModel {
-    private MysosoCouponRepository mysosoCouponRepository = MysosoCouponRepository.getInstance();
+    private final MysosoCouponRepository mysosoCouponRepository = MysosoCouponRepository.getInstance();
     MutableLiveData<ArrayList<CouponModel>> myCoupons = new MutableLiveData<>();
 
 
@@ -73,5 +73,13 @@ public class MyCouponViewModel extends ViewModel {
                               Runnable onFailedLogIn,
                               Runnable onError){
         mysosoCouponRepository.addShopCoupon(token, setAddCouponDto(code), msgs, onResult, onFailedLogIn, onError);
+    }
+
+    public void deleteCoupon(String token, long couponId,
+                             int[] msgs,
+                             Consumer<Integer> onResult,
+                             Runnable onFailedLogIn,
+                             Runnable onError) {
+        mysosoCouponRepository.deleteCoupon(token, couponId, msgs, onResult, onFailedLogIn, onError);
     }
 }

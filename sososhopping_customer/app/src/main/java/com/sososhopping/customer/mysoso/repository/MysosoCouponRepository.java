@@ -104,7 +104,41 @@ public class MysosoCouponRepository {
                 onError.run();
             }
         });
+    }
 
+    public void deleteCoupon(String token, long couponId, int[] msgCodes,
+                             Consumer<Integer> onResult,
+                             Runnable onFailedLogIn,
+                             Runnable onError){
+        mysosoService.deleteCoupons(token, couponId).enqueue(new Callback<Void>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                switch (response.code()){
+                    case 200:{
+                        onResult.accept(msgCodes[0]);
+                        break;
+                    }
+                    //토큰 실패
+                    case 403:{
+                        onFailedLogIn.run();
+                        break;
+                    }
+                    //쿠폰 기간 x , 수량 소진
+                    case 400:
+                        //쿠폰없음
+                    case 404:
+                    default:
+                        onResult.accept(msgCodes[1]);
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                onError.run();
+            }
+        });
     }
 
 }

@@ -81,11 +81,6 @@ public class ShopEventCouponAdapter extends RecyclerView.Adapter<ShopEventCoupon
 
             if(couponModel.getStartDate() == null && couponModel.getEndDate() == null){
                 binding.linearLayoutDate.setVisibility(View.GONE);
-
-                //크기조절용
-                if(couponModel.getMinimumOrderPrice() == 0){
-                    binding.buttonAddCoupon.setText(null);
-                }
             }
             else{
                 if(couponModel.getStartDate() != null){

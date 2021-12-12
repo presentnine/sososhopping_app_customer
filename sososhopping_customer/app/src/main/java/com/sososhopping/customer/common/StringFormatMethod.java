@@ -3,7 +3,7 @@ package com.sososhopping.customer.common;
 public class StringFormatMethod {
 
     public static String getRating(Double d){
-        return Double.toString(Math.round(d*10)/10);
+        return Double.toString(Math.round(d*10)/10.0);
     }
 
     public static String getDistance(Float f){

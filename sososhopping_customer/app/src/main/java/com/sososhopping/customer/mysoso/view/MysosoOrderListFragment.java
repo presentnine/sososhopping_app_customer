@@ -1,6 +1,7 @@
 package com.sososhopping.customer.mysoso.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -52,6 +53,8 @@ public class MysosoOrderListFragment extends Fragment {
     private final OrderStatus[] searchTypeApprove = {OrderStatus.APPROVE_ALL, OrderStatus.APPROVE, OrderStatus.READY};
     private final OrderStatus[] searchTypeCancel = {OrderStatus.CANCEL_ALL, OrderStatus.REJECT, OrderStatus.CANCEL};
     private OrderStatus beforeChecked = OrderStatus.PENDING;
+
+    private int beforeTab = -1;
 
     public static MysosoOrderListFragment newInstance() {return new MysosoOrderListFragment();}
 
@@ -144,6 +147,11 @@ public class MysosoOrderListFragment extends Fragment {
 
         //하단바
         ((HomeActivity)getActivity()).showBottomNavigation();
+        ((HomeActivity)getActivity()).getBinding().bottomNavigation.getMenu().findItem(R.id.menu_mysoso).setChecked(true);
+        Log.e("beforeT", beforeTab+"");
+        if(beforeTab != -1){
+            binding.taplayoutPurchaseStatus.selectTab(binding.taplayoutPurchaseStatus.getTabAt(beforeTab));
+        }
         super.onResume();
     }
 
@@ -241,6 +249,7 @@ public class MysosoOrderListFragment extends Fragment {
             @Override
             public void onItemClick(long orderId) {
                 //세부정보로 이동
+                beforeTab = binding.taplayoutPurchaseStatus.getSelectedTabPosition();
                 navController.navigate(MysosoOrderListFragmentDirections.actionMysosoOrderListMainFragmentToMysosoOrderDetailFragment(orderId));
             }
         });

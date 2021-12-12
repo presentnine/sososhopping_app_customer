@@ -118,9 +118,13 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ViewHo
             //지역화폐, 배달여부
             if(!shopInfoShortModel.isLocalCurrencyStatus()){
                 binding.layoutLocalPay.setVisibility(View.GONE);
+            }else{
+                binding.layoutLocalPay.setVisibility(View.VISIBLE);
             }
             if(!shopInfoShortModel.isDeliveryStatus()){
                 binding.layoutDelivery.setVisibility(View.GONE);
+            }else{
+                binding.layoutDelivery.setVisibility(View.VISIBLE);
             }
 
             Glide.with(itemView)

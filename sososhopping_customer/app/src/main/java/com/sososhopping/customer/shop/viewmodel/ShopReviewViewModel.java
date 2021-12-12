@@ -63,5 +63,13 @@ public class ShopReviewViewModel extends ViewModel {
         shopRepository.checkReviews(token, storeId, onDup, onFailed, onError);
     }
 
+    public void deleteShopReview(String token,
+                                 int shopId,
+                                 Runnable onSuccess,
+                                 Runnable onFailedDelete,
+                                 Runnable onError){
+        shopRepository.deleteMyReview(token, shopId, onSuccess, onFailedDelete, onError);
+    }
+
 
 }

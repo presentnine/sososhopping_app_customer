@@ -3,6 +3,7 @@ package com.sososhopping.customer.mysoso.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +36,8 @@ public class MysosoPointDetailFragment extends Fragment {
     NavController navConroller;
 
     private PointDetailViewModel pointDetailViewModel;
-    private RecyclerView[] dateList = new RecyclerView[3];
-    private MysosoPointDetailAdapter[] adapters = new MysosoPointDetailAdapter[3];
+    private final RecyclerView[] dateList = new RecyclerView[3];
+    private final MysosoPointDetailAdapter[] adapters = new MysosoPointDetailAdapter[3];
 
     public static MysosoPointDetailFragment newInstance() {
         return new MysosoPointDetailFragment();
@@ -183,6 +184,7 @@ public class MysosoPointDetailFragment extends Fragment {
             //리사이클러뷰 세팅
             if (dto != null) {
                 pointDetailViewModel.getDetailList()[index].setValue(dto.getLogs());
+                Log.e("왜 안왜", pointDetailViewModel.getCurDate()[index].getValue() + " " +dto.getLogs().size() + " ");
                 adapters[index].setItems(pointDetailViewModel.getDetailList()[index].getValue());
             }
         }

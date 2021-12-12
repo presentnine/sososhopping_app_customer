@@ -7,8 +7,8 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class NameWatcher implements TextWatcher {
 
-    private TextInputLayout nameTextLayout;
-    private String errorMsg;
+    private final TextInputLayout nameTextLayout;
+    private final String errorMsg;
 
     public NameWatcher(TextInputLayout nameTextLayout, String errorMsg) {
         this.nameTextLayout = nameTextLayout;

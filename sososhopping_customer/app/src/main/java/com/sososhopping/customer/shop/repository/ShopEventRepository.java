@@ -53,14 +53,14 @@ public class ShopEventRepository {
                         break;
                     }
                     default:{
-                        onError.run();;
+                        onError.run();
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<CouponListDto> call, Throwable t) {
-                onError.run();;
+                onError.run();
             }
         });
     }

@@ -35,7 +35,7 @@ public class ShopListFragment extends Fragment {
 
 
     private NavController navController;
-    private ShopListAdapter shopListAdapter = new ShopListAdapter();
+    private final ShopListAdapter shopListAdapter = new ShopListAdapter();
     private HomeViewModel homeViewModel;
     public SearchShopListBinding binding;
 
