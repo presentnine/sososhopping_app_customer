@@ -90,7 +90,7 @@ public class PurchaseCouponDialogFragment extends DialogFragment {
             public void onClick(View view) {
                 String code = binding.editTextAddCode.getText().toString();
 
-                if(code.length() < 16){
+                if(code.length() < 8){
                     Toast.makeText(getContext(),getResources().getString(R.string.event_coupon_shortLength),Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -174,7 +174,7 @@ public class PurchaseCouponDialogFragment extends DialogFragment {
         //다시 불러오기
         purchaseCouponViewModel.requestCoupons(
                 ((HomeActivity)getActivity()).getLoginToken(),
-                purchaseViewModel.getShopInfo().getValue().getStoreId(),
+                storeId,
                 this::onSuccess,
                 this::onFailedLogIn,
                 this::onFailed,
