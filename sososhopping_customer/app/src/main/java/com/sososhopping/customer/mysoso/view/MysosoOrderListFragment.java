@@ -149,7 +149,9 @@ public class MysosoOrderListFragment extends Fragment {
         ((HomeActivity)getActivity()).showBottomNavigation();
         ((HomeActivity)getActivity()).getBinding().bottomNavigation.getMenu().findItem(R.id.menu_mysoso).setChecked(true);
         Log.e("beforeT", beforeTab+"");
+
         if(beforeTab != -1){
+            beforeChecked = OrderStatus.DONE;
             binding.taplayoutPurchaseStatus.selectTab(binding.taplayoutPurchaseStatus.getTabAt(beforeTab));
         }
         super.onResume();
@@ -187,6 +189,7 @@ public class MysosoOrderListFragment extends Fragment {
         binding.taplayoutPurchaseStatus.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                Log.e("tab selected?", tab.getPosition()+"");
                 switch (tab.getPosition()){
                     case 0:{
                         getListCall(OrderStatus.PENDING);
@@ -226,6 +229,7 @@ public class MysosoOrderListFragment extends Fragment {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+                Log.e("tab reselected?", tab.getPosition()+"");
                 switch (tab.getPosition()){
                     case 0:{
                         //새로고침되게
@@ -310,7 +314,7 @@ public class MysosoOrderListFragment extends Fragment {
     private void onFailed() {
         if(binding != null){
             Snackbar.make(((HomeActivity)getActivity()).getMainView(),
-                    getResources().getString(R.string.mysoso_myRating_delte_error), Snackbar.LENGTH_SHORT).show();
+                    getResources().getString(R.string.shop_error), Snackbar.LENGTH_SHORT).show();
         }
     }
 
