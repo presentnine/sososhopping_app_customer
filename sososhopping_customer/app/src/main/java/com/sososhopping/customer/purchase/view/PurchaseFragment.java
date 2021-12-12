@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -80,7 +81,7 @@ public class PurchaseFragment extends Fragment {
         binding = PurchaseMainBinding.inflate(inflater,container,false);
 
         //viewmodel 설정
-        purchaseViewModel = new ViewModelProvider(getActivity()).get(PurchaseViewModel.class);
+        purchaseViewModel = new ViewModelProvider(this).get(PurchaseViewModel.class);
         purchaseViewModel.setPurchaseList(
                 PurchaseFragmentArgs.fromBundle(getArguments()).getStoreId(),
                 PurchaseFragmentArgs.fromBundle(getArguments()).getPurchaseList()
@@ -114,7 +115,6 @@ public class PurchaseFragment extends Fragment {
                 getContext()
         );
         purchaseFragment_payments.setPaymentsLayout(getResources());
-
         return binding.getRoot();
     }
 
@@ -127,7 +127,7 @@ public class PurchaseFragment extends Fragment {
         navController = Navigation.findNavController(view);
 
         buttonCloseOpen();
-
+        observing();
         //내정보 받아오기
         purchaseViewModel.requestMyInfo(
                 ((HomeActivity)getActivity()).getLoginToken(),
@@ -142,17 +142,11 @@ public class PurchaseFragment extends Fragment {
                 purchaseViewModel,
                 getContext()
         );
+
         purchaseFragment_visit.setVisitLayout(getParentFragmentManager(), getResources());
         purchaseFragment_visit.setDeliveryLayout(getResources());
 
-        //옵저버
-        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("roadAddress")
-                .observe(this, new Observer<Object>() {
-                    @Override
-                    public void onChanged(Object o) {
-                        binding.includeLayoutVisit.editTextRoadAddress.setText((CharSequence) o);
-                    }
-                });
+
 
         binding.includeLayoutVisit.editTextRoadAddress.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,6 +167,8 @@ public class PurchaseFragment extends Fragment {
                 getContext()
         );
         purchaseFragment_point.setPointLayout(getResources(), navController);
+
+        observingDialog();
 
         binding.includeLayoutTotal.buttonTotalInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -251,9 +247,10 @@ public class PurchaseFragment extends Fragment {
                         PurchaseFragment.this::onFailedOrder,
                         PurchaseFragment.this::onNetworkError
                 );
-
             }
         });
+
+
     }
 
     @Override
@@ -276,7 +273,6 @@ public class PurchaseFragment extends Fragment {
     private void onSuccess(ShopIntroduceModel shopIntroduceModel){
         if(binding != null){
             purchaseViewModel.getShopInfo().setValue(shopIntroduceModel);
-            purchaseViewModel.getDeliveryPrice().setValue(shopIntroduceModel.getDeliveryCharge());
             purchaseViewModel.calPointMax();
 
             //매장이름설정
@@ -323,53 +319,72 @@ public class PurchaseFragment extends Fragment {
         Snackbar.make(((HomeActivity)getActivity()).getMainView(), getResources().getString(R.string.order_error), Snackbar.LENGTH_SHORT).show();
     }
 
-    public void observing(){
+    public void observingDialog(){
         //쿠폰 옵저빙
-        purchaseViewModel.getUseCoupon().observe(this, new Observer<CouponModel>() {
+        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("couponParcel")
+                .observe(getViewLifecycleOwner(), new Observer<Object>() {
+                    @Override
+                    public void onChanged(Object o) {
+                        purchaseViewModel.getUseCoupon().setValue((CouponModel) o);
+                    }
+                });
+
+        //옵저버
+        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("roadAddress")
+                .observe(getViewLifecycleOwner(), new Observer<Object>() {
+                    @Override
+                    public void onChanged(Object o) {
+                        binding.includeLayoutVisit.editTextRoadAddress.setText((CharSequence) o);
+                    }
+                });
+
+    }
+    public void observing(){
+
+
+        purchaseViewModel.getUseCoupon().observe(getViewLifecycleOwner(), new Observer<CouponModel>() {
             @Override
             public void onChanged(CouponModel couponModel) {
-                if(purchaseViewModel.getUseCoupon().getValue() == null){
+                if(couponModel == null){
                     binding.includeLayoutPoint.linearLayoutCouponInfo.setVisibility(View.GONE);
-                }else{
+                }
+                else{
                     binding.includeLayoutPoint.textViewCouponName.setText(
-                            purchaseViewModel.getUseCoupon().getValue().getCouponName()
+                            couponModel.getCouponName()
                     );
                     binding.includeLayoutPoint.linearLayoutCouponInfo.setVisibility(View.VISIBLE);
-
-                    //금액계산도 필요
-                    purchaseViewModel.calCouponPrice();
                 }
+
+                //금액계산도 필요
+                purchaseViewModel.calCouponPrice();
             }
         });
 
         //금액 옵저빙
-        purchaseViewModel.getTotalPrice().observe(this, new Observer<Integer>() {
+        purchaseViewModel.getTotalPrice().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
                 String totalPrice = integer+"원";
                 binding.includeLayoutItem.textViewTotalStorePrice.setText(totalPrice);
                 binding.includeLayoutTotal.textViewTotalPayTotalPrice.setText(totalPrice);
+
+                //최종, 최대포인트 계산
                 purchaseViewModel.calFinalPrice();
                 purchaseViewModel.calPointMax();
             }
         });
-        purchaseViewModel.getCouponDiscount().observe(this, new Observer<Integer>() {
+
+        purchaseViewModel.getCouponDiscount().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
                 String couponDiscount = integer+"원";
                 binding.includeLayoutTotal.textViewTotalPayCoupon.setText("- "+couponDiscount);
+
+                purchaseViewModel.calFinalPrice();
                 purchaseViewModel.calPointMax();
-                purchaseViewModel.calFinalPrice();
             }
         });
-        purchaseViewModel.getUsePoint().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                String pointDiscount = integer+"원";
-                binding.includeLayoutTotal.textViewTotalPayPoint.setText("- "+pointDiscount);
-                purchaseViewModel.calFinalPrice();
-            }
-        });
+
         purchaseViewModel.getDeliveryPrice().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
@@ -378,17 +393,33 @@ public class PurchaseFragment extends Fragment {
                 purchaseViewModel.calFinalPrice();
             }
         });
+
+        purchaseViewModel.getUsePoint().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                String pointDiscount = integer+"원";
+                binding.includeLayoutTotal.textViewTotalPayPoint.setText("- "+pointDiscount);
+                purchaseViewModel.calFinalPrice();
+                Log.e("어디가 문제여", "UP"+integer+"?");
+            }
+        });
+
         purchaseViewModel.getFinalPrice().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
                 String finalPrice = integer+"원";
                 binding.includeLayoutTotal.textviewTotalPrice.setText(finalPrice);
+                Log.e("어디가 문제여", "FP"+integer+"?");
             }
         });
+
         purchaseViewModel.getMaxPoint().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
+                Log.e("어디가 문제여", "MaxPoint"+integer+"?");
                 binding.includeLayoutPoint.textViewAvailablePoint.setText(Integer.toString(purchaseViewModel.getMaxPoint().getValue()));
+                binding.includeLayoutPoint.editTextUsePoint.setText(null);
+                purchaseViewModel.getUsePoint().setValue(0);
             }
         });
     }
@@ -465,6 +496,13 @@ public class PurchaseFragment extends Fragment {
         }
         if(check != null){
             Toast.makeText(getContext(), check, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        //현장결재인데, 배달이면 안됨
+        if(binding.includeLayoutPurchase.radioGroup.getCheckedRadioButtonId() == R.id.radio_cash
+        && binding.includeLayoutVisit.toggleButton.getCheckedButtonId() == R.id.button_delivery){
+            Toast.makeText(getContext(), "현장 결제 시 배송 서비스는 불가합니다", Toast.LENGTH_SHORT).show();
             return false;
         }
 

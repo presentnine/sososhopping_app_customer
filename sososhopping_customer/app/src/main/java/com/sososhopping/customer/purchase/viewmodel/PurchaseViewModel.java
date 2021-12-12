@@ -1,5 +1,7 @@
 package com.sososhopping.customer.purchase.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -50,16 +52,19 @@ public class PurchaseViewModel extends ViewModel {
 
     public PurchaseViewModel(){
         this.totalPrice.setValue(0);
-        this.couponDiscount.setValue(0);
-        this.deliveryPrice.setValue(0);
-        this.usePoint.setValue(0);
         this.finalPrice.setValue(0);
 
         //포인트 관련
         this.maxPoint.setValue(0);
 
+      initPointAndCoupon();
+    }
 
-        //초기값
+    public void initPointAndCoupon(){
+        this.deliveryPrice.setValue(0);
+        this.usePoint.setValue(0);
+        this.couponDiscount.setValue(0);
+
         orderType = OrderType.ONSITE;
         paymentType = PaymentType.CASH;
     }

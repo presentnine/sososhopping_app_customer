@@ -9,9 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import com.sososhopping.customer.HomeActivity;
+import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
 import com.sososhopping.customer.databinding.PurchaseSuccessBinding;
 
@@ -53,7 +55,7 @@ public class PurchaseSuccessFragment extends Fragment {
         binding.buttonCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((HomeActivity)getActivity()).getBinding().bottomNavigation.setSelectedItemId(R.id.menu_cart);
+                navController.navigate(R.id.cartMainFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
             }
         });
 
