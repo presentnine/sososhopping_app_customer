@@ -64,7 +64,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         String timeStamp = chatList.get(position).timeStamp.toString();
         Long time = Long.parseLong(timeStamp);
-        Date date = new Date(time + 1000 * 60 * 60 * 9);
+        Date date = new Date(time);
 
         ((ViewHolder)holder).chatCardViewContent.setText(chatList.get(position).content);
         ((ViewHolder)holder).chatCardViewTime.setText(simpleDateFormat.format(date));

@@ -50,7 +50,7 @@ public class ChatroomAdapter extends RecyclerView.Adapter {
         if (chatroomInforList.get(position).lastMessageTimestamp != null) {
             String lastMessageTimeStamp = chatroomInforList.get(position).lastMessageTimestamp.toString();
             Long lastMessageTime = Long.parseLong(lastMessageTimeStamp);
-            Date date = new Date(lastMessageTime + 1000 * 60 * 60 * 9);
+            Date date = new Date(lastMessageTime);
 
             ((ViewHolder) holder).chatroomItemTime.setText(simpleDateFormat.format(date));
 
