@@ -400,7 +400,6 @@ public class PurchaseFragment extends Fragment {
                 String pointDiscount = integer+"원";
                 binding.includeLayoutTotal.textViewTotalPayPoint.setText("- "+pointDiscount);
                 purchaseViewModel.calFinalPrice();
-                Log.e("어디가 문제여", "UP"+integer+"?");
             }
         });
 
@@ -409,14 +408,12 @@ public class PurchaseFragment extends Fragment {
             public void onChanged(Integer integer) {
                 String finalPrice = integer+"원";
                 binding.includeLayoutTotal.textviewTotalPrice.setText(finalPrice);
-                Log.e("어디가 문제여", "FP"+integer+"?");
             }
         });
 
         purchaseViewModel.getMaxPoint().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
-                Log.e("어디가 문제여", "MaxPoint"+integer+"?");
                 binding.includeLayoutPoint.textViewAvailablePoint.setText(Integer.toString(purchaseViewModel.getMaxPoint().getValue()));
                 binding.includeLayoutPoint.editTextUsePoint.setText(null);
                 purchaseViewModel.getUsePoint().setValue(0);
