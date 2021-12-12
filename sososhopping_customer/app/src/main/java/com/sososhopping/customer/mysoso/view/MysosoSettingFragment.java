@@ -4,10 +4,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -152,6 +154,20 @@ public class MysosoSettingFragment extends Fragment {
     }
 
     public void onFailed(){
-        Snackbar.make(((HomeActivity)getActivity()).getMainView(),"회원탈퇴에 실패하였습니다\n잠시 후 다시 시도해주세요.", Snackbar.LENGTH_SHORT).show();
+        Snackbar snackbar = Snackbar.make(((HomeActivity)getActivity()).getMainView(),"회원탈퇴에 실패하였습니다" +
+                "\n회원탈퇴는 대기/진행중인 주문이 모두 종료되어야 가능합니다. " +
+                "혹시 주문이 있는지 확인해주세요.", Snackbar.LENGTH_INDEFINITE);
+
+        snackbar.setAction("주문확인", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        navController.navigate(MysosoSettingFragmentDirections.actionMysosoSettingFragmentToMysosoOrderListFragment());
+                        snackbar.dismiss();
+                    }
+                });
+        View snackbarView = snackbar.getView();
+        TextView snackTextView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
+        snackTextView.setMaxLines(4);
+        snackbar.show();
     }
 }

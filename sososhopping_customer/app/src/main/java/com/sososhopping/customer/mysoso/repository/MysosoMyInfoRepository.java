@@ -95,6 +95,7 @@ public class MysosoMyInfoRepository {
         mysosoService.requestQuit(token).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.e("log", response.raw().toString());
                 switch (response.code()){
                     case 200:
                         onSuccess.run();
