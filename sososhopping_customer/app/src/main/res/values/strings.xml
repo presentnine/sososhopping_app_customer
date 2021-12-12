@@ -30,7 +30,7 @@
     <string name="event_coupon_addSucc">쿠폰 저장에 성공하였습니다</string>
     <string name="event_coupon_deleteSucc">쿠폰 삭제에 성공하였습니다</string>
     <string name="event_coupon_deleteFail">쿠폰 삭제에 실패하였습니다. 존재하지 않는 쿠폰입니다.</string>
-    <string name="event_coupon_addDup">이미 저장한 쿠폰입니다</string>
+    <string name="event_coupon_addDup">이미 저장/사용한 쿠폰입니다</string>
     <string name="event_coupon_shortLength">올바르지 않은 쿠폰 코드 길이입니다.</string>
     <string name="event_boardList">소식</string>
 
@@ -43,7 +43,7 @@
     <string name="report_title">신고하기</string>
     <string name="report_warning">신고 내용은 30글자 이상이어야 합니다.</string>
     <string name="report_input">신고를 작성했습니다.</string>
-    <string name="report_description">불법, 부정, 허위 및 불량 업소 등에 관하여 신고받은 내용은 고객센터에서 면밀히 검토 후 조치합니다.\n금전적인 피해 및 기타 추가적인 증빙사항은 위 고객센터 이메일 (abcdefg@gmail.com)로 연락주세요</string>
+    <string name="report_description">불법, 부정, 허위 및 불량 업소 등에 관하여 신고받은 내용은 고객센터에서 면밀히 검토 후 조치합니다.\n금전적인 피해 및 기타 추가적인 증빙사항은 위 고객센터 이메일 (sososhopping2021@gmail.com)로 연락주세요</string>
 
     <!--My소소-->
     <string name="mysoso">My소소</string>
