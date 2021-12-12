@@ -144,6 +144,7 @@ public class MysosoOrderListFragment extends Fragment {
 
         //하단바
         ((HomeActivity)getActivity()).showBottomNavigation();
+        ((HomeActivity)getActivity()).getBinding().bottomNavigation.getMenu().findItem(R.id.menu_mysoso).setChecked(true);
         super.onResume();
     }
 

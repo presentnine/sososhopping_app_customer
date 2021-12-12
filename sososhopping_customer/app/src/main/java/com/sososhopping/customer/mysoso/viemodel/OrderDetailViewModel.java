@@ -33,4 +33,11 @@ public class OrderDetailViewModel extends ViewModel {
         orderRepository.requestMyOrderCancel(token, orderId, new OrderCancelDto("CANCEL"),onSuccess, onFailed, onError);
     }
 
+    public void requestMyOrderDone(String token,
+                                   long orderId,
+                                   Runnable onSuccess,
+                                   Runnable onFailed,
+                                   Runnable onError) {
+        orderRepository.requestMyOrderCancel(token, orderId, new OrderCancelDto("DONE"), onSuccess, onFailed, onError);
+    }
 }
