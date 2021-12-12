@@ -7,8 +7,8 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class PhoneWatcher implements TextWatcher {
 
-    private TextInputLayout phoneTextLayout;
-    private String errorMsg;
+    private final TextInputLayout phoneTextLayout;
+    private final String errorMsg;
 
     public PhoneWatcher(TextInputLayout phoneTextLayout, String errorMsg) {
         this.phoneTextLayout = phoneTextLayout;

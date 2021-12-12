@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,6 +39,9 @@ public class PurchaseCouponDialogFragment extends DialogFragment {
     private PurchaseCouponViewModel purchaseCouponViewModel;
     private PurchaseViewModel purchaseViewModel;
 
+    int storeId;
+    int totalPrice;
+
     public static PurchaseCouponDialogFragment newInstance() {return new PurchaseCouponDialogFragment();}
 
     @Override
@@ -57,11 +62,14 @@ public class PurchaseCouponDialogFragment extends DialogFragment {
 
         //viewmodel 설정
 
-        purchaseViewModel = new ViewModelProvider(getActivity()).get(PurchaseViewModel.class);
+        storeId = PurchaseCouponDialogFragmentArgs.fromBundle(getArguments()).getStoreId();
+        totalPrice = PurchaseCouponDialogFragmentArgs.fromBundle(getArguments()).getCurrentPrice();
+
+        purchaseViewModel = new ViewModelProvider(this).get(PurchaseViewModel.class);
         purchaseCouponViewModel = new ViewModelProvider(this).get(PurchaseCouponViewModel.class);
         purchaseCouponViewModel.requestCoupons(
                 ((HomeActivity)getActivity()).getLoginToken(),
-                purchaseViewModel.getShopInfo().getValue().getStoreId(),
+                storeId,
                 this::onSuccess,
                 this::onFailedLogIn,
                 this::onFailed,
@@ -87,7 +95,7 @@ public class PurchaseCouponDialogFragment extends DialogFragment {
                     return;
                 }
 
-                int msgCode[]  = new int[2];
+                int[] msgCode = new int[2];
                 msgCode[0] = R.string.event_coupon_addSucc;
                 msgCode[1] = R.string.event_coupon_addFail;
 
@@ -115,11 +123,15 @@ public class PurchaseCouponDialogFragment extends DialogFragment {
             public void onItemClick(CouponModel couponModel) {
 
                 //쿠폰 최소금액보다 많은 경우
-                if(couponModel.getMinimumOrderPrice() > purchaseViewModel.getTotalPrice().getValue()){
+                if(couponModel.getMinimumOrderPrice() > totalPrice){
                     Toast.makeText(getContext(), "쿠폰 최소 사용금액보다 구매 금액이 부족합니다", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                purchaseViewModel.getUseCoupon().setValue(couponModel);
+
+                NavHostFragment.findNavController(PurchaseCouponDialogFragment.this)
+                        .getPreviousBackStackEntry()
+                        .getSavedStateHandle().set("couponParcel", couponModel);
+                //purchaseViewModel.getUseCoupon().setValue(couponModel);
                 getActivity().onBackPressed();
                 dismiss();
             }

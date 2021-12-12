@@ -31,7 +31,7 @@ public class FindPasswordFragment extends Fragment {
     private NavController navController;
     private AccountFindPasswordBinding binding;
     private Boolean phoneChecked = false;
-    private FindPasswordViewModel findPasswordViewModel = new FindPasswordViewModel();
+    private final FindPasswordViewModel findPasswordViewModel = new FindPasswordViewModel();
     public static FindPasswordFragment newInstance() {
         return new FindPasswordFragment();
     }

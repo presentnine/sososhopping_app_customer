@@ -16,6 +16,7 @@ import com.sososhopping.customer.shop.model.ShopIntroduceModel;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -51,6 +52,9 @@ public interface ShopService {
 
     @POST("stores/{storeId}/reviews")
     Call<Void> inputReviews(@Header("token") String token, @Path("storeId") int storeId, @Body ReviewInputDto reviewInputDto);
+
+    @DELETE("stores/{storeId}/reviews")
+    Call<Void> deleteMyReview(@Header("token") String token, @Path("storeId") int storeId);
 
     @GET("stores/{storeId}/reviews/check")
     Call<Void> checkReviews(@Header("token") String token, @Path("storeId") int storeId);

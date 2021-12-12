@@ -23,7 +23,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     String storeName;
     String userUid;
     ArrayList<Chat> chatList;
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy/MM/dd HH:mm");
 
     public ChatAdapter(Context context, String storeName, String userUid, ArrayList<Chat> chatList) {
         this.context = context;
@@ -59,12 +59,12 @@ public class ChatAdapter extends RecyclerView.Adapter {
         if (!chatList.get(position).senderUid.equals(userUid)) {
             ((ViewHolder) holder).chatCardViewNickName.setText(storeName);
         } else {
-            ((ViewHolder) holder).chatCardViewNickName.setText("본인");
+            ((ViewHolder) holder).chatCardViewNickName.setText("나");
         }
 
         String timeStamp = chatList.get(position).timeStamp.toString();
         Long time = Long.parseLong(timeStamp);
-        Date date = new Date(time + 1000 * 60 * 60 * 9);
+        Date date = new Date(time);
 
         ((ViewHolder)holder).chatCardViewContent.setText(chatList.get(position).content);
         ((ViewHolder)holder).chatCardViewTime.setText(simpleDateFormat.format(date));

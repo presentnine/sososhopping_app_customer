@@ -30,8 +30,8 @@ import com.sososhopping.customer.shop.viewmodel.ShopInfoViewModel;
 
 
 public class ShopEventFragment extends Fragment {
-    private ShopEventBoardAdapter shopEventBoardAdapter = new ShopEventBoardAdapter();
-    private ShopEventCouponAdapter shopEventCouponAdapter = new ShopEventCouponAdapter();
+    private final ShopEventBoardAdapter shopEventBoardAdapter = new ShopEventBoardAdapter();
+    private final ShopEventCouponAdapter shopEventCouponAdapter = new ShopEventCouponAdapter();
     ShopEventBinding binding;
 
     private ShopInfoViewModel shopInfoViewModel;
@@ -124,7 +124,7 @@ public class ShopEventFragment extends Fragment {
                 String token = ((HomeActivity) getActivity()).getLoginToken();
                 if (token != null) {
 
-                    int msgCode[] = new int[3];
+                    int[] msgCode = new int[3];
                     msgCode[0] = R.string.event_coupon_addSucc;
                     msgCode[1] = R.string.event_coupon_addFail;
                     msgCode[2] = R.string.event_coupon_addDup;

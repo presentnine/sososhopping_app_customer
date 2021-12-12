@@ -164,8 +164,8 @@ public class MysosoOrderDetailFragment extends Fragment {
 
             //금액
             binding.textViewTotalPayTotalPrice.setText(orderDetailDto.getOrderPrice() + "원");
-            binding.textViewTotalPayPoint.setText(orderDetailDto.getUsedPoint() + "원");
-            binding.textViewTotalPayCoupon.setText(orderDetailDto.getCouponDiscountPrice() + "원");
+            binding.textViewTotalPayPoint.setText("- "+orderDetailDto.getUsedPoint() + "원");
+            binding.textViewTotalPayCoupon.setText("- "+orderDetailDto.getCouponDiscountPrice() + "원");
             binding.textViewTotalPayDelivery.setText(orderDetailDto.getDeliveryCharge() + "원");
             binding.textviewTotalPrice.setText(orderDetailDto.getFinalPrice() + "원");
 

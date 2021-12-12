@@ -63,6 +63,7 @@ import com.sososhopping.customer.search.model.ShopInfoShortModel;
 import com.sososhopping.customer.shop.view.ShopMainFragment;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.concurrent.Executor;
 
 import lombok.AllArgsConstructor;
@@ -80,6 +81,7 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
     private FusedLocationSource locationSource;
     private MapFragment mapFragment;
     private NaverMap naverMap;
+    private InfoWindow infoWindow;
 
     MutableLiveData<ShopInfoShortModel> focusedShop;
     ArrayList<Marker> markers = new ArrayList<>();
@@ -122,7 +124,7 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
         binding = SearchShopMapBinding.inflate(inflater,container,false);
 
         focusedShop = new MutableLiveData<>();
-        focusedShop.observe(this, new Observer<ShopInfoShortModel>() {
+        focusedShop.observe(getViewLifecycleOwner(), new Observer<ShopInfoShortModel>() {
             @Override
             public void onChanged(ShopInfoShortModel shopInfoShortModel) {
                 if(shopInfoShortModel == null){
@@ -133,7 +135,7 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        homeViewModel.getShopList().observe(this, new Observer<ArrayList<ShopInfoShortModel>>() {
+        homeViewModel.getShopList().observe(getViewLifecycleOwner(), new Observer<ArrayList<ShopInfoShortModel>>() {
             @Override
             public void onChanged(ArrayList<ShopInfoShortModel> shopInfoShortModels) {
                 if(naverMap != null){
@@ -215,7 +217,6 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
 
 
         //줌 + 한국으로 제한
-        naverMap.setMinZoom(5.0);
         naverMap.setMaxZoom(18.0);
         naverMap.setExtent(new LatLngBounds(new LatLng(31.43, 122.37),
                 new LatLng(44.35, 132)));
@@ -248,6 +249,7 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onMapClick(@NonNull PointF pointF, @NonNull LatLng latLng) {
                 focusedShop.postValue(null);
+                infoWindow.close();
             }
         });
 
@@ -256,6 +258,7 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
         uiSettings.setCompassEnabled(false);
 
         //마커 추가
+        infoWindow = new InfoWindow();
         addMarkers(naverMap);
     }
 
@@ -288,7 +291,7 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
     //추가 된 경우
     public void addMarkersPage(NaverMap naverMap, int index){
         //백그라운드 스레드로 마커 생성
-        Executor executor = new Executor() {
+        /*Executor executor = new Executor() {
             @Override
             public void execute(Runnable command) {
                 new Thread(command).start();
@@ -300,19 +303,25 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
             public void run() {
                 createMarkers(index);
             }
-        });
+        });*/
+
+        createMarkers(index);
+        int size = markers.size();
+        for(int i=0; i<size; i++){
+            markers.get(i).setMap(naverMap);
+        }
 
         //메인에서 마커 추가
-        Handler handler = new Handler(Looper.getMainLooper());
+        /*Handler handler = new Handler(Looper.getMainLooper());
         handler.post(() -> {
-            for(Marker m : markers){
-                m.setMap(naverMap);
+            int size = markers.size();
+            for(int i=0; i<size; i++){
+                markers.get(i).setMap(naverMap);
             }
-        });
+        });*/
     }
 
     public void createMarkers(int startIdx){
-        InfoWindow infoWindow = new InfoWindow();
         infoWindow.setAdapter(new InfoWindow.DefaultTextAdapter(getContext()) {
             @NonNull
             @Override
@@ -336,6 +345,7 @@ public class ShopMapFragment extends Fragment implements OnMapReadyCallback {
                 m.setOnClickListener(new Overlay.OnClickListener() {
                     @Override
                     public boolean onClick(@NonNull Overlay overlay) {
+                        infoWindow.close();
                         Marker marker = (Marker) overlay;
                         int idx = ((CustomTag)marker.getTag()).getIdx();
                         focusedShop.postValue(models.get(idx));

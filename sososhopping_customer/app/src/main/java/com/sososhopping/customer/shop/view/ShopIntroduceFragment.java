@@ -35,7 +35,7 @@ public class ShopIntroduceFragment extends Fragment {
     private NavController navController;
     private ShopIntroduceBinding binding;
     private ShopIntroduceModel shopIntroduceModel;
-    private ShopIntroduceViewModel shopIntroduceViewModel = new ShopIntroduceViewModel();
+    private final ShopIntroduceViewModel shopIntroduceViewModel = new ShopIntroduceViewModel();
     private ShopInfoViewModel shopInfoViewModel;
 
     public static ShopIntroduceFragment newInstance() {
@@ -174,6 +174,15 @@ public class ShopIntroduceFragment extends Fragment {
                     //포인트
                     if (shopIntroduceModel.getSaveRate() != null) {
                         binding.textViewShopPoint.setText(shopIntroduceViewModel.getSaveRate(shopIntroduceModel));
+                    }
+
+                    //배송비
+                    if(shopIntroduceModel.isDeliveryStatus()){
+                        binding.layoutDelivery.setVisibility(View.VISIBLE);
+                        binding.textViewShopDelivery.setText(shopIntroduceModel.getDeliveryCharge()+"원");
+                    }
+                    else{
+                        binding.layoutDelivery.setVisibility(View.GONE);
                     }
 
                     //번호

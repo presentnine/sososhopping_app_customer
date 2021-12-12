@@ -118,7 +118,6 @@ public class PurchaseFragment_Visit {
                             binding.includeLayoutVisit.layoutDelivery.setVisibility(View.GONE);
                             binding.includeLayoutVisit.layoutVisit.setVisibility(View.VISIBLE);
 
-
                             //배달비 제거
                             purchaseViewModel.getDeliveryPrice().setValue(0);
                             purchaseViewModel.setOrderType(OrderType.ONSITE);
@@ -131,7 +130,7 @@ public class PurchaseFragment_Visit {
                             binding.includeLayoutVisit.layoutDelivery.setVisibility(View.VISIBLE);
 
                             //배달비 추가
-                            purchaseViewModel.getDeliveryPrice().setValue(2500);
+                            purchaseViewModel.getDeliveryPrice().setValue(purchaseViewModel.getShopInfo().getValue().getDeliveryCharge());
                             purchaseViewModel.setOrderType(OrderType.DELIVERY);
                         }
                         break;

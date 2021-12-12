@@ -124,7 +124,7 @@ public class SignUpEmailFragment extends Fragment {
             binding.textFieldSignUpPassword.setError(getResources().getString(R.string.signup_error_phone));
         }
         if(TextUtils.isEmpty(binding.textFieldSignUpPasswordDup.getEditText().getText().toString())){
-            binding.textFieldSignUpPasswordDup.setError(getResources().getString(R.string.signup_error_nickname));
+            binding.textFieldSignUpPasswordDup.setError(getResources().getString(R.string.signup_error_passwordDup));
         }
     }
 

@@ -36,7 +36,7 @@ public class MysosoReviewFragment extends Fragment {
     MysosoMyreviewBinding binding;
     NavController navConroller;
 
-    private MysosoReviewAdapter mysosoReviewAdapter = new MysosoReviewAdapter();
+    private final MysosoReviewAdapter mysosoReviewAdapter = new MysosoReviewAdapter();
     private MyReviewViewModel myReviewViewModel;
 
     public static MysosoReviewFragment newInstance() {
@@ -70,7 +70,7 @@ public class MysosoReviewFragment extends Fragment {
         myReviewViewModel.requestMyReview(((HomeActivity) getActivity()).getLoginToken(),
                 this::onSuccess,
                 this::onFailedLogIn,
-                this::onFailed,
+                this::onFailedGet,
                 this::onNetworkError);
 
         return binding.getRoot();
@@ -116,6 +116,13 @@ public class MysosoReviewFragment extends Fragment {
         if (binding != null) {
             NavHostFragment.findNavController(this)
                     .navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_token));
+        }
+    }
+
+    private void onFailedGet() {
+        if (binding != null) {
+            Snackbar.make(((HomeActivity) getActivity()).getMainView(),
+                    getResources().getString(R.string.mysoso_myRating_get_error), Snackbar.LENGTH_SHORT).show();
         }
     }
 

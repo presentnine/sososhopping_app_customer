@@ -268,7 +268,13 @@
         android:id="@+id/purchaseCouponDialogFragment"
         android:name="com.sososhopping.customer.purchase.view.PurchaseCouponDialogFragment"
         android:label="PurchaseCouponDialogFragment"
-        tools:layout="@layout/purchase_coupon"/>
+        tools:layout="@layout/purchase_coupon">
+        <argument
+            android:name="storeId"
+            app:argType="integer" />
+        <argument android:name="currentPrice"
+            app:argType="integer" />
+    </dialog>
 
     <fragment
         android:id="@+id/purchaseSuccessFragment"

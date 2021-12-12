@@ -1,7 +1,5 @@
 package com.sososhopping.customer.shop.model;
 
-
-import com.google.gson.annotations.SerializedName;
 import com.sososhopping.customer.common.types.BusinessDays;
 import com.sososhopping.customer.common.types.Location;
 
@@ -19,7 +17,6 @@ import lombok.ToString;
 public class ShopIntroduceModel {
     int storeId;
     int ownerId;
-
     String storeType;
     String name;
     //대표이미지
@@ -31,6 +28,7 @@ public class ShopIntroduceModel {
     boolean localCurrencyStatus;
     boolean pickupStatus;
     boolean deliveryStatus;
+    int deliveryCharge;
     Integer minimumOrderPrice;
     Double saveRate;
     String streetAddress;
@@ -38,8 +36,7 @@ public class ShopIntroduceModel {
     ArrayList<BusinessDays> businessDays = new ArrayList<>();
     ArrayList<String> storeImages = new ArrayList<>();
     Location location;
-    float score;
-    @SerializedName("isInterestStore")
+    double score;
     boolean isInterestStore;
     int myPoint;
 }

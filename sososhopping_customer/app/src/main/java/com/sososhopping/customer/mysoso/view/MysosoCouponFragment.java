@@ -1,5 +1,6 @@
 package com.sososhopping.customer.mysoso.view;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
@@ -81,7 +83,7 @@ public class MysosoCouponFragment extends Fragment {
                     return;
                 }
 
-                int msgCode[] = new int[3];
+                int[] msgCode = new int[3];
                 msgCode[0] = R.string.event_coupon_addSucc;
                 msgCode[1] = R.string.event_coupon_addFail;
                 msgCode[2] = R.string.event_coupon_addDup;
@@ -106,6 +108,31 @@ public class MysosoCouponFragment extends Fragment {
             @Override
             public void onItemLongClick(CouponModel couponModel) {
 
+                //안전을 위해서 다이얼로그 추가
+                new MaterialAlertDialogBuilder(getContext())
+                        .setTitle("쿠폰을 삭제하시겠습니까?")
+                        .setNeutralButton("네", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                int[] msgCode = new int[2];
+                                msgCode[0] = R.string.event_coupon_deleteSucc;
+                                msgCode[1] = R.string.event_coupon_deleteFail;
+
+                                myCouponViewModel.deleteCoupon(((HomeActivity) getActivity()).getLoginToken(),
+                                        couponModel.getCouponId(),
+                                        msgCode,
+                                        MysosoCouponFragment.this::onResult,
+                                        MysosoCouponFragment.this::onFailedLogIn,
+                                        MysosoCouponFragment.this::onNetworkError);
+                            }
+                        })
+                        .setPositiveButton("아니오", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
+                        .show();
             }
         });
 
@@ -141,6 +168,16 @@ public class MysosoCouponFragment extends Fragment {
     private void onResult(int msgCode) {
         if (binding != null) {
             Snackbar.make(binding.getRoot(), getResources().getString(msgCode), Snackbar.LENGTH_SHORT).show();
+
+            if (msgCode == R.string.event_coupon_addSucc || msgCode == R.string.event_coupon_deleteSucc) {
+                //쿠폰 다시 받아오기
+                myCouponViewModel.requestCoupons(((HomeActivity) getActivity()).getLoginToken(),
+                        null,
+                        this::onSuccess,
+                        this::onFailedLogIn,
+                        this::onFailed,
+                        this::onNetworkError);
+            }
         }
     }
 

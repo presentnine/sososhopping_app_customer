@@ -9,9 +9,9 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class EmailWatcher implements TextWatcher {
 
-    private TextInputLayout emailTextLayout;
+    private final TextInputLayout emailTextLayout;
     private TextView dupCheckTextView;
-    private String errorMsg;
+    private final String errorMsg;
 
     public EmailWatcher(TextInputLayout textInputLayout, TextView textView, String errorMsg){
         this.emailTextLayout = textInputLayout;

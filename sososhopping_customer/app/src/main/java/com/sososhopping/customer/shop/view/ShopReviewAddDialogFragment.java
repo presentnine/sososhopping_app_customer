@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -22,7 +24,7 @@ import com.sososhopping.customer.shop.viewmodel.ShopReviewViewModel;
 
 public class ShopReviewAddDialogFragment extends DialogFragment {
     private ShopReviewAddDialogBinding binding;
-    private ShopReviewViewModel reviewViewModel = new ShopReviewViewModel();
+    private final ShopReviewViewModel reviewViewModel = new ShopReviewViewModel();
     int storeId = -1;
 
     public static ShopReviewAddDialogFragment newInstance(){return new ShopReviewAddDialogFragment();}
@@ -74,6 +76,12 @@ public class ShopReviewAddDialogFragment extends DialogFragment {
     public void onSuccess(){
         Snackbar.make(((HomeActivity)getActivity()).getMainView(),
                 getResources().getString(R.string.review_input), Snackbar.LENGTH_SHORT).show();
+
+        if(binding != null){
+            NavHostFragment.findNavController(getParentFragment())
+                    .navigate(ShopReviewAddDialogFragmentDirections.actionShopReviewAddDialogFragmentToShopReviewFragment());
+        }
+
         //종료
         dismiss();
     }
@@ -83,7 +91,8 @@ public class ShopReviewAddDialogFragment extends DialogFragment {
                 getResources().getString(R.string.login_error_token), Snackbar.LENGTH_SHORT).show();
         ((HomeActivity)getActivity()).setLoginToken(null);
         //종료
-        dismiss();  }
+        dismiss();
+    }
 
     private void onFailed() {
         Snackbar.make(((HomeActivity)getActivity()).getMainView(),

@@ -83,9 +83,9 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.ViewHo
                     .load(shopItemModel.getImgUrl())
                     .transform(new CenterCrop(),new RoundedCorners(10))
                     .thumbnail(0.2f)
-                    .placeholder(R.drawable.icon_app_groceries)
-                    .error(R.drawable.icon_app_groceries)
-                    .fallback(R.drawable.icon_app_groceries)
+                    .placeholder(R.drawable.icon_app_box)
+                    .error(R.drawable.icon_app_box)
+                    .fallback(R.drawable.icon_app_box)
                     .into(binding.imageViewGoods);
 
 

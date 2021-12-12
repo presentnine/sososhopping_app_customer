@@ -32,8 +32,8 @@ public class MysosoPointFragment extends Fragment {
     NavController navConroller;
     PointInfoViewModel pointInfoViewModel;
 
-    private MysosoPointAdapter adapterFavorite = new MysosoPointAdapter();
-    private MysosoPointAdapter adapterNotFavorite = new MysosoPointAdapter();
+    private final MysosoPointAdapter adapterFavorite = new MysosoPointAdapter();
+    private final MysosoPointAdapter adapterNotFavorite = new MysosoPointAdapter();
 
     public static MysosoPointFragment newInstance() {
         return new MysosoPointFragment();

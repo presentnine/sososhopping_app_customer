@@ -9,9 +9,9 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class NickNameWatcher implements TextWatcher {
 
-    private TextInputLayout nickNameTextLayout;
-    private TextView dupCheckTextView;
-    private String errorMsg;
+    private final TextInputLayout nickNameTextLayout;
+    private final TextView dupCheckTextView;
+    private final String errorMsg;
 
     public NickNameWatcher(TextInputLayout nickNameTextLayout,  TextView textView, String errorMsg) {
         this.nickNameTextLayout = nickNameTextLayout;

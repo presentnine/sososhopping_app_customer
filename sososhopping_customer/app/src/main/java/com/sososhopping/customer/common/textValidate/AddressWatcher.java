@@ -2,16 +2,20 @@ package com.sososhopping.customer.common.textValidate;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
 
-public class PasswordWatcher implements TextWatcher {
+public class AddressWatcher  implements TextWatcher {
 
-    private final TextInputLayout passwordTextLayout;
+    private final TextInputLayout emailTextLayout;
+    private TextView dupCheckTextView;
     private final String errorMsg;
 
-    public PasswordWatcher(TextInputLayout passwordTextLayout, String errorMsg) {
-        this.passwordTextLayout = passwordTextLayout;
+
+    public AddressWatcher(TextInputLayout textInputLayout, String errorMsg){
+        this.emailTextLayout = textInputLayout;
         this.errorMsg = errorMsg;
     }
 
@@ -27,12 +31,8 @@ public class PasswordWatcher implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        if(s.toString().length() < 8){
-            passwordTextLayout.setError(errorMsg);
-            passwordTextLayout.setErrorEnabled(true);
-        }else{
-            passwordTextLayout.setError(null);
-            passwordTextLayout.setErrorEnabled(false);
-        }
+        emailTextLayout.setError(null);
+        emailTextLayout.setErrorEnabled(false);
     }
 }
+
