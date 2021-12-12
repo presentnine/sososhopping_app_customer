@@ -28,6 +28,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.sososhopping.customer.HomeActivity;
 import com.sososhopping.customer.NavGraphDirections;
 import com.sososhopping.customer.R;
+import com.sososhopping.customer.common.StringFormatMethod;
 import com.sososhopping.customer.common.gps.CalculateDistance;
 import com.sososhopping.customer.common.gps.GPSTracker;
 import com.sososhopping.customer.common.types.Location;
@@ -79,7 +80,7 @@ public class ShopMainFragment extends Fragment {
 
     public void initialSetting(ShopIntroduceModel shopIntroduceModel){
         binding.textViewShopName.setText(shopIntroduceModel.getName());
-        binding.textViewRating.setText(Double.toString(Math.round(shopIntroduceModel.getScore()*10)/10));
+        binding.textViewRating.setText(StringFormatMethod.getRating(shopIntroduceModel.getScore()));
 
         //안 받아왔으면
         if(shopInfoViewModel.getDistance().getValue() == -1){

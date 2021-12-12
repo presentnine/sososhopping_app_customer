@@ -36,7 +36,7 @@ public class ShopIntroduceModel {
     ArrayList<BusinessDays> businessDays = new ArrayList<>();
     ArrayList<String> storeImages = new ArrayList<>();
     Location location;
-    float score;
+    double score;
     boolean isInterestStore;
     int myPoint;
 }
