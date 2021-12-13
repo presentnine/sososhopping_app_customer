@@ -132,91 +132,93 @@ public class MysosoOrderDetailFragment extends Fragment {
     public void onSuccess(OrderDetailDto orderDetailDto) {
         if (binding != null) {
             //set
-            orderDetailViewModel.getOrderDetailDto().setValue(orderDetailDto);
+            try{
+                orderDetailViewModel.getOrderDetailDto().setValue(orderDetailDto);
 
-            //제목
-            binding.textViewShopname.setText(orderDetailDto.getStoreName());
-            adapter.setItems(orderDetailDto.getOrderItems());
-            adapter.notifyDataSetChanged();
-            binding.textViewTotalItemPrice.setText(orderDetailDto.getOrderPrice() + "원");
+                //제목
+                binding.textViewShopname.setText(orderDetailDto.getStoreName());
+                adapter.setItems(orderDetailDto.getOrderItems());
+                adapter.notifyDataSetChanged();
+                binding.textViewTotalItemPrice.setText(orderDetailDto.getOrderPrice() + "원");
 
-            binding.textViewVisitName.setText(orderDetailDto.getOrdererName());
-            binding.textViewVisitPhone.setText(orderDetailDto.getOrdererPhone());
+                binding.textViewVisitName.setText(orderDetailDto.getOrdererName());
+                binding.textViewVisitPhone.setText(orderDetailDto.getOrdererPhone());
 
 
-            if (orderDetailDto.getOrderType().equals(OrderType.ONSITE)) {
-                binding.textViewVisitOrDeliveryInfo.setText(getResources().getString(R.string.visit_info));
-                binding.textViewVisitDate.setText(DateFormatMethod.dateFormatToKorean(orderDetailDto.getVisitDate()));
-                binding.layoutAddress.setVisibility(View.GONE);
-                binding.layoutVisit.setVisibility(View.VISIBLE);
-            } else {
-                binding.textViewVisitOrDeliveryInfo.setText(getResources().getString(R.string.delivery_info));
-                binding.textViewDeliveryAddress.setText(
-                        orderDetailDto.getDeliveryStreetAddress() + " " + orderDetailDto.getDeliveryDetailedAddress()
-                );
+                if (orderDetailDto.getOrderType().equals(OrderType.ONSITE)) {
+                    binding.textViewVisitOrDeliveryInfo.setText(getResources().getString(R.string.visit_info));
+                    binding.textViewVisitDate.setText(DateFormatMethod.dateFormatToKorean(orderDetailDto.getVisitDate()));
+                    binding.layoutAddress.setVisibility(View.GONE);
+                    binding.layoutVisit.setVisibility(View.VISIBLE);
+                } else {
+                    binding.textViewVisitOrDeliveryInfo.setText(getResources().getString(R.string.delivery_info));
+                    binding.textViewDeliveryAddress.setText(
+                            orderDetailDto.getDeliveryStreetAddress() + " " + orderDetailDto.getDeliveryDetailedAddress()
+                    );
 
-                binding.layoutAddress.setVisibility(View.VISIBLE);
-                binding.layoutVisit.setVisibility(View.GONE);
-            }
-
-            binding.textViewPurchaseType.setText(orderDetailDto.getPaymentType().getValue());
-            binding.textViewPurchaseDate.setText(DateFormatMethod.dateFormatToKorean(orderDetailDto.getCreatedAt()));
-
-            //금액
-            binding.textViewTotalPayTotalPrice.setText(orderDetailDto.getOrderPrice() + "원");
-            binding.textViewTotalPayPoint.setText("- "+orderDetailDto.getUsedPoint() + "원");
-            binding.textViewTotalPayCoupon.setText("- "+orderDetailDto.getCouponDiscountPrice() + "원");
-            binding.textViewTotalPayDelivery.setText(orderDetailDto.getDeliveryCharge() + "원");
-            binding.textviewTotalPrice.setText(orderDetailDto.getFinalPrice() + "원");
-
-            //최종상태
-            binding.buttonFinalPurchase.setText(orderDetailDto.getOrderStatus().getValue());
-            //최종확인
-            if(orderDetailDto.getOrderStatus() == OrderStatus.READY){
-
-                if(orderDetailDto.getOrderType() == OrderType.DELIVERY){
-                    binding.buttonFinalPurchase.setText("배송완료");
-                }
-                else if(orderDetailDto.getOrderType() == OrderType.ONSITE){
-                    binding.buttonFinalPurchase.setText("픽업완료");
+                    binding.layoutAddress.setVisibility(View.VISIBLE);
+                    binding.layoutVisit.setVisibility(View.GONE);
                 }
 
-                binding.buttonFinalPurchase.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        orderDetailViewModel.requestMyOrderDone(
-                                ((HomeActivity) getActivity()).getLoginToken(),
-                                orderDetailDto.getOrderId(),
-                                MysosoOrderDetailFragment.this::onSuccessDone,
-                                MysosoOrderDetailFragment.this::onFailedCancel,
-                                MysosoOrderDetailFragment.this::onNetworkError
-                        );
-                    }
-                });
-            }else{
+                binding.textViewPurchaseType.setText(orderDetailDto.getPaymentType().getValue());
+                binding.textViewPurchaseDate.setText(DateFormatMethod.dateFormatToKorean(orderDetailDto.getCreatedAt()));
+
+                //금액
+                binding.textViewTotalPayTotalPrice.setText(orderDetailDto.getOrderPrice() + "원");
+                binding.textViewTotalPayPoint.setText("- "+orderDetailDto.getUsedPoint() + "원");
+                binding.textViewTotalPayCoupon.setText("- "+orderDetailDto.getCouponDiscountPrice() + "원");
+                binding.textViewTotalPayDelivery.setText(orderDetailDto.getDeliveryCharge() + "원");
+                binding.textviewTotalPrice.setText(orderDetailDto.getFinalPrice() + "원");
+
+                //최종상태
                 binding.buttonFinalPurchase.setText(orderDetailDto.getOrderStatus().getValue());
-                binding.buttonFinalPurchase.setEnabled(false);
-            }
+                //최종확인
+                if(orderDetailDto.getOrderStatus() == OrderStatus.READY){
 
-            //주문취소
-            if (orderDetailDto.getOrderStatus() != OrderStatus.PENDING) {
-                binding.buttonFinalPurchaseCancel.setVisibility(View.GONE);
-            } else {
-                binding.buttonFinalPurchaseCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        orderDetailViewModel.requestMyOrderCancel(
-                                ((HomeActivity) getActivity()).getLoginToken(),
-                                orderDetailDto.getOrderId(),
-                                MysosoOrderDetailFragment.this::onSuccessCancel,
-                                MysosoOrderDetailFragment.this::onFailedCancel,
-                                MysosoOrderDetailFragment.this::onNetworkError
-                        );
+                    if(orderDetailDto.getOrderType() == OrderType.DELIVERY){
+                        binding.buttonFinalPurchase.setText("배송완료");
                     }
-                });
+                    else if(orderDetailDto.getOrderType() == OrderType.ONSITE){
+                        binding.buttonFinalPurchase.setText("픽업완료");
+                    }
+
+                    binding.buttonFinalPurchase.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            orderDetailViewModel.requestMyOrderDone(
+                                    ((HomeActivity) getActivity()).getLoginToken(),
+                                    orderDetailDto.getOrderId(),
+                                    MysosoOrderDetailFragment.this::onSuccessDone,
+                                    MysosoOrderDetailFragment.this::onFailedCancel,
+                                    MysosoOrderDetailFragment.this::onNetworkError
+                            );
+                        }
+                    });
+                }else{
+                    binding.buttonFinalPurchase.setText(orderDetailDto.getOrderStatus().getValue());
+                    binding.buttonFinalPurchase.setEnabled(false);
+                }
+
+                //주문취소
+                if (orderDetailDto.getOrderStatus() != OrderStatus.PENDING) {
+                    binding.buttonFinalPurchaseCancel.setVisibility(View.GONE);
+                } else {
+                    binding.buttonFinalPurchaseCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            orderDetailViewModel.requestMyOrderCancel(
+                                    ((HomeActivity) getActivity()).getLoginToken(),
+                                    orderDetailDto.getOrderId(),
+                                    MysosoOrderDetailFragment.this::onSuccessCancel,
+                                    MysosoOrderDetailFragment.this::onFailedCancel,
+                                    MysosoOrderDetailFragment.this::onNetworkError
+                            );
+                        }
+                    });
+                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
-
-
         }
     }
 
