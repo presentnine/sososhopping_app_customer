@@ -137,33 +137,61 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     }
                     case R.id.menu_chat: {
-                        getViewModelStore().clear();
-                        if (user != null) {
-                            binding.bottomNavigation.getMenu().findItem(R.id.menu_chat).setChecked(true);
-                            navController.navigate(R.id.chatFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
-                        } else {
-                            Snackbar.make(findViewById(android.R.id.content), "채팅 서버 인증 중입니다.", Snackbar.LENGTH_SHORT).show();
+                        if(loginToken.getValue() == null){
+                            bottomItemClicked(R.id.home2);
+                            navController.navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_description));
+                        }
+                        else{
+                            getViewModelStore().clear();
+                            if (user != null) {
+                                binding.bottomNavigation.getMenu().findItem(R.id.menu_chat).setChecked(true);
+                                navController.navigate(R.id.chatFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                            } else {
+                                Snackbar.make(findViewById(android.R.id.content), "채팅 서버 인증 중입니다.", Snackbar.LENGTH_SHORT).show();
+                            }
                         }
                         break;
                     }
 
                     case R.id.menu_interest: {
-                        binding.bottomNavigation.getMenu().findItem(R.id.menu_interest).setChecked(true);
-                        navController.navigate(R.id.interestShopListFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                        //로그인 안되면 못하게
+                        if(loginToken.getValue() == null){
+                            bottomItemClicked(R.id.home2);
+                            navController.navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_description));
+                        }
+                        else{
+                            binding.bottomNavigation.getMenu().findItem(R.id.menu_interest).setChecked(true);
+                            navController.navigate(R.id.interestShopListFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                        }
                         break;
                     }
 
                     case R.id.menu_cart: {
-                        getViewModelStore().clear();
-                        binding.bottomNavigation.getMenu().findItem(R.id.menu_cart).setChecked(true);
-                        navController.navigate(R.id.cartMainFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                        //로그인 안되면 못하게
+                        if(loginToken.getValue() == null){
+                            bottomItemClicked(R.id.home2);
+                            navController.navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_description));
+                        }
+                        else{
+                            getViewModelStore().clear();
+                            binding.bottomNavigation.getMenu().findItem(R.id.menu_cart).setChecked(true);
+                            navController.navigate(R.id.cartMainFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                        }
                         break;
                     }
 
                     case R.id.menu_mysoso: {
-                        getViewModelStore().clear();
-                        binding.bottomNavigation.getMenu().findItem(R.id.menu_mysoso).setChecked(true);
-                        navController.navigate(R.id.mysosoMainFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+
+                        //로그인 안되면 못하게
+                        if(loginToken.getValue() == null){
+                            bottomItemClicked(R.id.home2);
+                            navController.navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_description));
+                        }
+                        else{
+                            getViewModelStore().clear();
+                            binding.bottomNavigation.getMenu().findItem(R.id.menu_mysoso).setChecked(true);
+                            navController.navigate(R.id.mysosoMainFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                        }
                         break;
                     }
                 }
@@ -182,11 +210,18 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     }
                     case R.id.menu_chat: {
-                        getViewModelStore().clear();
-                        if (user != null) {
-                            navController.navigate(R.id.chatFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
-                        } else {
-                            Snackbar.make(findViewById(android.R.id.content), "채팅 서버 인증 중입니다.", Snackbar.LENGTH_SHORT).show();
+                        if(loginToken.getValue() == null){
+                            bottomItemClicked(R.id.home2);
+                            navController.navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_description));
+                        }
+                        else{
+                            getViewModelStore().clear();
+                            if (user != null) {
+                                binding.bottomNavigation.getMenu().findItem(R.id.menu_chat).setChecked(true);
+                                navController.navigate(R.id.chatFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                            } else {
+                                Snackbar.make(findViewById(android.R.id.content), "채팅 서버 인증 중입니다.", Snackbar.LENGTH_SHORT).show();
+                            }
                         }
                         break;
                     }
@@ -201,9 +236,16 @@ public class HomeActivity extends AppCompatActivity {
                     }
 
                     case R.id.menu_mysoso: {
-                        getViewModelStore().clear();
-                        navController.navigate(R.id.mysosoMainFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
-                        break;
+
+                        //로그인 안되면 못하게
+                        if(loginToken.getValue() == null){
+                            bottomItemClicked(R.id.home2);
+                            navController.navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_description));
+                        }
+                        else{
+                            getViewModelStore().clear();
+                            navController.navigate(R.id.mysosoMainFragment, null, new NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build());
+                        }
                     }
                 }
             }
@@ -347,10 +389,6 @@ public class HomeActivity extends AppCompatActivity {
 
     public void setIsLogIn(boolean is) {
         this.isLogIn = is;
-    }
-
-    public boolean getIsLogIn() {
-        return this.isLogIn;
     }
 
     public void setTopAppBarTitle(String title) {
