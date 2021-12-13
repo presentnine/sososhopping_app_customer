@@ -31,13 +31,6 @@ MysosoMainFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //로그인 안되면 못하게
-        if(!((HomeActivity)getActivity()).getIsLogIn()){
-            ((HomeActivity)getActivity()).bottomItemClicked(R.id.home2);
-            NavHostFragment.findNavController(this)
-                    .navigate(NavGraphDirections.actionGlobalLogInRequiredDialog().setErrorMsgId(R.string.login_error_description));
-        }
-
         //메뉴 변경 확인
         setHasOptionsMenu(true);
     }
